@@ -7,6 +7,7 @@
 //
 
 #import "YBZWaitingViewController.h"
+#import "QuickTransViewController.h"
 #import "WebAgent.h"
 
 @interface YBZWaitingViewController ()
@@ -25,7 +26,8 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     userID = user_id[@"user_id"];
-  
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithUser:) name:@"pushIntoTransView" object:nil];
+
     [self.view addSubview:[self getReturnBtn]];
 }
 
@@ -56,4 +58,124 @@
 }
 
 
+-(void)beginChatWithUser:(NSNotification *)noti{
+
+    NSString *yonghuID = noti.object[@"yonghuID"];
+    NSString *language = noti.object[@"language_catgory"];
+    NSString *pay_number = noti.userInfo[@"pay_number"];
+    NSDictionary *dict = [self getLanguageWithString:language];
+    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:yonghuID WithTargetID:userID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+    [self.navigationController pushViewController:quickVC animated:YES];
+}
+
+-(NSDictionary *)getLanguageWithString:(NSString *)language{
+    
+    NSString *VoiceLanguage;
+    NSString *TransLanguage;
+    if ([language isEqualToString:@"YingYu"]) {
+        
+        VoiceLanguage = Voice_YingYu;
+        TransLanguage = Trans_YingYu;
+    }
+    if ([language isEqualToString:@"MeiYu"]) {
+        
+        VoiceLanguage = Voice_MeiYu;
+        TransLanguage = Trans_MeiYu;
+    }
+    if ([language isEqualToString:@"HanYu"]) {
+        
+        VoiceLanguage = Voice_HanYu;
+        TransLanguage = Trans_HanYu;
+    }
+    if ([language isEqualToString:@"XiBanYa"]) {
+        
+        VoiceLanguage = Voice_XiBanYa;
+        TransLanguage = Trans_XiBanYa;
+    }
+    if ([language isEqualToString:@"TaiYu"]) {
+        
+        VoiceLanguage = Voice_TaiYu;
+        TransLanguage = Trans_TaiYu;
+    }
+    if ([language isEqualToString:@"ALaBoYu"]) {
+        
+        VoiceLanguage = Voice_ALaBoYu;
+        TransLanguage = Trans_ALaBoYu;
+    }
+    if ([language isEqualToString:@"EYu"]) {
+        
+        VoiceLanguage = Voice_EYu;
+        TransLanguage = Trans_EYu;
+    }
+    if ([language isEqualToString:@"PuTaoYaYu"]) {
+        
+        VoiceLanguage = Voice_PuTaoYaYu;
+        TransLanguage = Trans_PuTaoYaYu;
+    }
+    if ([language isEqualToString:@"XiLaYu"]) {
+        
+        VoiceLanguage = Voice_XiLaYu;
+        TransLanguage = Trans_XiLaYu;
+    }
+    if ([language isEqualToString:@"HeLanYu"]) {
+        
+        VoiceLanguage = Voice_HeLanYu;
+        TransLanguage = Trans_HeLanYu;
+    }
+    if ([language isEqualToString:@"BoLanYu"]) {
+        
+        VoiceLanguage = Voice_BoLanYu;
+        TransLanguage = Trans_BoLanYu;
+    }
+    if ([language isEqualToString:@"DanMaiYu"]) {
+        
+        VoiceLanguage = Voice_DanMaiYu;
+        TransLanguage = Trans_DanMaiYu;
+    }
+    if ([language isEqualToString:@"FenLanYu"]) {
+        
+        VoiceLanguage = Voice_FenLanYu;
+        TransLanguage = Trans_FenLanYu;
+    }
+    if ([language isEqualToString:@"JieKeYu"]) {
+        
+        VoiceLanguage = Voice_JieKeYu;
+        TransLanguage = Trans_JieKeYu;
+    }
+    if ([language isEqualToString:@"RuiDianYu"]) {
+        
+        VoiceLanguage = Voice_RuiDianYu;
+        TransLanguage = Trans_RuiDianYu;
+    }
+    if ([language isEqualToString:@"XiongYaLiYu"]) {
+        
+        VoiceLanguage = Voice_XiongYaLiYu;
+        TransLanguage = Trans_XiongYaLiYu;
+    }
+    if ([language isEqualToString:@"RiYu"]) {
+        
+        VoiceLanguage = Voice_RiYu;
+        TransLanguage = Trans_RiYu;
+    }
+    if ([language isEqualToString:@"FaYu"]) {
+        
+        VoiceLanguage = Voice_FaYa;
+        TransLanguage = Trans_FaYu;
+    }
+    if ([language isEqualToString:@"DeYu"]) {
+        
+        VoiceLanguage = Voice_DeYu;
+        TransLanguage = Trans_DeYu;
+    }
+    if ([language isEqualToString:@"YiDaLiYu"]) {
+        
+        VoiceLanguage = Voice_YiDaLiYu;
+        TransLanguage = Trans_YiDaLiYu;
+    }
+    
+    NSDictionary *dict = @{@"voice":VoiceLanguage,
+                           @"trans":TransLanguage
+                           };
+    return dict;
+}
 @end

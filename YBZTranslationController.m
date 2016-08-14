@@ -195,7 +195,7 @@
     
     NSString *VoiceLanguage;
     NSString *TransLanguage;
-    if ([language isEqualToString:@"English"]) {
+    if ([language isEqualToString:@"YingYu"]) {
         
         VoiceLanguage = Voice_YingYu;
         TransLanguage = Trans_YingYu;
@@ -648,14 +648,13 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+            [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
+            } failure:^(NSError *error) {
+                NSLog(@"faile");
+            }];
+        } failure:^(NSError *error) {
+        }];
 
-        } failure:^(NSError *error) {
-            
-        }];
-        [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
-        } failure:^(NSError *error) {
-            NSLog(@"faile");
-        }];
     });
     YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
     waitingVC.hidesBottomBarWhenPushed = YES;

@@ -12,6 +12,7 @@
 #import "YBZChangeLanguageInfo.h"
 #import "YBZLanguageSearchResultViewController.h"
 #import "YBZWaitViewController.h"
+#import "QuickTransViewController.h"
 #import "WebAgent.h"
 #import "AFNetworking.h"
 
@@ -33,11 +34,18 @@
 
 @end
 
-@implementation YBZChangeLanguageViewController
+@implementation YBZChangeLanguageViewController{
+
+    NSString *user_id;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
      _searchArr = [NSMutableArray new];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+    user_id = selfID[@"user_id"];
     //    [self.view addSubview:self.CH_USBtn];
     //    [self.bottomView addSubview:self.searchTextField];
     
@@ -268,7 +276,7 @@
         NSLog(@"sadsdasd%@",self.cellArr[indexPath.row]);
         
         if(_searchArr.count == 0){
-        
+            
         }else{
             YBZChangeLanguageInfo *searchModel = _searchArr[indexPath.row];
             cell.titleLabel.text = searchModel.title;
@@ -290,10 +298,18 @@
     [WebAgent selectWaitingQueue:language success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSArray *arr = dic[@"data"];
-        if (arr.count != 0){
+        NSArray   *dictionary = dic[@"data"];
+        if (dictionary.count !=0){
             NSLog(@"开始聊天");
-            
+            NSDictionary *dict = [self getLanguageWithString:language];
+            [WebAgent sendRemoteNotificationsWithuseId:dictionary[0][@"user_id"] WithsendMessage:@"进入聊天" WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:user_id success:^(id responseObject) {
+                NSLog(@"反馈推送—进入聊天通知成功！");
+                QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:user_id WithTargetID:dictionary[0][@"user_id"] WithUserIdentifier:@"USER" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+                [self.navigationController pushViewController:quickVC animated:YES];
+            } failure:^(NSError *error) {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"进入聊天页面失败" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
+                [alert show];
+            }];
         }else {
             [WebAgent matchTranslatorWithchooseLanguage:language success:^(id responseObject) {
                 
@@ -577,6 +593,119 @@
 //    [self.cellView reloadData];
 //
 //}
+
+
+
+-(NSDictionary *)getLanguageWithString:(NSString *)language{
+
+    NSString *VoiceLanguage;
+    NSString *TransLanguage;
+    if ([language isEqualToString:@"YingYu"]) {
+        
+        VoiceLanguage = Voice_YingYu;
+        TransLanguage = Trans_YingYu;
+    }
+    if ([language isEqualToString:@"MeiYu"]) {
+        
+        VoiceLanguage = Voice_MeiYu;
+        TransLanguage = Trans_MeiYu;
+    }
+    if ([language isEqualToString:@"HanYu"]) {
+        
+        VoiceLanguage = Voice_HanYu;
+        TransLanguage = Trans_HanYu;
+    }
+    if ([language isEqualToString:@"XiBanYa"]) {
+        
+        VoiceLanguage = Voice_XiBanYa;
+        TransLanguage = Trans_XiBanYa;
+    }
+    if ([language isEqualToString:@"TaiYu"]) {
+        
+        VoiceLanguage = Voice_TaiYu;
+        TransLanguage = Trans_TaiYu;
+    }
+    if ([language isEqualToString:@"ALaBoYu"]) {
+        
+        VoiceLanguage = Voice_ALaBoYu;
+        TransLanguage = Trans_ALaBoYu;
+    }
+    if ([language isEqualToString:@"EYu"]) {
+        
+        VoiceLanguage = Voice_EYu;
+        TransLanguage = Trans_EYu;
+    }
+    if ([language isEqualToString:@"PuTaoYaYu"]) {
+        
+        VoiceLanguage = Voice_PuTaoYaYu;
+        TransLanguage = Trans_PuTaoYaYu;
+    }
+    if ([language isEqualToString:@"XiLaYu"]) {
+        
+        VoiceLanguage = Voice_XiLaYu;
+        TransLanguage = Trans_XiLaYu;
+    }
+    if ([language isEqualToString:@"HeLanYu"]) {
+        
+        VoiceLanguage = Voice_HeLanYu;
+        TransLanguage = Trans_HeLanYu;
+    }
+    if ([language isEqualToString:@"BoLanYu"]) {
+        
+        VoiceLanguage = Voice_BoLanYu;
+        TransLanguage = Trans_BoLanYu;
+    }
+    if ([language isEqualToString:@"DanMaiYu"]) {
+        
+        VoiceLanguage = Voice_DanMaiYu;
+        TransLanguage = Trans_DanMaiYu;
+    }
+    if ([language isEqualToString:@"FenLanYu"]) {
+        
+        VoiceLanguage = Voice_FenLanYu;
+        TransLanguage = Trans_FenLanYu;
+    }
+    if ([language isEqualToString:@"JieKeYu"]) {
+        
+        VoiceLanguage = Voice_JieKeYu;
+        TransLanguage = Trans_JieKeYu;
+    }
+    if ([language isEqualToString:@"RuiDianYu"]) {
+        
+        VoiceLanguage = Voice_RuiDianYu;
+        TransLanguage = Trans_RuiDianYu;
+    }
+    if ([language isEqualToString:@"XiongYaLiYu"]) {
+        
+        VoiceLanguage = Voice_XiongYaLiYu;
+        TransLanguage = Trans_XiongYaLiYu;
+    }
+    if ([language isEqualToString:@"RiYu"]) {
+        
+        VoiceLanguage = Voice_RiYu;
+        TransLanguage = Trans_RiYu;
+    }
+    if ([language isEqualToString:@"FaYu"]) {
+        
+        VoiceLanguage = Voice_FaYa;
+        TransLanguage = Trans_FaYu;
+    }
+    if ([language isEqualToString:@"DeYu"]) {
+        
+        VoiceLanguage = Voice_DeYu;
+        TransLanguage = Trans_DeYu;
+    }
+    if ([language isEqualToString:@"YiDaLiYu"]) {
+        
+        VoiceLanguage = Voice_YiDaLiYu;
+        TransLanguage = Trans_YiDaLiYu;
+    }
+
+    NSDictionary *dict = @{@"voice":VoiceLanguage,
+                                            @"trans":TransLanguage
+                           };
+    return dict;
+}
 
 @end
 
