@@ -645,21 +645,56 @@
 //译员点击进入口语即时页面的响应时间
 -(void)pushNewChatController{
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-            [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
-            } failure:^(NSError *error) {
-                NSLog(@"faile");
-            }];
-        } failure:^(NSError *error) {
-        }];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    if(user_id[@"user_id"] == NULL)
+    {
+        YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
+        YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
+        logVC.view.backgroundColor = [UIColor whiteColor];
+        [self presentViewController:nav animated:YES completion:nil];
+    }
+    else
+    {
+        [WebAgent userLoginState:user_id[@"user_id"] success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            self.isLogin = str[@"state"];
+            NSLog(@"%@",self.isLogin);
+            if ([self.isLogin  isEqual: @"1"]) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    
+                    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+                        [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
+                        } failure:^(NSError *error) {
+                            NSLog(@"faile");
+                        }];
+                    } failure:^(NSError *error) {
+                    }];
+                    
+                });
+                YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
+                waitingVC.hidesBottomBarWhenPushed = YES;
+                waitingVC.navigationItem.hidesBackButton = YES;
+                [self.navigationController pushViewController:waitingVC animated:YES];
 
-    });
-    YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
-    waitingVC.hidesBottomBarWhenPushed = YES;
-    waitingVC.navigationItem.hidesBackButton = YES;
-    [self.navigationController pushViewController:waitingVC animated:YES];
+                
+            }else{
+                
+                //进入登陆流程
+                YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
+                YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
+                logVC.view.backgroundColor = [UIColor whiteColor];
+                [self presentViewController:nav animated:YES completion:nil];
+                
+            }
+            
+        }
+                         failure:^(NSError *error) {
+                             NSLog(@"22222");
+                         }];
+    }
+
 
 
 
@@ -685,7 +720,7 @@
             self.isLogin = str[@"state"];
             NSLog(@"%@",self.isLogin);
             if ([self.isLogin  isEqual: @"1"]) {
-//                                WebAgent selectWaitingQueue:<#(NSString *)#> success:<#^(id responseObject)success#> failure:<#^(NSError *error)failure#>
+
                 YBZChangeLanguageViewController *changelanguageVC = [[YBZChangeLanguageViewController alloc]initWithTitle:@"切换语言"];
                 changelanguageVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:changelanguageVC animated:YES];

@@ -64,7 +64,7 @@
     NSString *language = noti.object[@"language_catgory"];
     NSString *pay_number = noti.userInfo[@"pay_number"];
     NSDictionary *dict = [self getLanguageWithString:language];
-    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:yonghuID WithTargetID:userID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
     [self.navigationController pushViewController:quickVC animated:YES];
 }
 

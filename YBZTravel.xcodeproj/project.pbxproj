@@ -1730,7 +1730,7 @@
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.YBZhelper.gzw123;
+				PRODUCT_BUNDLE_IDENTIFIER = com.YBZhelper.haobowen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -1759,7 +1759,7 @@
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.YBZhelper.gzw123;
+				PRODUCT_BUNDLE_IDENTIFIER = com.YBZhelper.haobowen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

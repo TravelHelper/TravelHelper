@@ -79,6 +79,7 @@
     NSString   *iFlySpeechRecognizerString;
     CGFloat    KeyboardWillShowHeight;
     NSTimeInterval *KeyboardWillShowInterval;
+    NSString *userIDinfo;
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
@@ -97,8 +98,8 @@
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:self.voice_Language forKey:@"VOICE_LANGUAGE"];
         [userDefaults setObject:self.trans_Language forKey:@"TRANS_LANGUAGE"];
-        
-        
+        NSDictionary *user = [userDefaults dictionaryForKey:@"user_id"];
+        userIDinfo = user[@"user_id"];
         //欠缺单利处理 （头像获取）
     }
     return self;
@@ -727,7 +728,7 @@
     
     ChatModel *model = [[ChatModel alloc]init];
     
-    if ([object[@"user_id"] isEqualToString:self.senderID]) {
+    if ([object[@"senderID"] isEqualToString:userIDinfo]) {
         model.isSender = 1;
     }else{
         model.isSender = 0;
