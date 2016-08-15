@@ -76,11 +76,10 @@
     NSDictionary *dict = [self getLanguageWithString:language];
     QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
     [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController pushViewController:quickVC animated:YES];
     } failure:^(NSError *error) {
         
     }];
-    [self.navigationController pushViewController:quickVC animated:YES];
 }
 
 -(NSDictionary *)getLanguageWithString:(NSString *)language{
