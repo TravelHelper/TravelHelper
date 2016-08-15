@@ -17,6 +17,7 @@
 #import "APIClient.h"
 #import "YBZLoginViewController.h"
 #import "YBZBaseNaviController.h"
+#import "YBZTongyongViewController.h"
 @interface UserSetViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong) UITableView *usersetTabView;
 @property (nonatomic , strong) NSDictionary *dataDic;
@@ -137,8 +138,8 @@
     {
         if(indexPath.section == 0 && indexPath.row == 1)
         {
-            AccountAndSafeViewController *aasVC = [[AccountAndSafeViewController alloc]init];
-            [self.navigationController pushViewController:aasVC animated:YES];
+            YBZTongyongViewController *tongyongVC = [[YBZTongyongViewController alloc]init];
+            [self.navigationController pushViewController:tongyongVC animated:YES];
         }
         else{
             if(indexPath.section == 1 && indexPath.row == 0)
