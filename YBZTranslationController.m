@@ -662,17 +662,17 @@
             self.isLogin = str[@"state"];
             NSLog(@"%@",self.isLogin);
             if ([self.isLogin  isEqual: @"1"]) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    
-                    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-                        [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
-                        } failure:^(NSError *error) {
-                            NSLog(@"faile");
-                        }];
-                    } failure:^(NSError *error) {
-                    }];
-                    
-                });
+//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                    
+//                    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+//                        [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
+//                        } failure:^(NSError *error) {
+//                            NSLog(@"faile");
+//                        }];
+//                    } failure:^(NSError *error) {
+//                    }];
+//                    
+//                });
                 YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
                 waitingVC.hidesBottomBarWhenPushed = YES;
                 waitingVC.navigationItem.hidesBackButton = YES;
