@@ -130,6 +130,9 @@
     [self.bottomView addSubview:self.popularImageViewLabel];
     [self initData];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"stateinfo"];
+//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_loginState"];
+//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
 
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     NSDictionary *dict = @{@"user_loginState":@"0"};
@@ -664,17 +667,17 @@
             self.isLogin = str[@"state"];
             NSLog(@"%@",self.isLogin);
             if ([self.isLogin  isEqual: @"1"]) {
-//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//                    
-//                    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-//                        [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
-//                        } failure:^(NSError *error) {
-//                            NSLog(@"faile");
-//                        }];
-//                    } failure:^(NSError *error) {
-//                    }];
-//                    
-//                });
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    
+                    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+                        [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
+                        } failure:^(NSError *error) {
+                            NSLog(@"faile");
+                        }];
+                    } failure:^(NSError *error) {
+                    }];
+                    
+                });
                 YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
                 waitingVC.hidesBottomBarWhenPushed = YES;
                 waitingVC.navigationItem.hidesBackButton = YES;

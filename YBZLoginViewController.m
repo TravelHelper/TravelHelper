@@ -25,6 +25,9 @@
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @interface YBZLoginViewController ()<UITextFieldDelegate>
+{
+    NSString *isLoginstate;
+}
 @property(nonatomic,strong) UIButton     *loginBtn;
 @property(nonatomic,strong) UIButton     *registerBtn;
 @property(nonatomic,strong) UIButton     *findKeyBtn;
@@ -57,6 +60,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    isLoginstate = @"false";
     [self.view addSubview:self.codeImage];
     [self.view addSubview:self.codeRightImage];
     [self.view addSubview:self.codeLable];
@@ -74,6 +78,12 @@
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem initWithTitle:@"取消" target:self action:@selector(leftMenuClick)];
 }
 
+//第二步：发送通知
+-(void)reloadcell
+{
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadcell" object:nil userInfo:@{@"状态":isLoginstate}];
+//    [self.navigationController popViewControllerAnimated:YES];
+}
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     if (textField == self.phoneTextField) {
@@ -124,22 +134,23 @@
                         NSString *str1 = dic[@"user_info"][@"user_phone"];
                         NSString *str2 = dic[@"user_info"][@"user_password"];
 //                        NSString *str5 = dic[@"user_info"][@"user_loginstate"];
-                        NSDictionary *useridDic = @{@"user_id":dic[@"user_info"][@"user_id"]};
                         
                         
-                        if([str1 isEqualToString:str3]) {
+                        if(str1 != nil) {
+                            NSDictionary *useridDic = @{@"user_id":dic[@"user_info"][@"user_id"]};
+
                             if ([str2 isEqualToString:str4]) {
                                 
                                 
-                                
+                                isLoginstate = @"true";
+                                [self reloadcell];
                                 //登陆成功
                                 [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
                                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                                 //------------------
                                 [userDefaults setObject:useridDic forKey:@"user_id"];
 
-                                NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-                                NSDictionary *userID = [userdefault objectForKey:@"user_id"];
+                                NSDictionary *userID = [userDefaults objectForKey:@"user_id"];
 
                                 [WebAgent userLoginState:userID[@"user_id"] success:^(id responseObject) {
                                     NSData *data = [[NSData alloc]initWithData:responseObject];
@@ -158,9 +169,7 @@
                                         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                                         NSDictionary *dict = @{@"user_loginState":@"1"};
                                         [userinfo setObject:dict forKey:@"user_loginState"];
-                                    
                                     }
-                                    
                                 }
                                                  failure:^(NSError *error) {
                                                      NSLog(@"原本222222222的错误%@",error);

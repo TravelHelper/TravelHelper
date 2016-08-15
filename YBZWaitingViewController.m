@@ -31,20 +31,6 @@
     [self.view addSubview:[self getReturnBtn]];
 }
 
-
--(void)viewWillAppear:(BOOL)animated{
-
-    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-        [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
-        } failure:^(NSError *error) {
-            NSLog(@"faile");
-        }];
-    } failure:^(NSError *error) {
-    }];
-}
-
-
-
 -(UIButton *)getReturnBtn{
 
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -56,6 +42,10 @@
     return btn;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+    
+}
 
 -(void)popToRoot{
 
@@ -75,11 +65,7 @@
     NSString *pay_number = noti.userInfo[@"pay_number"];
     NSDictionary *dict = [self getLanguageWithString:language];
     QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
-    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-        [self.navigationController pushViewController:quickVC animated:YES];
-    } failure:^(NSError *error) {
-        
-    }];
+    [self.navigationController pushViewController:quickVC animated:YES];
 }
 
 -(NSDictionary *)getLanguageWithString:(NSString *)language{
