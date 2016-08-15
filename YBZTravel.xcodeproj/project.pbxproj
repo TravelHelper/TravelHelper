@@ -31,6 +31,7 @@
 		1C09F72C1D5EEC5400B8CE3C /* YBZChangeLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09F72B1D5EEC5400B8CE3C /* YBZChangeLanguageViewController.m */; };
 		1C09F7311D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09F72E1D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m */; };
 		1C09F7321D5F25FE00B8CE3C /* YBZOtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09F7301D5F25FE00B8CE3C /* YBZOtherViewController.m */; };
+		1CF5443B1D609CB2001B4381 /* YBZTongyongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF5443A1D609CB2001B4381 /* YBZTongyongViewController.m */; };
 		1E70550A1D517F3D00A000F5 /* YBZFreeTranslationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7055071D517F3D00A000F5 /* YBZFreeTranslationInfo.m */; };
 		1E70550B1D517F3D00A000F5 /* YBZFreeTranslationViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7055091D517F3D00A000F5 /* YBZFreeTranslationViewCell.m */; };
 		1E70550E1D5180AB00A000F5 /* YBZLanguageSearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E70550D1D5180AB00A000F5 /* YBZLanguageSearchResultViewController.m */; };
@@ -252,6 +253,8 @@
 		1C09F72E1D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZChooseTranslatorViewController.m; sourceTree = "<group>"; };
 		1C09F72F1D5F25FE00B8CE3C /* YBZOtherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZOtherViewController.h; sourceTree = "<group>"; };
 		1C09F7301D5F25FE00B8CE3C /* YBZOtherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOtherViewController.m; sourceTree = "<group>"; };
+		1CF544391D609CB2001B4381 /* YBZTongyongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZTongyongViewController.h; sourceTree = "<group>"; };
+		1CF5443A1D609CB2001B4381 /* YBZTongyongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTongyongViewController.m; sourceTree = "<group>"; };
 		1E7055061D517F3D00A000F5 /* YBZFreeTranslationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZFreeTranslationInfo.h; sourceTree = "<group>"; };
 		1E7055071D517F3D00A000F5 /* YBZFreeTranslationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZFreeTranslationInfo.m; sourceTree = "<group>"; };
 		1E7055081D517F3D00A000F5 /* YBZFreeTranslationViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZFreeTranslationViewCell.h; sourceTree = "<group>"; };
@@ -1182,6 +1185,8 @@
 				A0532C801D38C3F600FC1AB1 /* AccountAndSafeViewController.m */,
 				1B610CE21D47590A00541B6B /* EmailViewController.h */,
 				1B610CE31D47590A00541B6B /* EmailViewController.m */,
+				1CF544391D609CB2001B4381 /* YBZTongyongViewController.h */,
+				1CF5443A1D609CB2001B4381 /* YBZTongyongViewController.m */,
 			);
 			name = UserSetting;
 			sourceTree = "<group>";
@@ -1510,6 +1515,7 @@
 				A03ED0F31D2E3EF500BD9C0A /* YBZProductListViewController.m in Sources */,
 				1ED863131D2F39DD00529094 /* ViewController+MASAdditions.m in Sources */,
 				A03ED0C21D2DF1BE00BD9C0A /* YBZInterpretViewController.m in Sources */,
+				1CF5443B1D609CB2001B4381 /* YBZTongyongViewController.m in Sources */,
 				A0532CB91D38CF8E00FC1AB1 /* FeedBackViewController.m in Sources */,
 				1B0513961D3F5DAC00F05C9D /* UIProgressView+AFNetworking.m in Sources */,
 				A03ED0B61D2DE9D200BD9C0A /* YBZTranslationController.m in Sources */,
