@@ -7,6 +7,7 @@
 //
 
 #import "YBZTongyongViewController.h"
+#import "WebAgent.h"
 
 @interface YBZTongyongViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -21,6 +22,7 @@
     [super viewDidLoad];
     self.tongyongTabView.delegate = self;
     self.tongyongTabView.dataSource = self;
+    self.title = @"通用";
     [self.view addSubview:self.tongyongTabView];
 }
 
@@ -49,6 +51,13 @@
     {
         self.wuraomoshi = @"0";
     }
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [WebAgent wuraomoshiWithuseId:user_id[@"user_id"] Withtranslatorallow:self.wuraomoshi success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark － 表示图协议
