@@ -19,6 +19,7 @@
 #import <RongIMLib/RongIMLib.h>
 #import "AFHTTPSessionManager.h"
 #import "NSString+HBWmd5.h"
+#import "WebAgent.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -137,6 +138,11 @@
     
     self.iFlySpeechRecognizer  = [[IFlySpeechRecognizer alloc]init];
     self.iFlySpeechRecognizer.delegate = self;
+    
+    //设置导航栏返回按钮的点击事件
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(sendMessageAndPop)];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(backToRoot) name:@"backToRoot" object:nil];
     
     //键盘弹出
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -1222,6 +1228,29 @@
     NSLog(@"asdasda");
     
 }
+
+-(void)backToRoot{
+    
+    [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } failure:^(NSError *error) {
+    }];
+}
+
+-(void)sendMessageAndPop{
+    
+    [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo success:^(id responseObject) {
+        [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        } failure:^(NSError *error) {
+        }];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+
+
 
 -(void)changeSendContentTwoClick{
     

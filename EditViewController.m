@@ -50,6 +50,7 @@
     //self.tabBarController.tabBar.hidden = YES;
     _photoImg=[[UIImage alloc]init];
     self.automaticallyAdjustsScrollViewInsets = NO;
+
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
@@ -69,6 +70,7 @@
     }
 
     
+
     self.title = @"编辑个人资料";
     self.mainTableView.delegate = self;
     self.mainTableView.dataSource = self;

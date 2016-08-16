@@ -396,6 +396,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //查找译员所会语种,匹配译员，返回所有译员ID，（发送推送用）
 +(void)matchTranslatorWithchooseLanguage:(NSString *)choose_language
+                                 user_id:(NSString *)user_id
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
@@ -420,6 +421,21 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
         failure(error);
     }];
 }
+
+//将译者状态置为require
++(void)interpreterRequireStateWithuserId:(NSString *)user_id
+                          success:(void (^)(id responseObject))success
+                          failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"QuickTrans/interpreterRequireState" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
+
 //口语即时，发送远程推送APNS
 +(void)sendRemoteNotificationsWithuseId:(NSString *)user_id
                         WithsendMessage:(NSString *)send_message
@@ -461,9 +477,21 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
 }
 
-
-
-
+//勿扰模式
++(void)wuraomoshiWithuseId:(NSString *)user_id
+       Withtranslatorallow:(NSString *)translator_allow
+                   success:(void (^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id,
+                           @"translator_allow":translator_allow};
+    [[APIClient sharedClient] POST:@"QuickTrans/wuraomoshi" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
 
 
 
