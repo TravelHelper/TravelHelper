@@ -19,12 +19,17 @@
 #import "YBZBaseNaviController.h"
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource>
+{
+    Boolean is;
+}
 
 @property(nonatomic,strong)UITableView *mainTableView;
 @property(nonatomic,strong)UIWebView *webView;
 @property(nonatomic,copy)NSString *url;
 @property (nonatomic , strong) NSString *isLogin;
 @property (nonatomic , strong) UILabel *alertLabel;
+@property (nonatomic , strong) UIImageView *avatarImag;
+
 
 @end
 
@@ -32,18 +37,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    is=false;
     self.title = @"我的";
-    //self.view.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.mainTableView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
+}
+-(void)reloadcell:(NSNotification *)noti
+{
+    NSDictionary *isLoginDic = [noti userInfo];
+    NSString *isLoginstate = [isLoginDic objectForKey:@"状态"];
+    if ([isLoginstate isEqual:@"true"]) {
+        is = true;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+        [self.mainTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 //- (void)viewWillDisappear:(BOOL)animated {
 //    [self setHidesBottomBarWhenPushed:NO];
 //    [super viewDidDisappear:animated];
 //}
-
-
 
 //观察者方法
 -(void)setTextALabel:(NSNotification *)noti{
@@ -125,50 +140,33 @@
     }
     if ( section == 0 && row == 0) {
         //----------------------------
-        
-        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-        UIImageView *avatarImag = [[UIImageView alloc]initWithFrame:CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.07, self.view.bounds.size.height * 0.06)];
+                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+                NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
 
-        if(user_id[@"user_id"] == NULL)
-        {
-            avatarImag.image = [UIImage imageNamed:@"head"];
-            [cell.contentView addSubview:avatarImag];
-            //cell.imageView.backgroundColor = [UIColor redColor];
-            cell.nameLable.text = @"登录／注册";
-        }
-        else
-        {
-                
-            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-            NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
-            if([user_loginState[@"user_loginState"] isEqual:@"0"])
-            {
-                avatarImag.image = [UIImage imageNamed:@"head"];
-                [cell.contentView addSubview:avatarImag];
-                cell.nameLable.text = @"登录／注册";
+           _avatarImag = [[UIImageView alloc]initWithFrame:CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.07, self.view.bounds.size.height * 0.06)];
+        if (is || [user_loginState[@"user_loginState"] isEqual:@"1"])    {
+                            _avatarImag.image = [UIImage imageNamed:@"head"];
+                            [cell.contentView addSubview:_avatarImag];
+                                [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
+                                    NSLog(@"%@",user_id[@"user_id"]);
+                                    NSData *data = [[NSData alloc]initWithData:responseObject];
+                                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                                    NSDictionary *userInfo = dic[@"user_info"];
+                                    cell.nameLable.text = userInfo[@"user_nickname"];
             
-            }
-            else
-            {
-                avatarImag.image = [UIImage imageNamed:@"head"];
-                [cell.contentView addSubview:avatarImag];
-                    [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
-                        NSData *data = [[NSData alloc]initWithData:responseObject];
-                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                        NSDictionary *userInfo = dic[@"user_info"];
-                        
-                        cell.nameLable.text = userInfo[@"user_nickname"];
-                        
-                    }failure:^(NSError *error) {
-                        NSLog(@"%@",error);
-                    }];
-                    
-                          }
             
-           
+                                }failure:^(NSError *error) {
+                                    NSLog(@"%@",error);
+                                }];
+                                
+                                      }else{
+          
+              _avatarImag.image = [UIImage imageNamed:@"head"];
+                        [cell.contentView addSubview:_avatarImag];
+                        cell.nameLable.text = @"登录／注册";
         }
+
          return cell;
     }
         else
@@ -341,9 +339,7 @@
         //        webView.opaque = NO;
         //        webView.backgroundColor = [UIColor redColor];
         //        self.view = webView;
-        
     }
-    
 }
 
 #pragma mark - 跳转事件
@@ -353,6 +349,7 @@
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
     if(user_id[@"user_id"] == NULL)
     {
         YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
@@ -362,24 +359,20 @@
     }
         else
         {
-            NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
-            if([user_loginState[@"user_loginState"] isEqual:@"1"])
+            if([user_loginState[@"user_loginState"] isEqual:@"0"])
             {
-                EditViewController *userInfoVC = [[EditViewController alloc]init];
-                userInfoVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:userInfoVC animated:YES];
-            }
-            else{
                 YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
                 YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
                 logVC.view.backgroundColor = [UIColor whiteColor];
                 [self presentViewController:nav animated:YES completion:nil];
             }
-            
-            
+            else{
+                
+                EditViewController *userInfoVC = [[EditViewController alloc]init];
+                userInfoVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:userInfoVC animated:YES];
+            }
         }
-        
-    
     }
 
 -(void)intoMyOrderListClick{
@@ -412,14 +405,14 @@
         
     }
     
-    
-    
 }
 
 -(void)intoMyFavoritePageClick{
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
+
     if(user_id[@"user_id"] == NULL)
     {
         YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
@@ -429,18 +422,17 @@
     }
     else
     {
-        NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
-        if([user_loginState[@"user_loginState"] isEqual:@"1"])
+        if([user_loginState[@"user_loginState"] isEqual:@"0"])
         {
-//            YBZUserOrderViewController *userOrderVC = [[YBZUserOrderViewController alloc]initWithTitle:@"我的订单"];
-//            [self.navigationController pushViewController:userOrderVC animated:YES];
-            
-        }
-        else{
+
             YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
             YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
             logVC.view.backgroundColor = [UIColor whiteColor];
             [self presentViewController:nav animated:YES completion:nil];
+            
+        }
+        else{
+            
         }
         
         
@@ -482,11 +474,7 @@
             logVC.view.backgroundColor = [UIColor whiteColor];
             [self presentViewController:nav animated:YES completion:nil];
         }
-        
-        
     }
-    
-    
 }
 
 #pragma mark - getters
@@ -495,9 +483,7 @@
     
     if (!_mainTableView) {
         _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
-        
-        //_mainTableView.backgroundColor = [UIColor colorWithRed:209 / 255.0 green:209 / 255.0 blue:209/ 255.0 alpha:1];
-//        _mainTableView.backgroundColor = [UIColor grayColor];
+
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         

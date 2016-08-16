@@ -130,6 +130,9 @@
     [self.bottomView addSubview:self.popularImageViewLabel];
     [self initData];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"stateinfo"];
+//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_loginState"];
+//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
 
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     NSDictionary *dict = @{@"user_loginState":@"0"};

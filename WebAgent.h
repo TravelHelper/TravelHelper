@@ -110,6 +110,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //查找译员所会语种,匹配译员，返回所有译员ID，（发送推送用）
 +(void)matchTranslatorWithchooseLanguage:(NSString *)choose_language
+                                 user_id:(NSString *)user_id
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
 //查询用户口语即时请求状态。（匹配译员用）
@@ -144,4 +145,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                   success:(void (^)(id responseObject))success
                   failure:(void (^)(NSError *error))failure;
 
+//勿扰模式
++(void)wuraomoshiWithuseId:(NSString *)user_id
+                        Withtranslatorallow:(NSString *)translator_allow
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
 @end

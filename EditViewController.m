@@ -50,8 +50,7 @@
     //self.tabBarController.tabBar.hidden = YES;
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    
+    self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"编辑个人资料";
     self.mainTableView.delegate = self;
     self.mainTableView.dataSource = self;
