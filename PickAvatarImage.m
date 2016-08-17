@@ -8,6 +8,10 @@
 
 #import "PickAvatarImage.h"
 
+#import "AFNetworking.h"
+#import "AFHTTPSessionManager.h"
+
+
 @interface PickAvatarImage()<UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (strong,nonatomic) UIImage *image;
@@ -116,7 +120,71 @@
     if ([self.lastChosenMediaType isEqual:(NSString *)kUTTypeImage]){
         
         UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+        
         self.image = [self shrinkImage:chosenImage toSize:self.avatarImageView.bounds.size];
+        
+        
+        
+        
+        UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+        
+        NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
+        NSURL *URL = [NSURL URLWithString:urlc];
+        AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+        [securityPolicy setAllowInvalidCertificates:YES];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        //manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        [manager setSecurityPolicy:securityPolicy];
+        [manager POST:URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            //获取当前时间所闻文件名，防止图片重复
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            
+            NSData *data = UIImageJPEGRepresentation(image, 0.1);
+            
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//            NSDictionary *myDictionary = [userinfo dictionaryForKey:@"myDictionary"];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+            
+            
+            
+//            NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
+            NSString *name = user_id[@"user_id"];
+            
+            [formData appendPartWithFileData:data name:@"file" fileName:name mimeType:@"image/png"];
+            
+//            NSString *str = [NSString stringWithFormat:@"file:///Applications/XAMPP/xamppfiles/htdocs/OralEduServer/uploadImg/%@.jpg",name];
+//            
+//            NSDictionary *para=@{@"user_moblie":name,@"user_newurl":str};
+//            
+//            [HttpTool postWithparamsWithURL:@"Update/UrlUpdate" andParam:para success:^(id responseObject) {
+//                NSData *data = [[NSData alloc] initWithData:responseObject];
+//                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//                
+//                NSLog(@"%@",dic);
+//                
+//                
+//                
+//                
+//            } failure:^(NSError *error) {
+//                NSLog(@"%@",error);
+//            }];
+//            
+            
+            
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"%@",responseObject);
+          
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"%@",error);
+            
+        }];
+        
+        
         
         
     }else if ([self.lastChosenMediaType isEqual:(NSString *)kUTTypeMovie]){
