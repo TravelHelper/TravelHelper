@@ -130,6 +130,6 @@
 
 #define API_HOST @"http://10.2.208.120/TravelHelper/index.php/Home/"
 
-
+#define serviseId @"127.0.0.1"
 
 #endif /* PrefixHeader_pch */

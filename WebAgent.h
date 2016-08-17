@@ -118,6 +118,11 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                           success:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure;
 
+//将译者状态置为require
++(void)interpreterRequireStateWithuserId:(NSString *)user_id
+                                 success:(void (^)(id responseObject))success
+                                 failure:(void (^)(NSError *error))failure;
+
 //口语即时，发送远程推送APNS
 +(void)sendRemoteNotificationsWithuseId:(NSString *)user_id
                         WithsendMessage:(NSString *)send_message

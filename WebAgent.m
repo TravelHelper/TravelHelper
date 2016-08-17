@@ -422,6 +422,21 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
         failure(error);
     }];
 }
+
+//将译者状态置为require
++(void)interpreterRequireStateWithuserId:(NSString *)user_id
+                          success:(void (^)(id responseObject))success
+                          failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"QuickTrans/interpreterRequireState" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
+
 //口语即时，发送远程推送APNS
 +(void)sendRemoteNotificationsWithuseId:(NSString *)user_id
                         WithsendMessage:(NSString *)send_message

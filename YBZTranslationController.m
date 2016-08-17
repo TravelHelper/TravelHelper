@@ -157,8 +157,21 @@
         
         NSLog(@"%@",user_loginState);
         userID = user_id[@"user_id"];
+
         [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
             [self.navigationController popToRootViewControllerAnimated:YES];
+            
+            [WebAgent interpreterRequireStateWithuserId:userID success:^(id responseObject) {
+                
+                NSLog(@"译员成功返回首页");
+
+                
+            } failure:^(NSError *error) {
+                NSLog(@"译员未返回首页");
+                
+            }];
+            
+            
         } failure:^(NSError *error) {
             
         }];

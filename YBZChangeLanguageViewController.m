@@ -518,9 +518,9 @@
             for (YBZChangeLanguageInfo *info in _cellArr)
             {
                 
-                NSString *dataTitle = info.title;
-                NSString *dataContent = info.content;
-                YBZChangeLanguageInfo *searchInfo = [[YBZChangeLanguageInfo alloc]initWithTitle:dataTitle AndContent:dataContent];
+//                NSString *dataTitle = info.title;
+//                NSString *dataContent = info.content;
+//                YBZChangeLanguageInfo *searchInfo = [[YBZChangeLanguageInfo alloc]initWithTitle:dataTitle AndContent:dataContent];
                 
                 
                 ////                NSArray *info = array;
@@ -530,7 +530,7 @@
                 NSRange rangeContent = [info.content rangeOfString:searchController.searchBar.text];
                 
                 if (rangeTitle.location != NSNotFound |rangeContent.location != NSNotFound) {
-                    [_searchArr addObject:searchInfo];
+                    [_searchArr addObject:info];
                 }
                 //}
             }

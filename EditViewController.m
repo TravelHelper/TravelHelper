@@ -48,9 +48,29 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //self.tabBarController.tabBar.hidden = YES;
-    
+    _photoImg=[[UIImage alloc]init];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.view.backgroundColor = [UIColor whiteColor];
+
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    NSString *name = user_id[@"user_id"];
+
+    NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
+    
+    NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+    
+    NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    
+    _photoImg=[UIImage imageWithData:data];
+    if(_photoImg){
+        [self.userIconImageV setImage:_photoImg];
+    }else{
+        [self.userIconImageV setImage:[UIImage imageNamed:@"ProfilePhoto"]];
+    }
+
+    
+
     self.title = @"编辑个人资料";
     self.mainTableView.delegate = self;
     self.mainTableView.dataSource = self;
@@ -71,18 +91,6 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getLocationInfo:) name:@"getLocationInfo" object:nil];
     
 }
-
-//- (void)viewWillAppear:(BOOL)animated{
-//    [super viewWillAppear:animated];
-//    self.hidesBottomBarWhenPushed =YES;
-//
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated{
-//    [super viewWillDisappear:animated];
-//    self.hidesBottomBarWhenPushed =NO;
-//
-//}
 
 - (void)viewDidAppear:(BOOL)animated{
     
@@ -211,7 +219,7 @@
         _userIconImageV = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.bounds.size.width/2-kScreenWith*0.168, kScreenHeight*0.02, kScreenWith*0.336, kScreenWith*0.336)];
         _userIconImageV.backgroundColor = [UIColor clearColor];
         _userIconImageV.layer.masksToBounds=YES;
-        _userIconImageV.layer.cornerRadius=kScreenHeight*0.02/2.0f;
+        _userIconImageV.layer.cornerRadius=kScreenWith*0.336/2.0f;
     }
     return _userIconImageV;
 }
@@ -224,8 +232,7 @@
     NSDictionary *myDictionary = [userinfo dictionaryForKey:@"myDictionary"];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     
-    //    头像
-    //    NSString *name = user_id[@"user_id"];
+   
     NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@""]];
     self.photoImg=[UIImage imageWithData:data];
     
@@ -304,11 +311,6 @@
         if(!cell){
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
             
-            if(self.photoImg){
-                [self.userIconImageV setImage:self.photoImg];
-            }else{
-                [self.userIconImageV setImage:[UIImage imageNamed:@"ProfilePhoto"]];
-            }
             [cell addSubview:self.userIconImageV];
         }
         return cell;

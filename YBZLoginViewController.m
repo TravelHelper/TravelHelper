@@ -143,7 +143,8 @@
                                 
                                 
                                 isLoginstate = @"true";
-                                [self reloadcell];
+
+                               
                                 //登陆成功
                                 [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
                                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -183,6 +184,7 @@
                                 
                                 //------------------
 //                                [userDefaults setObject:useridDic forKey:@"user_id"];
+                                 [self reloadcell];
                                 [self dismissViewControllerAnimated:YES completion:nil];
                                 
                                 

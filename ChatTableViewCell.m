@@ -110,18 +110,15 @@
 //通过用户ID获取头像
 -(void)getHeadViewImageWithID:(NSString *)userID{
     
-//    if ([userID isEqualToString:@"0001"]) {
+    if ([userID isEqualToString:@"0001"]) {
         self.headImageView.layer.masksToBounds=YES;
         self.headImageView.layer.cornerRadius=44/2.0f;
         self.headImageView.image = [UIImage imageNamed:@"user"];
-//    }else if ([userID isEqualToString:@"0002"]){
-//        self.headImageView.layer.masksToBounds=YES;
-//        self.headImageView.layer.cornerRadius=44/2.0f;
-//        self.headImageView.image =[UIImage imageNamed:@"translator"];
-//    }
-    self.headImageView.layer.masksToBounds=YES;
-    self.headImageView.layer.cornerRadius=44/2.0f;
-    self.headImageView.image =[UIImage imageNamed:@"translator"];
+    }else if ([userID isEqualToString:@"0002"]){
+        self.headImageView.layer.masksToBounds=YES;
+        self.headImageView.layer.cornerRadius=44/2.0f;
+        self.headImageView.image =[UIImage imageNamed:@"translator"];
+    }
 }
 
 
