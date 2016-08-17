@@ -19,9 +19,13 @@
 #import "YBZLoginViewController.h"
 #import "YBZBaseNaviController.h"
 #import "YBZMyFavoriteViewController.h"
+
+
+
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     Boolean is;
+    Boolean it;
 }
 
 @property(nonatomic,strong)UITableView *mainTableView;
@@ -30,6 +34,7 @@
 @property (nonatomic , strong) NSString *isLogin;
 @property (nonatomic , strong) UILabel *alertLabel;
 @property (nonatomic , strong) UIImageView *avatarImag;
+@property(nonatomic,strong)UIImage *photoImg;
 
 
 @end
@@ -39,10 +44,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     is=false;
+    it=false;
     self.title = @"我的";
     [self.view addSubview:self.mainTableView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
 }
 -(void)reloadcell:(NSNotification *)noti
 {
@@ -55,11 +62,18 @@
         [self.mainTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     }
 }
-
-//- (void)viewWillDisappear:(BOOL)animated {
-//    [self setHidesBottomBarWhenPushed:NO];
-//    [super viewDidDisappear:animated];
-//}
+-(void)reloadoutcell:(NSNotification *)noti
+{
+    NSDictionary *isLoginDic = [noti userInfo];
+    NSString *isLoginstate = [isLoginDic objectForKey:@"状态"];
+    if ([isLoginstate isEqual:@"true"]) {
+        is = false;
+        it = true;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+        [self.mainTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
 
 //观察者方法
 -(void)setTextALabel:(NSNotification *)noti{
@@ -71,20 +85,9 @@
     [self.mainTableView layoutIfNeeded];
 }
 -(void)dealloc{
-    //    free((__bridge void *)(self.textALabel));
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"setTextALabel" object:nil];
 }
 //行数
-
-
-//- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section{
-//    
-//    
-//    view.tintColor = [UIColor redColor];
-//}
-//- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section{
-//    view.tintColor = [UIColor redColor];
-//}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -145,10 +148,30 @@
                 NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
                 NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
 
-           _avatarImag = [[UIImageView alloc]initWithFrame:CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.07, self.view.bounds.size.height * 0.06)];
+           _avatarImag = [[UIImageView alloc]initWithFrame:CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06)];
+        _avatarImag.layer.masksToBounds=YES;
+        _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
+        
         if (is || [user_loginState[@"user_loginState"] isEqual:@"1"])    {
-                            _avatarImag.image = [UIImage imageNamed:@"head"];
-                            [cell.contentView addSubview:_avatarImag];
+            
+            NSString *name = user_id[@"user_id"];
+            
+            NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
+            
+            NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+            
+            NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+            
+            _photoImg=[UIImage imageWithData:data];
+            if(_photoImg){
+                _avatarImag.image = _photoImg;
+                [cell.contentView addSubview:_avatarImag];
+            }else{
+                _avatarImag.image = [UIImage imageNamed:@"translator"];
+                [cell.contentView addSubview:_avatarImag];
+            }
+
+            
                                 [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
                                     NSLog(@"%@",user_id[@"user_id"]);
                                     NSData *data = [[NSData alloc]initWithData:responseObject];
@@ -161,13 +184,18 @@
                                     NSLog(@"%@",error);
                                 }];
                                 
-                                      }else{
+                                      }
+        else{
           
-              _avatarImag.image = [UIImage imageNamed:@"head"];
+              _avatarImag.image = [UIImage imageNamed:@"translator"];
                         [cell.contentView addSubview:_avatarImag];
                         cell.nameLable.text = @"登录／注册";
         }
-
+        if (it) {
+            _avatarImag.image = [UIImage imageNamed:@"translator"];
+            [cell.contentView addSubview:_avatarImag];
+            cell.nameLable.text = @"登录／注册";
+        }
          return cell;
     }
         else

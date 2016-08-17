@@ -19,6 +19,9 @@
 #import "YBZBaseNaviController.h"
 #import "YBZTongyongViewController.h"
 @interface UserSetViewController ()<UITableViewDelegate,UITableViewDataSource>
+{
+    NSString *logout;
+}
 @property (nonatomic,strong) UITableView *usersetTabView;
 @property (nonatomic , strong) NSDictionary *dataDic;
 @property (nonatomic , strong) NSDictionary *stateDic;
@@ -29,6 +32,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    logout = @"false";
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor redColor];
     self.usersetTabView.delegate = self;
@@ -155,7 +159,9 @@
                 }
                 else
                 {
-                    
+                    logout = @"true";
+                    [self reloadoutcell];
+
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"myDictionary"];
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"stateinfo"];
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -168,7 +174,7 @@
                         
                     }];
 //                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_loginState"];
-
+                    
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
                     [self.navigationController popToRootViewControllerAnimated:YES];
@@ -178,7 +184,11 @@
         }
     }
 }
-
+//第二步：发送通知
+-(void)reloadoutcell
+{
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadoutcell" object:nil userInfo:@{@"状态":logout}];
+}
 @end
 
 

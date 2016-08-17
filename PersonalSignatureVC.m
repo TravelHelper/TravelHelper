@@ -52,10 +52,10 @@
     
     if(!_tishiLabel){
         
-        _tishiLabel = [[UILabel alloc]initWithFrame:CGRectMake(5,kTextViewVerticleMargin, self.view.bounds.size.width, 20)];
+        _tishiLabel = [[UILabel alloc]initWithFrame:CGRectMake(5,9, self.view.bounds.size.width, 20)];
         _tishiLabel.backgroundColor = [UIColor clearColor];
         if ([self.qianming  isEqual: @""]) {
-            _tishiLabel.text = @"请输入个性签名a";
+            _tishiLabel.text = @"请输入个性签名";
         }else{
             _tishiLabel.text = @"";
         }
