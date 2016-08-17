@@ -18,6 +18,8 @@
 #import "MJRefresh.h"
 #import "QuickTransViewController.h"
 #import "YBZWaitingViewController.h"
+#import "YBZMyRewardViewController.h"
+#import "YBZRewardHallViewController.h"
 
 #define kImageCount 5
 //#define MJRandomData [NSString stringWithFormat:@"随机数据---%d", arc4random_uniform(1000000)]
@@ -762,6 +764,14 @@
 }
 
 
+-(void)showRewardHall{
+
+    YBZRewardHallViewController *rewardVC = [[YBZRewardHallViewController alloc]init];
+    rewardVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:rewardVC animated:YES];
+}
+
+
 - (void)pageChanged:(UIPageControl *)page
 {
     // 根据页数，调整滚动视图中的图片位置 contentOffset
@@ -916,7 +926,7 @@
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn3.frame = CGRectMake(CGRectGetMidX(self.Btn2.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-        //[_Btn3 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+//        [_Btn3 addTarget:self action:@selector(showRewardHall) forControlEvents:UIControlEventTouchUpInside];
         _Btn3.layer.masksToBounds = YES;
         _Btn3.layer.cornerRadius = UITranslationBtnSize / 2;
         
@@ -930,8 +940,8 @@
         _Btn3Label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.Btn3.frame) - 35, CGRectGetMaxY(self.Btn3.frame) + 2, 70, 15)];
         //_customMadeLabel.backgroundColor = [UIColor greenColor];
         [_Btn3Label setText:@"定制翻译"];
-        [_Btn3Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-        [_Btn3Label setTextColor:[UIColor grayColor]];
+//        [_Btn3Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
+//        [_Btn3Label setTextColor:[UIColor grayColor]];
         
         _Btn3Label.textAlignment = NSTextAlignmentCenter;
         
@@ -951,7 +961,7 @@
         //_myOfferBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn4.frame = CGRectMake(CGRectGetMaxX(self.Btn3.frame) + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-        //[_Btn4 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+        [_Btn4 addTarget:self action:@selector(showMyReward) forControlEvents:UIControlEventTouchUpInside];
         _Btn4.layer.cornerRadius = UITranslationBtnSize / 2;
         
     }
@@ -965,7 +975,7 @@
         //_myOfferLabel.backgroundColor = [UIColor greenColor];
         [_Btn4Label setText:@"我的悬赏"];
         [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-        [_Btn4Label setTextColor:[UIColor grayColor]];
+//        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
         
         _Btn4Label.textAlignment = NSTextAlignmentCenter;
         
@@ -1046,7 +1056,7 @@
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn7.frame = CGRectMake(CGRectGetMidX(self.Btn6.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-        //[_Btn3 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+        [_Btn7 addTarget:self action:@selector(showRewardHall) forControlEvents:UIControlEventTouchUpInside];
         _Btn7.layer.masksToBounds = YES;
         _Btn7.layer.cornerRadius = UITranslationBtnSize / 2;
         
@@ -1060,8 +1070,8 @@
         _Btn7Label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.Btn7.frame) - 35, CGRectGetMaxY(self.Btn7.frame) + 2, 70, 15)];
         //_customMadeLabel.backgroundColor = [UIColor greenColor];
         [_Btn7Label setText:@"定制翻译"];
-        //[_Btn7Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-        [_Btn7Label setTextColor:[UIColor grayColor]];
+        [_Btn7Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
+//        [_Btn7Label setTextColor:[UIColor grayColor]];
         
         _Btn7Label.textAlignment = NSTextAlignmentCenter;
         
@@ -1321,7 +1331,18 @@
 }
 
 
-- (void)aa{
+- (void)showMyReward{
+    YBZMyRewardViewController *myRewardVC = [[YBZMyRewardViewController alloc]init];
+    myRewardVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:myRewardVC animated:YES];
+}
+
+
+
+
+
+-(void)aa{
+
     
 }
 

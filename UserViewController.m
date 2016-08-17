@@ -10,6 +10,7 @@
 #import "UserTableViewCell.h"
 #import "YBZUserInfoViewController.h"
 #import "YBZUserOrderViewController.h"
+#import "YBZMoneyBagViewController.h"
 #import "YBZUserFavoriteViewController.h"
 #import "YBZUserEwalletsViewController.h"
 #import "UserSetViewController.h"
@@ -17,7 +18,7 @@
 #import "WebAgent.h"
 #import "YBZLoginViewController.h"
 #import "YBZBaseNaviController.h"
-
+#import "YBZMyFavoriteViewController.h"
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     Boolean is;
@@ -302,24 +303,18 @@
         [self intoUserDetailInfoClick];
         
     }
-    if ( section == 1) {
+    if ( section == 1 && row==1) {
         
-        [self.view addSubview:self.alertLabel];
-        [UIView animateWithDuration:2 animations:^{
-            self.alertLabel.alpha = 0;
-        } completion:^(BOOL finished) {
-            [self.alertLabel removeFromSuperview];
-        }];
+        YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
+        myVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:myVC animated:YES];
         
     }
     if ( section == 2 && row == 0) {
         
-        [self.view addSubview:self.alertLabel];
-        [UIView animateWithDuration:2 animations:^{
-            self.alertLabel.alpha = 0;
-        } completion:^(BOOL finished) {
-            [self.alertLabel removeFromSuperview];
-        }];
+        YBZMoneyBagViewController *bagVC = [[YBZMoneyBagViewController alloc]init];
+        bagVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:bagVC animated:YES];
         
     }
     

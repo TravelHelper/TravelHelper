@@ -155,4 +155,41 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                         Withtranslatorallow:(NSString *)translator_allow
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
+//发布悬赏
++(void)sendRewardRewardID:(NSString *)rewardID
+              rewardTitle:(NSString *)rewardTitle
+               rewardText:(NSString *)rewardText
+                rewardUrl:(NSString *)rewardUrl
+              rewardMoney:(NSString *)rewardMoney
+           rewardLanguage:(NSString *)language
+                rewardtag:(NSString *)rewardtag
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
+
+//获取热门标签
++(void)getLabelInfo:(NSString *)labelId
+            success:(void (^)(id responseObject))success
+            failure:(void (^)(NSError *error))failure;
+//悬赏大厅
++(void)proceed_state:(NSString *)proceed_state
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure;
+
+
+//悬赏详情
++(void)rewardDetial:(NSString *)rewardId
+            success:(void (^)(id responseObject))success
+            failure:(void (^)(NSError *error))failure;
+//我的悬赏
++(void)myRewardrewardID:(NSString *)rewardID
+                success:(void (^)(id responseObject))success
+                failure:(void (^)(NSError *error))failure;
+//提交回答
++(void)user_id:(NSString *)user_id
+//       user_id:(NSString *)user_id
+   reward_text:(NSString *)reward_text
+   answer_time:(NSString *)answer_time
+       success:(void(^)(id responseObject))success
+       failure:(void (^)(NSError *error))failure;
+
 @end

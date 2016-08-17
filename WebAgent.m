@@ -493,6 +493,123 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
 }
 
+//发布悬赏
++(void)sendRewardRewardID:(NSString *)rewardID
+              rewardTitle:(NSString *)rewardTitle
+               rewardText:(NSString *)rewardText
+                rewardUrl:(NSString *)rewardUrl
+              rewardMoney:(NSString *)rewardMoney
+           rewardLanguage:(NSString *)language
+                rewardtag:(NSString *)rewardtag
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure
+
+{
+    if (rewardtag == nil) {
+        rewardtag = @"";
+    }
+    NSDictionary *dict = @{@"user_id":rewardID,
+                           @"reward_title":rewardTitle,
+                           @"reward_text":rewardText,
+                           @"reward_url":rewardUrl,
+                           @"reward_money":rewardMoney,
+                           @"language":language,
+                           @"reward_tag":rewardtag};
+    
+    [[APIClient sharedClient] POST:@"Reward/reward_info_add_operation/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+//获取热门标签
++(void)getLabelInfo:(NSString *)labelId
+            success:(void (^)(id responseObject))success
+            failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"label_id":labelId};
+    
+    [[APIClient sharedClient] POST:@"Reward/getLabel_info/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+//悬赏大厅
++(void)proceed_state:(NSString *)proceed_state
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"proceed_state":proceed_state};
+    
+    
+    [[APIClient sharedClient] POST:@"Reward/AllRewardInformation/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+//我的悬赏
++(void)myRewardrewardID:(NSString *)rewardID
+                success:(void (^)(id responseObject))success
+                failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"rewarder_id":rewardID};
+    
+    
+    [[APIClient sharedClient] POST:@"Reward/myReward/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+
+
+
+
+
+
+//悬赏详情
++(void)rewardDetial:(NSString *)rewardId
+            success:(void (^)(id responseObject))success
+            failure:(void (^)(NSError *error))failure
+{
+    
+    NSDictionary *dict = @{@"reward_id":rewardId};
+    
+    [[APIClient sharedClient] POST:@"Reward/getinfo" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+    
+}
+//提交回答
++(void)user_id:(NSString *)user_id
+//       user_id:(NSString *)user_id
+   reward_text:(NSString *)reward_text
+   answer_time:(NSString *)answer_time
+       success:(void(^)(id responseObject))success
+       failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id,
+                           @"user_id":user_id,
+                           @"answer_time":answer_time,
+                           @"reward_text":reward_text};
+    [[APIClient sharedClient] POST:@"Reward/upLoad/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
 
 
 
