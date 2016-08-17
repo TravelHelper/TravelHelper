@@ -400,7 +400,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
-    NSDictionary *dict = @{@"choose_language":choose_language};
+    NSDictionary *dict = @{@"choose_language":choose_language,
+                           @"user_id":user_id};
     [[APIClient sharedClient] POST:@"QuickTrans/matchTranslator" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

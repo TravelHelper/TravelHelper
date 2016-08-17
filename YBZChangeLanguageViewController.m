@@ -191,13 +191,6 @@
 
 #pragma mark - getters
 
-//- (UIView *)bottomView{
-//    if (!_bottomView) {
-//        _bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, 44)];
-//
-//    }
-//    return _bottomView;
-//}
 
 
 - (UITableView *)cellView{
