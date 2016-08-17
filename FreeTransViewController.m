@@ -940,10 +940,15 @@
     
     if (!_changeSendContentBtn) {
         _changeSendContentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _changeSendContentBtn.frame = CGRectMake(kScreenWidth*0.02, kScreenWidth*0.02, kScreenWidth*0.1, kScreenWidth*0.085);
+        _changeSendContentBtn.frame = CGRectMake(kScreenWidth*0.02, kScreenWidth*0.02, kScreenWidth*0.085, kScreenWidth*0.085);
         [_changeSendContentBtn setImage:[UIImage imageNamed:@"yuyin"] forState:UIControlStateNormal];
+        [_changeSendContentBtn.imageView setContentMode:UIViewContentModeScaleAspectFill];
+        _changeSendContentBtn.imageView.clipsToBounds = YES;
+        
         [_changeSendContentBtn addTarget:self action:@selector(changeSendContentClick) forControlEvents:UIControlEventTouchUpInside];
         _changeSendContentBtn.tag = 1001;//展示语音图片，点击切换成语音模式；
+        
+        //_changeSendContentBtn.backgroundColor = [UIColor redColor];
     }
     return _changeSendContentBtn;
     
@@ -980,10 +985,10 @@
     if (!_reportAudioBtn) {
         _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
         _reportAudioBtn.mdelegate = self;
-        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.03, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth*0.085);
+        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.085);
         //        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
         //        [_reportAudioBtn setTitle:@"按住说话" forState:UIControlStateNormal];
-        [_reportAudioBtn setImage:[UIImage imageNamed:@"say"] forState:UIControlStateNormal];
+        [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];
         [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
         [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
         

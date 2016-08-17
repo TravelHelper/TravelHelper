@@ -85,7 +85,9 @@
             }
         }
         if (self.chatTextLabelFrame.size.height == 0) {
-            self.cellHeight = self.cellHeight  + self.AVtoStringLabelFrame.size.height;
+            //self.cellHeight = self.cellHeight  + self.AVtoStringLabelFrame.size.height;
+            self.cellHeight = self.cellHeight + 2*kScreenVMargin + self.chatTextLabelFrame.size.height;
+
         }else{
             self.cellHeight = self.cellHeight + 2*kScreenVMargin + self.chatTextLabelFrame.size.height;
         }
@@ -121,12 +123,12 @@
     
     if (model.isSender == 0) {
         if ([model.chatContentType isEqualToString:@"audio"]) {
-            self.secondLableFrame = CGRectMake(kScreenWith*0.254, kScreenVMargin, 20, kScreenWith*0.06);
+            self.secondLableFrame = CGRectMake(kScreenWith*0.254, kScreenVMargin + 8, 20, kScreenWith*0.06);
             
         }
     }else{
         if ([model.chatContentType isEqualToString:@"audio"]) {
-            self.secondLableFrame = CGRectMake(kScreenWith*0.746-20,kScreenVMargin, 20, kScreenWith*0.06);
+            self.secondLableFrame = CGRectMake(kScreenWith*0.746-20,kScreenVMargin + 8, 20, kScreenWith*0.06);
         }
     }
     
@@ -139,13 +141,19 @@
     
     if (isSender == 0) {
         if (self.chatTextLabelFrame.size.height == 0) {
-            self.headBgViewFrame = CGRectMake(kScreenWith*0.044,kScreenWith*0.062+kScreenVMargin-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
+            self.headBgViewFrame = CGRectMake(kScreenWith*0.044,kScreenWith*0.062+kScreenVMargin-kScreenWith*0.111 + 13,kScreenWith*0.111, kScreenWith*0.111);
+            //self.headBgViewFrame = CGRectMake(kScreenWith*0.044,_cellHeight / 2 - kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
+
+            //self.headBgViewFrame = CGRectMake(kScreenWith*0.044,kScreenVMargin*3+self.chatTextLabelFrame.size.height-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
         }else{
             self.headBgViewFrame = CGRectMake(kScreenWith*0.044,kScreenVMargin*3+self.chatTextLabelFrame.size.height-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
         }
     }else{
         if (self.chatTextLabelFrame.size.height == 0) {
-            self.headBgViewFrame = CGRectMake(kScreenWith*0.845,kScreenWith*0.062+kScreenVMargin-kScreenWith*0.111, kScreenWith*0.111, kScreenWith*0.111);
+            
+            //self.headBgViewFrame = CGRectMake(kScreenWith*0.845,_cellHeight / 2 - kScreenWith*0.111, kScreenWith*0.111, kScreenWith*0.111);
+            self.headBgViewFrame = CGRectMake(kScreenWith*0.845,kScreenWith*0.062+kScreenVMargin-kScreenWith*0.111 + 13, kScreenWith*0.111, kScreenWith*0.111);
+            //self.headBgViewFrame = CGRectMake(kScreenWith*0.845,kScreenVMargin*3+self.chatTextLabelFrame.size.height-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
         }else{
             self.headBgViewFrame = CGRectMake(kScreenWith*0.845,kScreenVMargin*3+self.chatTextLabelFrame.size.height-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
         }
@@ -171,7 +179,7 @@
         }
         
         if ([chatContentType isEqualToString:@"audio"]) {
-            self.chatTextViewFrame = CGRectMake(kScreenWith*0.166,kScreenVMargin, kScreenWith*0.277, kScreenWith*0.062);
+            self.chatTextViewFrame = CGRectMake(kScreenWith*0.166,kScreenVMargin + 8, kScreenWith*0.277, kScreenWith*0.062);
         }
         
     }else{
@@ -189,7 +197,7 @@
         
         if ([chatContentType isEqualToString:@"audio"]) {
             
-            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.166-0.277), kScreenVMargin, kScreenWith*0.277, kScreenWith*0.062);
+            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.166-0.277), kScreenVMargin + 8, kScreenWith*0.277, kScreenWith*0.062);
         }
         
     }
