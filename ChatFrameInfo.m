@@ -1,4 +1,3 @@
-
 //
 //  ChatFrameInfo.m
 //  CharttingController
@@ -13,8 +12,12 @@
 
 #define kScreenWith  [UIScreen mainScreen].bounds.size.width
 #define kScreenHMargin  20
-#define kScreenVMargin  8
-
+#define kScreenVMargin  14
+#define kTouXiangX  kScreenWith*0.044
+#define kTouXiangY  10
+#define kTouXiangL  kScreenWith*0.111
+#define kTouXiangX2  kScreenWith*0.845
+#define kQiPaoX kScreenWith*0.18
 
 -(instancetype)initWithModel:(ChatModel *)model{
     
@@ -24,7 +27,6 @@
     }
     return self;
 }
-
 
 //获得一条聊天信息所有控件的Frame
 
@@ -46,7 +48,6 @@
         
         [self getObjectFrameOfTextViewWithChatContentType:model.chatContentType AndInfo:model.chatAudioContent];
         
-        
     }
     
     [self getHeadViewFrameWithisSender:model.isSender];
@@ -60,7 +61,11 @@
     [self getReadTranstorStringResultBtnFrame:model isSender:model.isSender];
     [self getSencondLabelFrame:model];
     [self getAVtoStringLabelFrame:model];
-    
+    if (self.chatTextLabelFrame.size.height == 0) {
+        self.cellHeight = 2*kTouXiangY + kTouXiangL + self.AVtoStringLabelFrame.size.height;
+    }else{
+        self.cellHeight = 2*kTouXiangY + self.chatTextViewFrame.size.height;
+    }
     
 }
 
@@ -84,18 +89,11 @@
                 self.AVtoStringLabelFrame = CGRectMake(CGRectGetMinX(self.chatTextViewFrame)+8, CGRectGetMaxY(self.chatTextViewFrame), textLableSize.width, textLableSize.height);
             }
         }
-        if (self.chatTextLabelFrame.size.height == 0) {
-            //self.cellHeight = self.cellHeight  + self.AVtoStringLabelFrame.size.height;
-            self.cellHeight = self.cellHeight + 2*kScreenVMargin + self.chatTextLabelFrame.size.height;
-
-        }else{
-            self.cellHeight = self.cellHeight + 2*kScreenVMargin + self.chatTextLabelFrame.size.height;
-        }
     }
 }
 
-#pragma mark - yellow
-//获取播放译员翻译文字的frame
+#pragma mark - y播放译员翻译文字
+
 -(void)getReadTranstorStringResultBtnFrame:(ChatModel *)model isSender:(BOOL)isSender{
     
     NSString *identifier = model.sendIdentifier;
@@ -103,32 +101,28 @@
     if ([model.chatContentType isEqualToString:@"text"]) {
         if (isSender == 0) {
             if ([identifier isEqualToString:@"TRANSTOR"] || [identifier isEqualToString:@"FREETRANS"]) {
-                self.transtorTextReadBtnFram = CGRectMake(CGRectGetMaxX(self.chatTextViewFrame)-28, kScreenVMargin*2+0.5*self.chatTextLabelFrame.size.height-0.022*kScreenWith,0.044*kScreenWith, 0.044*kScreenWith);
+                self.transtorTextReadBtnFram = CGRectMake(CGRectGetMaxX(self.chatTextViewFrame)-23, kTouXiangY+kScreenVMargin+0.5*self.chatTextLabelFrame.size.height-0.022*kScreenWith,0.044*kScreenWith, 0.044*kScreenWith);
             }
         }else{
             if ([identifier isEqualToString:@"TRANSTOR"] || [identifier isEqualToString:@"FREETRANS"]) {
-                //  not use
-                //                self.transtorTextReadBtnFram = CGRectMake(CGRectGetMinX(self.chatTextViewFrame) +8  , self.cellHeight/2-0.022*kScreenWith, 0.044*kScreenWith, 0.044*kScreenWith);
+                self.transtorTextReadBtnFram = CGRectMake(CGRectGetMinX(self.chatTextViewFrame) +8  , kTouXiangY+kScreenVMargin+0.5*self.chatTextLabelFrame.size.height-0.022*kScreenWith, 0.044*kScreenWith, 0.044*kScreenWith);
             }
         }
     }
     
 }
 
-#pragma mark - red
+#pragma mark - 秒数
 
-//获取秒数指示label的Frame
 -(void)getSencondLabelFrame:(ChatModel *)model{
-    
     
     if (model.isSender == 0) {
         if ([model.chatContentType isEqualToString:@"audio"]) {
-            self.secondLableFrame = CGRectMake(kScreenWith*0.254, kScreenVMargin + 8, 20, kScreenWith*0.06);
-            
+            self.secondLableFrame = CGRectMake(kScreenWith*0.254, kTouXiangL*0.25, 20, kTouXiangL);
         }
     }else{
         if ([model.chatContentType isEqualToString:@"audio"]) {
-            self.secondLableFrame = CGRectMake(kScreenWith*0.746-20,kScreenVMargin + 8, 20, kScreenWith*0.06);
+            self.secondLableFrame = CGRectMake(kScreenWith*0.746-20,kTouXiangL*0.25, 20, kTouXiangL);
         }
     }
     
@@ -136,40 +130,24 @@
 
 #pragma mark - 头像
 
-//获取头像底层View的Frame
 -(void)getHeadViewFrameWithisSender:(BOOL)isSender{
     
     if (isSender == 0) {
-        if (self.chatTextLabelFrame.size.height == 0) {
-            self.headBgViewFrame = CGRectMake(kScreenWith*0.044,kScreenWith*0.062+kScreenVMargin-kScreenWith*0.111 + 13,kScreenWith*0.111, kScreenWith*0.111);
-            //self.headBgViewFrame = CGRectMake(kScreenWith*0.044,_cellHeight / 2 - kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
-
-            //self.headBgViewFrame = CGRectMake(kScreenWith*0.044,kScreenVMargin*3+self.chatTextLabelFrame.size.height-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
-        }else{
-            self.headBgViewFrame = CGRectMake(kScreenWith*0.044,kScreenVMargin*3+self.chatTextLabelFrame.size.height-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
-        }
+        self.headBgViewFrame = CGRectMake(kTouXiangX,kTouXiangY,kTouXiangL, kTouXiangL);
     }else{
-        if (self.chatTextLabelFrame.size.height == 0) {
-            
-            //self.headBgViewFrame = CGRectMake(kScreenWith*0.845,_cellHeight / 2 - kScreenWith*0.111, kScreenWith*0.111, kScreenWith*0.111);
-            self.headBgViewFrame = CGRectMake(kScreenWith*0.845,kScreenWith*0.062+kScreenVMargin-kScreenWith*0.111 + 13, kScreenWith*0.111, kScreenWith*0.111);
-            //self.headBgViewFrame = CGRectMake(kScreenWith*0.845,kScreenVMargin*3+self.chatTextLabelFrame.size.height-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
-        }else{
-            self.headBgViewFrame = CGRectMake(kScreenWith*0.845,kScreenVMargin*3+self.chatTextLabelFrame.size.height-kScreenWith*0.111,kScreenWith*0.111, kScreenWith*0.111);
-        }
+        self.headBgViewFrame = CGRectMake(kTouXiangX2,kTouXiangY,kTouXiangL, kTouXiangL);
     }
 }
 
-#pragma mark - green + bgc
+#pragma mark - 聊天气泡
 
-//获取聊天内容气泡的底层View的Frame
 -(void)getTextViewFrameWithisSender:(BOOL)isSender AndChatContent:(NSString *)chatContentType{
     
     if (isSender == 0) {
         
         if ([chatContentType isEqualToString:@"text"]) {
             
-            self.chatTextViewFrame = CGRectMake(kScreenWith*0.166, kScreenVMargin, self.textLableWidth + 50, self.chatTextLabelFrame.size.height + kScreenVMargin*2);
+            self.chatTextViewFrame = CGRectMake(kQiPaoX, kTouXiangY, self.chatTextLabelFrame.size.width + 2*kScreenHMargin + 8, self.chatTextLabelFrame.size.height + kScreenVMargin*2);
         }
         
         if ([chatContentType isEqualToString:@"picture"]) {
@@ -179,14 +157,14 @@
         }
         
         if ([chatContentType isEqualToString:@"audio"]) {
-            self.chatTextViewFrame = CGRectMake(kScreenWith*0.166,kScreenVMargin + 8, kScreenWith*0.277, kScreenWith*0.062);
+            self.chatTextViewFrame = CGRectMake(kQiPaoX,kTouXiangY, kScreenWith*0.277, kTouXiangL);
         }
         
     }else{
         
         if ([chatContentType isEqualToString:@"text"]) {
             
-            self.chatTextViewFrame = CGRectMake(kScreenWith*0.834-self.textLableWidth-kScreenWith*0.088, kScreenVMargin, self.textLableWidth +kScreenWith*0.088,self.chatTextLabelFrame.size.height + kScreenVMargin*2);
+            self.chatTextViewFrame = CGRectMake(kScreenWith*0.82-self.chatTextLabelFrame.size.width - 2*kScreenHMargin, kTouXiangY, self.chatTextLabelFrame.size.width +2*kScreenHMargin,self.chatTextLabelFrame.size.height + kScreenVMargin*2);
         }
         
         if ([chatContentType isEqualToString:@"picture"]) {
@@ -197,20 +175,21 @@
         
         if ([chatContentType isEqualToString:@"audio"]) {
             
-            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.166-0.277), kScreenVMargin + 8, kScreenWith*0.277, kScreenWith*0.062);
+            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.166-0.277), kTouXiangY, kScreenWith*0.277, kTouXiangL);
         }
         
     }
-    self.cellHeight = self.chatTextViewFrame.size.height;
 }
 
-//获取头像中ImageView的Frame
+#pragma mark - 头像
+
 -(void)getHeadImageViewFrame{
     
-    self.headImageViewFrame = CGRectMake(0, 4, self.headBgViewFrame.size.width , self.headBgViewFrame.size.height );
+    self.headImageViewFrame = CGRectMake(0, 0, kTouXiangL , kTouXiangL );
 }
 
-//获取聊天气泡当中text，Pickture，Audio的Frame
+#pragma mark - 气泡(text，Pickture，Audio)
+
 -(void)getObjectFrameOfTextViewWithChatContentType:(NSString *)chatContentType AndInfo:(NSString *)info{
     
     if ([chatContentType isEqualToString:@"text"]) {
@@ -219,7 +198,6 @@
         
         textLableSize = [info boundingRectWithSize:CGSizeMake(180, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Helvetica-Bold" size:15]} context:nil].size;
         
-        self.textLableWidth = textLableSize.width;
         self.chatTextLabelFrame = CGRectMake(kScreenHMargin, kScreenVMargin, textLableSize.width, textLableSize.height);
         
     }
@@ -230,33 +208,9 @@
     
     if ([chatContentType isEqualToString:@"audio"]) {
         
-        self.chatAudioViewFrame = CGRectMake(kScreenVMargin, 0, kScreenWith*0.277-2*kScreenVMargin, kScreenWith*0.062);
+        self.chatAudioViewFrame = CGRectMake(kScreenHMargin, 0, kScreenWith*0.277-2*kScreenVMargin, kTouXiangL);
         
     }
-    
-    
 }
 
-
-
-
-
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

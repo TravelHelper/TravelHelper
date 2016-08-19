@@ -53,7 +53,7 @@
     
     
     [super layoutSubviews];
-    
+    self.backgroundColor = [UIColor clearColor];
     
 }
 

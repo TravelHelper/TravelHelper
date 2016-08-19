@@ -9,6 +9,7 @@
 #import "ChatTableViewCell.h"
 
 @implementation ChatTableViewCell
+#define kTouXiangL  [UIScreen mainScreen].bounds.size.width*0.111
 
 - (void)awakeFromNib {
     // Initialization code
@@ -109,16 +110,19 @@
 
 //通过用户ID获取头像
 -(void)getHeadViewImageWithID:(NSString *)userID{
-    
-    if ([userID isEqualToString:@"0001"]) {
-        self.headImageView.layer.masksToBounds=YES;
-        self.headImageView.layer.cornerRadius=44/2.0f;
-        self.headImageView.image = [UIImage imageNamed:@"user"];
-    }else if ([userID isEqualToString:@"0002"]){
-        self.headImageView.layer.masksToBounds=YES;
-        self.headImageView.layer.cornerRadius=44/2.0f;
-        self.headImageView.image =[UIImage imageNamed:@"translator"];
-    }
+//    
+//    if ([userID isEqualToString:@"0001"]) {
+//        self.headImageView.layer.masksToBounds=YES;
+//        self.headImageView.layer.cornerRadius=44/2.0f;
+//        self.headImageView.image = [UIImage imageNamed:@"user"];
+//    }else if ([userID isEqualToString:@"0002"]){
+//        self.headImageView.layer.masksToBounds=YES;
+//        self.headImageView.layer.cornerRadius=44/2.0f;
+//        self.headImageView.image =[UIImage imageNamed:@"translator"];
+//    }
+    self.headImageView.layer.masksToBounds=YES;
+    self.headImageView.layer.cornerRadius=44/2.0f;
+    self.headImageView.image = [UIImage imageNamed:@"translator"];
 }
 
 
@@ -142,22 +146,32 @@
 -(void)getLeftCell{
     
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.textView.bounds.size.width, self.textView.bounds.size.height)];
-    UIImage *img = [UIImage imageNamed:@"绿"];
+    UIImage *img = [UIImage imageNamed:@"接收框"];
     [imageView setImage:[img stretchableImageWithLeftCapWidth:floor(img.size.width/2) topCapHeight:floor(img.size.height/2)]];
     imageView.backgroundColor = [UIColor clearColor];
     [self.textView addSubview:imageView];
     
+    UIImage *jiantouImg = [UIImage imageNamed:@"接收框尖头"];
+    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(self.textView.frame)-30,( kTouXiangL + 10  - 30 )*0.5, 30, 30)];
+    sharpImageView.backgroundColor = [UIColor clearColor];
+    [sharpImageView setImage:jiantouImg];
+    [self addSubview:sharpImageView];
 }
 
 //获得右侧的cell
 -(void)getRightCell{
     
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.textView.bounds.size.width, self.textView.bounds.size.height)];
-    UIImage *img = [UIImage imageNamed:@"白"];
-    [imageView setImage:[img stretchableImageWithLeftCapWidth:floor(img.size.width/2) topCapHeight:floor(img.size.height/2)]];
+    UIImage *img = [UIImage imageNamed:@"发送框"];
+    [imageView setImage:[img stretchableImageWithLeftCapWidth:img.size.width*0.5 topCapHeight:img.size.height*0.5]];
     imageView.backgroundColor = [UIColor clearColor];
     [self.textView addSubview:imageView];
     
+    UIImage *jiantouImg = [UIImage imageNamed:@"发送框尖头"];
+    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.textView.frame),( kTouXiangL + 10  - 30 )*0.5, 30, 30)];
+    sharpImageView.backgroundColor = [UIColor clearColor];
+    [sharpImageView setImage:jiantouImg];
+    [self addSubview:sharpImageView];
 }
 
 //计算cell需要的长度

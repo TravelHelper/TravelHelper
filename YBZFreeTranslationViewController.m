@@ -96,6 +96,7 @@
 @property (nonatomic , strong) UIButton *CN_PT;//葡萄牙
 
 @property (nonatomic ,strong) UITableView *cellView;
+@property (nonatomic ,strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) NSMutableArray *cellArr;
 
 
@@ -107,6 +108,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [self.view addSubview:self.backgroundImageView];
+
+    
     [self.view addSubview:self.CN_EN];
     [self.view addSubview:self.CN_JP];
     [self.view addSubview:self.CN_FR];
@@ -115,6 +119,9 @@
     [self.view addSubview:self.CN_ES];
     
     [self.view addSubview:self.cellView];
+    
+    self.navigationItem.title = @"选择语言";
+
     
     [self initData];
 }
@@ -347,7 +354,7 @@
     
     
     
-    return UIScreenWidth * 0.24;
+    return UIScreenWidth * 0.24 + 4;
 }
 
 #pragma mark - getters
@@ -356,9 +363,9 @@
     
     if (!_cellView) {
         
-        _cellView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
+        _cellView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, UIScreenWidth, UIScreenHeight - 64)];
         
-        //_cellView.backgroundColor = [UIColor whiteColor];
+        _cellView.backgroundColor = [UIColor clearColor];
         
         //_cellView.tableHeaderView = self.bottomView;
         
@@ -374,6 +381,17 @@
     }
     
     return _cellView;
+    
+}
+
+- (UIImageView *)backgroundImageView{
+    
+    if (!_backgroundImageView) {
+        _backgroundImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
+        _backgroundImageView.image = [UIImage imageNamed:@"backgroundImage"];
+        
+    }
+    return _backgroundImageView;
     
 }
 

@@ -167,9 +167,7 @@
 #pragma mark - 箭头跳转
 - (void)interpretClick
 {
-    YBZInterpretViewController *interpretVC = [[YBZInterpretViewController alloc]init];
-    
-    [self.navigationController pushViewController:interpretVC animated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 

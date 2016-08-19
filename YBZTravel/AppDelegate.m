@@ -193,6 +193,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         }];
         [alertVC addAction:okAction];
         [alertVC addAction:cancelAction];
+        
+        
+        
         [self.window.rootViewController presentViewController:alertVC animated:YES completion:nil];
         
       
