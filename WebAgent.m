@@ -200,7 +200,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
          valuator_id:(NSString *)valuator_id
    evaluate_infostar:(NSString *)evaluate_infostar
    evaluate_infotext:(NSString *)evaluate_infotext
-       evaluate_time:(NSString *)evaluate_time
+       translation_id:(NSString *)translation_id
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure
 {
@@ -209,7 +209,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                            @"valuator_id":valuator_id,
                            @"evaluate_infostar":evaluate_infostar,
                            @"evaluate_infotext":evaluate_infotext,
-                           @"evaluate_time":evaluate_time
+                           @"translation_id":translation_id
                            };
     
     [[APIClient sharedClient] POST:@"User/evaluate/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -611,7 +611,18 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
         failure(error);
     }];
 }
-
+//identifyuser_id
++(void)identifyuser_id:(NSString *)user_id
+       success:(void(^)(id responseObject))success
+       failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"QuickTrans/identify/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
 
 
 @end

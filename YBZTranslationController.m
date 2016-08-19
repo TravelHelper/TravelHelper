@@ -689,6 +689,11 @@
                     userID = user_id[@"user_id"];
                     [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
                         [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
+                            YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
+                            waitingVC.hidesBottomBarWhenPushed = YES;
+                            waitingVC.navigationItem.hidesBackButton = YES;
+                            [self.navigationController pushViewController:waitingVC animated:YES];
+                            
                         } failure:^(NSError *error) {
                             NSLog(@"faile");
                         }];
@@ -696,10 +701,7 @@
                     }];
                     
                 });
-                YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
-                waitingVC.hidesBottomBarWhenPushed = YES;
-                waitingVC.navigationItem.hidesBackButton = YES;
-                [self.navigationController pushViewController:waitingVC animated:YES];
+
 
                 
             }else{

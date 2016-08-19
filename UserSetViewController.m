@@ -18,7 +18,7 @@
 #import "YBZLoginViewController.h"
 #import "YBZBaseNaviController.h"
 #import "YBZTongyongViewController.h"
-@interface UserSetViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface UserSetViewController ()<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
 {
     NSString *logout;
 }
@@ -132,6 +132,9 @@
     return self.view.bounds.size.height*0.074;
 }
 
+
+
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section == 0 && indexPath.row == 0){
@@ -159,29 +162,38 @@
                 }
                 else
                 {
-                    logout = @"true";
-                    [self reloadoutcell];
-
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"myDictionary"];
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"stateinfo"];
-                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                    NSDictionary *dict = @{@"user_loginState":@"0"};
-                    [userinfo setObject:dict forKey:@"user_loginState"];
-                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-                    [WebAgent userLogout:user_id[@"user_id"] success:^(id responseObject) {
-                        
-                    } failure:^(NSError *error) {
-                        
-                    }];
-//                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_loginState"];
+                    UIAlertView *alertView =[[UIAlertView alloc]initWithTitle:@"你要退出登录吗?" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
+                    [alertView show];
                     
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
-                    [self.navigationController popToRootViewControllerAnimated:YES];
                 }
             }
-        
+            
         }
+    }
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 1) {
+        
+        logout = @"true";
+        
+        [self reloadoutcell];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"myDictionary"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"stateinfo"];
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict = @{@"user_loginState":@"0"};
+        [userinfo setObject:dict forKey:@"user_loginState"];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        [WebAgent userLogout:user_id[@"user_id"] success:^(id responseObject) {
+            
+        } failure:^(NSError *error) {
+            
+        }];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 //第二步：发送通知

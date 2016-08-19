@@ -53,7 +53,7 @@
     [backBtn setImage:[UIImage imageNamed:@"backBtn.jpg"] forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(returnInfoButtonClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-    self.navigationItem.leftBarButtonItem = backItem;
+//    self.navigationItem.leftBarButtonItem = backItem;
     [self loadDataFromWeb];
     [self loadDataFromLocation];
     [self.view addSubview:self.mainTabelView];
@@ -451,10 +451,14 @@
         NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:0];
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
         self.locationInfo = self.placeString;
+        [self returnInfoButtonClick];
+        NSLog(@"%@",self.locationInfo);
     }
     else{
         PlaceNameModel *locat = self.dataArray[indexPath.row];
         self.locationInfo = locat.placeName;
+        NSLog(@"%@",self.locationInfo);
+        [self returnInfoButtonClick];
     }
 }
 

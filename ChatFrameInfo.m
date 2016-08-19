@@ -175,7 +175,7 @@
         
         if ([chatContentType isEqualToString:@"audio"]) {
             
-            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.166-0.277), kTouXiangY, kScreenWith*0.277, kTouXiangL);
+            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.4), kTouXiangY, kScreenWith*0.277, kTouXiangL);
         }
         
     }
