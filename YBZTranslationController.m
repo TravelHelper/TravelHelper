@@ -161,15 +161,7 @@
         [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
             [self.navigationController popToRootViewControllerAnimated:YES];
             
-            [WebAgent interpreterRequireStateWithuserId:userID success:^(id responseObject) {
-                
-                NSLog(@"译员成功返回首页");
 
-                
-            } failure:^(NSError *error) {
-                NSLog(@"译员未返回首页");
-                
-            }];
             
             
         } failure:^(NSError *error) {
@@ -203,6 +195,17 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recieveARemoteRequire:) name:@"recieveARemoteRequire" object:nil];
     
 }
+
+
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+     self.tabBarController.tabBar.hidden=NO;
+
+}
+
+
+
 #pragma mark - 观察者方法
 -(void)recieveARemoteRequire:(NSNotification *)noti{
     
@@ -1312,7 +1315,7 @@
 - (UIImageView *)backgroundImageView{
     
     if (!_backgroundImageView) {
-        _backgroundImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, UIScreenHeight - UIScreenWidth * 0.667, UIScreenWidth, UIScreenWidth * 0.667)];
+        _backgroundImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
         _backgroundImageView.image = [UIImage imageNamed:@"backgroundImage"];
         
     }

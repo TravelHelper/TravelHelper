@@ -12,7 +12,7 @@
 @implementation ChatFrameInfo
 
 #define kScreenWith  [UIScreen mainScreen].bounds.size.width
-#define kScreenHMargin  20
+#define kScreenHMargin  15
 #define kScreenVMargin  8
 
 
@@ -85,8 +85,8 @@
             }
         }
         if (self.chatTextLabelFrame.size.height == 0) {
-            //self.cellHeight = self.cellHeight  + self.AVtoStringLabelFrame.size.height;
-            self.cellHeight = self.cellHeight + 2*kScreenVMargin + self.chatTextLabelFrame.size.height;
+            self.cellHeight = self.cellHeight  + self.AVtoStringLabelFrame.size.height;
+            //self.cellHeight = self.cellHeight + 2*kScreenVMargin + self.chatTextLabelFrame.size.height;
 
         }else{
             self.cellHeight = self.cellHeight + 2*kScreenVMargin + self.chatTextLabelFrame.size.height;
@@ -179,7 +179,8 @@
         }
         
         if ([chatContentType isEqualToString:@"audio"]) {
-            self.chatTextViewFrame = CGRectMake(kScreenWith*0.166,kScreenVMargin + 8, kScreenWith*0.277, kScreenWith*0.062);
+            self.chatTextViewFrame = CGRectMake(kScreenWith*0.166,kScreenVMargin + 8, kScreenWith*0.277, 33);
+            //self.chatTextViewFrame = CGRectMake(kScreenWith*0.166,kScreenVMargin + 8, kScreenWith*0.277, kScreenWith*0.062);
         }
         
     }else{
@@ -187,6 +188,7 @@
         if ([chatContentType isEqualToString:@"text"]) {
             
             self.chatTextViewFrame = CGRectMake(kScreenWith*0.834-self.textLableWidth-kScreenWith*0.088, kScreenVMargin, self.textLableWidth +kScreenWith*0.088,self.chatTextLabelFrame.size.height + kScreenVMargin*2);
+            //NSLog(@"我想要的frame%@",_chatTextViewFrame);
         }
         
         if ([chatContentType isEqualToString:@"picture"]) {
@@ -197,7 +199,8 @@
         
         if ([chatContentType isEqualToString:@"audio"]) {
             
-            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.166-0.277), kScreenVMargin + 8, kScreenWith*0.277, kScreenWith*0.062);
+            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.166-0.277), kScreenVMargin + 8, kScreenWith*0.277, 33);
+            //self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.166-0.277), kScreenVMargin + 8, kScreenWith*0.277, kScreenWith*0.062);
         }
         
     }

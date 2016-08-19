@@ -140,7 +140,7 @@
     self.iFlySpeechRecognizer.delegate = self;
     
     //设置导航栏返回按钮的点击事件
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(sendMessageAndPop)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"结束聊天" style:UIBarButtonItemStylePlain target:self action:@selector(sendMessageAndPop)];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(backToRoot) name:@"backToRoot" object:nil];
     
@@ -1242,9 +1242,25 @@
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo success:^(id responseObject) {
         [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
             [self.navigationController popToRootViewControllerAnimated:YES];
+            
+            
+
+            
+            
+            //self.tabBarController.tabBar.hidden = NO;
+            
         } failure:^(NSError *error) {
         }];
     } failure:^(NSError *error) {
+        
+    }];
+    [WebAgent interpreterRequireStateWithuserId:self.target_id success:^(id responseObject) {
+        
+        NSLog(@"译员成功返回首页");
+        
+        
+    } failure:^(NSError *error) {
+        NSLog(@"译员未返回首页");
         
     }];
 }
@@ -1353,9 +1369,9 @@
 
 -(UIView *)inputBottomView{
     if (!_inputBottomView) {
-        _inputBottomView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHight*0.915, kScreenWidth, kScreenHight*0.085)];
+        _inputBottomView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHight*0.93, kScreenWidth, kScreenHight*0.070)];
         
-        _inputBottomView.backgroundColor  = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f  blue:240.0f/255.0f  alpha:1];
+        _inputBottomView.backgroundColor  = [UIColor colorWithRed:248.0f/255.0f green:248.0f/255.0f  blue:248.0f/255.0f  alpha:1];
     }
     
     return _inputBottomView;
@@ -1366,7 +1382,7 @@
     
     if (!_changeSendContentBtn) {
         _changeSendContentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _changeSendContentBtn.frame = CGRectMake(kScreenWidth*0.04, kScreenWidth*0.03, kScreenWidth*0.1, kScreenWidth*0.085);
+        _changeSendContentBtn.frame = CGRectMake(kScreenWidth*0.02, kScreenWidth*0.02, kScreenWidth*0.085, kScreenWidth*0.085);
         [_changeSendContentBtn setImage:[UIImage imageNamed:@"yuyin"] forState:UIControlStateNormal];
         [_changeSendContentBtn addTarget:self action:@selector(changeSendContentTwoClick) forControlEvents:UIControlEventTouchUpInside];
         _changeSendContentBtn.tag = 1001;//展示语音图片，点击切换成语音模式；
@@ -1379,7 +1395,7 @@
     
     if (!_selectLangueageBtn) {
         _selectLangueageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _selectLangueageBtn.frame = CGRectMake(kScreenWidth*0.82, kScreenWidth*0.03, kScreenWidth*0.14, kScreenWidth*0.085);
+        _selectLangueageBtn.frame = CGRectMake(kScreenWidth*0.85, kScreenWidth*0.02, kScreenWidth*0.14, kScreenWidth*0.085);
         [_selectLangueageBtn setImage:[UIImage imageNamed:@"select"] forState:UIControlStateNormal];
         [_selectLangueageBtn addTarget:self action:@selector(selectLangueageClick) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -1389,12 +1405,14 @@
 -(UITextView *)inputTextView{
     
     if (!_inputTextView) {
-        _inputTextView = [[UITextView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.03, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth*0.085)];
+        _inputTextView = [[UITextView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth*0.085)];
         _inputTextView.backgroundColor = [UIColor whiteColor];
+        _inputTextView.layer.cornerRadius = 4;
         _inputTextView.keyboardType = UIKeyboardTypeDefault;
         _inputTextView.returnKeyType = UIReturnKeySend;
         _inputTextView.scrollEnabled = YES;
         _inputTextView.delegate = self;
+        [_inputTextView setFont:FONT_16];
     }
     return _inputTextView;
 }
@@ -1404,7 +1422,7 @@
     if (!_reportAudioBtn) {
         _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
         _reportAudioBtn.mdelegate = self;
-        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8, kScreenWidth*0.03, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
+        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8, kScreenWidth*0.02, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
         _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
         [_reportAudioBtn setTitle:@"按住说中文" forState:UIControlStateNormal];
         [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
@@ -1423,7 +1441,7 @@
     if (!_reportEnglishBtn) {
         _reportEnglishBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
         _reportEnglishBtn.mdelegate = self;
-        _reportEnglishBtn.frame = CGRectMake(CGRectGetMaxX(self.reportAudioBtn.frame), kScreenWidth*0.03, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
+        _reportEnglishBtn.frame = CGRectMake(CGRectGetMaxX(self.reportAudioBtn.frame), kScreenWidth*0.02, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
         [_reportEnglishBtn setTitle:@"按住说英语" forState:UIControlStateNormal];
         [_reportEnglishBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _reportEnglishBtn.backgroundColor = [UIColor yellowColor];
@@ -1478,7 +1496,7 @@
 -(UIView *)subBottomView{
     
     if (!_subBottomView) {
-        _subBottomView = [[UIView alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 150)/2, ([UIScreen mainScreen].bounds.size.height - 150)/2, 150, 150)];
+        _subBottomView = [[UIView alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 150)/2, ([UIScreen mainScreen].bounds.size.height - 150)/2, 200, 150)];
         _subBottomView.backgroundColor = [UIColor redColor];
         _subBottomView.userInteractionEnabled = NO;
     }

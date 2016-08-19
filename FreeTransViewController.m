@@ -28,6 +28,8 @@
 
 @property (nonatomic,strong) NSString *selectedCellMessageID;
 
+
+@property(nonatomic,strong) UIImageView *backgroundImageView;
 @property(nonatomic,strong) BaseTableView *bottomTableView;
 @property(nonatomic,strong) UIView      *inputBottomView;
 @property(nonatomic,strong) UIButton    *changeSendContentBtn;
@@ -88,6 +90,9 @@
         self.voice_Language = voice_Language;
         self.trans_Language = trans_Language;
         
+//        self.navigationItem.title = (@"%@",self.trans_Language);
+        self.navigationItem.title = @"免费翻译";
+
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:self.voice_Language forKey:@"VOICE_LANGUAGE"];
         [userDefaults setObject:self.trans_Language forKey:@"TRANS_LANGUAGE"];
@@ -101,13 +106,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    [self.view addSubview:self.backgroundImageView];
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     self.isCancelSendRecord = NO;
     self.isRecognizer = NO;
     self.isZero = NO;
     self.isKeyboardShow = NO;
-    self.view.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgp"]];
+    //self.view.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgp"]];
+//    self.view.backgroundColor = [UIColor clearColor];
     //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     
     _stringTransVC = [[StringTransViewController alloc]init];
@@ -906,10 +915,23 @@
 
 #pragma mark - getters
 
+- (UIImageView *)backgroundImageView{
+    
+    if (!_backgroundImageView) {
+        _backgroundImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
+        _backgroundImageView.image = [UIImage imageNamed:@"backgroundImage"];
+        
+    }
+    return _backgroundImageView;
+    
+}
+
+
 -(BaseTableView *)bottomTableView{
     if (!_bottomTableView) {
         _bottomTableView = [[BaseTableView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - CGRectGetHeight(self.inputBottomView.frame) - 64) style:UITableViewStylePlain];
-        _bottomTableView.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1];//免费翻译背景颜色
+        //_bottomTableView.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1];//免费翻译背景颜色
+        _bottomTableView.backgroundColor = [UIColor clearColor];
         _bottomTableView.idelegate = self;
         _bottomTableView.delegate = self;
         _bottomTableView.dataSource = self;
@@ -940,7 +962,7 @@
     
     if (!_changeSendContentBtn) {
         _changeSendContentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _changeSendContentBtn.frame = CGRectMake(kScreenWidth*0.02, kScreenWidth*0.02, kScreenWidth*0.085, kScreenWidth*0.085);
+        _changeSendContentBtn.frame = CGRectMake(kScreenWidth*0.02, kScreenWidth*0.02 + 1, kScreenWidth*0.085, kScreenWidth*0.085);
         [_changeSendContentBtn setImage:[UIImage imageNamed:@"yuyin"] forState:UIControlStateNormal];
         [_changeSendContentBtn.imageView setContentMode:UIViewContentModeScaleAspectFill];
         _changeSendContentBtn.imageView.clipsToBounds = YES;
