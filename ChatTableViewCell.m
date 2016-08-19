@@ -303,10 +303,10 @@
     
     if (!_playTransTextBtn) {
         _playTransTextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _playTransTextBtn.backgroundColor = [UIColor whiteColor];
+        _playTransTextBtn.backgroundColor = [UIColor clearColor];
         _playRecordBtn.frame = CGRectMake(0, 0, 25, 25);
         [_playTransTextBtn addTarget:self action:@selector(readText) forControlEvents:UIControlEventTouchUpInside];
-        [_playTransTextBtn setImage:[UIImage imageNamed:@"bofang"] forState:UIControlStateNormal];
+        [_playTransTextBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
     }
     return _playTransTextBtn;
 }
