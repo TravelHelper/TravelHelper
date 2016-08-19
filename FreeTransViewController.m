@@ -997,8 +997,8 @@
     
     if (!_selectLangueageBtn) {
         _selectLangueageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _selectLangueageBtn.frame = CGRectMake(kScreenWidth*0.85, kScreenWidth*0.02, kScreenWidth*0.14, kScreenWidth*0.085);
-        [_selectLangueageBtn setImage:[UIImage imageNamed:@"select"] forState:UIControlStateNormal];
+        _selectLangueageBtn.frame = CGRectMake(kScreenWidth*0.9, kScreenWidth*0.02, kScreenWidth*0.085, kScreenWidth*0.085);
+        [_selectLangueageBtn setImage:[UIImage imageNamed:@"dustbin"] forState:UIControlStateNormal];
         [_selectLangueageBtn addTarget:self action:@selector(selectLangueageClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _selectLangueageBtn;

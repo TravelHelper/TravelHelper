@@ -152,7 +152,7 @@
     [self.textView addSubview:imageView];
     
     UIImage *jiantouImg = [UIImage imageNamed:@"接收框尖头"];
-    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(self.textView.frame)-30,( kTouXiangL + 10  - 30 )*0.5, 30, 30)];
+    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(self.textView.frame)-20,( kTouXiangL + 10  - 30 )*0.5 + 3, 20, 30)];
     sharpImageView.backgroundColor = [UIColor clearColor];
     [sharpImageView setImage:jiantouImg];
     [self addSubview:sharpImageView];
@@ -168,7 +168,7 @@
     [self.textView addSubview:imageView];
     
     UIImage *jiantouImg = [UIImage imageNamed:@"发送框尖头"];
-    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.textView.frame),( kTouXiangL + 10  - 30 )*0.5, 30, 30)];
+    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.textView.frame),( kTouXiangL + 10  - 30 )*0.5 + 3, 20, 30)];
     sharpImageView.backgroundColor = [UIColor clearColor];
     [sharpImageView setImage:jiantouImg];
     [self addSubview:sharpImageView];
@@ -303,10 +303,10 @@
     
     if (!_playTransTextBtn) {
         _playTransTextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _playTransTextBtn.backgroundColor = [UIColor whiteColor];
+        _playTransTextBtn.backgroundColor = [UIColor clearColor];
         _playRecordBtn.frame = CGRectMake(0, 0, 25, 25);
         [_playTransTextBtn addTarget:self action:@selector(readText) forControlEvents:UIControlEventTouchUpInside];
-        [_playTransTextBtn setImage:[UIImage imageNamed:@"bofang"] forState:UIControlStateNormal];
+        [_playTransTextBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
     }
     return _playTransTextBtn;
 }
