@@ -9,6 +9,7 @@
 #import "ChatTableViewCell.h"
 
 @implementation ChatTableViewCell
+#define kTouXiangL  [UIScreen mainScreen].bounds.size.width*0.111
 
 - (void)awakeFromNib {
     // Initialization code
@@ -150,6 +151,11 @@
     imageView.backgroundColor = [UIColor clearColor];
     [self.textView addSubview:imageView];
     
+    UIImage *jiantouImg = [UIImage imageNamed:@"接收框尖头"];
+    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(self.textView.frame)-30,( kTouXiangL + 10  - 30 )*0.5, 30, 30)];
+    sharpImageView.backgroundColor = [UIColor clearColor];
+    [sharpImageView setImage:jiantouImg];
+    [self addSubview:sharpImageView];
 }
 
 //获得右侧的cell
@@ -157,14 +163,14 @@
     
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.textView.bounds.size.width, self.textView.bounds.size.height)];
     UIImage *img = [UIImage imageNamed:@"发送框"];
-    [imageView setImage:[img stretchableImageWithLeftCapWidth:floor(img.size.width/2) topCapHeight:floor(img.size.height/2)]];
+    [imageView setImage:[img stretchableImageWithLeftCapWidth:img.size.width*0.5 topCapHeight:img.size.height*0.5]];
     imageView.backgroundColor = [UIColor clearColor];
     [self.textView addSubview:imageView];
     
-    
-    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.textView.frame), (self.height) / 2 - 8, 10, self.textView.bounds.size.height)];
+    UIImage *jiantouImg = [UIImage imageNamed:@"发送框尖头"];
+    UIImageView *sharpImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.textView.frame),( kTouXiangL + 10  - 30 )*0.5, 30, 30)];
     sharpImageView.backgroundColor = [UIColor clearColor];
-    [sharpImageView setImage:[UIImage imageNamed:@"发送框尖头"]];
+    [sharpImageView setImage:jiantouImg];
     [self addSubview:sharpImageView];
 }
 
