@@ -59,7 +59,7 @@
     [self loadDataFromWeb];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"悬赏大厅";
-    [self leftButton];
+    //[self leftButton];
     
     
     self.mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.09, self.view.bounds.size.width, self.view.bounds.size.height-64) style:UITableViewStylePlain];
@@ -128,18 +128,18 @@
 }
 
 #pragma mark - 返回箭头
--(void)leftButton{
-    UIButton *backB = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 35, 35)];
-    [backB setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
-    [backB addTarget:self action:@selector(interpretClick) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backB];
-    
-}
+//-(void)leftButton{
+//    UIButton *backB = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 35, 35)];
+//    [backB setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+//    [backB addTarget:self action:@selector(interpretClick) forControlEvents:UIControlEventTouchUpInside];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backB];
+//    
+//}
 #pragma mark - 页面跳转
--(void)interpretClick{
-    [self.navigationController popViewControllerAnimated:YES];
-    
-}
+//-(void)interpretClick{
+//    [self.navigationController popViewControllerAnimated:YES];
+//    
+//}
 
 
 -(void)loadDataFromWeb{

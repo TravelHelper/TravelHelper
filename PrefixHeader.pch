@@ -126,9 +126,9 @@
 #define UITranslationBtnSize UIScreenWidth * 42 / 320
 //#define UICountryBtnWidth
 
-//#define API_HOST @"http://192.168.1.104/TravelHelper/index.php/Home/"
+#define API_HOST @"http://10.2.208.228/TravelHelper/index.php/Home/"
 
-#define API_HOST @"http://10.2.208.120/TravelHelper/index.php/Home/"
+//#define API_HOST @"http://10.2.208.120/TravelHelper/index.php/Home/"
 
 #define serviseId @"127.0.0.1"
 
