@@ -41,6 +41,7 @@
 @property(nonatomic,strong) UIRefreshControl *refreshController;
 @property(nonatomic,strong) UIView *bottomView;
 @property(nonatomic,strong) UIView *subBottomView;
+@property(nonatomic,strong) UILabel *shortLabel;
 @property(nonatomic,assign) BOOL isCancelSendRecord;
 @property(nonatomic,assign) BOOL isRecognizer;
 @property(nonatomic,assign) BOOL isZero;
@@ -649,11 +650,26 @@
         
         
         [self.cwViewController recordButtonClick];
-        [self removeRecordPageView];
+        
         [self iFlySpeechRecognizerStop];
-        [self sendRecordAudioWithRecordURLString:self.cellMessageID];
         
-        
+        if ([self.cwViewController.secondString intValue] < 1 ) {
+            
+            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+            self.shortLabel.text = @"说话时间过短，小于1秒";
+            self.shortLabel.font = FONT_10;
+            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+            self.shortLabel.backgroundColor = [UIColor purpleColor];
+            [self.subBottomView addSubview:self.shortLabel];
+            
+            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+            
+        }else{
+            
+            [self removeRecordPageView];
+            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+            
+        }
         self.isZero = YES;
         
         
@@ -663,6 +679,7 @@
 
 -(void)removeRecordPageView{
     
+    [self.shortLabel removeFromSuperview];
     [self.subBottomView removeFromSuperview];
     [self.bottomView removeFromSuperview];
 }
@@ -998,7 +1015,7 @@
 }
 
 //-(UIButton *)sendMessageBtn{
-//    
+//
 //    if (!_sendMessageBtn) {
 //        _sendMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //        _sendMessageBtn.frame = CGRectMake( CGRectGetMaxX(self.inputTextView.frame) - 35,  kScreenWidth*0.031,kScreenWidth*0.078,kScreenWidth*0.078);
@@ -1041,7 +1058,7 @@
     
     if (!_subBottomView) {
         _subBottomView = [[UIView alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 150)/2, ([UIScreen mainScreen].bounds.size.height - 150)/2, 200, 150)];
-//        _subBottomView.backgroundColor = [UIColor redColor];
+        //        _subBottomView.backgroundColor = [UIColor redColor];
         _subBottomView.userInteractionEnabled = NO;
     }
     
