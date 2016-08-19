@@ -1316,7 +1316,7 @@
     }else{
         //语音转输入
         self.changeSendContentBtn.tag = 1001;
-        self.changeSendContentBtn.backgroundColor = [UIColor yellowColor];
+        //self.changeSendContentBtn.backgroundColor = [UIColor yellowColor];
         [self.reportAudioBtn removeFromSuperview];
         [self.reportEnglishBtn removeFromSuperview];
     }
@@ -1453,39 +1453,56 @@
     return _inputTextView;
 }
 
+//-(BaseAudioButton *)reportAudioBtn{
+//    
+//    if (!_reportAudioBtn) {
+//        _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
+//        _reportAudioBtn.mdelegate = self;
+//        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.085);
+//        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
+//        [_reportAudioBtn setTitle:@"按住说中文" forState:UIControlStateNormal];
+//        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
+//        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
+//        
+//        [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
+//        
+//    }
+//    
+//    return _reportAudioBtn;
+//    
+//}
+//
+//-(BaseAudioButton *)reportEnglishBtn{
+//    
+//    if (!_reportEnglishBtn) {
+//        _reportEnglishBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
+//        _reportEnglishBtn.mdelegate = self;
+//        _reportEnglishBtn.frame = CGRectMake(CGRectGetMaxX(self.reportAudioBtn.frame), kScreenWidth*0.02, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
+//        [_reportEnglishBtn setTitle:@"按住说英语" forState:UIControlStateNormal];
+//        [_reportEnglishBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        _reportEnglishBtn.backgroundColor = [UIColor yellowColor];
+//    }
+//    
+//    return _reportEnglishBtn;
+//    
+//}
+
 -(BaseAudioButton *)reportAudioBtn{
     
     if (!_reportAudioBtn) {
         _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
         _reportAudioBtn.mdelegate = self;
-        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8, kScreenWidth*0.02, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
-        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
-        [_reportAudioBtn setTitle:@"按住说中文" forState:UIControlStateNormal];
+        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.085);
+        //        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
+        //        [_reportAudioBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+        [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];
         [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
         [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
-        
         [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
-        
     }
-    
     return _reportAudioBtn;
-    
 }
 
--(BaseAudioButton *)reportEnglishBtn{
-    
-    if (!_reportEnglishBtn) {
-        _reportEnglishBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
-        _reportEnglishBtn.mdelegate = self;
-        _reportEnglishBtn.frame = CGRectMake(CGRectGetMaxX(self.reportAudioBtn.frame), kScreenWidth*0.02, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
-        [_reportEnglishBtn setTitle:@"按住说英语" forState:UIControlStateNormal];
-        [_reportEnglishBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        _reportEnglishBtn.backgroundColor = [UIColor yellowColor];
-    }
-    
-    return _reportEnglishBtn;
-    
-}
 
 
 //-(UIButton *)sendMessageBtn{
