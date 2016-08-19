@@ -15,6 +15,7 @@
 #import "WebAgent.h"
 #import "YBZInterpretViewController.h"
 #import "complaintViewController.h"
+#import "NSString+SZYKit.h"
 
 #define kScreenWindth    [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight    [UIScreen mainScreen].bounds.size.height
@@ -130,7 +131,8 @@
     NSDate *sendDate = [NSDate date];
     NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
     [dateformatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-    NSString *morelocationString = [dateformatter stringFromDate:sendDate];
+    NSString *translation_id = [NSString stringOfUUID];
+    
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     self.user_id = user_id[@"user_id"];
@@ -140,18 +142,21 @@
     EvaluatePeopleCell *cell = [self.mainTabViwe cellForRowAtIndexPath:index];
     NSString *value = @((round(cell.starsScore_20.value * 100) / 100.0)*5);
     
-    if (self.evaluate_infotext !=nil)
+    if (self.evaluate_infotext != nil)
     {
-        [WebAgent translator_id:self.translator_id valuator_id:self.user_id evaluate_infostar:value  evaluate_infotext:self.evaluate_infotext evaluate_time:morelocationString success:^(id responseObject) {
+        
+        [WebAgent translator_id:self.translator_id valuator_id:self.user_id evaluate_infostar:value  evaluate_infotext:self.evaluate_infotext translation_id:translation_id  success:^(id responseObject) {
             
+        
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
             
+        
         }];
     }
     else
     {
-    [WebAgent translator_id:self.translator_id valuator_id:user_id[@"user_id"] evaluate_infostar:value  evaluate_infotext:@"" evaluate_time:morelocationString success:^(id responseObject) {
+    [WebAgent translator_id:self.translator_id valuator_id:user_id[@"user_id"] evaluate_infostar:value  evaluate_infotext:@"" translation_id:translation_id success:^(id responseObject) {
         
     } failure:^(NSError *error) {
         NSLog(@"%@",error);

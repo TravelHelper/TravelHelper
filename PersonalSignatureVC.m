@@ -5,7 +5,7 @@
 //  Created by sks on 16/7/15.
 //  Copyright © 2016年 AlexianAnn. All rights reserved.
 //
-
+//Begin 个性签名文本框的设置
 #import "PersonalSignatureVC.h"
 
 #define kViewVerticleMargin self.view.bounds.size.height * 7 /730
@@ -32,17 +32,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.individualSignatureTV.delegate = self;
-    
-    self.individualSignatureTV.hidden = NO;
-    self.individualSignatureTV.delegate = self;
-    
-    
-    [self.view addSubview:self.lineLabel];
+    //    [self.view addSubview:self.lineLabel];
     [self.view addSubview:self.myView];
     [self.view addSubview:self.individualSignatureTV];
     [self.view addSubview:self.inputCharacterNumberLabel];
     [self.individualSignatureTV addSubview:self.tishiLabel];
+    
+    self.individualSignatureTV.delegate = self;
+    self.individualSignatureTV.hidden = NO;
+    self.individualSignatureTV.delegate = self;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.saveBtn];
     
@@ -70,8 +68,8 @@
     
     if(!_lineLabel){
         
-        _lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, 2)];
-        _lineLabel.backgroundColor = [UIColor colorWithRed:239/255.0 green:238/255.0 blue:244/255.0 alpha:1];
+        _lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 2, self.view.bounds.size.width, 5)];
+        _lineLabel.backgroundColor = [UIColor whiteColor];
     }
     return _lineLabel;
 }
@@ -81,8 +79,9 @@
     
     if (!_myView) {
         
-        self.myView = [[UIView alloc]initWithFrame:CGRectMake(0, 64+kViewVerticleMargin, self.view.bounds.size.width, self.view.bounds.size.height-64-kViewVerticleMargin)];
+        self.myView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64-kViewVerticleMargin)];
         self.myView.backgroundColor = [UIColor colorWithRed:239/255.0 green:238/255.0 blue:244/255.0 alpha:1];
+        [self.myView addSubview:self.lineLabel];
     }
     return _myView;
     
@@ -104,13 +103,11 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:@"changeSignature" object:nil userInfo:@{@"个性签名":self.individualSignatureTV.text}];
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-//Begin 个性签名文本框的设置
 -(UITextView *)individualSignatureTV{
     
     if(!_individualSignatureTV){
         
-        _individualSignatureTV = [[UITextView alloc]initWithFrame:CGRectMake(0, self.myView.frame.origin.y+kTextViewVerticleMargin, self.view.bounds.size.width, self.view.bounds.size.height *85 / 730)];
+        _individualSignatureTV = [[UITextView alloc]initWithFrame:CGRectMake(0, self.myView.frame.origin.y+kTextViewVerticleMargin+kViewVerticleMargin, self.view.bounds.size.width, self.view.bounds.size.height *85 / 730)];
         _individualSignatureTV.backgroundColor = [UIColor whiteColor];
         _individualSignatureTV.font = [UIFont systemFontOfSize:20];
         if (![self.qianming  isEqual: @""]) {

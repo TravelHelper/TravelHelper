@@ -53,7 +53,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
          valuator_id:(NSString *)valuator_id
    evaluate_infostar:(NSString *)evaluate_infostar
    evaluate_infotext:(NSString *)evaluate_infotext
-       evaluate_time:(NSString *)evaluate_time
+       translation_id:(NSString *)translation_id
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure;
 
@@ -189,6 +189,11 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //       user_id:(NSString *)user_id
    reward_text:(NSString *)reward_text
    answer_time:(NSString *)answer_time
+       success:(void(^)(id responseObject))success
+       failure:(void (^)(NSError *error))failure;
+
+//判断身份，是否进入评论页
++(void)identifyuser_id:(NSString *)user_id
        success:(void(^)(id responseObject))success
        failure:(void (^)(NSError *error))failure;
 

@@ -20,6 +20,7 @@
 #import "AFHTTPSessionManager.h"
 #import "NSString+HBWmd5.h"
 #import "WebAgent.h"
+#import "FeedBackViewController.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -1277,7 +1278,24 @@
     
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo success:^(id responseObject) {
         [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            
+            [WebAgent identifyuser_id:userIDinfo success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSString *str = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                if([str  isEqual: @"TRANSTOR"])
+                {
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                }
+                else
+                {
+                    FeedBackViewController *fbvc = [[FeedBackViewController alloc]init];
+                    [self.navigationController pushViewController:fbvc animated:YES];
+                }
+                
+            } failure:^(NSError *error) {
+                
+            }];
+            
             
             
 
