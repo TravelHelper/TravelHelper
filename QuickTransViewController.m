@@ -47,6 +47,7 @@
 @property(nonatomic,strong) UIRefreshControl *refreshController;
 @property(nonatomic,strong) UIView *bottomView;
 @property(nonatomic,strong) UIView *subBottomView;
+@property(nonatomic,strong) UILabel *shortLabel;
 @property(nonatomic,assign) BOOL isCancelSendRecord;
 @property(nonatomic,assign) BOOL isRecognizer;
 @property(nonatomic,assign) BOOL isZero;
@@ -115,7 +116,7 @@
     self.isZero = NO;
     self.isKeyboardShow = NO;
     //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-      self.view.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@""]];
+    self.view.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@""]];
     _stringTransVC = [[StringTransViewController alloc]init];
     [_stringTransVC viewDidLoad];
     
@@ -152,8 +153,8 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(determinePlayARecord:) name:@"determinePlayARecord" object:nil];
     
-     [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
-//    [self performSelector:@selector(sendAwebMessage) withObject:nil afterDelay:10];
+    [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
+    //    [self performSelector:@selector(sendAwebMessage) withObject:nil afterDelay:10];
 }
 
 
@@ -205,27 +206,27 @@
         NSLog(@"%@",responseObject[@"token"]);
         
         [self connectRongCloudServerWithToken:responseObject[@"token"]];
-
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@",error);
-
+        
     }];
-//    [manager POST:urlstr parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        //这里你就能得到token啦~
-//        
-////        NSData *data = [[NSData alloc] initWithData:responseObject];
-////        NSDictionary *retDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-//
-//        NSLog(@" %@", responseObject);
-//        
-//        NSLog(@"%@",responseObject[@"token"]);
-//        
-//        [self connectRongCloudServerWithToken:responseObject[@"token"]];
-//        
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"%@",error);
-//    }];
+    //    [manager POST:urlstr parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    //        //这里你就能得到token啦~
+    //
+    ////        NSData *data = [[NSData alloc] initWithData:responseObject];
+    ////        NSDictionary *retDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    //
+    //        NSLog(@" %@", responseObject);
+    //
+    //        NSLog(@"%@",responseObject[@"token"]);
+    //
+    //        [self connectRongCloudServerWithToken:responseObject[@"token"]];
+    //
+    //
+    //    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    //        NSLog(@"%@",error);
+    //    }];
     
 }
 
@@ -286,56 +287,66 @@
             ///////
             
             [self addHistoryWithDict:dict];
-
+            
             ///////////////////////////////////////////
             ///////////
             //////
             
             NSInteger count = self.dataArr.count;
             
-            [self.dataArr insertObject:dict atIndex:count];
-            ascCount = ascCount + 1;
-            [self reloadDataSourceWithNumber:ascCount];
-            [self.bottomTableView reloadData];
             
-            [self.sendMessageBtn removeFromSuperview];
             
-            NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
-            [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            
-            ///////////
-            if (self.isKeyboardShow == YES) {
+            dispatch_async(dispatch_get_main_queue(), ^{
                 
-                NSInteger cccount = self.dataSource.count;
-                NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
-                CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
-                CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
-                ;
-                [UIView animateWithDuration:0.25 animations:^{
+                [self.dataArr insertObject:dict atIndex:count];
+                ascCount = ascCount + 1;
+                [self reloadDataSourceWithNumber:ascCount];
+                [self.bottomTableView reloadData];
+                
+                [self.sendMessageBtn removeFromSuperview];
+                
+                NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount-1 inSection:0];
+                [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                
+                
+                
+                ///////////
+                if (self.isKeyboardShow == YES) {
                     
-                    CGFloat moveY = 0.0;
-                    CGFloat xiangjian;
-                    xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
-                    
-                    if (xiangjian <= 0) {
-                        moveY = 0;
-                    }
-                    
-                    if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
-                        moveY = xiangjian;
-                    }
-                    
-                    if (xiangjian >= KeyboardWillShowHeight ) {
-                        moveY = KeyboardWillShowHeight;
-                    }
-                    self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
-                    self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
-                }];
-            }
-            //////
-            /////////
-            ////////////
-            ////////////////////////////
+                    NSInteger cccount = self.dataSource.count;
+                    NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
+                    CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
+                    CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
+                    ;
+                    [UIView animateWithDuration:0.25 animations:^{
+                        
+                        CGFloat moveY = 0.0;
+                        CGFloat xiangjian;
+                        xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
+                        
+                        if (xiangjian <= 0) {
+                            moveY = 0;
+                        }
+                        
+                        if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
+                            moveY = xiangjian;
+                        }
+                        
+                        if (xiangjian >= KeyboardWillShowHeight ) {
+                            moveY = KeyboardWillShowHeight;
+                        }
+                        self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
+                        self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
+                    }];
+                }
+                //////
+                /////////
+                ////////////
+                ////////////////////////////
+                
+            });
+            
+            
         }
         
         
@@ -353,55 +364,62 @@
             NSLog(@"sccczsc...%@df%@",dic,uurl);
             
             NSInteger count = self.dataArr.count;
-            [self.dataArr insertObject:dic atIndex:count];
-            ascCount = ascCount + 1;
-            [self reloadDataSourceWithNumber:ascCount];
-            [self.bottomTableView reloadData];
-            
-            [self.sendMessageBtn removeFromSuperview];
-            
-            NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
-            [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
             
             
-            //语音存在本地，并且加入展示数组⬆️
-            
-            if (self.isKeyboardShow == YES) {
+            dispatch_async(dispatch_get_main_queue(), ^{
                 
-                NSInteger cccount = self.dataSource.count;
-                NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
-                CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
-                CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
-                ;
-                [UIView animateWithDuration:0.25 animations:^{
+                [self.dataArr insertObject:dic atIndex:count];
+                ascCount = ascCount + 1;
+                [self reloadDataSourceWithNumber:ascCount];
+                [self.bottomTableView reloadData];
+                
+                
+                [self.sendMessageBtn removeFromSuperview];
+                
+                NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
+                [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                
+                
+                //语音存在本地，并且加入展示数组⬆️
+                
+                if (self.isKeyboardShow == YES) {
                     
-                    CGFloat moveY = 0.0;
-                    CGFloat xiangjian;
-                    xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
-                    
-                    if (xiangjian <= 0) {
-                        moveY = 0;
-                    }
-                    
-                    if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
-                        moveY = xiangjian;
-                    }
-                    
-                    if (xiangjian >= KeyboardWillShowHeight ) {
-                        moveY = KeyboardWillShowHeight;
-                    }
-                    self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
-                    self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
-                }];
-            }
+                    NSInteger cccount = self.dataSource.count;
+                    NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
+                    CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
+                    CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
+                    ;
+                    [UIView animateWithDuration:0.25 animations:^{
+                        
+                        CGFloat moveY = 0.0;
+                        CGFloat xiangjian;
+                        xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
+                        
+                        if (xiangjian <= 0) {
+                            moveY = 0;
+                        }
+                        
+                        if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
+                            moveY = xiangjian;
+                        }
+                        
+                        if (xiangjian >= KeyboardWillShowHeight ) {
+                            moveY = KeyboardWillShowHeight;
+                        }
+                        self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
+                        self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
+                    }];
+                }
+                
+            });
             
         }
-
+        
     }else{
         NSLog(@"对话的人已经改变了！");
     }
     
-        NSLog(@"还剩余的未接收的消息数：%d", nLeft);
+    NSLog(@"还剩余的未接收的消息数：%d", nLeft);
 }
 
 #pragma mark - 语音听写私有方法 & IFlySpeechRecognizerDelegate
@@ -523,7 +541,7 @@
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSMutableArray *arr = [NSMutableArray arrayWithArray:[userDefault objectForKey:@"ChatHisTory"]];
-
+    
     
     NSInteger count = arr.count;
     
@@ -566,7 +584,7 @@
     
     
     //////////
-//    iFlySpeechRecognizerString = @"你吃饭了吗？";
+    //    iFlySpeechRecognizerString = @"你吃饭了吗？";
     
     //////////
     NSDictionary *dict = @{@"senderID":self.senderID,
@@ -582,7 +600,7 @@
                            @"senderImgPictureURL":@""};
     
     [self addHistoryWithDict:dict];
-
+    
     NSString *extra = [self getRCMessageExtraStringWithsenderID:dict[@"senderID"] chatTextContent:dict[@"chatTextContent"] chatContentType:dict[@"chatContentType"] chatPictureURLContent:dict[@"chatPictureURLContent"] messageID:dict[@"messageID"] senderImgPictureURL:dict[@"senderImgPictureURL"] chatAudioContent:dict[@"chatAudioContent"] audioSecond:dict[@"audioSecond"] sendIdentifier:dict[@"sendIdentifier"] AVtoStringContent:dict[@"AVtoStringContent"] sendTime:dict[@"sendTime"]];
     [self sendAWebVoice:extra];
     
@@ -598,7 +616,7 @@
     NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
     [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
     
-//    [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
+    //    [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
 }
 
 //免费翻译进行
@@ -829,7 +847,7 @@
         if (self.isRecognizer == NO) {
             [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
         }
-
+        
     }
     
     if (button == self.reportEnglishBtn) {
@@ -858,7 +876,7 @@
         if (self.isRecognizer == NO) {
             [self iFlySpeechRecognizerBegin:LANGUAGE_ENGLISH];
         }
-
+        
     }
     
     
@@ -901,7 +919,7 @@
                 UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 150, 150)];
                 [imgView setImage:img];
                 [self.subBottomView addSubview:imgView];
-//                self.subBottomView.backgroundColor = [UIColor greenColor];
+                //                self.subBottomView.backgroundColor = [UIColor greenColor];
                 NSLog(@"取消发送语音");
                 [self.cwViewController pauseRecordBtnClick];
                 
@@ -1006,9 +1024,26 @@
         
         
         [self.cwViewController recordButtonClick];
-        [self removeRecordPageView];
+        
         [self iFlySpeechRecognizerStop];
-        [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+        
+        if ([self.cwViewController.secondString intValue] < 1 ) {
+            
+            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+            self.shortLabel.text = @"说话时间过短，小于1秒";
+            self.shortLabel.font = FONT_10;
+            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+            self.shortLabel.backgroundColor = [UIColor purpleColor];
+            [self.subBottomView addSubview:self.shortLabel];
+            
+            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+            
+        }else{
+            
+            [self removeRecordPageView];
+            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+            
+        }
         
         
         self.isZero = YES;
@@ -1020,6 +1055,7 @@
 
 -(void)removeRecordPageView{
     
+    [self.shortLabel removeFromSuperview];
     [self.subBottomView removeFromSuperview];
     [self.bottomView removeFromSuperview];
 }
@@ -1075,8 +1111,8 @@
         
         cellMaxY = 0;
     }
-   
-
+    
+    
     CGRect keyboardRect = [noti.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat deltaY = keyboardRect.size.height;
     KeyboardWillShowHeight = deltaY;
@@ -1106,10 +1142,10 @@
         
         NSIndexPath *ndex = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
         [self.bottomTableView scrollToRowAtIndexPath:ndex atScrollPosition:UITableViewScrollPositionTop animated:YES];
-
+        
     }
     
-
+    
 }
 -(void)keyboardWillHide:(NSNotification *)noti{
     
@@ -1276,7 +1312,7 @@
         [self.inputBottomView addSubview:self.reportEnglishBtn];
         [self cancelResignFirstResponder];
         self.changeSendContentBtn.tag = 1002;
-//        self.changeSendContentBtn.backgroundColor = [UIColor orangeColor];
+        //        self.changeSendContentBtn.backgroundColor = [UIColor orangeColor];
     }else{
         //语音转输入
         self.changeSendContentBtn.tag = 1001;
@@ -1297,7 +1333,7 @@
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setObject:nil forKey:@"ChatHisTory"];
     [userDefault synchronize];
-
+    
 }
 
 -(void)sendMessageBtnClick{
@@ -1453,7 +1489,7 @@
 
 
 //-(UIButton *)sendMessageBtn{
-//    
+//
 //    if (!_sendMessageBtn) {
 //        _sendMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //        _sendMessageBtn.frame = CGRectMake( CGRectGetMaxX(self.inputTextView.frame) - 35,  kScreenWidth*0.031,kScreenWidth*0.078,kScreenWidth*0.078);
