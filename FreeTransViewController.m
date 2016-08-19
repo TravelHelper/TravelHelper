@@ -291,6 +291,9 @@
     //    iFlySpeechRecognizerString = @"今天天气不错！";
     
     //////////
+    if ([self.inputTextView.text  isEqual: @""]) {
+        NSLog(@"空了1");
+    }
     NSDictionary *dict = @{@"senderID":self.senderID,
                            @"chatAudioContent":urlString,
                            @"chatContentType":@"audio",
@@ -326,7 +329,9 @@
         //不需要翻译
     }else{
         NSInteger count = self.dataArr.count;
-        
+        if ([self.inputTextView.text  isEqual: @""]) {
+            NSLog(@"空了3");
+        }
         self.stringTransVC.inputTF.text = iFlySpeechRecognizerString;
         [self.stringTransVC btnClick];
         NSString *result = self.stringTransVC.resultString;
@@ -384,65 +389,70 @@
     
     iFlySpeechRecognizerString = text;
     
-    
-    
-    NSString *currentDateString = [self getCurerentTimeString];
-    self.cellMessageID = currentDateString;
-    
-    NSDictionary *dict = @{@"senderID":self.senderID,
-                           @"chatTextContent":text,
-                           @"chatContentType":@"text",
-                           @"chatPictureURLContent":@"",
-                           @"messageID":self.cellMessageID,
-                           @"senderImgPictureURL":@"",
-                           @"messageID":self.cellMessageID,
-                           @"audioSecond":@"",
-                           @"sendIdentifier":self.userIdentifier,
-                           @"AVtoStringContent":@"",
-                           @"sendTime":self.cellMessageID};
-    self.inputTextView.text = nil;
-    [self.dataArr insertObject:dict atIndex:count];
-    ascCount = ascCount + 1;
-    [self reloadDataSourceWithNumber:ascCount];
-    [self.bottomTableView reloadData];
-    
-    [self.sendMessageBtn removeFromSuperview];
-    
-    NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
-    [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
-    
-    if (self.isKeyboardShow == YES) {
-        ///////////
-        NSInteger cccount = self.dataSource.count;
-        NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
-        CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
-        CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
-        ;
-        [UIView animateWithDuration:0.25 animations:^{
+    if ([self.inputTextView.text  isEqual: @""]) {
+        NSLog(@"空了2");
+    }else{
+        NSString *currentDateString = [self getCurerentTimeString];
+        self.cellMessageID = currentDateString;
+        
+        NSDictionary *dict = @{@"senderID":self.senderID,
+                               @"chatTextContent":text,
+                               @"chatContentType":@"text",
+                               @"chatPictureURLContent":@"",
+                               @"messageID":self.cellMessageID,
+                               @"senderImgPictureURL":@"",
+                               @"messageID":self.cellMessageID,
+                               @"audioSecond":@"",
+                               @"sendIdentifier":self.userIdentifier,
+                               @"AVtoStringContent":@"",
+                               @"sendTime":self.cellMessageID};
+        self.inputTextView.text = nil;
+        [self.dataArr insertObject:dict atIndex:count];
+        ascCount = ascCount + 1;
+        [self reloadDataSourceWithNumber:ascCount];
+        [self.bottomTableView reloadData];
+        
+        [self.sendMessageBtn removeFromSuperview];
+        
+        NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
+        [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        
+        
+        if (self.isKeyboardShow == YES) {
+            ///////////
+            NSInteger cccount = self.dataSource.count;
+            NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
+            CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
+            CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
+            ;
+            [UIView animateWithDuration:0.25 animations:^{
+                
+                CGFloat moveY = 0.0;
+                CGFloat xiangjian;
+                xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
+                
+                if (xiangjian <= 0) {
+                    moveY = 0;
+                }
+                
+                if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
+                    moveY = xiangjian;
+                }
+                
+                if (xiangjian >= KeyboardWillShowHeight ) {
+                    moveY = KeyboardWillShowHeight;
+                }
+                self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
+                self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
+            }];
             
-            CGFloat moveY = 0.0;
-            CGFloat xiangjian;
-            xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
-            
-            if (xiangjian <= 0) {
-                moveY = 0;
-            }
-            
-            if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
-                moveY = xiangjian;
-            }
-            
-            if (xiangjian >= KeyboardWillShowHeight ) {
-                moveY = KeyboardWillShowHeight;
-            }
-            self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
-            self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
-        }];
+        }
+        
+        [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
         
     }
     
-    [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
+
     
 }
 //加载datasource
@@ -799,6 +809,9 @@
 - (void)textViewDidChange:(UITextView *)textView{
     
     NSLog(@"变了");
+    if ([self.inputTextView.text  isEqual: @""]) {
+        NSLog(@"空了4");
+    }
     if ([self.inputTextView.text isEqualToString:@""] || self.inputTextView.text == nil) {
         
         [self.sendMessageBtn removeFromSuperview];
@@ -813,11 +826,11 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){
-        
-        //发送消息！！！！！！
-        [self sendTextMessageMethodWithString:textView.text];
-        
-        return NO;
+        if (text != nil && ![text isEqualToString:@""]) {
+            //发送消息！！！！！！
+            [self sendTextMessageMethodWithString:textView.text];
+            return NO;
+        }
     }
     
     return YES;
@@ -925,7 +938,9 @@
 }
 
 -(void)sendMessageBtnClick{
-    
+    if (self.inputTextView.text == nil) {
+        NSLog(@"空了7");
+    }
     [self sendTextMessageMethodWithString:self.inputTextView.text];
     NSLog(@"发送消息");
 }

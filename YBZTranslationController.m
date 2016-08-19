@@ -686,7 +686,7 @@
             NSLog(@"%@",self.isLogin);
             if ([self.isLogin  isEqual: @"1"]) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    
+                    userID = user_id[@"user_id"];
                     [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
                         [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
                         } failure:^(NSError *error) {
