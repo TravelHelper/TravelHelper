@@ -45,18 +45,18 @@
     BOOL isButtonOn = [switchButton isOn];
     if (isButtonOn)
     {
-        self.wuraomoshi = @"1";
+        self.wuraomoshi = @"0";
     }
     else
     {
-        self.wuraomoshi = @"0";
+        self.wuraomoshi = @"1";
     }
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     [WebAgent wuraomoshiWithuseId:user_id[@"user_id"] Withtranslatorallow:self.wuraomoshi success:^(id responseObject) {
-        
+        NSLog(@"aaa");
     } failure:^(NSError *error) {
-        
+        NSLog(@"bbb");
     }];
 }
 

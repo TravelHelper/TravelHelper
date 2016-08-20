@@ -21,6 +21,7 @@
 #import "NSString+HBWmd5.h"
 #import "WebAgent.h"
 #import "FeedBackViewController.h"
+#import "MJRefresh.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -111,6 +112,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setupRefresh];
     
     self.isCancelSendRecord = NO;
     self.isRecognizer = NO;
@@ -655,65 +657,67 @@
     self.cellMessageID = currentDateString;
     
     NSInteger count = self.dataArr.count;
-    
-    NSDictionary *dict = @{@"senderID":self.senderID,
-                           @"chatTextContent":text,
-                           @"chatContentType":@"text",
-                           @"chatPictureURLContent":@"",
-                           @"messageID":self.cellMessageID,
-                           @"senderImgPictureURL":@"",
-                           @"chatAudioContent":self.cellMessageID,
-                           @"audioSecond":@"",
-                           @"sendIdentifier":self.userIdentifier,
-                           @"AVtoStringContent":@"",
-                           @"sendTime":self.cellMessageID};
-    
-    [self addHistoryWithDict:dict];
-    
-    NSString *extra = [self getRCMessageExtraStringWithsenderID:dict[@"senderID"] chatTextContent:dict[@"chatTextContent"] chatContentType:dict[@"chatContentType"] chatPictureURLContent:dict[@"chatPictureURLContent"] messageID:dict[@"messageID"] senderImgPictureURL:dict[@"senderImgPictureURL"] chatAudioContent:dict[@"chatAudioContent"] audioSecond:dict[@"audioSecond"] sendIdentifier:dict[@"sendIdentifier"] AVtoStringContent:dict[@"AVtoStringContent"] sendTime:dict[@"sendTime"]];
-    [self sendAwebMessage:extra];
-    
-    self.inputTextView.text = nil;
-    [self.dataArr insertObject:dict atIndex:count];
-    ascCount = ascCount + 1;
-    [self reloadDataSourceWithNumber:ascCount];
-    [self.bottomTableView reloadData];
-    
-    [self.sendMessageBtn removeFromSuperview];
-    
-    NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
-    [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
-    
-    if (self.isKeyboardShow == YES) {
-        //////////
-        NSInteger cccount = self.dataSource.count;
-        NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
-        CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
-        CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
-        ;
-        [UIView animateWithDuration:0.25 animations:^{
-            
-            CGFloat moveY = 0.0;
-            CGFloat xiangjian;
-            xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
-            
-            if (xiangjian <= 0) {
-                moveY = 0;
-            }
-            
-            if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
-                moveY = xiangjian;
-            }
-            
-            if (xiangjian >= KeyboardWillShowHeight ) {
-                moveY = KeyboardWillShowHeight;
-            }
-            self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
-            self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
-        }];
+    if ([self.inputTextView.text  isEqual: @""]) {
+        NSLog(@"空了2");
+    }else{
+        NSDictionary *dict = @{@"senderID":self.senderID,
+                               @"chatTextContent":text,
+                               @"chatContentType":@"text",
+                               @"chatPictureURLContent":@"",
+                               @"messageID":self.cellMessageID,
+                               @"senderImgPictureURL":@"",
+                               @"chatAudioContent":self.cellMessageID,
+                               @"audioSecond":@"",
+                               @"sendIdentifier":self.userIdentifier,
+                               @"AVtoStringContent":@"",
+                               @"sendTime":self.cellMessageID};
+        
+        [self addHistoryWithDict:dict];
+        
+        NSString *extra = [self getRCMessageExtraStringWithsenderID:dict[@"senderID"] chatTextContent:dict[@"chatTextContent"] chatContentType:dict[@"chatContentType"] chatPictureURLContent:dict[@"chatPictureURLContent"] messageID:dict[@"messageID"] senderImgPictureURL:dict[@"senderImgPictureURL"] chatAudioContent:dict[@"chatAudioContent"] audioSecond:dict[@"audioSecond"] sendIdentifier:dict[@"sendIdentifier"] AVtoStringContent:dict[@"AVtoStringContent"] sendTime:dict[@"sendTime"]];
+        [self sendAwebMessage:extra];
+        
+        self.inputTextView.text = nil;
+        [self.dataArr insertObject:dict atIndex:count];
+        ascCount = ascCount + 1;
+        [self reloadDataSourceWithNumber:ascCount];
+        [self.bottomTableView reloadData];
+        
+        [self.sendMessageBtn removeFromSuperview];
+        
+        NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
+        [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        
+        
+        if (self.isKeyboardShow == YES) {
+            //////////
+            NSInteger cccount = self.dataSource.count;
+            NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
+            CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
+            CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
+            ;
+            [UIView animateWithDuration:0.25 animations:^{
+                
+                CGFloat moveY = 0.0;
+                CGFloat xiangjian;
+                xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
+                
+                if (xiangjian <= 0) {
+                    moveY = 0;
+                }
+                
+                if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
+                    moveY = xiangjian;
+                }
+                
+                if (xiangjian >= KeyboardWillShowHeight ) {
+                    moveY = KeyboardWillShowHeight;
+                }
+                self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
+                self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
+            }];
+        }
     }
-    
     
 }
 //加载datasource
@@ -1178,10 +1182,11 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){
-        
-        //发送消息！！！！！！
-        [self sendTextMessageMethodWithString:textView.text];
-        return NO;
+        if (text != nil && ![text isEqualToString:@""]) {
+            //发送消息！！！！！！
+            [self sendTextMessageMethodWithString:textView.text];
+            return NO;
+        }
     }
     
     return YES;
@@ -1239,6 +1244,63 @@
 
 #pragma mark - 响应事件
 
+- (void)setupRefresh
+{
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    [self.bottomTableView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    // dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
+    [self.bottomTableView addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"table"];
+#warning 自动刷新(一进入程序就下拉刷新)
+    //[self.popularCellView headerBeginRefreshing];
+    
+    // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)
+    [self.bottomTableView addFooterWithTarget:self action:@selector(footerRereshing)];
+    
+    // 设置文字(也可以不设置,默认的文字在MJRefreshConst中修改)
+    self.bottomTableView.headerPullToRefreshText = @"下拉可以刷新了";
+    self.bottomTableView.headerReleaseToRefreshText = @"松开马上刷新了";
+    self.bottomTableView.headerRefreshingText = @"MJ哥正在帮你刷新中,不客气";
+    
+    self.bottomTableView.footerPullToRefreshText = @"上拉可以加载更多数据了";
+    self.bottomTableView.footerReleaseToRefreshText = @"松开马上加载更多数据了";
+    self.bottomTableView.footerRefreshingText = @"MJ哥正在帮你加载中,不客气";
+}
+
+#pragma mark 开始进入刷新状态
+- (void)headerRereshing
+{
+    //    // 1.添加假数据
+    //    for (int i = 0; i<5; i++) {
+    //        [self.cellArr insertObject:MJRandomData atIndex:0];
+    //    }
+    
+    // 2.模拟2秒后刷新表格UI（真实开发中，可以移除这段gcd代码）
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 刷新表格
+        [self.bottomTableView reloadData];
+        
+        // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
+        [self.bottomTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRereshing
+{
+    //    // 1.添加假数据
+    //    for (int i = 0; i<5; i++) {
+    //        [self.cellArr addObject:MJRandomData];
+    //    }
+    //
+    // 2.模拟2秒后刷新表格UI（真实开发中，可以移除这段gcd代码）
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 刷新表格
+        [self.bottomTableView reloadData];
+        
+        // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
+        [self.bottomTableView footerEndRefreshing];
+    });
+}
+
 -(void)refreshView:(UIRefreshControl *)refresh{
     
     [self reloadDataSourceWithNumber:ascCount+6];
@@ -1284,6 +1346,16 @@
                 if([str  isEqual: @"TRANSTOR"])
                 {
                     [self.navigationController popToRootViewControllerAnimated:YES];
+                    [WebAgent interpreterRequireStateWithuserId:self.target_id success:^(id responseObject) {
+                        
+                        NSLog(@"译员成功返回首页");
+                        
+                        
+                    } failure:^(NSError *error) {
+                        NSLog(@"译员未返回首页");
+                        
+                    }];
+                    
                 }
                 else
                 {
@@ -1307,15 +1379,7 @@
     } failure:^(NSError *error) {
         
     }];
-    [WebAgent interpreterRequireStateWithuserId:self.target_id success:^(id responseObject) {
-        
-        NSLog(@"译员成功返回首页");
-        
-        
-    } failure:^(NSError *error) {
-        NSLog(@"译员未返回首页");
-        
-    }];
+
 }
 
 

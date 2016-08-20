@@ -63,7 +63,10 @@
     
     if (!_bottomView) {
         _bottomView = [[UILabel alloc]initWithFrame:CGRectMake(margin, UIScreenWidth * 0.04, UIScreenWidth - margin * 2, UIScreenWidth * 0.2)];
-        _bottomView.backgroundColor = [UIColor colorWithRed:168 / 255.0 green:168 / 255.0 blue:168 / 255.0 alpha:1];
+        //_bottomView.backgroundColor = [UIColor colorWithRed:168 / 255.0 green:168 / 255.0 blue:168 / 255.0 alpha:1];
+        UIColor *bgColor = [UIColor colorWithPatternImage: [UIImage imageNamed:@"国旗后灰色"]];
+        
+        _bottomView.backgroundColor = bgColor;
         _bottomView.layer.cornerRadius = 5;
         _bottomView.layer.masksToBounds = YES;
         
