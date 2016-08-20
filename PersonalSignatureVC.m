@@ -32,7 +32,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //    [self.view addSubview:self.lineLabel];
     [self.view addSubview:self.myView];
     [self.view addSubview:self.individualSignatureTV];
     [self.view addSubview:self.inputCharacterNumberLabel];
@@ -42,7 +41,9 @@
     self.individualSignatureTV.hidden = NO;
     self.individualSignatureTV.delegate = self;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.saveBtn];
+    //添加保存按钮
+    UIBarButtonItem *rightBtn=[[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(clickSaveBtnAction)];
+    self.navigationItem.rightBarButtonItem = rightBtn;
     
 }
 
@@ -85,17 +86,6 @@
     }
     return _myView;
     
-}
-
--(UIButton *)saveBtn
-{
-    if (!_saveBtn) {
-        _saveBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 64, 64)];
-        [_saveBtn setTitle:@"完成" forState:UIControlStateNormal];
-        [_saveBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_saveBtn addTarget:self action:@selector(clickSaveBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _saveBtn;
 }
 
 -(void)clickSaveBtnAction

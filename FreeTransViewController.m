@@ -26,7 +26,7 @@
 
 #define kScreenWidth   [UIScreen mainScreen].bounds.size.width
 #define kScreenHight  [UIScreen mainScreen].bounds.size.height
-
+#define krequL   [UIScreen mainScreen].bounds.size.width*0.44
 @property (nonatomic,strong) NSString *selectedCellMessageID;
 
 
@@ -44,6 +44,9 @@
 @property(nonatomic,strong) UIRefreshControl *refreshController;
 @property(nonatomic,strong) UIView *bottomView;
 @property(nonatomic,strong) UIView *subBottomView;
+@property(nonatomic,strong) UIImageView *sayView;
+@property(nonatomic,strong) UIImageView *cancelSayView;
+
 @property(nonatomic,strong) UILabel *shortLabel;
 @property(nonatomic,assign) BOOL isCancelSendRecord;
 @property(nonatomic,assign) BOOL isRecognizer;
@@ -584,6 +587,22 @@
     
     NSLog(@"ButtonCancel!");
 }
+-(UIImageView *)sayView{
+    if (!_sayView) {
+        _sayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL, krequL)];
+        UIImage *img = [UIImage imageNamed:@"用户翻译-口语即时-语音输入"];
+        [_sayView setImage:img];
+    }
+    return _sayView;
+}
+-(UIImageView *)cancelSayView{
+    if (!_cancelSayView) {
+        _cancelSayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL, krequL)];
+        UIImage *img = [UIImage imageNamed:@"用户翻译-口语即时-取消发送"];
+        [_cancelSayView setImage:img];
+    }
+    return _cancelSayView;
+}
 
 -(void)button:(UIButton *)button BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     
@@ -610,10 +629,8 @@
         if (x > leftBorder && x < rightBorder && y > topBorder && y < bottomBorder) {
             
             self.isCancelSendRecord = YES;
-            UIImage *img = [UIImage imageNamed:@"requ2"];
-            UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 150, 150)];
-            [imgView setImage:img];
-            [self.subBottomView addSubview:imgView];
+            [self.cancelSayView removeFromSuperview];
+            [self.subBottomView addSubview:self.sayView];
             NSLog(@"取消发送语音");
             [self.cwViewController pauseRecordBtnClick];
             
@@ -626,10 +643,8 @@
             
             [self.cwViewController goOnRecordBtnClick];
             self.isCancelSendRecord = NO;
-            UIImage *img = [UIImage imageNamed:@"requ1"];
-            UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 150, 150)];
-            [imgView setImage:img];
-            [self.subBottomView addSubview:imgView];
+            [self.sayView removeFromSuperview];
+            [self.subBottomView addSubview:self.cancelSayView];
             
             if (self.isRecognizer == NO) {
                 [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
@@ -909,10 +924,7 @@
     self.bottomTableView.headerPullToRefreshText = @"下拉可以刷新了";
     self.bottomTableView.headerReleaseToRefreshText = @"松开马上刷新了";
     self.bottomTableView.headerRefreshingText = @"MJ哥正在帮你刷新中,不客气";
-    
-    self.bottomTableView.footerPullToRefreshText = @"上拉可以加载更多数据了";
-    self.bottomTableView.footerReleaseToRefreshText = @"松开马上加载更多数据了";
-    self.bottomTableView.footerRefreshingText = @"MJ哥正在帮你加载中,不客气";
+
 }
 
 #pragma mark 开始进入刷新状态
@@ -1023,7 +1035,7 @@
 
 -(BaseTableView *)bottomTableView{
     if (!_bottomTableView) {
-        _bottomTableView = [[BaseTableView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - CGRectGetHeight(self.inputBottomView.frame) - 64) style:UITableViewStylePlain];
+        _bottomTableView = [[BaseTableView alloc]initWithFrame:CGRectMake(0,64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - CGRectGetHeight(self.inputBottomView.frame)-64) style:UITableViewStylePlain];
         //_bottomTableView.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1];//免费翻译背景颜色
         _bottomTableView.backgroundColor = [UIColor clearColor];
         _bottomTableView.idelegate = self;
@@ -1034,10 +1046,6 @@
         _bottomTableView.allowsSelection = YES;
         _bottomTableView.showsVerticalScrollIndicator = YES;
         _bottomTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        
-        
-        //[_bottomTableView addSubview:self.refreshController];
-        
         
         
     }
@@ -1066,7 +1074,6 @@
         [_changeSendContentBtn addTarget:self action:@selector(changeSendContentClick) forControlEvents:UIControlEventTouchUpInside];
         _changeSendContentBtn.tag = 1001;//展示语音图片，点击切换成语音模式；
         
-        //_changeSendContentBtn.backgroundColor = [UIColor redColor];
     }
     return _changeSendContentBtn;
     
@@ -1158,8 +1165,8 @@
 -(UIView *)subBottomView{
     
     if (!_subBottomView) {
-        _subBottomView = [[UIView alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 150)/2, ([UIScreen mainScreen].bounds.size.height - 150)/2, 200, 150)];
-        //        _subBottomView.backgroundColor = [UIColor redColor];
+        _subBottomView = [[UIView alloc]initWithFrame:CGRectMake((kScreenWidth - krequL)/2, ([UIScreen mainScreen].bounds.size.height - krequL)/2, krequL, krequL)];
+
         _subBottomView.userInteractionEnabled = NO;
     }
     

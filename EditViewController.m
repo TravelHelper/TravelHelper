@@ -38,7 +38,6 @@
 @property(nonatomic,strong)PickAvatarImage *pickImage;
 @property(nonatomic,strong)NSString *passNickname;
 @property(nonatomic,strong)NSString *birthdayText;
-@property(nonatomic,strong)UIBarButtonItem *backBI;
 @property(nonatomic,strong)UIImage *photoImg;
 
 @end
@@ -47,7 +46,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //self.tabBarController.tabBar.hidden = YES;
     _photoImg=[[UIImage alloc]init];
     self.automaticallyAdjustsScrollViewInsets = NO;
 
@@ -75,8 +73,9 @@
     self.mainTableView.delegate = self;
     self.mainTableView.dataSource = self;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.addBtn];
-    //    self.navigationItem.leftBarButtonItem = self.backBI;
+
+    UIBarButtonItem *rightBtn=[[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(addBtnClick)];
+    self.navigationItem.rightBarButtonItem = rightBtn;
     
     self.pickImage = [[PickAvatarImage alloc]init];
     self.pickImage.selfController = self;
@@ -134,35 +133,12 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"getLocationInfo" object:nil];
 }
 
-#pragma mark -  返回按钮
--(UIBarButtonItem *)backBI
-{
-    if (!_backBI) {
-        UIButton *backBtn= [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-        [backBtn setImage:[UIImage imageNamed:@"back_lly"] forState:UIControlStateNormal];
-        [backBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-        _backBI = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
-    }
-    return _backBI;
-}
-
 #pragma mark -  返回按钮点击事件
 -(void)back
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-#pragma mark -  保存按钮
 
--(UIButton *)addBtn
-{
-    if (!_addBtn) {
-        _addBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-        [_addBtn setTitle:@"保存" forState:UIControlStateNormal];
-        [_addBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_addBtn addTarget:self action:@selector(addBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _addBtn;
-}
 
 #pragma mark - 保存按钮点击事件
 
