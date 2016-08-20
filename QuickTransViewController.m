@@ -773,7 +773,6 @@
     
     
     ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
-    
     return cell;
 }
 
@@ -1327,16 +1326,18 @@
     if (self.changeSendContentBtn.tag == 1001) {
         //输入转语音
         [self.inputBottomView addSubview:self.reportAudioBtn];
-        [self.inputBottomView addSubview:self.reportEnglishBtn];
+//        [self.inputBottomView addSubview:self.reportEnglishBtn];
         [self cancelResignFirstResponder];
         self.changeSendContentBtn.tag = 1002;
-        //        self.changeSendContentBtn.backgroundColor = [UIColor orangeColor];
+        [self.changeSendContentBtn setImage:[UIImage imageNamed:@"keyboard"] forState:UIControlStateNormal];
+
     }else{
         //语音转输入
         self.changeSendContentBtn.tag = 1001;
-        //self.changeSendContentBtn.backgroundColor = [UIColor yellowColor];
         [self.reportAudioBtn removeFromSuperview];
-        [self.reportEnglishBtn removeFromSuperview];
+//        [self.reportEnglishBtn removeFromSuperview];
+        [self.changeSendContentBtn setImage:[UIImage imageNamed:@"yuyin"] forState:UIControlStateNormal];
+
     }
     
     

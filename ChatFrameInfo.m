@@ -105,7 +105,8 @@
             }
         }else{
             if ([identifier isEqualToString:@"TRANSTOR"] || [identifier isEqualToString:@"FREETRANS"]) {
-                self.transtorTextReadBtnFram = CGRectMake(CGRectGetMinX(self.chatTextViewFrame) +8  , kTouXiangY+kScreenVMargin+0.5*self.chatTextLabelFrame.size.height-0.022*kScreenWith, 0.044*kScreenWith, 0.044*kScreenWith);
+                //no use
+//                self.transtorTextReadBtnFram = CGRectMake(CGRectGetMinX(self.chatTextViewFrame) +8  , kTouXiangY+kScreenVMargin+0.5*self.chatTextLabelFrame.size.height-0.022*kScreenWith, 0.044*kScreenWith, 0.044*kScreenWith);
             }
         }
     }
@@ -175,7 +176,7 @@
         
         if ([chatContentType isEqualToString:@"audio"]) {
             
-            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.4), kTouXiangY, kScreenWith*0.277, kTouXiangL);
+            self.chatTextViewFrame = CGRectMake(kScreenWith*(1-0.45), kTouXiangY, kScreenWith*0.277, kTouXiangL);
         }
         
     }
