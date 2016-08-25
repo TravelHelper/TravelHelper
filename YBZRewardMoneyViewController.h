@@ -9,5 +9,6 @@
 #import "YBZBaseViewController.h"
 
 @interface YBZRewardMoneyViewController : YBZBaseViewController
+@property (nonatomic,strong) NSString *amountYouBi;
 
 @end

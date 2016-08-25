@@ -12,4 +12,7 @@
 
 
 @property(nonatomic,strong) NSDictionary *data;
+@property(nonatomic,strong) UITextView *answerTextView; //显示回答内容
+@property(nonatomic,assign) NSString    *countPeople;
+@property(nonatomic,strong) UILabel *showAnswerLabel;
 @end

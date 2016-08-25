@@ -99,8 +99,7 @@
 }
 
 #pragma mark - 页面跳转
-- (void)interpretClick
-{
+- (void)interpretClick{
     
     [self.navigationController popViewControllerAnimated:YES];
 }

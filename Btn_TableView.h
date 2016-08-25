@@ -25,6 +25,7 @@
 
 
 @property (strong , nonatomic) UIButton *m_btn;
+@property (assign , nonatomic) BOOL m_btnpanduan;
 
 @property (strong , nonatomic) ExpandTableVC *m_ExpandTableVC;
 
@@ -40,6 +41,6 @@
 
 -(void)addViewData;
 
-
+-(void)tableViewHidden;
 
 @end

@@ -47,12 +47,20 @@
     self.m_ExpandTableVC.delegate_ExpandTableVC = self;
     self.m_ExpandTableVC.m_ContentArr  = self.m_TableViewData;
     [self addSubview:self.m_ExpandTableVC.view];
+    self.m_btnpanduan = NO;
     
     
 }
 
 -(void)expandableButton:(UIButton*)sender
 {
+    
+    
+    if (!self.m_btnpanduan) {
+        self.m_btnpanduan=YES;
+    }else{
+        self.m_btnpanduan=NO;
+    }
     
     [UIView animateWithDuration:0.2f animations:^{
         sender.userInteractionEnabled = false;
@@ -88,6 +96,10 @@
                                                       userInfo:@{@"文本":self.panduan}];
     
 }
+
+
+
+
 
 
 -(void)tableViewHidden

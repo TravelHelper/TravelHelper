@@ -32,6 +32,7 @@
         [self.contentView addSubview:contentLabel];
         self.contentLabel = contentLabel;
         contentLabel.numberOfLines = 0;
+        contentLabel.textColor = [UIColor grayColor];
         contentLabel.font = [UIFont systemFontOfSize:16];
         contentLabel.userInteractionEnabled = YES;
         

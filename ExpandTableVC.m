@@ -33,6 +33,7 @@
     
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.scrollEnabled =NO;
+     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -53,7 +54,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+#pragma mark - warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
@@ -129,7 +130,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([_delegate_ExpandTableVC respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)]) {
-        [_delegate_ExpandTableVC tableView:tableView didSelectRowAtIndexPath:indexPath];
+         [_delegate_ExpandTableVC tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
 }
 

@@ -6,6 +6,8 @@
 //  Copyright © 2016年 tjufe. All rights reserved.
 //
 
+
+//选择语言（用户）
 #import "YBZRewardChooseLanguageViewController.h"
 
 #import "LanguageCell.h"

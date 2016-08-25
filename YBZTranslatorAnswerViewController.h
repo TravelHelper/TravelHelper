@@ -12,5 +12,7 @@
 @interface YBZTranslatorAnswerViewController : YBZBaseViewController<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>
 
 @property (nonatomic,strong) UIImageView *imageView;
-
+@property (nonatomic,strong) UIImage     *previewImg;
+@property (nonatomic,strong) NSString    *rewardID;
+@property (nonatomic,strong) NSString    *reward_id;
 @end
