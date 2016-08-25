@@ -127,6 +127,8 @@
 //#define UICountryBtnWidth
 
 
+#define myRewardBackgroundColor UIColorFromRGB(0xEFEFEF)
+
 #define API_HOST @"http://10.2.208.156/TravelHelper/index.php/Home/"
 #define positionImg    @"http://127.0.0.1/TravelHelper/upload.php"
 

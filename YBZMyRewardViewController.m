@@ -61,9 +61,8 @@
     // Do any additional setup after loading the view.
     [self loadDataFromWeb];
     self.view.backgroundColor = UIColorFromRGB(0Xf2f2f2);
-    self.mainTableView.backgroundColor = UIColorFromRGB(0Xf2f2f2);
+    self.mainTableView.backgroundColor = myRewardBackgroundColor;
     self.title = @"我的悬赏";
-    [self leftButton];
     
     
     self.mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.09, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
@@ -90,7 +89,7 @@
     //数据内容
     self.m_btn_tableView1.m_TableViewData = @[@"解决",@"未解决"];
     self.m_btn_tableView2.m_TableViewData = @[@"英文",@"中文",@"法文",@"俄文"];
-    self.m_btn_tableView3.m_TableViewData = @[@"时间由早到晚",@"时间由晚到早"];
+    self.m_btn_tableView3.m_TableViewData = @[@"由早到晚",@"由晚到早"];
     
     [self.m_btn_tableView1 addViewData];
     [self.m_btn_tableView2 addViewData];
@@ -159,11 +158,6 @@
     
 }
 
-#pragma mark - 返回箭头
--(void)leftButton{
-
-    
-}
 
 #pragma mark - 页面跳转
 -(void)interpretClick{
