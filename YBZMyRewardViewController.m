@@ -6,6 +6,9 @@
 //  Copyright © 2016年 tjufe. All rights reserved.
 //
 
+
+//我的悬赏（用户）
+
 #import "YBZMyRewardViewController.h"
 #import "Model.h"
 #import "Btn_TableView.h"
@@ -45,6 +48,7 @@
 
 @property (nonatomic ,strong) NSString *select;//取选择的排序名称
 @property (nonatomic ,strong) NSString *select2;
+@property (nonatomic,strong) NSString *countPeople;
 
 
 @end
@@ -56,15 +60,17 @@
     self.dataArr = [[NSMutableArray alloc]init];
     // Do any additional setup after loading the view.
     [self loadDataFromWeb];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = UIColorFromRGB(0Xf2f2f2);
+    self.mainTableView.backgroundColor = UIColorFromRGB(0Xf2f2f2);
     self.title = @"我的悬赏";
-    //[self leftButton];
+    [self leftButton];
     
     
-    self.mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.09, self.view.bounds.size.width, self.view.bounds.size.height-64) style:UITableViewStylePlain];
-    self.mainTableView.backgroundColor = [UIColor grayColor];
+    self.mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.09, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
     self.mainTableView.delegate = self;
     self.mainTableView.dataSource = self;
+    self.mainTableView.showsVerticalScrollIndicator = NO;
+    self.mainTableView.separatorStyle = UITableViewCellSelectionStyleNone;
     [self.view addSubview:self.mainTableView];
     
     
@@ -115,7 +121,25 @@
     NSLog(@"%@",self.select2);
     //    [self loadDataFromWeb];
     //   [self.mainTableView reloadData];
-    
+    if (!self.m_btn_tableView1.m_btnpanduan&!self.m_btn_tableView2.m_btnpanduan&!self.m_btn_tableView3.m_btnpanduan) {
+        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:YES];
+        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:YES];
+        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:YES];
+        
+    }
+    if (self.m_btn_tableView1.m_btnpanduan) {
+        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:NO];
+        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:NO];
+    }
+    if (self.m_btn_tableView2.m_btnpanduan) {
+        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:NO];
+        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:NO];
+    }
+    if (self.m_btn_tableView3.m_btnpanduan) {
+        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:NO];
+        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:NO];
+    }
+
     
 }
 
@@ -136,30 +160,25 @@
 }
 
 #pragma mark - 返回箭头
-//-(void)leftButton{
-//    UIButton *backB = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 35, 35)];
-//    [backB setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
-//    [backB addTarget:self action:@selector(interpretClick) forControlEvents:UIControlEventTouchUpInside];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backB];
-//    
-//}
-//
-//#pragma mark - 页面跳转
-//-(void)interpretClick{
-//    [self.navigationController popViewControllerAnimated:YES];
-//    
-//}
+-(void)leftButton{
+
+    
+}
+
+#pragma mark - 页面跳转
+-(void)interpretClick{
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
 
 
 -(void)loadDataFromWeb{
-    [WebAgent myRewardrewardID:@"1111" success:^(id responseObject) {
+    [WebAgent myRewardrewardID:@"111" success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSLog(@"asd%@",dic);
-        
-        
         NSArray *reward_info = dic[@"reward_info"];
-//        NSLog(@"有%lu条数据",(unsigned long)reward_info.count);
+        NSLog(@"有%lu条数据",(unsigned long)reward_info.count);
         int j=0;
         int i=0;
         
@@ -318,9 +337,12 @@
     NSString *text = aa[@"reward_text"];
     NSString *url = aa[@"reward_url"];
     NSString *money = aa[@"reward_money"];
-    
-    
+    NSString *state = aa[@"proceed_state"];
+    NSString *rewardID = aa[@"reward_id"];
+    NSLog(@"------------->%@",title);
     UITableViewCell  *cell= [[UITableViewCell alloc]init];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     
@@ -338,12 +360,12 @@
     self.textV.layer.cornerRadius = 5.0;
     
     
-    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.035, kScreenWith*0.017, kScreenWith*0.783, kScreenWith*0.059)];
+    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.035, kScreenWith*0.017, kScreenWith*0.6, kScreenWith*0.059)];
     self.titleLabel.text = title;
     self.titleLabel.font = [UIFont systemFontOfSize:20];
     [self.titleLabel setTextColor:[UIColor colorWithRed:238.0f/255.0f green:204.0f/255.0f blue:69.0f/255.0f alpha:1]];
     
-    self.contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.035, kScreenWith*0.076, kScreenWith*0.783, kScreenWith*0.108)];
+    self.contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.035, kScreenWith*0.076, kScreenWith*0.582, kScreenWith*0.108)];
     self.contentLabel.text = text;
     [self.contentLabel setTextColor:[UIColor whiteColor]];
     self.contentLabel.numberOfLines = 2;
@@ -359,23 +381,37 @@
     label2.text = @"悬赏金额：              游币";
     [label2 setNumberOfLines:0];
     label2.adjustsFontSizeToFitWidth = YES;
+    UIImageView *stateImg = [[UIImageView alloc]init];
+    stateImg.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+10, kScreenWith*0.017, 23,23);
+    UILabel *answerLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+20,kScreenWith*0.037, 6, 10)];
+
+    if ([state isEqualToString:@"1"]) {
+        [stateImg setImage:[UIImage imageNamed:@"state1"]];
+    }else{
+        answerLabel.font = [UIFont systemFontOfSize:10];
+        answerLabel.backgroundColor = [UIColor clearColor];
+        answerLabel.text = @"5";
+        answerLabel.textColor = [UIColor blackColor];
+        [stateImg setImage:[UIImage imageNamed:@"state2"]];
+    }
+    
     
     UIImage* image = [UIImage imageNamed:@"right"];
-    UIImageView *right   = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWith*0.824, kScreenWith*0.09, 18,23)];
+    UIImageView *right   = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.contentLabel.frame)+5, kScreenWith*0.25, 18,23)];
     [right setImage:image];
     
     
     if(url){
         UIImage* image = [UIImage imageNamed:@"tu"];
-        UIImageView *tu   = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWith*0.818-37, kScreenWith*0.017,27,27)];
+        UIImageView *tu   = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(stateImg.frame)+10, kScreenWith*0.017,27,27)];
         [tu setImage:image];
         [self.textV addSubview:tu];
         
     }
-    
-    
-    self.dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.205, kScreenWith*0.194, kScreenWith*0.202, kScreenWith*0.04)];
+
+    self.dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.205, kScreenWith*0.194, kScreenWith*0.245, kScreenWith*0.04)];
     [self.dateLabel setTextColor:[UIColor whiteColor]];
+    self.dateLabel.font = FONT_14;
     self.dateLabel.text = time;
     [self.dateLabel setNumberOfLines:0];
     self.dateLabel.adjustsFontSizeToFitWidth = YES;
@@ -395,6 +431,9 @@
     [self.textV addSubview:self.dateLabel];
     [self.textV addSubview:self.moneyLabel];
     [self.textV addSubview:right];
+    [self.textV addSubview:stateImg];
+    [self.textV addSubview:answerLabel];
+
     
     [cell addSubview:self.textV];
     return cell;
@@ -410,8 +449,25 @@
 {
     
     if(tableView==self.mainTableView){
-        
+        NSDictionary *aa = self.dataArr[indexPath.row];
+        // NSString *reward_id = aa[@""]
+        NSString *time = aa[@"release_time"];
+        NSString *title = aa[@"reward_title"];
+        NSString *text = aa[@"reward_text"];
+        NSString *url = aa[@"reward_url"];
+        NSString *money = aa[@"reward_money"];
+        NSString *language = aa[@"language"];
+        NSString *reward_id = aa[@"reward_id"];
         YBZDetailViewController *detailVC = [[YBZDetailViewController alloc]init];
+        NSLog(@"--------------->%@",aa);
+        detailVC.data = @{@"time":time,
+                          @"title":title,
+                          @"text":text,
+                          @"url":url,
+                          @"money":money,
+                          @"language":language};
+        NSLog(@"%@",detailVC.data[@"reward_id"]);
+
         [self.navigationController pushViewController:detailVC animated:YES];
         
         
@@ -423,7 +479,7 @@
 }
 -(void)searchprogram{
     YBZSendRewardViewController *sendRewardVC = [[YBZSendRewardViewController alloc]init];
-    [self.navigationController pushViewController:sendRewardVC animated:YES];
+    [self.navigationController pushViewController:sendRewardVC animated:nil];
 }
 
 

@@ -21,8 +21,13 @@
 
 -(void)createActionSheetWithView{
 
+    //调用手机相册
     [self pickMediaFromSource:UIImagePickerControllerSourceTypePhotoLibrary];
 }
+
+
+
+
 
 #pragma mark -选择媒体类型
 -(void)pickMediaFromSource:(UIImagePickerControllerSourceType)sourceType{
@@ -39,6 +44,12 @@
         [self.selfController presentViewController:picker animated:YES completion:nil];
     }
 }
+
+
+
+
+
+
 
 #pragma mark -imagePickerController协议方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{

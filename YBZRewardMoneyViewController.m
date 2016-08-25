@@ -6,10 +6,13 @@
 //  Copyright © 2016年 tjufe. All rights reserved.
 //
 
+//悬赏金额（用户）
 #import "YBZRewardMoneyViewController.h"
-
+#import "WebAgent.h"
 #import "TopView.h"
 #import "BottomView.h"
+#define kScreenW [UIScreen mainScreen].bounds.size.width
+#define kScreenH [UIScreen mainScreen].bounds.size.height
 
 @interface YBZRewardMoneyViewController ()
 
@@ -17,7 +20,8 @@
 @property (nonatomic , strong) BottomView *bottomView;
 
 @property (nonatomic , strong) UIButton *tiXianBut;
-@property (nonatomic , strong) UILabel *alertLabel;
+@property (nonatomic , strong) UILabel  *alertLabel;
+//@property (nonatomic,strong) UIView     *backView;
 
 
 @end
@@ -26,6 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     //设置导航栏标题
     self.title = @"悬赏金额";
     //设置导航栏标题大小和颜色
@@ -33,10 +38,12 @@
                                                                       NSForegroundColorAttributeName:[UIColor blackColor]}];
     
     self.view.backgroundColor = [UIColor colorWithRed:239 / 255.0 green:238 / 255.0 blue:244 / 255.0 alpha:1];
+    //_backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,kScreenW , kScreenH)];
+    //_backView.backgroundColor =[UIColor colorWithRed:239 / 255.0 green:238 / 255.0 blue:244 / 255.0 alpha:1];
     self.topView = [[TopView alloc]init];
-    self.topView.frame = CGRectMake(15, 74, [UIScreen mainScreen].bounds.size.width - 30, 65);
+    self.topView.frame = CGRectMake(15, 65, [UIScreen mainScreen].bounds.size.width - 30,[UIScreen mainScreen].bounds.size.height*0.076);
     self.bottomView = [[BottomView alloc]init];
-    self.bottomView.frame = CGRectMake(15, self.topView.frame.origin.y + 65, [UIScreen mainScreen].bounds.size.width - 30, 200);
+    self.bottomView.frame = CGRectMake(15,CGRectGetMaxY(self.topView.frame)+10, [UIScreen mainScreen].bounds.size.width - 30,[UIScreen mainScreen].bounds.size.height*0.31);
     
     [self.view addSubview:self.topView];
     [self.view addSubview:self.bottomView];
@@ -47,6 +54,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textAction) name:UITextFieldTextDidChangeNotification object:nil];
     
     [self.bottomView.getAllBut addTarget:self action:@selector(getAllButClick) forControlEvents:UIControlEventTouchUpInside];
+   
     
 }
 
@@ -65,7 +73,12 @@
 {
     if ([self.bottomView.moneyTextField.text  isEqual: @""]) {
         [self.tiXianBut setEnabled:NO];
+        [_tiXianBut setTitle:@"悬赏" forState:UIControlStateNormal];
+        _tiXianBut.backgroundColor = [UIColor yellowColor];
+
     }else{
+        [_tiXianBut setTitle:@"确定" forState:UIControlStateNormal];
+        _tiXianBut.backgroundColor = [UIColor colorWithRed:253 / 255.0 green:218 / 255.0 blue:0 / 255.0 alpha:1];
         [self.tiXianBut setEnabled:YES];
     }
     
@@ -85,10 +98,11 @@
 {
     if (!_tiXianBut) {
         _tiXianBut = [UIButton buttonWithType:UIButtonTypeCustom];
-        _tiXianBut.frame = CGRectMake(0, self.bottomView.frame.origin.y + self.bottomView.bounds.size.height + 40, [UIScreen mainScreen].bounds.size.width, 50);
-        _tiXianBut.backgroundColor = [UIColor colorWithRed:253 / 255.0 green:218 / 255.0 blue:0 / 255.0 alpha:1];
+        _tiXianBut.frame = CGRectMake(0,CGRectGetMaxY(self.bottomView.frame)+30, [UIScreen mainScreen].bounds.size.width, 50);
+
         [_tiXianBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_tiXianBut setTitle:@"确定" forState:UIControlStateNormal];
+        [_tiXianBut setTitle:@"悬赏" forState:UIControlStateNormal];
+        self.tiXianBut.backgroundColor = [UIColor yellowColor];
         [_tiXianBut addTarget:self action:@selector(tiXianButClick) forControlEvents:UIControlEventTouchUpInside];
         //若将该语句添加到该段代码之前 无效
         [_tiXianBut setEnabled:NO];
@@ -110,8 +124,8 @@
 
     }else{
         CGSize size = [@"游币账户余额不足" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
-        self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width) / 2, self.tiXianBut.frame.origin.y + 80, size.width + 10, size.height + 6)];
-        self.alertLabel.backgroundColor = [UIColor blackColor];
+        self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width) / 2, CGRectGetMaxY(self.bottomView.frame)-40, size.width + 10, size.height + 6)];
+        self.alertLabel.backgroundColor = [UIColor clearColor];
         self.alertLabel.layer.cornerRadius = 5;
         //将UiLabel设置圆角 此句不可少
         self.alertLabel.layer.masksToBounds = YES;
@@ -130,7 +144,6 @@
             [self.alertLabel removeFromSuperview];
         }];
     }
-    
 }
 
 @end

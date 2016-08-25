@@ -624,5 +624,61 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 }
 
+//翻译人数
++(void)returnPeopleReward:(NSString *)reward_id
+                  success:(void(^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"reward_id":reward_id};
+    [[APIClient sharedClient] POST:@"Reward/return_people/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject){
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+//游币剩余
++(void)restMoenyUser_id:(NSString *)user_id
+                success:(void(^)(id responseObject))success
+                failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"Reward/rest_money/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject){
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+//返回评价内容
++(void)returnTextReward_id:(NSString *)reward_id
+                   user_id:(NSString *)user_id
+                   success:(void(^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"Reward/returntext/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject){
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+
+//提交回答
++(void)uploadreward_id:(NSString *)reward_id
+               user_id:(NSString *)user_id
+           reward_text:(NSString *)reward_text
+           answer_time:(NSString *)answer_time
+               success:(void(^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"reward_id":reward_id,
+                           @"user_id":user_id,
+                           @"answer_time":answer_time,
+                           @"reward_text":reward_text};
+    [[APIClient sharedClient] POST:@"Reward/upLoad/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
 
 @end

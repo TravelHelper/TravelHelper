@@ -1294,7 +1294,7 @@
     self.bottomTableView.headerPullToRefreshText = @"下拉可以刷新了";
     self.bottomTableView.headerReleaseToRefreshText = @"松开马上刷新了";
     self.bottomTableView.headerRefreshingText = @"MJ哥正在帮你刷新中,不客气";
-
+    
 }
 
 #pragma mark 开始进入刷新状态
@@ -1376,6 +1376,7 @@
                 [self.navigationController popToRootViewControllerAnimated:YES];
                 [WebAgent interpreterRequireStateWithuserId:self.target_id success:^(id responseObject) {
                     
+
                     NSLog(@"译员成功返回首页");
                     
                     
@@ -1389,6 +1390,7 @@
                 FeedBackViewController *fbvc = [[FeedBackViewController alloc]init];
                 [self.navigationController pushViewController:fbvc animated:YES];
             }
+
             
         } failure:^(NSError *error) {
         }];
@@ -1405,18 +1407,18 @@
     if (self.changeSendContentBtn.tag == 1001) {
         //输入转语音
         [self.inputBottomView addSubview:self.reportAudioBtn];
-//        [self.inputBottomView addSubview:self.reportEnglishBtn];
+        //        [self.inputBottomView addSubview:self.reportEnglishBtn];
         [self cancelResignFirstResponder];
         self.changeSendContentBtn.tag = 1002;
         [self.changeSendContentBtn setImage:[UIImage imageNamed:@"keyboard"] forState:UIControlStateNormal];
-
+        
     }else{
         //语音转输入
         self.changeSendContentBtn.tag = 1001;
         [self.reportAudioBtn removeFromSuperview];
-//        [self.reportEnglishBtn removeFromSuperview];
+        //        [self.reportEnglishBtn removeFromSuperview];
         [self.changeSendContentBtn setImage:[UIImage imageNamed:@"yuyin"] forState:UIControlStateNormal];
-
+        
     }
     
     
@@ -1552,7 +1554,7 @@
 }
 
 //-(BaseAudioButton *)reportAudioBtn{
-//    
+//
 //    if (!_reportAudioBtn) {
 //        _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
 //        _reportAudioBtn.mdelegate = self;
@@ -1561,17 +1563,17 @@
 //        [_reportAudioBtn setTitle:@"按住说中文" forState:UIControlStateNormal];
 //        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
 //        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
-//        
+//
 //        [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
-//        
+//
 //    }
-//    
+//
 //    return _reportAudioBtn;
-//    
+//
 //}
 //
 //-(BaseAudioButton *)reportEnglishBtn{
-//    
+//
 //    if (!_reportEnglishBtn) {
 //        _reportEnglishBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
 //        _reportEnglishBtn.mdelegate = self;
@@ -1580,9 +1582,9 @@
 //        [_reportEnglishBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //        _reportEnglishBtn.backgroundColor = [UIColor yellowColor];
 //    }
-//    
+//
 //    return _reportEnglishBtn;
-//    
+//
 //}
 
 -(BaseAudioButton *)reportAudioBtn{

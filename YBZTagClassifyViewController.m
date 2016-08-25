@@ -6,6 +6,8 @@
 //  Copyright © 2016年 tjufe. All rights reserved.
 //
 
+
+//标签（用户）
 #import "YBZTagClassifyViewController.h"
 #import "WebAgent.h"
 
@@ -85,6 +87,7 @@
         _fixedLabel.layer.masksToBounds = YES;
         
         _inputTextField = [[UITextField alloc]initWithFrame:CGRectMake(40, 10, [UIScreen mainScreen].bounds.size.width - 96, 30)];
+        _inputTextField.font = [UIFont systemFontOfSize:13];
         _inputTextField.placeholder = @"话题、分类、电影、歌曲、书籍、国家";
         _inputTextField.backgroundColor = [UIColor colorWithRed:227 / 255.0 green:228 / 255.0 blue:230 / 255.0 alpha:1];
         _inputTextField.layer.cornerRadius = 2;
@@ -116,6 +119,7 @@
         _labelBut1 = [[UIButton alloc]initWithFrame:CGRectMake(x, y, size.width + 16, size.height)];
         [_labelBut1 setTitle:self.labelTextArr[0] forState:UIControlStateNormal];
         _labelBut1.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1];
+        _labelBut1.titleLabel.font = [UIFont systemFontOfSize:13];
         [_labelBut1 setTitleColor:[UIColor colorWithRed:148 / 255.0 green:148 / 255.0 blue:148 / 255.0 alpha:1] forState:UIControlStateNormal];
         [_labelBut1 addTarget:self action:@selector(labelBut1Click) forControlEvents:UIControlEventTouchUpInside];
         
@@ -124,6 +128,7 @@
         _labelBut2 = [[UIButton alloc]initWithFrame:CGRectMake(x, y, size.width + 16, size.height)];
         [_labelBut2 setTitle:self.labelTextArr[1] forState:UIControlStateNormal];
         _labelBut2.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1];
+        _labelBut2.titleLabel.font = [UIFont systemFontOfSize:13];
         [_labelBut2 setTitleColor:[UIColor colorWithRed:148 / 255.0 green:148 / 255.0 blue:148 / 255.0 alpha:1] forState:UIControlStateNormal];
         [_labelBut2 addTarget:self action:@selector(labelBut2Click) forControlEvents:UIControlEventTouchUpInside];
         
@@ -132,6 +137,7 @@
         _labelBut3 = [[UIButton alloc]initWithFrame:CGRectMake(x, y, size.width + 16, size.height)];
         [_labelBut3 setTitle:self.labelTextArr[2] forState:UIControlStateNormal];
         _labelBut3.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1];
+        _labelBut3.titleLabel.font = [UIFont systemFontOfSize:13];
         [_labelBut3 setTitleColor:[UIColor colorWithRed:148 / 255.0 green:148 / 255.0 blue:148 / 255.0 alpha:1] forState:UIControlStateNormal];
         [_labelBut3 addTarget:self action:@selector(labelBut3Click) forControlEvents:UIControlEventTouchUpInside];
         
@@ -141,6 +147,7 @@
         _labelBut4 = [[UIButton alloc]initWithFrame:CGRectMake(x, y, size.width + 16, size.height)];
         [_labelBut4 setTitle:self.labelTextArr[3] forState:UIControlStateNormal];
         _labelBut4.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1];
+        _labelBut4.titleLabel.font = [UIFont systemFontOfSize:13];
         [_labelBut4 setTitleColor:[UIColor colorWithRed:148 / 255.0 green:148 / 255.0 blue:148 / 255.0 alpha:1] forState:UIControlStateNormal];
         [_labelBut4 addTarget:self action:@selector(labelBut4Click) forControlEvents:UIControlEventTouchUpInside];
         
@@ -149,6 +156,7 @@
         _labelBut5 = [[UIButton alloc]initWithFrame:CGRectMake(x, y, size.width + 16, size.height)];
         [_labelBut5 setTitle:self.labelTextArr[4] forState:UIControlStateNormal];
         _labelBut5.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1];
+        _labelBut5.titleLabel.font = [UIFont systemFontOfSize:13];
         [_labelBut5 setTitleColor:[UIColor colorWithRed:148 / 255.0 green:148 / 255.0 blue:148 / 255.0 alpha:1] forState:UIControlStateNormal];
         [_labelBut5 addTarget:self action:@selector(labelBut5Click) forControlEvents:UIControlEventTouchUpInside];
         
@@ -157,6 +165,7 @@
         _labelBut6 = [[UIButton alloc]initWithFrame:CGRectMake(x, y, size.width + 16, size.height)];
         [_labelBut6 setTitle:self.labelTextArr[5] forState:UIControlStateNormal];
         _labelBut6.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1];
+        _labelBut6.titleLabel.font = [UIFont systemFontOfSize:13];
         [_labelBut6 setTitleColor:[UIColor colorWithRed:148 / 255.0 green:148 / 255.0 blue:148 / 255.0 alpha:1] forState:UIControlStateNormal];
         [_labelBut6 addTarget:self action:@selector(labelBut6Click) forControlEvents:UIControlEventTouchUpInside];
         

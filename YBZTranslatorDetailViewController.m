@@ -6,6 +6,8 @@
 //  Copyright © 2016年 tjufe. All rights reserved.
 //
 
+
+//详情（译员）
 #import "YBZTranslatorDetailViewController.h"
 #import "YBZTranslatorAnswerViewController.h"
 #import "WebAgent.h"
@@ -43,21 +45,18 @@
 @property(nonatomic,strong) UILabel *languageLabel; //显示语言
 @property(nonatomic,strong) UILabel *moneyLabel; //显示悬赏金额
 @property(nonatomic,strong) UIView *lineLabel1; //较粗灰色分割线
-@property(nonatomic,strong) UILabel *showAnswerLabel;
-@property(nonatomic,strong) UITextView *answerTextView; //显示回答内容
 @property(nonatomic,strong) UIButton *bottomBtn; //最底部的翻译按钮
 @property (nonatomic,strong) NSString *answer;
-
+@property (nonatomic,strong) UIImage *photoImg;
+@property (nonatomic,strong) NSDictionary *decidesStr;
 @end
 
 @implementation YBZTranslatorDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-    
-    
+      self.title = @"详   情";
+
     self.view.backgroundColor = kBackgroundColor;
     [self.view addSubview:self.topContainer];
     [self.view addSubview:self.bottomBtn];
@@ -180,6 +179,8 @@
         self.openButton.frame = CGRectMake(self.openButton.frame.origin.x,self.contentLabel.frame.origin.y + self.contentLabel.bounds.size.height, self.openButton.bounds.size.width, kOpenButtonHeight);
         self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentLabel.frame.origin.y + self.contentLabel.bounds.size.height + kMarginTopWidthPrevious*2, self.contentView.bounds.size.width, self.contentView.bounds.size.height);
         self.openButtonArrowImage.image = [UIImage imageNamed:@"arrow"];
+       // [_openButton setTitle:@"收起" forState:UIControlStateSelected];
+        [_openButton setTitle:@"展开" forState:UIControlStateNormal];
         self.isOpen = NO;
         
     }else{
@@ -189,6 +190,7 @@
         self.openButton.frame = CGRectMake(self.openButton.frame.origin.x,self.contentLabel.frame.origin.y + self.contentLabel.bounds.size.height, self.openButton.bounds.size.width, kOpenButtonHeight);
         self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y + changeHeight, self.contentView.bounds.size.width, self.contentView.bounds.size.height);
         self.openButtonArrowImage.image = [UIImage imageNamed:@"arrow1"];
+        [_openButton setTitle:@"收起" forState:UIControlStateNormal];
         self.isOpen = YES;
         
     }
@@ -228,15 +230,32 @@
     return _contentView;
     
 }
-
+-(UIImage *)photoImg{
+    if (!_photoImg) {
+        _photoImg = [[UIImage alloc]init];
+    }
+    return _photoImg;
+}
 -(UIImageView *)imageView{
     
     if(!_imageView){
-        
+        _imageView = [[UIImageView alloc]init];
         _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth * 92 / 370, kScreenHeight * 95 / 690)];
-        NSString *imageUrl = [self.data objectForKey:@"url"];
-        NSURL *url = [NSURL URLWithString:imageUrl];
-        [self.imageView setImageWithURL:url];
+        NSString *photo = self.data[@"reward_url"];
+        NSString *str = [NSString stringWithFormat:@"%@.jpg",photo];
+        NSString *url = [NSString stringWithFormat:@"http://%@/travelhelper/uploadimg/%@",serviseId,str];
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+        _photoImg = [UIImage imageWithData:data];
+        
+        if (_photoImg) {
+            [_imageView setImage:_photoImg];
+        }else{
+        [self.imageView setImage:[UIImage imageNamed:@"ProfilePhoto"]];
+
+        }
+      //  NSString *imageUrl = [self.data objectForKey:@"url"];
+       // NSURL *url = [NSURL URLWithString:imageUrl];
+    // [self.imageView setImageWithURL:url];
     }
     
     return _imageView;
@@ -247,8 +266,11 @@
     if(!_timeLabel){
         
         NSString *str = [self.data objectForKey:@"time"];
+        //自适应高度
         CGSize size = [str sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10]}];
         _timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.imageView.frame.origin.y + self.imageView.bounds.size.height + kMarginTopWidthPrevious, size.width, size.height)];
+        
+        
         _timeLabel.font = [UIFont systemFontOfSize:10];
         _timeLabel.textColor = kTextColor;
         _timeLabel.text = [self.data objectForKey:@"time"];
@@ -261,8 +283,10 @@
 -(UILabel *)answerPeopleNumLabel{
     
     if(!_answerPeopleNumLabel){
-        
-        NSString *str = @"1人回答";
+        NSString *strCount = [NSString stringWithFormat: @"%@", self.countPeople];
+        NSString *str = @"人能回答";
+        str = [strCount stringByAppendingString:str];
+        NSLog(@"---------------->%@",str);
         CGSize size = [str sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10]}];
         _answerPeopleNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.contentView.bounds.size.width  - size.width, self.timeLabel.frame.origin.y, size.width, size.height)];
         _answerPeopleNumLabel.font = [UIFont systemFontOfSize:10];
@@ -367,6 +391,7 @@
         _bottomBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, kScreenHeight - height, kScreenWidth, height)];
         _bottomBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:221/255.0 blue:0 alpha:1];
         [_bottomBtn setTitle:@"我来翻译" forState:UIControlStateNormal];
+        
         [_bottomBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _bottomBtn.titleLabel.font = [UIFont systemFontOfSize:30];
         [_bottomBtn addTarget:self action:@selector(bottomBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -385,9 +410,21 @@
     return _showAnswerLabel;
 }
 -(void)bottomBtnClick{
-    YBZTranslatorAnswerViewController *answerVC = [[YBZTranslatorAnswerViewController alloc]init];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"answer" object:nil];
-    [self.navigationController pushViewController:answerVC animated:nil];
+
+    NSString *reward_id =  self.data[@"reward_id"];
+    //本地取
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    self.decidesStr = [userDefaults dictionaryForKey:@"answer"];
+    NSString *answer_change = self.decidesStr[@"reward_id"];
+    
+    NSLog(@"------------------->%@",answer_change);
+        YBZTranslatorAnswerViewController *answerVC = [[YBZTranslatorAnswerViewController alloc]init];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"answer" object:nil];
+        answerVC.previewImg  = _photoImg;
+        answerVC.reward_id = reward_id;
+        answerVC.rewardID = [self.data objectForKey:@"reward_id"];
+        [self.navigationController pushViewController:answerVC animated:nil];
+ 
 }
 //第三步：处理通知
 -(void)setTextALabel:(NSNotification *)noti{

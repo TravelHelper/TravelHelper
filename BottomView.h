@@ -15,5 +15,5 @@
 @property (nonatomic , strong) UILabel *alertLabel;
 @property (nonatomic , strong) UILabel *allMoneyLabel;
 @property (nonatomic , strong) UILabel *eDuLabel;
-
+@property (nonatomic,strong) NSString *amountYouBi;
 @end

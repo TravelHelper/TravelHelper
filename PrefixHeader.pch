@@ -127,7 +127,10 @@
 //#define UICountryBtnWidth
 
 
-#define API_HOST @"http://10.2.208.196/TravelHelper/index.php/Home/"
+
+#define API_HOST @"http://10.2.208.156/TravelHelper/index.php/Home/"
+#define positionImg    @"http://127.0.0.1/TravelHelper/upload.php"
+
 
 //#define API_HOST @"http://10.2.208.120/TravelHelper/index.php/Home/"
 

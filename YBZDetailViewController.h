@@ -9,5 +9,6 @@
 #import "YBZBaseViewController.h"
 
 @interface YBZDetailViewController : YBZBaseViewController
+@property (nonatomic,strong) NSDictionary   *data;
 
 @end

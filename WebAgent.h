@@ -197,4 +197,24 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
        success:(void(^)(id responseObject))success
        failure:(void (^)(NSError *error))failure;
 
+//翻译人数
++(void)returnPeopleReward:(NSString *)reward_id
+                  success:(void(^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
+//剩余游币
++(void)restMoenyUser_id:(NSString *)user_id
+                success:(void(^)(id responseObject))success
+                failure:(void (^)(NSError *error))failure;
+//返回评价内容
++(void)returnTextReward_id:(NSString *)reward_id
+                   user_id:(NSString *)user_id
+                   success:(void(^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure;
+//提交回答
++(void)uploadreward_id:(NSString *)reward_id
+               user_id:(NSString *)user_id
+           reward_text:(NSString *)reward_text
+           answer_time:(NSString *)answer_time
+               success:(void(^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure;
 @end

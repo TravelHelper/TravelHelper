@@ -6,19 +6,25 @@
 //  Copyright © 2016年 tjufe. All rights reserved.
 //
 
-#import "YBZRewardHallViewController.h"
 
+
+//悬赏大厅（译员）
+
+#import "YBZRewardHallViewController.h"
+#import "NSString+SZYKit.h"
 #import "Model.h"
 #import "Btn_TableView.h"
 #import "WebAgent.h"
 #import "YBZTranslatorDetailViewController.h"
+#import "YBZTranslatorAnswerViewController.h"
 #define kScreenWith  [UIScreen mainScreen].bounds.size.width
 // 角度转弧度
 #define CC_DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) * 0.01745329252f) // PI / 180
 // 弧度转角度
 #define CC_RADIANS_TO_DEGREES(__ANGLE__) ((__ANGLE__) * 57.29577951f)
 
-
+//颜色rgb
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 
 @interface YBZRewardHallViewController ()<UITableViewDelegate,UITableViewDataSource,Btn_TableViewDelegate>
@@ -46,6 +52,7 @@
 @property (nonatomic ,strong) NSString *select;//取选择的排序名称
 @property (nonatomic ,strong) NSString *select2;
 @property (nonatomic,strong) NSDictionary *data; //页面传值用
+@property (nonatomic,assign) NSString   *countPeople;
 
 
 @end
@@ -57,15 +64,19 @@
     self.dataArr = [[NSMutableArray alloc]init];
     // Do any additional setup after loading the view.
     [self loadDataFromWeb];
-    self.view.backgroundColor = [UIColor whiteColor];
+   // self.view.backgroundColor = [UIColor lightGrayColor];
+    self.view.backgroundColor = UIColorFromRGB(0Xf2f2f2);
+    self.mainTableView.backgroundColor = UIColorFromRGB(0Xf2f2f2);
     self.title = @"悬赏大厅";
-    //[self leftButton];
+    [self leftButton];
     
     
-    self.mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.09, self.view.bounds.size.width, self.view.bounds.size.height-64) style:UITableViewStylePlain];
-    self.mainTableView.backgroundColor = [UIColor grayColor];
+    self.mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.09, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
+  //  self.mainTableView.backgroundColor = [UIColor whiteColor];
     self.mainTableView.delegate = self;
     self.mainTableView.dataSource = self;
+    self.mainTableView.showsVerticalScrollIndicator = NO;
+    self.mainTableView.separatorStyle = UITableViewCellSelectionStyleNone;
     [self.view addSubview:self.mainTableView];
     
     
@@ -107,7 +118,25 @@
     NSLog(@"%@",self.select2);
     //    [self loadDataFromWeb];
     //   [self.mainTableView reloadData];
-    
+    if (!self.m_btn_tableView1.m_btnpanduan&!self.m_btn_tableView2.m_btnpanduan&!self.m_btn_tableView3.m_btnpanduan) {
+        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:YES];
+        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:YES];
+        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:YES];
+        
+    }
+    if (self.m_btn_tableView1.m_btnpanduan) {
+        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:NO];
+        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:NO];
+    }
+    if (self.m_btn_tableView2.m_btnpanduan) {
+        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:NO];
+        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:NO];
+    }
+    if (self.m_btn_tableView3.m_btnpanduan) {
+        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:NO];
+        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:NO];
+    }
+
     
 }
 
@@ -128,18 +157,18 @@
 }
 
 #pragma mark - 返回箭头
-//-(void)leftButton{
+-(void)leftButton{
 //    UIButton *backB = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 35, 35)];
 //    [backB setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
 //    [backB addTarget:self action:@selector(interpretClick) forControlEvents:UIControlEventTouchUpInside];
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backB];
-//    
-//}
+    
+}
 #pragma mark - 页面跳转
-//-(void)interpretClick{
-//    [self.navigationController popViewControllerAnimated:YES];
-//    
-//}
+-(void)interpretClick{
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
 
 
 -(void)loadDataFromWeb{
@@ -149,6 +178,7 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSLog(@"asd%@",self.select);
         NSArray *reward_info = dic[@"reward_info"];
+        NSLog(@"------------->%@",reward_info);
       //  NSLog(@"有%lu条数据",(unsigned long)reward_info.count);
         
         [self.dataArr removeAllObjects];
@@ -219,7 +249,7 @@
         
         
         self.alertLabel.layer.masksToBounds = YES;
-        
+
         
         self.alertLabel.alpha = 0.8;
         
@@ -280,6 +310,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *aa = self.dataArr[indexPath.row];
+    NSLog(@"---------------->%@",aa);
     NSString *time = aa[@"release_time"];
     NSString *title = aa[@"reward_title"];
     NSString *text = aa[@"reward_text"];
@@ -288,6 +319,7 @@
     NSString *language = aa[@"language"];
     
     UITableViewCell  *cell= [[UITableViewCell alloc]init];
+    cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     
@@ -305,7 +337,7 @@
     self.textV.layer.cornerRadius = 5.0;
     
     
-    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.035, kScreenWith*0.017, kScreenWith*0.783, kScreenWith*0.059)];
+    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.035, kScreenWith*0.017, kScreenWith*0.6, kScreenWith*0.059)];
     self.titleLabel.text = title;
     self.titleLabel.font = [UIFont systemFontOfSize:20];
     [self.titleLabel setTextColor:[UIColor colorWithRed:238.0f/255.0f green:204.0f/255.0f blue:69.0f/255.0f alpha:1]];
@@ -321,9 +353,9 @@
     label1.text = @"发布日期：";
     [label1 setNumberOfLines:0];
     label1.adjustsFontSizeToFitWidth = YES;
-    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.459, kScreenWith*0.194, kScreenWith*0.5, kScreenWith*0.04)];
+    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.510, kScreenWith*0.194, kScreenWith*0.5, kScreenWith*0.04)];
     [label2 setTextColor:[UIColor whiteColor]];
-    label2.text = @"悬赏金额：              游币";
+    label2.text = @"悬赏金额：          游币";
     [label2 setNumberOfLines:0];
     label2.adjustsFontSizeToFitWidth = YES;
     
@@ -341,13 +373,13 @@
     }
     
     
-    self.dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.205, kScreenWith*0.194, kScreenWith*0.202, kScreenWith*0.04)];
+    self.dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.205, kScreenWith*0.194, kScreenWith*0.27, kScreenWith*0.04)];
     [self.dateLabel setTextColor:[UIColor whiteColor]];
     self.dateLabel.text = time;
     [self.dateLabel setNumberOfLines:0];
     self.dateLabel.adjustsFontSizeToFitWidth = YES;
     
-    self.moneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.62, kScreenWith*0.194, kScreenWith*0.148, kScreenWith*0.04)];
+    self.moneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.654, kScreenWith*0.194, kScreenWith*0.148, kScreenWith*0.04)];
     self.moneyLabel.text = money;
     [self.moneyLabel setTextColor:[UIColor redColor]];
     
@@ -378,31 +410,61 @@
     
     if(tableView==self.mainTableView){
         NSDictionary *aa = self.dataArr[indexPath.row];
+       // NSString *reward_id = aa[@""]
         NSString *time = aa[@"release_time"];
         NSString *title = aa[@"reward_title"];
         NSString *text = aa[@"reward_text"];
         NSString *url = aa[@"reward_url"];
         NSString *money = aa[@"reward_money"];
         NSString *language = aa[@"language"];
-        
+        NSString *reward_id = aa[@"reward_id"];
+        NSString *reward_url = aa[@"reward_url"];
+
+        if (reward_id == nil) {
+            reward_id = [NSString stringOfUUID];
+        }
         YBZTranslatorDetailViewController *detailVC = [[YBZTranslatorDetailViewController alloc]init];
         detailVC.data = @{@"time":time,
                           @"title":title,
                           @"text":text,
                           @"url":url,
                           @"money":money,
-                          @"language":language};
-        [self.navigationController pushViewController:detailVC animated:YES];
+                          @"language":language,
+                          @"reward_id":reward_id,
+                          @"reward_url":reward_url};
+        NSLog(@"%@",detailVC.data[@"reward_id"]);
+        //存
+        NSDictionary *answerChange = @{reward_id:@"0"};
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:answerChange forKey:@"answer"];
         
         
-
+        [WebAgent returnPeopleReward:detailVC.data[@"reward_id"] success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            self.countPeople = str[@"count"];
+            NSLog(@"--------------->%@",str[@"count"]);
+            detailVC.countPeople = self.countPeople;
+            NSLog(@"------------->%ld",(long)detailVC.countPeople);
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            NSDictionary *userID = [userdefault objectForKey:@"user_id"];
+            [WebAgent returnTextReward_id:reward_id user_id:userID[@"user_id"] success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                detailVC.showAnswerLabel.text = str[@"answer_text"];
+                NSLog(@"--------------->%@",detailVC.showAnswerLabel.text);
+                [self.navigationController pushViewController:detailVC animated:YES];
+            } failure:^(NSError *error) {
+            
+            }];
+        }
+        failure:^(NSError *error) {
+            NSLog(@"--------------->%@",error);
+        }];
+            
     }
     
-    
-    
-    
 }
-
 
 - (void)didReceiveMemoryWarning
 {

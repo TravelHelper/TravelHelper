@@ -6,6 +6,7 @@
 //  Copyright © 2016年 tjufe. All rights reserved.
 //
 
+//回答（译员）
 #import "YBZTranslatorAnswerViewController.h"
 #define INTERVAL_KEYBOARD  10
 #define kAnimationDuration 0.3f
@@ -34,6 +35,7 @@
     [self.view addSubview:self.pictureView];
     [self.view addSubview:self.textView];
     [self.view addSubview:self.imageView];
+    self.title = @"回  答";
     
     self.navigationItem.leftBarButtonItem = self.backButton;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.submitButton];
@@ -61,10 +63,7 @@
         self.placeholderLabel.textColor = [UIColor colorWithRed:225.0f/255.0 green:225.0f/255.0 blue:225.0f/255.0 alpha:1];
         self.placeholderLabel.enabled = NO;
         [_textView addSubview:self.placeholderLabel];
-        //        _textView.returnKeyType = UIReturnKeyDefault;//return键的类型
-        //        _textView.keyboardType = UIKeyboardTypeDefault;//键盘类型
-        //        _textView.textAlignment = NSTextAlignmentLeft; //文本显示的位置默认为居左
-        //        _textView.dataDetectorTypes = UIDataDetectorTypeAll; //显示数据类型的连接模式（如电话号码、网址、地址等）
+
     }
     return _textView;
 }
@@ -100,7 +99,7 @@
     {
         _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0 , 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
         _imageView.hidden = YES;
-        _imageView.image = [UIImage imageNamed:@"zed.jpg"];
+        [_imageView setImage:self.previewImg];
         _imageView.backgroundColor = [UIColor colorWithRed:107/255.0 green:107/255.0 blue:99/255.0 alpha:0.8];
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
         //image点击事件
@@ -125,7 +124,8 @@
     {
         UIButton *backBtn= [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
         [backBtn setTitle:@"取消" forState:UIControlStateNormal];
-        backBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        backBtn.titleLabel.font = FONT_14;
+        backBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
         [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [backBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         _backButton = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
@@ -143,7 +143,8 @@
     {
         _submitButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
         [_submitButton setTitle:@"提交" forState:UIControlStateNormal];
-        _submitButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        _submitButton.titleLabel.font = FONT_14;
+        _submitButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
         [_submitButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_submitButton addTarget:self action:@selector(submitClick) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -159,20 +160,32 @@
     }
     else
     {
+        
+        
         self.isEmpty = @"NO";
         NSDate *answerTime=[NSDate date];
         NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
         [dateformatter setDateFormat:@"YYYY-MM-dd HH:mm"];
         NSString *locationString=[dateformatter stringFromDate:answerTime];
+        
+        
+        
         //    [dateformatter release];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-        [WebAgent user_id:user_id[@"user_id"] reward_text:self.textView.text answer_time:locationString success:^(id responseObject) {
+        NSLog(@"-------------------->%@",self.rewardID);
+        [WebAgent uploadreward_id:self.rewardID user_id:user_id[@"user_id"] reward_text:self.textView.text answer_time:locationString success:^(id responseObject) {
             NSLog(@"Success");
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提交成功" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alert show];
+            
+            
+            NSDictionary *answerChange = @{@"answer_change":self.reward_id};
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:answerChange forKey:@"1"];
+
         } failure:^(NSError *error) {
-            NSLog(@"Error: %@",error);
+            NSLog(@"------------------> %@",error);
         }];
     }
 }
