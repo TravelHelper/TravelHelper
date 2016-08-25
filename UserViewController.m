@@ -57,6 +57,7 @@
     NSString *isLoginstate = [isLoginDic objectForKey:@"状态"];
     if ([isLoginstate isEqual:@"true"]) {
         is = true;
+//        it = false;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
         [self.mainTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
@@ -144,14 +145,15 @@
     }
     if ( section == 0 && row == 0) {
         //----------------------------
-                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-                NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
+         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+         NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
 
-           _avatarImag = [[UIImageView alloc]initWithFrame:CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06)];
+        _avatarImag = [[UIImageView alloc]initWithFrame:CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06)];
         _avatarImag.layer.masksToBounds=YES;
         _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
-        
+         NSLog(@"----------------------------------------------");
+        NSLog(@"%hhu %@",is,user_loginState[@"user_loginState"]);
         if (is || [user_loginState[@"user_loginState"] isEqual:@"1"])    {
             
             NSString *name = user_id[@"user_id"];
@@ -166,6 +168,7 @@
             if(_photoImg){
                 _avatarImag.image = _photoImg;
                 [cell.contentView addSubview:_avatarImag];
+                it=false;
             }else{
                 _avatarImag.image = [UIImage imageNamed:@"translator"];
                 [cell.contentView addSubview:_avatarImag];
@@ -255,51 +258,6 @@
    
     
 }
-//    if ( section == 1 && row == 0) {
-//        
-//        cell.imageView.image = [UIImage imageNamed:@"order"];
-//        cell.nameLable.text = @"我的订单";
-//        
-//    }
-//    
-//    if ( section == 1 && row == 1) {
-//        
-//        cell.imageView.image = [UIImage imageNamed:@"collect"];
-//        cell.nameLable.text = @"我的收藏";
-//        
-//    }
-//    
-//    if ( section == 1 && row == 2) {
-//        
-//        cell.imageView.image = [UIImage imageNamed:@"money"];
-//        cell.nameLable.text = @"我的悬赏";
-//    
-//    }
-//    
-//    if ( section == 2 && row == 0) {
-//        
-//        cell.imageView.image = [UIImage imageNamed:@"push"];
-//        cell.nameLable.text = @"电子钱包";
-//        
-//    }
-//    
-//    if ( section == 2 && row == 1) {
-//        
-//        cell.imageView.image = [UIImage imageNamed:@"set"];
-//        cell.nameLable.text = @"设置";
-//        
-//    }
-//    
-//    if ( section == 3 && row == 0) {
-//        
-//        cell.imageView.image = [UIImage imageNamed:@"youbangzhuapp"];
-//        cell.nameLable.text = @"游帮主app";
-//        
-//    }
-
-
-
-
 
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
@@ -513,4 +471,5 @@
     }
     return _mainTableView;
 }
+
 @end

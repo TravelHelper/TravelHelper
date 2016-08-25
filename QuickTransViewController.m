@@ -763,11 +763,26 @@
     
     ChatModel *model = [[ChatModel alloc]init];
     
-    if ([object[@"senderID"] isEqualToString:userIDinfo]) {
-        model.isSender = 1;
+    
+    if([object[@"senderID"]isKindOfClass:[NSDictionary class]]){
+        if ([object[@"senderID"][@"user_id"] isEqualToString:userIDinfo]) {
+            model.isSender = 1;
+        }else{
+            model.isSender = 0;
+        }
+
     }else{
-        model.isSender = 0;
+        
+        if ([object[@"senderID"]isEqualToString:userIDinfo]) {
+            model.isSender = 0;
+        }else{
+            model.isSender = 1;
+        }
+
+    
     }
+    
+    
     
     model.senderID = object[@"senderID"];
     model.chatTextContent = object[@"chatTextContent"];
@@ -940,11 +955,11 @@
             if (x > leftBorder && x < rightBorder && y > topBorder && y < bottomBorder) {
                 
                 self.isCancelSendRecord = YES;
-                [self.cancelSayView removeFromSuperview];
-                [self.subBottomView addSubview:self.sayView];
+               
                 NSLog(@"取消发送语音");
                 [self.cwViewController pauseRecordBtnClick];
-                
+                [self.sayView removeFromSuperview];
+                [self.subBottomView addSubview:self.cancelSayView];
                 if (self.isRecognizer == YES) {
                     [self iFlySpeechRecognizerStop];
                 }
@@ -954,8 +969,9 @@
                 
                 [self.cwViewController goOnRecordBtnClick];
                 self.isCancelSendRecord = NO;
-                [self.sayView removeFromSuperview];
-                [self.subBottomView addSubview:self.cancelSayView];
+                [self.cancelSayView removeFromSuperview];
+                [self.subBottomView addSubview:self.sayView];
+                
                 if (self.isRecognizer == NO) {
                     [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
                 }
@@ -990,8 +1006,8 @@
             if (x > leftBorder && x < rightBorder && y > topBorder && y < bottomBorder) {
                 
                 self.isCancelSendRecord = YES;
-                [self.cancelSayView removeFromSuperview];
-                [self.subBottomView addSubview:self.sayView];
+                [self.sayView removeFromSuperview];
+                [self.subBottomView addSubview:self.cancelSayView];
                 NSLog(@"取消发送语音");
                 [self.cwViewController pauseRecordBtnClick];
                 
@@ -1004,8 +1020,9 @@
                 
                 [self.cwViewController goOnRecordBtnClick];
                 self.isCancelSendRecord = NO;
-                [self.sayView removeFromSuperview];
-                [self.subBottomView addSubview:self.cancelSayView];
+                [self.cancelSayView removeFromSuperview];
+                [self.subBottomView addSubview:self.sayView];
+                
                 
                 if (self.isRecognizer == NO) {
                     [self iFlySpeechRecognizerBegin:LANGUAGE_ENGLISH];
@@ -1354,46 +1371,32 @@
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo success:^(id responseObject) {
         [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
             
-            [WebAgent identifyuser_id:userIDinfo success:^(id responseObject) {
-                NSData *data = [[NSData alloc]initWithData:responseObject];
-                NSString *str = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                if([str  isEqual: @"TRANSTOR"])
-                {
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                    [WebAgent interpreterRequireStateWithuserId:self.target_id success:^(id responseObject) {
-                        
-                        NSLog(@"译员成功返回首页");
-                        
-                        
-                    } failure:^(NSError *error) {
-                        NSLog(@"译员未返回首页");
-                        
-                    }];
+            if([self.userIdentifier isEqualToString:@"TRANSTOR"])
+            {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+                [WebAgent interpreterRequireStateWithuserId:self.target_id success:^(id responseObject) {
                     
-                }
-                else
-                {
-                    FeedBackViewController *fbvc = [[FeedBackViewController alloc]init];
-                    [self.navigationController pushViewController:fbvc animated:YES];
-                }
-                
-            } failure:^(NSError *error) {
-                
-            }];
-            
-            
-            
-            
-            
-            
-            //self.tabBarController.tabBar.hidden = NO;
+
+                    NSLog(@"译员成功返回首页");
+                    
+                    
+                } failure:^(NSError *error) {
+                    NSLog(@"译员未返回首页");
+                    
+                }];
+            }
+            else
+            {
+                FeedBackViewController *fbvc = [[FeedBackViewController alloc]init];
+                [self.navigationController pushViewController:fbvc animated:YES];
+            }
+
             
         } failure:^(NSError *error) {
         }];
     } failure:^(NSError *error) {
         
     }];
-    
 }
 
 
@@ -1482,7 +1485,7 @@
 
 -(BaseTableView *)bottomTableView{
     if (!_bottomTableView) {
-        _bottomTableView = [[BaseTableView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - CGRectGetHeight(self.inputBottomView.frame) - 64) style:UITableViewStylePlain];
+        _bottomTableView = [[BaseTableView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - CGRectGetHeight(self.inputBottomView.frame)) style:UITableViewStylePlain];
         _bottomTableView.backgroundColor = [UIColor clearColor];
         _bottomTableView.idelegate = self;
         _bottomTableView.delegate = self;

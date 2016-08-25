@@ -115,20 +115,7 @@
                             }];
                             [alertVC addAction:okAction];
                             [self presentViewController:alertVC animated:YES completion:nil];
-                            //                        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                            //                        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-                            //                        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-                            //                        NSDictionary *paramDict = @{@"user_id":self.userTextField.text,
-                            //                                                    @"user_phone":self.userTextField.text,
-                            //                                                    @"user_password":self.pswTextField.text};
-                            //                        [manager POST:@"http://127.0.0.1/YouBangZhuServer/index.php/Home/User/user_findKey"  parameters:paramDict progress:^(NSProgress * _Nonnull uploadProgress) {
-                            //                        //do nothing
-                            //                        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                            //
-                            //
-                            //                        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                            //
-                            //                        }];
+                          
                         }else{
                             [self showMssage:@"验证码错误" becomeFirstResponder:nil];
                         }

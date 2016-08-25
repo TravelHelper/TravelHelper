@@ -31,7 +31,6 @@
 //搜索结果的表格视图
 @property (nonatomic ,strong) UITableViewController *searchTableView;
 
-
 @end
 
 @implementation YBZChangeLanguageViewController{
@@ -187,6 +186,7 @@
     
     [self.navigationController pushViewController:interpretVC animated:YES];
     
+  
 }
 
 #pragma mark - getters
@@ -326,6 +326,9 @@
                         NSString *user_ID = arr[i];
                         NSString * strid = [user_ID stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
                         [WebAgent sendRemoteNotificationsWithuseId:strid WithsendMessage:sendMessage WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:senderID success:^(id responseObject) {
+                            NSData *data = [[NSData alloc]initWithData:responseObject];
+                            NSString *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                            NSLog(@"%@",str);
                             NSLog(@"发送远程推送成功!");
                         } failure:^(NSError *error) {
                             NSLog(@"发送远程推送失败－－－>%@",error);

@@ -74,7 +74,7 @@
     self.mainTableView.dataSource = self;
     
 
-    UIBarButtonItem *rightBtn=[[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(addBtnClick)];
+    UIBarButtonItem *rightBtn=[[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(addBtnClick)];
     self.navigationItem.rightBarButtonItem = rightBtn;
     
     self.pickImage = [[PickAvatarImage alloc]init];
@@ -84,7 +84,7 @@
     [self loadDataFromWeb];
     [self.mainTableView scrollToRowAtIndexPath:scrollIndexPath
                               atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePhotoImage:) name:@"changePhotoImage" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePhotoImage:) name:@"changePhotoImage" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeNickName:) name:@"changeUserInfoNickName" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSignature:) name:@"changeSignature" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getLocationInfo:) name:@"getLocationInfo" object:nil];
@@ -105,10 +105,11 @@
     cell.receiveInfoLable.text = location;
 }
 
--(void)changePhotoImage:(NSNotification *)noti{
-    UIImage *image = noti.userInfo[@"image"];
-    self.userIconImageV.image = image;
-}
+//-(void)changePhotoImage:(NSNotification *)noti{
+//    UIImage *image = noti.userInfo[@"image"];
+//    self.userIconImageV.image = image;
+//    
+//}
 
 -(void)changeNickName:(NSNotification *)noti{
     NSDictionary *nameDictionary = [noti userInfo];
@@ -225,6 +226,15 @@
             InformationModel *districtInfo = [[InformationModel alloc]initWithname:@"地区" receiveInfo:userInfo[@"user_district"]];
             InformationModel *signatureInfo = [[InformationModel alloc]initWithname:@"个性签名" receiveInfo:userInfo[@"user_signature"]];
             self.dataArr = @[nickNameInfo,sexInfo,birthdayInfo,districtInfo,signatureInfo];
+            //生成本地
+            NSDictionary *userinfo = @{@"user_nickname":userInfo[@"user_nickname"],
+                                       @"user_sex":userInfo[@"user_sex"],
+                                       @"user_birth":userInfo[@"user_birth"],
+                                       @"user_district":userInfo[@"user_district"],
+                                       @"user_signature":userInfo[@"user_signature"],
+                                       };
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:userinfo forKey:@"myDictionary"];
             NSLog(@"第一次");
             
         } failure:^(NSError *error) {

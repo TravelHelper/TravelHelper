@@ -169,7 +169,7 @@ static NSString * userStr;
             if ([self.phoneTextField validatePhoneNumber]) {
                 if ([self.pswTextField validatePassWord]) {
                     
-                    if (_pswTextField.text==_confirmPswTextField.text) {
+                    if ([_pswTextField.text isEqualToString: _confirmPswTextField.text]) {
                         NSString *str1 = self.enderCodeTextField.text;
                         if ([str1 isEqualToString:userStr]) {
                             //                            //注册

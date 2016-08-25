@@ -156,8 +156,8 @@
 
     
     NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-    NSString *userID = [userdefault objectForKey:@"user_id"];
-    
+    NSDictionary *userIDDictionary = [userdefault objectForKey:@"user_id"];
+    NSString *userID=userIDDictionary[@"user_id"];
     
     QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:translatorId WithUserIdentifier:@"USER" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
     
