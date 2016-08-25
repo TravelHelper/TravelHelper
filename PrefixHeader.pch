@@ -127,10 +127,10 @@
 //#define UICountryBtnWidth
 
 
-#define API_HOST @"http://10.2.208.241/TravelHelper/index.php/Home/"
+#define API_HOST @"http://10.2.208.196/TravelHelper/index.php/Home/"
 
 //#define API_HOST @"http://10.2.208.120/TravelHelper/index.php/Home/"
 
-#define serviseId @"127.0.0.1"
+#define serviseId @"10.2.208.196"
 
 #endif /* PrefixHeader_pch */

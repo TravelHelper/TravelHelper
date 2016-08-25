@@ -670,6 +670,20 @@
 
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+    
+    [WebAgent interpreterRequireStateWithuserId:user_id[@"user_id"] success:^(id responseObject) {
+        
+        NSLog(@"required............");
+        
+        
+    } failure:^(NSError *error) {
+        NSLog(@"busy????????????????");
+        
+    }];
+
+    
+    
     if(user_id[@"user_id"] == NULL)
     {
         YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];

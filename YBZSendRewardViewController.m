@@ -196,8 +196,10 @@
 #pragma mark - getters
 -(UIScrollView *)mainScrollView{
     if (!_mainScrollView) {
-        _mainScrollView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+        _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+        _mainScrollView.contentSize = CGSizeMake(kScreenWidth, kScreenHeight*2);
         _mainScrollView.backgroundColor = [UIColor whiteColor];
+        _mainScrollView.indicatorStyle=UIScrollViewKeyboardDismissModeNone;
     }
     return _mainScrollView;
 }

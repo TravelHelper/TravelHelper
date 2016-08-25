@@ -110,19 +110,28 @@
 
 //通过用户ID获取头像
 -(void)getHeadViewImageWithID:(NSString *)userID{
-//    
-//    if ([userID isEqualToString:@"0001"]) {
-//        self.headImageView.layer.masksToBounds=YES;
-//        self.headImageView.layer.cornerRadius=44/2.0f;
-//        self.headImageView.image = [UIImage imageNamed:@"user"];
-//    }else if ([userID isEqualToString:@"0002"]){
-//        self.headImageView.layer.masksToBounds=YES;
-//        self.headImageView.layer.cornerRadius=44/2.0f;
-//        self.headImageView.image =[UIImage imageNamed:@"translator"];
+
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    NSString *name = user_id[@"user_id"];
+    
+    NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
+    
+    NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+    
+    NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    
+    UIImage * img = [UIImage imageWithData:data];
+    
+//    if ([userID isEqualToString:@"001"]) {
+        self.headImageView.layer.masksToBounds=YES;
+        self.headImageView.layer.cornerRadius=44/2.0f;
+        [self.headImageView setImage:img];
 //    }
-    self.headImageView.layer.masksToBounds=YES;
-    self.headImageView.layer.cornerRadius=44/2.0f;
-    self.headImageView.image = [UIImage imageNamed:@"translator"];
+    
+    
+    
 }
 
 
@@ -135,6 +144,9 @@
     }
     else if(isSender == 0){
         //放在左边
+        self.headImageView.layer.masksToBounds=YES;
+        self.headImageView.layer.cornerRadius=44/2.0f;
+        [self.headImageView setImage:[UIImage imageNamed:@"user"]];
         [self getLeftCell];
     }
     [self addSubview:self.headView];
@@ -144,7 +156,9 @@
 
 //获得左侧的cell
 -(void)getLeftCell{
-    
+    self.headImageView.layer.masksToBounds=YES;
+    self.headImageView.layer.cornerRadius=44/2.0f;
+    self.headImageView.image = [UIImage imageNamed:@"translator"];
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.textView.bounds.size.width, self.textView.bounds.size.height)];
     UIImage *img = [UIImage imageNamed:@"接收框"];
     [imageView setImage:[img stretchableImageWithLeftCapWidth:floor(img.size.width/2) topCapHeight:floor(img.size.height/2)]];

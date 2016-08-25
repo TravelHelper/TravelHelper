@@ -117,16 +117,17 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
     self.lastChosenMediaType = info[UIImagePickerControllerMediaType];
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     if ([self.lastChosenMediaType isEqual:(NSString *)kUTTypeImage]){
         
-        UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+//        UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+//        
+//        self.image = [self shrinkImage:chosenImage toSize:self.avatarImageView.bounds.size];
         
-        self.image = [self shrinkImage:chosenImage toSize:self.avatarImageView.bounds.size];
+        self.image =image;
         
         
         
-        
-        UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
         
         NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
         NSURL *URL = [NSURL URLWithString:urlc];
@@ -194,7 +195,7 @@
     }
     [picker dismissViewControllerAnimated:YES completion:NULL];
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"changePhotoImage" object:nil userInfo:@{@"image":self.image}];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"changePhotoImage" object:nil userInfo:@{@"image":image}];
 
 }
 
