@@ -62,8 +62,10 @@
     [super viewDidLoad];
     self.dataArr = [[NSMutableArray alloc]init];
     [self loadDataFromWeb];
+
+    self.view.backgroundColor = UIColorFromRGB(0Xf2f2f2);
+    self.mainTableView.backgroundColor = myRewardBackgroundColor;
     self.title = @"我的悬赏";
-    [self leftButton];
     
     self.mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.24, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
     self.mainTableView.delegate = self;
@@ -87,6 +89,7 @@
     self.m_btn_tableView1.m_TableViewData = @[@"解决",@"未解决"];
     self.m_btn_tableView2.m_TableViewData = @[@"英文",@"中文",@"韩文",@"日文",@"泰文",@"法文",@"俄文"];
     self.m_btn_tableView3.m_TableViewData = @[@"时间由早到晚",@"时间由晚到早"];
+
     
     [self.m_btn_tableView1 addViewData];
     [self.m_btn_tableView2 addViewData];
@@ -187,10 +190,12 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"setTextALabel" object:nil];
 }
 
+
 #pragma mark - 返回箭头
 -(void)leftButton{
 
 }
+
 
 #pragma mark - 页面跳转
 -(void)interpretClick{

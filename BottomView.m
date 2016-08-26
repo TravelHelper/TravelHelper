@@ -18,13 +18,20 @@
 
 @end
 
-@implementation BottomView
+@implementation BottomView{
+    NSString *userID;
+}
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         [self returnMoney];
+
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *myDictionary = [userinfo dictionaryForKey:@"user_id"];
+        userID = myDictionary[@"user_id"];
+        [self getMoneyOfUser];
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.tiXianLabel];
         [self addSubview:self.youBiImageView];
@@ -32,8 +39,7 @@
         [self addSubview:self.lineLabel];
         [self addSubview:self.getAllBut];
         [self addSubview:self.alertLabel];
-        [self addSubview:self.allMoneyLabel];
-        [self addSubview:self.eDuLabel];
+
 }
     return self;
 }
@@ -52,6 +58,28 @@
 -(void)returnMoney{
 
 }
+
+-(void)getMoneyOfUser{
+
+    
+    [WebAgent restMoenyUser_id: userID success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        self.amountYouBi = str[@"money_youbi"];
+        NSLog(@"----------------->%@",self.amountYouBi);
+        [self addSubview:self.eDuLabel];
+        [self addSubview:self.allMoneyLabel];
+    } failure:^(NSError *error) {
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        }];
+        [alertVC addAction:okAction];
+        
+    }];
+
+}
+
+
 #pragma mark - 控件的getters方法
 -(UILabel *)tiXianLabel
 {
@@ -94,30 +122,16 @@
     return _lineLabel;
 }
 -(UILabel *)allMoneyLabel{
-    NSString *money;
-    [WebAgent restMoenyUser_id:@"0003" success:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        self.amountYouBi = str[@"money_youbi"];
-        NSLog(@"----------------->%@",self.amountYouBi);
-        
-    } failure:^(NSError *error) {
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        }];
-        [alertVC addAction:okAction];
-    }];
 
-    money = self.amountYouBi;
     NSString *labelText = [NSString stringWithFormat:@"%@游币",self.amountYouBi];
     CGSize size = [labelText sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     _allMoneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.eDuLabel.frame.origin.x + self.eDuLabel.bounds.size.width + 5, self.eDuLabel.frame.origin.y, size.width, size.height)];
     _allMoneyLabel.text = labelText;
     _allMoneyLabel.font = [UIFont systemFontOfSize:14];
     _allMoneyLabel.textColor = [UIColor colorWithRed:87 / 255.0 green:134 / 255.0 blue:157 / 255.0 alpha:1];
+    return _allMoneyLabel;
     
 
-    return _allMoneyLabel;
 }
 
 -(UILabel *)eDuLabel
@@ -131,6 +145,7 @@
     }
     return _eDuLabel;
 }
+
 -(UILabel *)alertLabel
 {
     if (!_alertLabel) {
