@@ -25,8 +25,6 @@
     self = [super init];
     if (self) {
         [self returnMoney];
-        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        NSDictionary *myDictionary = [userinfo dictionaryForKey:@"user_id"];
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.tiXianLabel];
         [self addSubview:self.youBiImageView];

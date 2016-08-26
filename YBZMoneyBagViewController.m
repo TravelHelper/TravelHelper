@@ -30,7 +30,7 @@
     CGFloat width = self.view.bounds.size.width;
     CGFloat threeWidth = (width - 6)/3;
     CGFloat twoWidth = width/2;
-    CGFloat threeLableWidth = width/6;
+//    CGFloat threeLableWidth = width/6;
     CGFloat twoLableWidth = width/4;
     //游币
     UIButton *youBiButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 64, threeWidth, 0.11*kScreenHeight)];
@@ -50,7 +50,7 @@
     [youBistr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0,money.length)];
     [self.youBiLable setAttributedText:youBistr] ;
     
-    self.youBiLable.textAlignment = UITextAlignmentCenter;
+    self.youBiLable.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:youBiButton];
     [self.view addSubview:youBiImg];
     [self.view addSubview:self.youBiLable];
@@ -67,7 +67,7 @@
     UILabel *payLable = [[UILabel alloc]initWithFrame:CGRectMake(threeWidth+1, 64+0.08*kScreenHeight, threeWidth, 0.018*kScreenHeight)];
     NSString *payText = @"充值提现";
     payLable.text = payText;
-    payLable.textAlignment = UITextAlignmentCenter;
+    payLable.textAlignment = NSTextAlignmentCenter;
     
     [self.view addSubview:payButton];
     [self.view addSubview:payImg];
@@ -85,7 +85,7 @@
     UILabel *ruleLable = [[UILabel alloc]initWithFrame:CGRectMake((threeWidth+1)*2, 64+0.08*kScreenHeight, threeWidth, 0.018*kScreenHeight)];
     NSString *ruleText = @"规则";
     ruleLable.text = ruleText;
-    ruleLable.textAlignment = UITextAlignmentCenter;
+    ruleLable.textAlignment = NSTextAlignmentCenter;
     
     [self.view addSubview:ruleButton];
     [self.view addSubview:ruleImg];
@@ -109,7 +109,7 @@
     UILabel *signInLable = [[UILabel alloc]initWithFrame:CGRectMake(0, 64+0.32*kScreenHeight, twoWidth, 0.022*kScreenHeight)];
     NSString *signInText = @"签到";
     signInLable.text = signInText;
-    signInLable.textAlignment = UITextAlignmentCenter;
+    signInLable.textAlignment = NSTextAlignmentCenter;
     
     UIImageView *moneyImg = [[UIImageView alloc]initWithImage:goldImg];
     moneyImg.frame =CGRectMake(0.2*kScreenWindth, 64+0.35*kScreenHeight, 0.05*kScreenWindth, 0.05*kScreenWindth);
@@ -136,7 +136,7 @@
     UILabel *shareLable = [[UILabel alloc]initWithFrame:CGRectMake(0.53*kScreenWindth, 0.314*kScreenHeight+64, 0.35*kScreenWindth, 0.1*kScreenHeight)];
     NSString *shareText = @"分享到微信朋友圈或QQ空间";
     shareLable.text = shareText;
-    shareLable.textAlignment = UITextAlignmentCenter;
+    shareLable.textAlignment = NSTextAlignmentCenter;
     shareLable.lineBreakMode = NSLineBreakByWordWrapping;
     [shareLable setNumberOfLines:0];
     
@@ -225,5 +225,7 @@
     [boultButton addTarget:self action:@selector(interpretClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:boultButton];
 }
-
+-(void)interpretClick{
+    
+}
 @end

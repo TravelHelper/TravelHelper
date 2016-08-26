@@ -25,17 +25,13 @@
 {
     self = [super init];
     if (self) {
-        
         //语言
         CGSize size = [information.language sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:20]}];
         self.languageLabelFrame = CGRectMake(languageX, languageY, size.width, size.height);
-        
         //确定图标
         self.languageImageFrame = CGRectMake(languageImageX, languageImageY, languageImageWindth, languageImageHeight);
-        
         //cell高度
         self.cellHeight = size.height + languageY + 10;
-        
     }
     return self;
 }

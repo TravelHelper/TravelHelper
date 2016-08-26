@@ -97,10 +97,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMoney:) name:@"sendMoney"object:nil];
 
     //自定义返回键
-     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.backBtn];
+//     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.backBtn];
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
     //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
-    tapGestureRecognizer.cancelsTouchesInView = NO;
+//    tapGestureRecognizer.cancelsTouchesInView = NO;
     //将触摸事件添加到当前view
     [self.view addGestureRecognizer:tapGestureRecognizer];
     
@@ -110,13 +110,12 @@
     [_contentTextView resignFirstResponder];
 }
 
-#pragma mark - UITextViewDelegete
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    [_titleTextView resignFirstResponder];
-    [_contentTextView resignFirstResponder];
-    
-
-}
+//#pragma mark - UITextViewDelegete
+//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+//    [_titleTextView resignFirstResponder];
+//    [_contentTextView resignFirstResponder];
+//
+//}
 
 -(UIButton *)cancelBtn{
     if (!_cancelBtn) {

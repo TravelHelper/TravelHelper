@@ -157,13 +157,9 @@
         if (is || [user_loginState[@"user_loginState"] isEqual:@"1"])    {
             
             NSString *name = user_id[@"user_id"];
-            
             NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
-            
             NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
-            
             NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-            
             _photoImg=[UIImage imageWithData:data];
             if(_photoImg){
                 _avatarImag.image = _photoImg;
@@ -173,26 +169,20 @@
                 _avatarImag.image = [UIImage imageNamed:@"translator"];
                 [cell.contentView addSubview:_avatarImag];
             }
-
-            
-                                [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
-                                    NSLog(@"%@",user_id[@"user_id"]);
-                                    NSData *data = [[NSData alloc]initWithData:responseObject];
-                                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                                    NSDictionary *userInfo = dic[@"user_info"];
-                                    cell.nameLable.text = userInfo[@"user_nickname"];
-            
-            
-                                }failure:^(NSError *error) {
-                                    NSLog(@"%@",error);
-                                }];
-                                
-                                      }
+            [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
+                    NSLog(@"%@",user_id[@"user_id"]);
+                    NSData *data = [[NSData alloc]initWithData:responseObject];
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                    NSDictionary *userInfo = dic[@"user_info"];
+                    cell.nameLable.text = userInfo[@"user_nickname"];
+                    }failure:^(NSError *error) {
+                            NSLog(@"%@",error);
+                     }];}
         else{
           
-              _avatarImag.image = [UIImage imageNamed:@"translator"];
-                        [cell.contentView addSubview:_avatarImag];
-                        cell.nameLable.text = @"登录／注册";
+            _avatarImag.image = [UIImage imageNamed:@"translator"];
+            [cell.contentView addSubview:_avatarImag];
+            cell.nameLable.text = @"登录／注册";
         }
         if (it) {
             _avatarImag.image = [UIImage imageNamed:@"translator"];
@@ -311,15 +301,7 @@
     }
     
     if ( section == 3 && row == 0) {
-        //        UIWebView *webView = [[UIWebView alloc]init];
-        //        webView.delegate = self;
-        //        NSURL *url = [[NSURL alloc]initWithString:@"http://www.baidu.com"];
-        //        NSLog(@"%@-url地址",url);
-        //        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        //        [webView loadRequest:request];
-        //        webView.opaque = NO;
-        //        webView.backgroundColor = [UIColor redColor];
-        //        self.view = webView;
+
     }
 }
 
@@ -338,22 +320,27 @@
         logVC.view.backgroundColor = [UIColor whiteColor];
         [self presentViewController:nav animated:YES completion:nil];
     }
-        else
-        {
-            if([user_loginState[@"user_loginState"] isEqual:@"0"])
-            {
-                YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
-                YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
-                logVC.view.backgroundColor = [UIColor whiteColor];
-                [self presentViewController:nav animated:YES completion:nil];
-            }
-            else{
-                
-                EditViewController *userInfoVC = [[EditViewController alloc]init];
-                userInfoVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:userInfoVC animated:YES];
+    else{
+        if(is || [user_loginState[@"user_loginState"] isEqual:@"1"]){
+            EditViewController *userInfoVC = [[EditViewController alloc]init];
+            userInfoVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:userInfoVC animated:YES];
+        }
+        else{
+            YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
+            YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
+            logVC.view.backgroundColor = [UIColor whiteColor];
+            [self presentViewController:nav animated:YES completion:nil];
+            
             }
         }
+    if (it) {
+        YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
+        YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
+        logVC.view.backgroundColor = [UIColor whiteColor];
+        [self presentViewController:nav animated:YES completion:nil];
+       
+    }
     }
 
 -(void)intoMyOrderListClick{

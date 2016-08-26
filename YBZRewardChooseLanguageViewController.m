@@ -83,7 +83,7 @@
     Infor *infomation4 = [[Infor alloc] initWitensureImg:ensureImg language:@"德语"];
     Infor *infomation5 = [[Infor alloc] initWitensureImg:ensureImg language:@"韩语"];
     Infor *infomation6 = [[Infor alloc] initWitensureImg:ensureImg language:@"意大利语"];
-    Infor *infomation7 = [[Infor alloc] initWitensureImg:ensureImg language:@""];
+    Infor *infomation7 = [[Infor alloc] initWitensureImg:ensureImg language:@"泰语"];
     Infor *infomation8 = [[Infor alloc] initWitensureImg:ensureImg language:@""];
     Infor *infomation9 = [[Infor alloc] initWitensureImg:ensureImg language:@""];
     Infor *infomation10 = [[Infor alloc] initWitensureImg:ensureImg language:@""];

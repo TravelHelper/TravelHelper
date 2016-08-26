@@ -142,7 +142,6 @@ static NSString * userStr;
 -(void)onTimer{
     if (countDown > 0) {
         [self.getCodeBtn setTitle:[NSString stringWithFormat:@"%ds后获取",countDown] forState:UIControlStateDisabled];
-        self.getCodeBtn.backgroundColor = [UIColor grayColor];
         countDown--;
     }
     if (countDown == 0 ) {
@@ -247,8 +246,9 @@ static NSString * userStr;
 -(UIImageView *)otherImageView{
     if (!_otherImageView) {
         _otherImageView = [[UIImageView alloc]init];
-        _otherImageView.frame = CGRectMake(0,ScreenHeight*0.118,ScreenWidth, ScreenHeight*0.066);
-        _otherImageView.backgroundColor = UIColorFromRGB(0xffffff);
+        _otherImageView.frame = CGRectMake(ScreenWidth*0.7,ScreenHeight*0.118,ScreenWidth*0.3, ScreenHeight*0.066);
+//        _otherImageView.backgroundColor = [UIColor blueColor];
+//        [_otherImageView addTarget:self action:@selector(getCodeBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _otherImageView;
 }
@@ -256,7 +256,7 @@ static NSString * userStr;
     if (!_getCodeImageView) {
         _getCodeImageView = [[UIImageView alloc]init];
         [_getCodeImageView setImage:[UIImage imageNamed:@"forget_password_btn"]];
-        _getCodeImageView.frame = CGRectMake(ScreenWidth*0.746-5, ScreenHeight*0.137-2,ScreenWidth*0.192+10, ScreenHeight*0.034);
+        _getCodeImageView.frame = CGRectMake(ScreenWidth*0.72, ScreenHeight*0.127,ScreenWidth*0.25, ScreenHeight*0.048);
     }
     return _getCodeImageView;
 }
@@ -264,12 +264,11 @@ static NSString * userStr;
     
     if (!_getCodeBtn) {
         _getCodeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        //_getCodeBtn.backgroundColor = UIColorFromRGB(0x63B8FF);
         [_getCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
         _getCodeBtn.titleLabel.font = FONT_12;
         [_getCodeBtn setTitleColor:[UIColor blackColor]forState:UIControlStateNormal];
         //        [_getCodeBtn setTitleColor:[UIColor blackColor]forState:UIControlStateNormal];
-        _getCodeBtn.frame = CGRectMake( ScreenWidth*0.746, ScreenHeight*0.137-3,ScreenWidth*0.192, ScreenHeight*0.034);
+        _getCodeBtn.frame = CGRectMake( ScreenWidth*0.746, ScreenHeight*0.13,ScreenWidth*0.192, ScreenHeight*0.041);
         [_getCodeBtn addTarget:self action:@selector(getCodeBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     
