@@ -62,8 +62,8 @@
     [super viewDidLoad];
     self.dataArr = [[NSMutableArray alloc]init];
     [self loadDataFromWeb];
+    self.view.backgroundColor = myRewardBackgroundColor;
 
-    self.view.backgroundColor = UIColorFromRGB(0Xf2f2f2);
     self.mainTableView.backgroundColor = myRewardBackgroundColor;
     self.title = @"我的悬赏";
     
@@ -102,7 +102,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel2:) name:@"setTextALabel2" object:nil];
     //右键头
     UIImageView *editImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [editImage setImage:[UIImage imageNamed:@"edit"]];
+    [editImage setImage:[UIImage imageNamed:@"add"]];
     self.rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(0,0,30,30)];
     [_rightBtn addTarget:self action:@selector(searchprogram) forControlEvents:UIControlEventTouchUpInside];
     [self.rightBtn addSubview:editImage];
@@ -425,22 +425,9 @@
     
     if(tableView==self.mainTableView){
         NSDictionary *aa = self.dataArr[indexPath.row];
-        NSString *time = aa[@"release_time"];
-        NSString *title = aa[@"reward_title"];
-        NSString *text = aa[@"reward_text"];
-        NSString *url = aa[@"reward_url"];
-        NSString *money = aa[@"reward_money"];
-        NSString *language = aa[@"language"];
-//        NSString *reward_id = aa[@"reward_id"];
         YBZDetailViewController *detailVC = [[YBZDetailViewController alloc]init];
         NSLog(@"--------------->%@",aa);
-        detailVC.data = @{@"time":time,
-                          @"title":title,
-                          @"text":text,
-                          @"url":url,
-                          @"money":money,
-                          @"language":language};
-        NSLog(@"%@",detailVC.data[@"reward_id"]);
+        detailVC.reward_id = aa[@"reward_id"];
 
         [self.navigationController pushViewController:detailVC animated:YES];
         
@@ -450,7 +437,7 @@
 }
 -(void)searchprogram{
     YBZSendRewardViewController *sendRewardVC = [[YBZSendRewardViewController alloc]init];
-    [self.navigationController pushViewController:sendRewardVC animated:nil];
+    [self.navigationController pushViewController:sendRewardVC animated:YES];
 }
 
 - (UIImageView *)backgroundImageView{

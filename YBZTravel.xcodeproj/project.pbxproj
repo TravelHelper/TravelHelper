@@ -77,6 +77,9 @@
 		1ED863EB1D38868500529094 /* YBZSingleCodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863E71D38868500529094 /* YBZSingleCodeInfo.m */; };
 		1ED863EE1D3887E200529094 /* UITextField+Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863ED1D3887E200529094 /* UITextField+Validator.m */; };
 		1ED863F11D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863F01D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m */; };
+		7D0315BB1D6F1E5E00983D23 /* YBZDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */; };
+		7D0315BE1D6F228100983D23 /* AnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BD1D6F228100983D23 /* AnswerCell.m */; };
+		7D0315C11D6F28E700983D23 /* YBZRewardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315C01D6F28E700983D23 /* YBZRewardDetailModel.m */; };
 		7D04F3601D4303A9008BD5EB /* EvaluatePeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D04F35F1D4303A9008BD5EB /* EvaluatePeopleCell.xib */; };
 		7D28E3591D6DAAB600B51EF7 /* QuickTransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */; };
 		7D3E99651D6D420200F13F42 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99641D6D420200F13F42 /* Model.m */; };
@@ -104,7 +107,6 @@
 		7D3E99AF1D6D42D700F13F42 /* YBZTagClassifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99A41D6D42D700F13F42 /* YBZTagClassifyViewController.m */; };
 		7D3E99B01D6D42D700F13F42 /* YBZChoosePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99A61D6D42D700F13F42 /* YBZChoosePhotoViewController.m */; };
 		7D3E99B11D6D42D700F13F42 /* YBZRewardMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99A81D6D42D700F13F42 /* YBZRewardMoneyViewController.m */; };
-		7D3E99B21D6D42D700F13F42 /* YBZDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99AA1D6D42D700F13F42 /* YBZDetailViewController.m */; };
 		7D6674BF1D49951100043937 /* complaintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6674BE1D49951100043937 /* complaintViewController.m */; };
 		7D8427381D634638000BFEAD /* DetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84272C1D634638000BFEAD /* DetailsView.m */; };
 		7D8427391D634638000BFEAD /* CollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84272E1D634638000BFEAD /* CollectionModel.m */; };
@@ -388,6 +390,12 @@
 		1ED863ED1D3887E200529094 /* UITextField+Validator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Validator.m"; sourceTree = "<group>"; };
 		1ED863EF1D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+YBZBarButtonItem.h"; sourceTree = "<group>"; };
 		1ED863F01D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+YBZBarButtonItem.m"; sourceTree = "<group>"; };
+		7D0315B91D6F1E5E00983D23 /* YBZDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZDetailViewController.h; sourceTree = "<group>"; };
+		7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZDetailViewController.m; sourceTree = "<group>"; };
+		7D0315BC1D6F228100983D23 /* AnswerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerCell.h; sourceTree = "<group>"; };
+		7D0315BD1D6F228100983D23 /* AnswerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerCell.m; sourceTree = "<group>"; };
+		7D0315BF1D6F28E700983D23 /* YBZRewardDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRewardDetailModel.h; sourceTree = "<group>"; };
+		7D0315C01D6F28E700983D23 /* YBZRewardDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRewardDetailModel.m; sourceTree = "<group>"; };
 		7D04F35F1D4303A9008BD5EB /* EvaluatePeopleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EvaluatePeopleCell.xib; sourceTree = "<group>"; };
 		7D28E3571D6DAAB600B51EF7 /* QuickTransViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickTransViewController.h; sourceTree = "<group>"; };
 		7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickTransViewController.m; sourceTree = "<group>"; };
@@ -440,8 +448,6 @@
 		7D3E99A61D6D42D700F13F42 /* YBZChoosePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZChoosePhotoViewController.m; sourceTree = "<group>"; };
 		7D3E99A71D6D42D700F13F42 /* YBZRewardMoneyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRewardMoneyViewController.h; sourceTree = "<group>"; };
 		7D3E99A81D6D42D700F13F42 /* YBZRewardMoneyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRewardMoneyViewController.m; sourceTree = "<group>"; };
-		7D3E99A91D6D42D700F13F42 /* YBZDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZDetailViewController.h; sourceTree = "<group>"; };
-		7D3E99AA1D6D42D700F13F42 /* YBZDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZDetailViewController.m; sourceTree = "<group>"; };
 		7D6674BD1D49951100043937 /* complaintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = complaintViewController.h; sourceTree = "<group>"; };
 		7D6674BE1D49951100043937 /* complaintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = complaintViewController.m; sourceTree = "<group>"; };
 		7D84272B1D634638000BFEAD /* DetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsView.h; sourceTree = "<group>"; };
@@ -954,6 +960,8 @@
 				7D3E99801D6D42B500F13F42 /* BottomView.m */,
 				7D3E99811D6D42B500F13F42 /* TopView.h */,
 				7D3E99821D6D42B500F13F42 /* TopView.m */,
+				7D0315BF1D6F28E700983D23 /* YBZRewardDetailModel.h */,
+				7D0315C01D6F28E700983D23 /* YBZRewardDetailModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -974,6 +982,8 @@
 				7D3E99911D6D42C300F13F42 /* Infor.m */,
 				7D3E99921D6D42C300F13F42 /* CellInfor.h */,
 				7D3E99931D6D42C300F13F42 /* CellInfor.m */,
+				7D0315BC1D6F228100983D23 /* AnswerCell.h */,
+				7D0315BD1D6F228100983D23 /* AnswerCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -995,8 +1005,8 @@
 				7D3E99A61D6D42D700F13F42 /* YBZChoosePhotoViewController.m */,
 				7D3E99A71D6D42D700F13F42 /* YBZRewardMoneyViewController.h */,
 				7D3E99A81D6D42D700F13F42 /* YBZRewardMoneyViewController.m */,
-				7D3E99A91D6D42D700F13F42 /* YBZDetailViewController.h */,
-				7D3E99AA1D6D42D700F13F42 /* YBZDetailViewController.m */,
+				7D0315B91D6F1E5E00983D23 /* YBZDetailViewController.h */,
+				7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1800,7 +1810,6 @@
 				1ED863DE1D34D67500529094 /* YBZChangeLanguageInfo.m in Sources */,
 				A0532CD41D38D7D300FC1AB1 /* PickAvatarImage.m in Sources */,
 				A012EE001D509CAB00144BAD /* CWViewController.m in Sources */,
-				7D3E99B21D6D42D700F13F42 /* YBZDetailViewController.m in Sources */,
 				A0552ED51D3A2C8C00E04D7A /* PlaceNameModel.m in Sources */,
 				1B05138F1D3F5DAC00F05C9D /* README.md in Sources */,
 				7D8427601D634AAB000BFEAD /* InformationTableViewCell.m in Sources */,
@@ -1871,11 +1880,13 @@
 				1ED863111D2F39DD00529094 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				1ED863EB1D38868500529094 /* YBZSingleCodeInfo.m in Sources */,
 				A0552EB71D3A166A00E04D7A /* FreeTravelViewController.m in Sources */,
+				7D0315C11D6F28E700983D23 /* YBZRewardDetailModel.m in Sources */,
 				A0532CC61D38D03E00FC1AB1 /* UIView+Extention.m in Sources */,
 				7D3E99841D6D42B500F13F42 /* MessageInfoCell.m in Sources */,
 				1ED8630D1D2F39DD00529094 /* MASLayoutConstraint.m in Sources */,
 				1C09F7311D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m in Sources */,
 				A03ED0D21D2E089C00BD9C0A /* YBZUserOrderViewController.m in Sources */,
+				7D0315BB1D6F1E5E00983D23 /* YBZDetailViewController.m in Sources */,
 				A03ED0CF1D2E088300BD9C0A /* YBZUserInfoViewController.m in Sources */,
 				1ED863D21D3390F000529094 /* MJRefreshBaseView.m in Sources */,
 				A012EE021D509CAB00144BAD /* BaseTableView.m in Sources */,
@@ -1922,6 +1933,7 @@
 				A0532C841D38C3F600FC1AB1 /* AccountAndSafeOtherTableViewCell.m in Sources */,
 				1ED863EE1D3887E200529094 /* UITextField+Validator.m in Sources */,
 				1C09F72C1D5EEC5400B8CE3C /* YBZChangeLanguageViewController.m in Sources */,
+				7D0315BE1D6F228100983D23 /* AnswerCell.m in Sources */,
 				A03ED0E51D2E2B2300BD9C0A /* YBZTranslaterSelectLanguageViewController.m in Sources */,
 				7D8427391D634638000BFEAD /* CollectionModel.m in Sources */,
 				7D8427381D634638000BFEAD /* DetailsView.m in Sources */,

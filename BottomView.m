@@ -84,7 +84,7 @@
 -(UILabel *)tiXianLabel
 {
     if (!_tiXianLabel) {
-        _tiXianLabel = [[UILabel alloc]initWithFrame:CGRectMake(32,kScreenH*0.051, kScreenW/2, kScreenH*0.034)];
+        _tiXianLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,kScreenH*0.051, kScreenW/2, kScreenH*0.034)];
         _tiXianLabel.text = @"悬赏金额";
     }
     return _tiXianLabel;
@@ -93,7 +93,7 @@
 -(UIImageView *)youBiImageView
 {
     if (!_youBiImageView) {
-        _youBiImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, self.tiXianLabel.frame.origin.y + 50, 26, 26)];
+        _youBiImageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, self.tiXianLabel.frame.origin.y + 50, 26, 26)];
         _youBiImageView.image = [UIImage imageNamed:@"youBiLogal"];
         
     }
