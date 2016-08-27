@@ -960,7 +960,7 @@
         //_customMadeLabel.backgroundColor = [UIColor greenColor];
         [_Btn3Label setText:@"定制翻译"];
 //        [_Btn3Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-//        [_Btn3Label setTextColor:[UIColor grayColor]];
+        [_Btn3Label setTextColor:[UIColor grayColor]];
         
         _Btn3Label.textAlignment = NSTextAlignmentCenter;
         

@@ -74,7 +74,7 @@
     if ([self.bottomView.moneyTextField.text  isEqual: @""]) {
         [self.tiXianBut setEnabled:NO];
         [_tiXianBut setTitle:@"悬赏" forState:UIControlStateNormal];
-        _tiXianBut.backgroundColor = [UIColor yellowColor];
+        _tiXianBut.backgroundColor = [UIColor colorWithRed:253 / 255.0 green:218 / 255.0 blue:0 / 255.0 alpha:1];
 
     }else{
         [_tiXianBut setTitle:@"确定" forState:UIControlStateNormal];

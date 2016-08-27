@@ -66,7 +66,8 @@
     //定制导航栏
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255.0f/255.0f green:221.0f/255.0f blue:1.0f/255.0f alpha:1];
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.backBtn];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(sendBtnIClick)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(sendBtnIClick)];
+
     
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:15],NSFontAttributeName, nil] forState:UIControlStateNormal];

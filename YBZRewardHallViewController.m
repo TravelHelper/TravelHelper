@@ -62,9 +62,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.dataArr = [[NSMutableArray alloc]init];
-    // Do any additional setup after loading the view.
     [self loadDataFromWeb];
-   // self.view.backgroundColor = [UIColor lightGrayColor];
     self.view.backgroundColor = UIColorFromRGB(0Xf2f2f2);
     self.mainTableView.backgroundColor = UIColorFromRGB(0Xf2f2f2);
     self.title = @"悬赏大厅";
@@ -94,9 +92,9 @@
     self.m_btn_tableView3.m_Btn_Name = @"时间排序";
     
     //数据内容
-    self.m_btn_tableView1.m_TableViewData = @[@"金额由高到低",@"金额由低到高"];
+    self.m_btn_tableView1.m_TableViewData = @[@"由高到低",@"由低到高"];
     self.m_btn_tableView2.m_TableViewData = @[@"英文",@"中文",@"法文",@"俄文"];
-    self.m_btn_tableView3.m_TableViewData = @[@"时间由早到晚",@"时间由晚到早"];
+    self.m_btn_tableView3.m_TableViewData = @[@"由早到晚",@"由晚到早"];
     
     [self.m_btn_tableView1 addViewData];
     [self.m_btn_tableView2 addViewData];
