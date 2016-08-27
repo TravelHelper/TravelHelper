@@ -562,8 +562,6 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
     
     NSDictionary *dict = @{@"rewarder_id":rewardID};
-    
-    
     [[APIClient sharedClient] POST:@"Reward/myReward/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

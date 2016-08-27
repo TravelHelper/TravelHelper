@@ -38,7 +38,7 @@
     NSLog(@"%@",asd);
     //view的宽高
     CGFloat WIDTH = self.view.frame.size.width;
-    CGFloat HIGH = self.view.frame.size.height;
+//    CGFloat HIGH = self.view.frame.size.height;
     
     //输入框
     self.inputTF = [[UITextField alloc]initWithFrame:CGRectMake(16, 30, WIDTH-32, 35)];

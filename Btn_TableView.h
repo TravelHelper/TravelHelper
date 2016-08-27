@@ -20,8 +20,8 @@
 
 @interface Btn_TableView : UIView<ExpandTableVCDelegate>
 
-@property (strong , nonatomic)  NSString *cellName;
-@property (nonatomic ,strong) NSString * panduan;
+@property (strong ,nonatomic)  NSString *cellName;
+@property (nonatomic ,strong)  NSString *panduan;
 
 
 @property (strong , nonatomic) UIButton *m_btn;

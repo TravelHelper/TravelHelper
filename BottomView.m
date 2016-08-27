@@ -27,6 +27,7 @@
     self = [super init];
     if (self) {
         [self returnMoney];
+
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *myDictionary = [userinfo dictionaryForKey:@"user_id"];
         userID = myDictionary[@"user_id"];

@@ -31,6 +31,8 @@
 		1C09F72C1D5EEC5400B8CE3C /* YBZChangeLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09F72B1D5EEC5400B8CE3C /* YBZChangeLanguageViewController.m */; };
 		1C09F7311D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09F72E1D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m */; };
 		1C09F7321D5F25FE00B8CE3C /* YBZOtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09F7301D5F25FE00B8CE3C /* YBZOtherViewController.m */; };
+		1C8C5FDB1D6F0E2700763AB9 /* 匹配译员动态图.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1C8C5FDA1D6F0E2700763AB9 /* 匹配译员动态图.gif */; };
+		1CF4DAE21D6F043700F6BA94 /* YBZGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF4DAE11D6F043700F6BA94 /* YBZGifView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1CF5443B1D609CB2001B4381 /* YBZTongyongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF5443A1D609CB2001B4381 /* YBZTongyongViewController.m */; };
 		1E70550A1D517F3D00A000F5 /* YBZFreeTranslationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7055071D517F3D00A000F5 /* YBZFreeTranslationInfo.m */; };
 		1E70550B1D517F3D00A000F5 /* YBZFreeTranslationViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7055091D517F3D00A000F5 /* YBZFreeTranslationViewCell.m */; };
@@ -299,6 +301,9 @@
 		1C09F72E1D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZChooseTranslatorViewController.m; sourceTree = "<group>"; };
 		1C09F72F1D5F25FE00B8CE3C /* YBZOtherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZOtherViewController.h; sourceTree = "<group>"; };
 		1C09F7301D5F25FE00B8CE3C /* YBZOtherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOtherViewController.m; sourceTree = "<group>"; };
+		1C8C5FDA1D6F0E2700763AB9 /* 匹配译员动态图.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "匹配译员动态图.gif"; sourceTree = "<group>"; };
+		1CF4DAE01D6F043700F6BA94 /* YBZGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZGifView.h; sourceTree = "<group>"; };
+		1CF4DAE11D6F043700F6BA94 /* YBZGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZGifView.m; sourceTree = "<group>"; };
 		1CF544391D609CB2001B4381 /* YBZTongyongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZTongyongViewController.h; sourceTree = "<group>"; };
 		1CF5443A1D609CB2001B4381 /* YBZTongyongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTongyongViewController.m; sourceTree = "<group>"; };
 		1E7055061D517F3D00A000F5 /* YBZFreeTranslationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZFreeTranslationInfo.h; sourceTree = "<group>"; };
@@ -784,6 +789,23 @@
 			name = WebServer;
 			sourceTree = "<group>";
 		};
+		1C8C5FD91D6F0E0200763AB9 /* image */ = {
+			isa = PBXGroup;
+			children = (
+				1C8C5FDA1D6F0E2700763AB9 /* 匹配译员动态图.gif */,
+			);
+			name = image;
+			sourceTree = "<group>";
+		};
+		1CF4DADF1D6F03BD00F6BA94 /* GigVIew */ = {
+			isa = PBXGroup;
+			children = (
+				1CF4DAE01D6F043700F6BA94 /* YBZGifView.h */,
+				1CF4DAE11D6F043700F6BA94 /* YBZGifView.m */,
+			);
+			name = GigVIew;
+			sourceTree = "<group>";
+		};
 		1E7055B41D53247700A000F5 /* JPush-iOS-SDK-2.1.8 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1183,6 +1205,7 @@
 		A03ED0551D2DE20700BD9C0A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1C8C5FD91D6F0E0200763AB9 /* image */,
 				A03ED0631D2DE20800BD9C0A /* LaunchScreen.storyboard */,
 				A03ED0661D2DE20800BD9C0A /* Info.plist */,
 				1E70560A1D5326A400A000F5 /* PushConfig.plist */,
@@ -1326,6 +1349,7 @@
 		A03ED0921D2DE37000BD9C0A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				1CF4DADF1D6F03BD00F6BA94 /* GigVIew */,
 				A0532CBB1D38D00C00FC1AB1 /* Star */,
 			);
 			name = View;
@@ -1731,6 +1755,7 @@
 				1B05138E1D3F5DAC00F05C9D /* LICENSE in Resources */,
 				A0532C961D38C6B400FC1AB1 /* CustomInfoCell.xib in Resources */,
 				7D8427611D634AAB000BFEAD /* InformationTableViewCell.xib in Resources */,
+				1C8C5FDB1D6F0E2700763AB9 /* 匹配译员动态图.gif in Resources */,
 				A0532C771D38C32200FC1AB1 /* UserSetoutTableViewCell.xib in Resources */,
 				1ED863D11D3390F000529094 /* MJRefresh.bundle in Resources */,
 				A012EDAF1D5099E000144BAD /* release_notes_ios.txt in Resources */,
@@ -1851,6 +1876,7 @@
 				A03ED0B91D2DEA0C00BD9C0A /* YBZFreeTravelController.m in Sources */,
 				7D3E99B01D6D42D700F13F42 /* YBZChoosePhotoViewController.m in Sources */,
 				7D3E99AB1D6D42D700F13F42 /* YBZMyRewardViewController.m in Sources */,
+				1CF4DAE21D6F043700F6BA94 /* YBZGifView.m in Sources */,
 				1ED863111D2F39DD00529094 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				1ED863EB1D38868500529094 /* YBZSingleCodeInfo.m in Sources */,
 				A0552EB71D3A166A00E04D7A /* FreeTravelViewController.m in Sources */,

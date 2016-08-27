@@ -914,7 +914,7 @@
     [self.bottomTableView addHeaderWithTarget:self action:@selector(headerRereshing)];
     // dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
     [self.bottomTableView addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"table"];
-#warning 自动刷新(一进入程序就下拉刷新)
+#pragma mark - warning 自动刷新(一进入程序就下拉刷新)
     //[self.popularCellView headerBeginRefreshing];
     
     // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)

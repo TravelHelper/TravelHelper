@@ -111,13 +111,12 @@
     [_contentTextView resignFirstResponder];
 }
 
-#pragma mark - UITextViewDelegete
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    [_titleTextView resignFirstResponder];
-    [_contentTextView resignFirstResponder];
-    
-
-}
+//#pragma mark - UITextViewDelegete
+//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+//    [_titleTextView resignFirstResponder];
+//    [_contentTextView resignFirstResponder];
+//
+//}
 
 -(UIButton *)cancelBtn{
     if (!_cancelBtn) {

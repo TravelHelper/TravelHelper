@@ -55,14 +55,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-      self.title = @"详   情";
+    self.title = @"详   情";
 
     self.view.backgroundColor = kBackgroundColor;
     [self.view addSubview:self.topContainer];
     [self.view addSubview:self.bottomBtn];
     
-    
-    self.isOpen = NO;
+    self.isOpen = false;
     
     
 }
@@ -129,12 +128,12 @@
         if((self.contentLabelHeight / self.oneLineHeight) <= kShowLinesNums){
             
             _contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMarginTopLeftBottom, self.questionLabel.frame.origin.y + self.questionLabel.bounds.size.height, self.questionLabel.bounds.size.width, self.contentLabelHeight)];
-            self.isShowOpenButton = NO;
+            self.isShowOpenButton = false;
             
         }else{
             
             _contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMarginTopLeftBottom, self.questionLabel.frame.origin.y + self.questionLabel.bounds.size.height, self.questionLabel.bounds.size.width, self.oneLineHeight * kShowLinesNums)];
-            self.isShowOpenButton = YES;
+            self.isShowOpenButton = true;
             
         }
         _contentLabel.textAlignment = NSTextAlignmentLeft;
@@ -181,7 +180,7 @@
         self.openButtonArrowImage.image = [UIImage imageNamed:@"arrow"];
        // [_openButton setTitle:@"收起" forState:UIControlStateSelected];
         [_openButton setTitle:@"展开" forState:UIControlStateNormal];
-        self.isOpen = NO;
+        self.isOpen = false;
         
     }else{
         
@@ -191,7 +190,7 @@
         self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y + changeHeight, self.contentView.bounds.size.width, self.contentView.bounds.size.height);
         self.openButtonArrowImage.image = [UIImage imageNamed:@"arrow1"];
         [_openButton setTitle:@"收起" forState:UIControlStateNormal];
-        self.isOpen = YES;
+        self.isOpen = true;
         
     }
     
