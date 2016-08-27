@@ -242,8 +242,10 @@
 -(UIButton *)yesBtn{
     if (!_yesBtn) {
         _yesBtn = [[UIButton alloc]initWithFrame:CGRectMake(50, [UIScreen mainScreen].bounds.size.height-70, 100, 50)];
-        _yesBtn.backgroundColor = [UIColor greenColor];
+        _yesBtn.backgroundColor = [UIColor whiteColor];
         [_yesBtn setTitle:@"确认" forState:UIControlStateNormal];
+        [_yesBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+
         [_yesBtn addTarget:self action:@selector(yesBtnClick) forControlEvents:UIControlEventTouchUpInside];
 
     }
@@ -252,8 +254,9 @@
 -(UIButton *)returnBtn{
     if (!_returnBtn) {
         _returnBtn = [[UIButton alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width-150, [UIScreen mainScreen].bounds.size.height-70, 100, 50)];
-        _returnBtn.backgroundColor = [UIColor greenColor];
+        _returnBtn.backgroundColor = [UIColor whiteColor];
         [_returnBtn setTitle:@"返回" forState:UIControlStateNormal];
+        [_returnBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_returnBtn addTarget:self action:@selector(returnBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _returnBtn;

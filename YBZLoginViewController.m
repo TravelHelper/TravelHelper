@@ -127,7 +127,7 @@
                 if ([self.pswerTextField validatePassWord]) {
                     //网络验证
                     [WebAgent userLogin:self.phoneTextField.text userPsw:self.pswerTextField.text success:^(id responseObject) {
-                        NSString *str3 = self.phoneTextField.text;
+//                        NSString *str3 = self.phoneTextField.text;
                         NSString *str4 = self.pswerTextField.text;
                         NSData *data = [[NSData alloc]initWithData:responseObject];
                         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -143,10 +143,11 @@
                                 
                                 
                                 isLoginstate = @"true";
-
+                                
                                
                                 //登陆成功
                                 [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"Login" object:nil];
                                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                                 //------------------
                                 [userDefaults setObject:useridDic forKey:@"user_id"];

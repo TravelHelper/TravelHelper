@@ -35,7 +35,7 @@
     
     UILabel *todayText = [[UILabel alloc]initWithFrame:CGRectMake(0, 64+10, kScreenWindth/2, 25)];
     todayText.text = @"当天支出";
-    todayText.textAlignment = UITextAlignmentCenter;
+    todayText.textAlignment = NSTextAlignmentCenter;
     
     UILabel *todayMoneyLable = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWindth/4-20, 64+10+25+10, 20, 20)];
     NSString *todayMoneyText = @"3";
@@ -58,7 +58,7 @@
     
     UILabel *allText = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWindth/2, 64+10, kScreenWindth/2, 25)];
     allText.text = @"总计支出";
-    allText.textAlignment = UITextAlignmentCenter;
+    allText.textAlignment = NSTextAlignmentCenter;
     
     UILabel *allMoneyLable = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWindth/2+kScreenWindth/4-45, 64+10+25+10, 50, 20)];
     NSString *allMoneyText = @"5000";

@@ -77,7 +77,7 @@
 -(UILabel *)questionLabel{
     if (!_questionLabel) {
         _questionLabel = [[UILabel alloc]init];
-        _questionLabel.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width-250)/2+20, 40, 250, 60);
+        _questionLabel.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width-250)/2+20, 64, 250, 60);
         _questionLabel.text = @"想要成为译员？";
         _questionLabel.font = [UIFont systemFontOfSize:30];
         _questionLabel.textColor = [UIColor blackColor];
@@ -161,7 +161,7 @@
     if (!_addChooseLanguagebtn) {
         _addChooseLanguagebtn = [[UIButton alloc]init];
         _addChooseLanguagebtn.frame = CGRectMake(CGRectGetMaxX(self.chooseLanguagebtnFrench.frame)-60,  CGRectGetMaxY(self.chooseLanguagebtnGermany.frame)+20, 60, 60);
-     [_addChooseLanguagebtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
+     [_addChooseLanguagebtn setImage:[UIImage imageNamed:@"加语言"] forState:UIControlStateNormal];
         [_addChooseLanguagebtn addTarget:self action:@selector(addChooseLanguagebtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _addChooseLanguagebtn;
@@ -206,8 +206,8 @@
     if (!_checkbox) {
         _checkbox = [[UIButton alloc]init];
         _checkbox.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width-150)/2-70,  CGRectGetMaxY(self.addChooseLanguagebtn.frame)+40, 30, 30);
-        [_checkbox setImage:[UIImage imageNamed:@"money"]forState:UIControlStateNormal];
-        [_checkbox setImage:[UIImage imageNamed:@"order"]forState:UIControlStateSelected];
+        [_checkbox setImage:[UIImage imageNamed:@"同意"]forState:UIControlStateNormal];
+        [_checkbox setImage:[UIImage imageNamed:@"不同意"]forState:UIControlStateSelected];
         [_checkbox addTarget:self action:@selector(checkboxClick:)forControlEvents:UIControlEventTouchUpInside];
         [_checkbox setSelected:YES];
         

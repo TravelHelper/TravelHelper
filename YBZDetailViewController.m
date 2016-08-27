@@ -1,349 +1,294 @@
 //
-//  AnswerTransViewController.m
+//  YBZDetailViewController.m
 //  YBZTravel
 //
-//  Created by sks on 16/8/11.
-//  Copyright © 2016年 ZYQ. All rights reserved.
+//  Created by 孙锐 on 16/8/25.
+//  Copyright © 2016年 tjufe. All rights reserved.
 //
 
-
-//详情（用户）
 #import "YBZDetailViewController.h"
-#import "MessageInfoCell.h"
-#import "MessageInfoCellData.h"
+#import "AnswerCell.h"
+#import "WebAgent.h"
+#import "YBZRewardDetailModel.h"
 
-#import "UnfoldCell.h"
-#import "UnfoldModel.h"
-#import "UnfoldFrameModel.h"
+@interface YBZDetailViewController ()<UITableViewDelegate,UITableViewDataSource>{
 
-#import "AFNetworking.h"
+    UIView *splitView;
+}
 
-#define kScreenWidth self.view.bounds.size.width
-#define margin 10
+//标题内容的View
+@property (nonatomic, strong) UIView *contentView;
+//回答的tableview
+@property (nonatomic, strong) UITableView *answerTableView;
+//底部提示label
+@property (nonatomic, strong) UILabel *bottomAlertLabel;
+//数据模型
+@property (nonatomic, strong) YBZRewardDetailModel *rewardDetailModel;
+//标题View
+@property (nonatomic, strong) UIView *titleView;
+//内容Label
+@property (nonatomic, strong) UILabel *contentLabel;
+//悬赏图片
+@property (nonatomic, strong) UIImageView *rewardImageView;
+//时间Label
+@property (nonatomic, strong) UILabel *timeLabel;
+//人数label
+@property (nonatomic, strong) UILabel *answerNumLabel;
 
-@interface YBZDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UnfoldCellDelegate>
 
-@property (nonatomic, strong)UITableView *mainTableView;
-@property (nonatomic, strong)UIButton *backBtn;
-@property (nonatomic, strong)NSMutableArray *dataArr;
-@property (nonatomic, strong)NSDictionary *myData;
-
-//cell1
-@property (nonatomic, strong)UILabel *askLableOne;
-@property (nonatomic, strong)UILabel *asklableTwo;
-
-//cell2
-@property (nonatomic,strong)NSMutableArray *dataArray;
-
-//cell3
-@property (nonatomic, strong)UIImageView *askImage;
-@property (nonatomic, strong)UILabel *askLastTime;
-@property (nonatomic, strong)UILabel *answerPersonNum;
-
-//cell4
-@property (nonatomic, strong)UIImageView *lableImage;
-@property (nonatomic, strong)UILabel *languageLable;
-@property (nonatomic, strong)UIButton *changeButton;
-
-//可变cell
-@property (nonatomic, strong)NSArray *numberOfCell;
-@property (nonatomic, strong)NSMutableArray *textCell;
 @end
 
-@implementation YBZDetailViewController
+@implementation YBZDetailViewController{
+
+    CGSize sizeOfPic;
+    UIImageView *tagImage;
+}
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
-    self.title = @"详情";
-    //修改返回键图标
-    //隐藏标签栏
-    
-    self.tabBarController.tabBar.hidden = YES;
-    [self initLoadData];
-    //[self dictionaryData];
-    [self initTableView];
-    [self.view addSubview:self.backBtn];
-    [self loadDataFromWebTwo];
-    
-}
+    //设置背景色
+    self.view.backgroundColor = UIColorFromRGB(0xEFEFEF);
+    //设置标题
+    self.title = @"悬赏详情";
+    [self loadDataFromWeb];
 
-#pragma mark - 添加UITableView并签署协议
--(void)initTableView{
-    self.dataArr = [NSMutableArray array];
-    UITableView *mainTableView = [[UITableView alloc]init];
-    self.mainTableView = mainTableView;
-    [self.view addSubview:mainTableView];
-    mainTableView.frame = self.view.bounds;
-    mainTableView.delegate = self;
-    mainTableView.dataSource = self;
-    mainTableView.allowsSelection = NO;
-}
-
-
-//返回首页
--(void)backToRoot{
-
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-
-
--(void)initLoadData
-{
-    self.dataArray = [NSMutableArray array];
-    NSArray *array  = @[self.data[@"text"]];
-    
-    for (NSString *str in array) {
-        UnfoldModel *model = [[UnfoldModel alloc]init];
-        model.contenxt = str;
-        model.isUnflod = NO;//给出初始值
-        
-        UnfoldFrameModel *frameModel = [[UnfoldFrameModel alloc]init];
-        frameModel.model = model;
-        [self.dataArray addObject:frameModel];
-    }
     
 }
 
 
+#pragma mark -----WebAgent-----
+-(void)loadDataFromWeb{
 
-
-
-#pragma mark - 数据源方法 接受数据
--(void)loadDataFromWebTwo{
-    //网络接口
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    NSDictionary *paramDict = @{@"reward_id":@"wqwwd"};
-    [manager POST:@"http://127.0.0.1/TravelHelper/index.php/Home/Reward/rewardInformation" parameters:paramDict progress:^(NSProgress * _Nonnull uploadProgress) {
-        //do nothing
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //链接成功
-        self.dataArr = [NSMutableArray array];
-        self.textCell = [NSMutableArray array];
+    [WebAgent rewardDetial:self.reward_id success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        self.myData = dic;
-        NSLog(@"%@",dic);
-        //NSLog(@"%@",dic[@"data"][@"user_nickname"]);
-        NSLog(@"%@",dic[@"data"][1][@"answer_text"]);
-        NSLog(@"%lu",(unsigned long)dic.count);
-        
-        NSArray *arr=dic[@"data"];
-        NSNumber *aNumber = [NSNumber numberWithInteger:arr.count];
-        self.numberOfCell = @[aNumber];
-        for (int i = 0; i < arr.count; i++) {
-            MessageInfoCellData *data1 = [[MessageInfoCellData alloc]initWithimagePath:@""answerNickname:@"壁咚" answerWord:dic[@"data"][i][@"answer_text"] lastTime:@"" acceptOrnot:dic[@"data"][i][@"proceed_state"]];
-            NSLog(@"%@",data1);
-            [self.dataArr addObject:data1];
-            [self.textCell addObject:dic[@"data"][i][@"answer_text"]];
-            NSLog(@"%lu",(unsigned long)self.textCell.count);
+        NSDictionary *dict = dic[@"data"][0];
+        NSMutableArray *arr = dict[@"answer_list"];
+        NSUInteger i;
+        if ([arr isKindOfClass:[NSString class]] ) {
+            i=0;
+        }else{
+            i=arr.count;
         }
-        [self.mainTableView reloadData];
+        NSString *str;
+        if (![dict[@"reward_tag"]isEqualToString:@""]) {
+            str = [NSString stringWithFormat:@"%@、%@",dict[@"language"] ,dict[@"reward_tag"]];
+        }else{
+            str = dict[@"language"];
+        }
+        _rewardDetailModel = [[YBZRewardDetailModel alloc]initWithTitle:dict[@"reward_title"] AndContent:dict[@"reward_text"] AndImageUrl:dict[@"reward_pic_url"] AndTime:dict[@"release_time"]  AndTag:str AndNumber:i AndAnswerList:arr AndState:dict[@"proceed_state"]];
+        NSLog(@"1");
+        [self setAllControlsFrame];
+        [self addAllControls];
+
+    } failure:^(NSError *error) {
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        //链接失败
-        NSLog(@"%@",error);
     }];
-    
-    
-    // MessageInfoCellData *data1 = [[MessageInfoCellData alloc]initWithimagePath:@"" answerNickname:@"--" answerWord:@"--" lastTime:@"--" acceptOrnot:@"--"];
-    //self.dataArr = @[data1];
 }
 
-#pragma mark - 表视图协议
-//行数
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSInteger number = 0;
-    if (section == 0) {
-        number = 4;
-    }
-    
-    if(section == 1){
-        NSInteger anInteger = [self.numberOfCell[0] integerValue];
-        number = anInteger;
-    }
-    return number;
-    
+
+
+#pragma mark ----Set Frame-----
+-(void)setAllControlsFrame{
+
+    self.contentView.frame = CGRectMake(0, 0.1*SCREEN_HEIGHT, SCREEN_WIDTH, 0.41*SCREEN_HEIGHT);
+    self.answerTableView.frame = CGRectMake(0, 0.525*SCREEN_HEIGHT, SCREEN_WIDTH, 0.385*SCREEN_HEIGHT);
+    self.bottomAlertLabel.frame = CGRectMake(0, 0.925*SCREEN_HEIGHT, SCREEN_WIDTH, 0.075*SCREEN_HEIGHT);
+    self.titleView.frame = CGRectMake(0, 0.00*SCREEN_HEIGHT, SCREEN_WIDTH, 0.034*SCREEN_HEIGHT);
+    CGSize textLabelSize;
+    NSString *info = self.contentLabel.text;
+    textLabelSize = [info boundingRectWithSize:CGSizeMake(0.932*SCREEN_WIDTH, 0.077*SCREEN_HEIGHT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.034*SCREEN_WIDTH]} context:nil].size;
+    self.contentLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.058*SCREEN_HEIGHT, 0.932*SCREEN_WIDTH, textLabelSize.height);
+    self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
+    self.timeLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3, 0.017*SCREEN_HEIGHT);
+    self.answerNumLabel.frame = CGRectMake(2*SCREEN_WIDTH/3, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3-0.034*SCREEN_WIDTH, 0.017*SCREEN_HEIGHT);
 }
 
-//分组数量
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    
-    return 2;
+
+
+#pragma mark ----- AddControl-----
+-(void)addAllControls{
+
+    [self.view addSubview:self.contentView];
+    [self.view addSubview:self.answerTableView];
+    [self.view addSubview:self.bottomAlertLabel];
+    [self.contentView addSubview:self.titleView];
+    [self.contentView addSubview:self.contentLabel];
+    [self.contentView addSubview:self.rewardImageView];
+    [self.contentView addSubview:self.timeLabel];
+    [self.contentView addSubview:self.answerNumLabel];
 }
 
-//设置header高度
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    
-    return 10;
+
+
+
+#pragma mark -----TableViewDelegate-----
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+    return _rewardDetailModel.answerArr.count;
 }
-//样式
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    //1,创建cell
-    static NSString *ID = @"cell";
-    UnfoldCell *cellTwo = [tableView dequeueReusableCellWithIdentifier:ID];
-    static NSString *cellIdentified = @"MessageInfoCell.h";
-    MessageInfoCell *customCell=[tableView dequeueReusableCellWithIdentifier:cellIdentified];
-    //static NSString *cellIdentifier = @"SectionTableViewCell";
-    UITableViewCell *cell;
-    NSInteger section = indexPath.section;
-    NSUInteger row = indexPath.row;
-    //   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;//最右边>号
-    if ( section == 0 && row == 0) {
-        
-        cell = [[UITableViewCell alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
-        _askLableOne = [[UILabel alloc]initWithFrame:CGRectMake(margin, 0, 40, 40)];
-        _askLableOne.text = @"问:";
-        _askLableOne.textColor = [UIColor cyanColor];
-        _askLableOne.textAlignment = NSTextAlignmentLeft;
-        _askLableOne.font = [UIFont fontWithName:@"Arial-BoldMT" size:20];
-        
-        _asklableTwo = [[UILabel alloc]initWithFrame:CGRectMake(40+margin, 0,kScreenWidth - 40 - 2*margin , 40)];
-        _asklableTwo.text = self.data[@"title"];
-        _asklableTwo.font = [UIFont fontWithName:@"Helvetica-Oblique" size:20];
-        [cell addSubview:self.askLableOne];
-        [cell addSubview:self.asklableTwo];
-    }
-    
-    
-    if ( section == 0 && row == 1){
-        
-        cellTwo = [[UnfoldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID ];
-        
-    }
-    
-    if ( section == 0 && row == 2){
-        
-        cell = [[UITableViewCell alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 170)];
-        _askImage = [[UIImageView alloc]initWithFrame:CGRectMake(margin, margin, 120, 120)];
-        _askImage.backgroundColor = [UIColor grayColor];
-        
-        _askLastTime = [[UILabel alloc]initWithFrame:CGRectMake(margin, 140,60, 20)];
-        _askLastTime.text = self.data[@"time"];
-        _askLastTime.font = [UIFont fontWithName:@"Arial-BoldMT" size:12];
-        _askLastTime.textColor = [UIColor grayColor];
-        _answerPersonNum = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth-margin-60, 140, 60,20)];
-        //字符串拼接,判断回答人数
-        NSInteger anInteger = [self.numberOfCell[0] integerValue];
-        //[NSString stringWithFormat: @"%ld", (long)anInteger];
-        NSString *text = [[NSString stringWithFormat: @"%ld", (long)anInteger] stringByAppendingString:@"人回答"];
-        _answerPersonNum.text = text;
-        _answerPersonNum.textAlignment = NSTextAlignmentRight;
-        _answerPersonNum.font = [UIFont fontWithName:@"Arial-BoldMT" size:12];
-        _answerPersonNum.textColor = [UIColor grayColor];
-        [cell addSubview:self.askImage];
-        [cell addSubview:self.askLastTime];
-        [cell addSubview:_answerPersonNum];
-        
-    }
-    if ( section == 0 && row == 3){
-        
-        cell = [[UITableViewCell alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
-        _lableImage = [[UIImageView alloc]initWithFrame:CGRectMake(margin, 18, 12, 12)];
-        //_lableImage.backgroundColor = [UIColor orangeColor];
-        UIImage *image = [UIImage imageNamed:@"lable"];
-        _lableImage.image = image;
-        _languageLable = [[UILabel alloc]initWithFrame:CGRectMake(26, 10, 60, 30)];
-        _languageLable.text = @"英文";
-        _languageLable.font = [UIFont fontWithName:@"Helvetica-Oblique" size:16];
-        _languageLable.textColor = [UIColor grayColor];
-        
-        _changeButton = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth - 90, 10, 80, 30)];
-        [_changeButton setTitle:@"修改标签" forState:UIControlStateNormal];
-        
-        _changeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        _changeButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Oblique" size:16];
-        [_changeButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
-        _changeButton.titleLabel.textAlignment =NSTextAlignmentRight;
-        [_changeButton addTarget:self action:@selector(changeButtonClick) forControlEvents:UIControlEventTouchDown];
-        
-        [cell addSubview:self.lableImage];
-        [cell addSubview:self.languageLable];
-        [cell addSubview:self.changeButton];
-    }
-    
-    if ( section == 1 ){
-        
-        MessageInfoCellData *data = self.dataArr[row];
-        customCell = [[MessageInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentified setCellData:data];
-        customCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    if (section == 0 && row!= 1) {
-        return cell;
-    }
-    if (section == 0 && row== 1) {
-        UnfoldFrameModel *frameModel = self.dataArray[0];
-        cellTwo.frameModel = frameModel;
-        cellTwo.delegate = self;
-        return cellTwo;
-    }
-    else{
-        return customCell;
-    }
+    NSDictionary *dict = _rewardDetailModel.answerArr[indexPath.row];
+    [dict setValue:_rewardDetailModel.rewardState forKey:@"proceed_state"];
+    AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
+    return cell.height;
 }
-//行高
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
-{
-    NSInteger height = 0;
-    NSInteger section = indexPath.section;
-    NSUInteger row = indexPath.row;
-    if ( section == 0 && row == 0) {
-        height = 40;
-    }
-    if ( section == 0 && row == 1) {
-        UnfoldFrameModel *frameModel = self.dataArray[0];
-        height = frameModel.cellH;
-    }
-    if ( section == 0 && row == 2) {
-        height = 170;
-    }
-    if ( section == 0 && row == 3) {
-        height = 50;
-    }
-    if ( section == 1 ) {
-        for (int i = 0; i < self.textCell.count; i++) {
-            CGSize sizeToFit = [self.textCell[i] sizeWithFont:[UIFont systemFontOfSize:16]
-                                            constrainedToSize:CGSizeMake(334, CGFLOAT_MAX)
-                                                lineBreakMode:NSLineBreakByWordWrapping];//此处的换行类型（lineBreakMode）可根据自己的实际情况进行设置
-            //  NSLog(@"%ld",(long)height);
-            row = i;
-            height = 110 + sizeToFit.height;
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    NSDictionary *dict = _rewardDetailModel.answerArr[indexPath.row];
+    [dict setValue:_rewardDetailModel.rewardState forKey:@"proceed_state"];
+        AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
+    return cell;
+}
+
+
+
+#pragma mark -----getters-----
+
+-(UIView *)contentView{
+
+    if (!_contentView) {
+        _contentView = [[UIView alloc]init];
+        _contentView.backgroundColor = [UIColor whiteColor];
+        splitView = [[UIView alloc]initWithFrame:CGRectMake(0.034*SCREEN_WIDTH, 0.34*SCREEN_HEIGHT, SCREEN_WIDTH-0.068*SCREEN_WIDTH, 0.0034*SCREEN_HEIGHT)];
+        splitView.backgroundColor = myRewardBackgroundColor;
+        tagImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tag00"]];
+        tagImage.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.365*SCREEN_HEIGHT, 0.034*SCREEN_WIDTH, 0.034*SCREEN_WIDTH);
+        UILabel *tagLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.077*SCREEN_WIDTH, 0.363*SCREEN_HEIGHT, 0.9*SCREEN_WIDTH, 0.02*SCREEN_HEIGHT)];
+        if (_rewardDetailModel.rewardTag != nil && ![_rewardDetailModel.rewardTag isEqualToString:@""]) {
+            tagLabel.text = _rewardDetailModel.rewardTag;
+        }else{
+            tagLabel.text = @"";
         }
+        tagLabel.font = [UIFont systemFontOfSize:0.02*SCREEN_HEIGHT];
+        tagLabel.textColor = [UIColor grayColor];
+        [_contentView addSubview:tagLabel];
+        [_contentView addSubview:tagImage];
+        [_contentView addSubview:splitView];
+        
     }
-    return height;
-}
-//点击事件
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:( NSIndexPath *)indexPath
-{
-    //    NSInteger section = indexPath.section;
-    //    NSUInteger row = indexPath.row;
-    //    if ( section == 0 && row == 0) {
-    //
-    //        [self intoUserDetailInfoClick];
-    //
-    //    }
-    
+    return _contentView;
 }
 
--(void)changeButtonClick{
-    
-    
+
+-(UITableView *)answerTableView{
+
+    if (!_answerTableView) {
+        _answerTableView = [[UITableView alloc]init];
+        [_answerTableView registerClass:[AnswerCell class] forCellReuseIdentifier:@"Cell"];
+        _answerTableView.backgroundColor = [UIColor whiteColor];
+//        _answerTableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+        _answerTableView.allowsSelection = NO;
+        _answerTableView.dataSource=self;
+        _answerTableView.delegate=self;
+        _answerTableView.showsVerticalScrollIndicator = NO;
+        _answerTableView.tableFooterView = [[UIView alloc]init];
+    }
+    return _answerTableView;
 }
--(void)UnfoldCellDidClickUnfoldBtn:(UnfoldFrameModel *)frameModel
-{
-    //NSInteger index = [self.dataArray indexOfObject:frameModel];
-    UnfoldModel *model = frameModel.model;
-    model.isUnflod = !model.isUnflod;
-    frameModel.model = model;//这句话很关键，要把值设置回来，因为其setModel方法中会重新计算frame
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-    [self.mainTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+-(UILabel *)bottomAlertLabel{
+
+    if (!_bottomAlertLabel) {
+        _bottomAlertLabel = [[UILabel alloc]init];
+        _bottomAlertLabel.text = @"   正在为您寻找答案，请耐心等待！";
+        _bottomAlertLabel.font = [UIFont systemFontOfSize:0.044*SCREEN_WIDTH];
+        _bottomAlertLabel.textColor = [UIColor grayColor];
+        _bottomAlertLabel.textAlignment = NSTextAlignmentLeft;
+        _bottomAlertLabel.backgroundColor = [UIColor whiteColor];
+    }
+    return _bottomAlertLabel;
 }
+
+-(UIView *)titleView{
+
+    if (!_titleView) {
+        _titleView = [[UIView alloc]init];
+        UILabel *ask = [[UILabel alloc]initWithFrame:CGRectMake(0.034*SCREEN_WIDTH, 0.017*SCREEN_HEIGHT, SCREEN_WIDTH, 0.034*SCREEN_HEIGHT)];
+        ask.text = @"问：";
+        ask.textColor = UIColorFromRGB(0x2BB6ED);
+        ask.textAlignment = NSTextAlignmentLeft;
+        ask.font = [UIFont systemFontOfSize:0.05*SCREEN_WIDTH];
+        
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.134*SCREEN_WIDTH, 0.017*SCREEN_HEIGHT, 0.832*SCREEN_WIDTH, 0.034*SCREEN_HEIGHT)];
+        titleLabel.text = _rewardDetailModel.rewardTitle;
+        titleLabel.textColor = [UIColor blackColor];
+        titleLabel.textAlignment = NSTextAlignmentLeft;
+        titleLabel.font = [UIFont systemFontOfSize:0.05*SCREEN_WIDTH];
+
+        [_titleView addSubview:ask];
+        [_titleView addSubview:titleLabel];
+        
+    }
+    return _titleView;
+}
+
+-(UILabel *)contentLabel{
+
+    if (!_contentLabel) {
+        _contentLabel = [[UILabel alloc]init];
+        _contentLabel.text = _rewardDetailModel.rewardContent;
+        _contentLabel.textColor = [UIColor grayColor];
+        _contentLabel.textAlignment = NSTextAlignmentLeft;
+        _contentLabel.font = [UIFont systemFontOfSize:0.038*SCREEN_WIDTH];
+        _contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _contentLabel.numberOfLines = 0;
+    }
+    return _contentLabel;
+}
+
+-(UIImageView *)rewardImageView{
+
+    if (!_rewardImageView) {
+        _rewardImageView = [[UIImageView alloc]init];
+        NSURL *url = [NSURL URLWithString:_rewardDetailModel.rewardImageName];
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        UIImage *img = [UIImage imageWithData:data];
+        if (img != nil) {
+            _rewardImageView.image = img;
+            sizeOfPic = img.size;
+        }else{
+            UIImage *image = [UIImage imageNamed:@"img"];
+            _rewardImageView.image = image;
+            sizeOfPic = image.size;
+        }
+        _rewardImageView.backgroundColor = [UIColor blackColor];
+    }
+    return _rewardImageView;
+}
+
+-(UILabel *)timeLabel{
+
+    if (!_timeLabel) {
+        _timeLabel = [[UILabel alloc]init];
+        _timeLabel.text = _rewardDetailModel.rewardTime;
+        _timeLabel.textAlignment = NSTextAlignmentLeft;
+        _timeLabel.textColor = [UIColor grayColor];
+        _timeLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+    }
+    return _timeLabel;
+}
+
+
+-(UILabel *)answerNumLabel{
+
+    if (!_answerNumLabel) {
+        _answerNumLabel = [[UILabel alloc]init];
+        _answerNumLabel.text = [NSString stringWithFormat:@"%lu人回答",(unsigned long)_rewardDetailModel.answerPeopleNum];
+        _answerNumLabel.textAlignment = NSTextAlignmentRight;
+        _answerNumLabel.textColor = [UIColor grayColor];
+        _answerNumLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+    }
+    return _answerNumLabel;
+}
+
+
+
 
 @end

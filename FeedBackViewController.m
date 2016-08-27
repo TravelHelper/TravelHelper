@@ -35,12 +35,14 @@
 @property (nonatomic, strong) UIButton *tipoffBtn;
 @property (nonatomic, strong) UIButton *alphaBtn;
 
+@property (nonatomic, strong) UIButton *orderBtn;
+
 
 @end
 
 @implementation FeedBackViewController{
 
-    CGFloat *starValue;
+    float starValue;
     
 }
 
@@ -64,6 +66,7 @@
     [self.view addSubview:self.sendBtn];
     [self.view addSubview:self.tipoffBtn];
     [self.view addSubview:self.alphaBtn];
+    [self.view addSubview:self.orderBtn];
     //加载数据
     [self loadDateFromWeb];
     [self initLeftButton];
@@ -100,7 +103,7 @@
 - (void)starsScore:(GTStarsScore *)starsScore valueChange:(CGFloat)value{
     
     
-    starValue=&value;
+    starValue=value;
     
     NSLog(@"%lf",value);
     
@@ -206,14 +209,15 @@
     NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
     
-    [WebAgent UpdateUserMessageWithID:mseeage_id andStar:@"" andMoney:@"" success:^(id responseObject) {
+    
+    NSString *stringFloat = [NSString stringWithFormat:@"%f",starValue];
+    
+    [WebAgent UpdateUserMessageWithID:mseeage_id andStar:stringFloat andMoney:@"0" success:^(id responseObject) {
         
     } failure:^(NSError *error) {
         
     }];
     
-    
-
 }
 
 -(void)tipoffClick{
@@ -226,6 +230,12 @@
 -(void)alphaBtnClick{
 
     NSLog(@"1");
+
+}
+
+-(void)orderClick{
+
+    NSLog(@"预约");
 
 }
 
@@ -331,6 +341,17 @@
     }
     
     return _alphaBtn;
+
+}
+
+-(UIButton *)orderBtn{
+
+    if(!_orderBtn){
+        _orderBtn=[[UIButton alloc]initWithFrame:CGRectMake(300, 400, 100, 50)];
+        [_orderBtn addTarget:self action:@selector(orderClick) forControlEvents:UIControlEventTouchUpInside];
+        _orderBtn.backgroundColor=[UIColor orangeColor];
+    }
+    return _orderBtn;
 
 }
 

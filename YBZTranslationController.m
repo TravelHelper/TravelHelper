@@ -97,6 +97,7 @@
 @implementation YBZTranslationController{
 
     NSString *userID;
+    BOOL loginStates;
 }
 
 - (void)viewDidLoad {
@@ -107,6 +108,10 @@
     //self.view.backgroundColor = [UIColor grayColor];
     
     //[self.view addSubview:self.popularCell];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeState) name:@"changeLoginState" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Login) name:@"Login" object:nil];
+    [self getLoginState];
+ 
     [self.view addSubview:self.backgroundImageView];
     [self.view addSubview:self.popularCellView];
 
@@ -132,51 +137,7 @@
     [self.bottomView addSubview:self.popularImageView];
     [self.bottomView addSubview:self.popularImageViewLabel];
     [self initData];
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"stateinfo"];
-//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_loginState"];
-//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
 
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-    NSDictionary *dict = @{@"user_loginState":@"0"};
-    [userinfo setObject:dict forKey:@"user_loginState"];
-
-    if(user_id[@"user_id"] == NULL)
-    {
-        NSDictionary *loginState = @{@"user_loginState":@"0"};
-        [userinfo setObject:loginState forKey:@"user_loginState"];
-    }
-    else
-    {
-    [WebAgent userLoginState:user_id[@"user_id"] success:^(id responseObject) {
-      
-        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
-        NSDictionary *dict = @{@"user_loginState":str[@"state"]};
-        [userinfo setObject:dict forKey:@"user_loginState"];
-        
-        
-        NSLog(@"%@",user_loginState);
-        userID = user_id[@"user_id"];
-
-        [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-            [self.navigationController popToRootViewControllerAnimated:YES];
-            
-
-            
-            
-        } failure:^(NSError *error) {
-            
-        }];
-    }
-    failure:^(NSError *error) {
-                         NSLog(@"22222");
-                                }];
-    
-    
-    }
     
     
     //    for (int i=0; i<kImageCount; i++) {
@@ -207,6 +168,60 @@
 
 }
 
+-(void)Login{
+    loginStates = YES;
+}
+
+
+-(void)changeState{
+
+    loginStates = NO;
+}
+
+-(void)getLoginState{
+
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    NSDictionary *dict = @{@"user_loginState":@"0"};
+    [userinfo setObject:dict forKey:@"user_loginState"];
+    
+    if(user_id[@"user_id"] == NULL)
+    {
+        NSDictionary *loginState = @{@"user_loginState":@"0"};
+        [userinfo setObject:loginState forKey:@"user_loginState"];
+        loginStates = NO;
+    }
+    else
+    {
+        [WebAgent userLoginState:user_id[@"user_id"] success:^(id responseObject) {
+            
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
+            NSDictionary *dict = @{@"user_loginState":str[@"state"]};
+            [userinfo setObject:dict forKey:@"user_loginState"];
+            if ([dict[@"user_loginState"]isEqualToString:@"1"]) {
+                loginStates = YES;
+            }else{
+                loginStates = NO;
+            }
+            userID = user_id[@"user_id"];
+            
+            [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+
+            } failure:^(NSError *error) {
+                
+            }];
+        }
+        failure:^(NSError *error) {
+            NSLog(@"22222");
+         }];
+        
+        
+    }
+}
+
 
 
 #pragma mark - 观察者方法
@@ -214,7 +229,7 @@
     
     NSString *yonghuID = noti.object[@"yonghuID"];
     NSString *language = noti.object[@"language_catgory"];
-    NSString *pay_number = noti.userInfo[@"pay_number"];
+//    NSString *pay_number = noti.userInfo[@"pay_number"];
 
     
     NSString *VoiceLanguage;
@@ -374,7 +389,7 @@
     [self.popularCellView addHeaderWithTarget:self action:@selector(headerRereshing)];
     // dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
     [self.popularCellView addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"table"];
-#warning 自动刷新(一进入程序就下拉刷新)
+#pragma mark - warning 自动刷新(一进入程序就下拉刷新)
     //[self.popularCellView headerBeginRefreshing];
     
     // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)
@@ -658,16 +673,16 @@
 
 -(void)intoFreeTranslationClick{
     
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-    FeedBackViewController *con=[[FeedBackViewController alloc]initWithtargetID:user_id[@"user_id"]];
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//    FeedBackViewController *con=[[FeedBackViewController alloc]initWithtargetID:user_id[@"user_id"]];
     
     
     
-//    YBZFreeTranslationViewController *freeTransVC = [[YBZFreeTranslationViewController alloc]initWithTitle:@"免费翻译"];
-//    freeTransVC.hidesBottomBarWhenPushed = YES;
-    con.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:con animated:YES];
+    YBZFreeTranslationViewController *freeTransVC = [[YBZFreeTranslationViewController alloc]initWithTitle:@"免费翻译"];
+    freeTransVC.hidesBottomBarWhenPushed = YES;
+//    con.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:freeTransVC animated:YES];
     
 }
 
@@ -675,116 +690,52 @@
 //译员点击进入口语即时页面的响应时间
 -(void)pushNewChatController{
 
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     
-    
-    [WebAgent interpreterRequireStateWithuserId:user_id[@"user_id"] success:^(id responseObject) {
-        
-        NSLog(@"required............");
-        
-        
-    } failure:^(NSError *error) {
-        NSLog(@"busy????????????????");
-        
-    }];
-
-    
-    
-    if(user_id[@"user_id"] == NULL)
-    {
+    if (loginStates == NO) {
         YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
         YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
         logVC.view.backgroundColor = [UIColor whiteColor];
         [self presentViewController:nav animated:YES completion:nil];
-    }
-    else
-    {
-        [WebAgent userLoginState:user_id[@"user_id"] success:^(id responseObject) {
-            NSData *data = [[NSData alloc]initWithData:responseObject];
-            NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            self.isLogin = str[@"state"];
-            NSLog(@"%@",self.isLogin);
-            if ([self.isLogin  isEqual: @"1"]) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    userID = user_id[@"user_id"];
-                    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-                        [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
-                            YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
-                            waitingVC.hidesBottomBarWhenPushed = YES;
-                            waitingVC.navigationItem.hidesBackButton = YES;
-                            [self.navigationController pushViewController:waitingVC animated:YES];
-                            
-                        } failure:^(NSError *error) {
-                            NSLog(@"faile");
-                        }];
-                    } failure:^(NSError *error) {
-                    }];
+    }else{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [WebAgent interpreterRequireStateWithuserId:userID success:^(id responseObject) {
+                
+                NSLog(@"required............");
+                
+                
+            } failure:^(NSError *error) {
+                NSLog(@"busy????????????????");
+                
+            }];
+            [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+                [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
+                    YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
+                    waitingVC.hidesBottomBarWhenPushed = YES;
+                    waitingVC.navigationItem.hidesBackButton = YES;
+                    [self.navigationController pushViewController:waitingVC animated:YES];
                     
-                });
-
-
-                
-            }else{
-                
-                //进入登陆流程
-                YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
-                YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
-                logVC.view.backgroundColor = [UIColor whiteColor];
-                [self presentViewController:nav animated:YES completion:nil];
-                
-            }
+                } failure:^(NSError *error) {
+                    NSLog(@"faile");
+                }];
+            } failure:^(NSError *error) {
+            }];
             
-        }
-                         failure:^(NSError *error) {
-                             NSLog(@"22222");
-                         }];
+        });
     }
-
-
-
-
 }
 
 
 -(void)intoChangeLanguageClick{
     
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-    if(user_id[@"user_id"] == NULL)
-    {
+    if (loginStates == NO) {
         YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
         YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
         logVC.view.backgroundColor = [UIColor whiteColor];
         [self presentViewController:nav animated:YES completion:nil];
-    }
-    else
-    {
-        [WebAgent userLoginState:user_id[@"user_id"] success:^(id responseObject) {
-            NSData *data = [[NSData alloc]initWithData:responseObject];
-            NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            self.isLogin = str[@"state"];
-            NSLog(@"%@",self.isLogin);
-            if ([self.isLogin  isEqual: @"1"]) {
-
-                YBZChangeLanguageViewController *changelanguageVC = [[YBZChangeLanguageViewController alloc]initWithTitle:@"切换语言"];
-                changelanguageVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:changelanguageVC animated:YES];
-                
-            }else{
-                
-                //进入登陆流程
-                YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
-                YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
-                logVC.view.backgroundColor = [UIColor whiteColor];
-                [self presentViewController:nav animated:YES completion:nil];
-                
-            }
-            
-        }
-                         failure:^(NSError *error) {
-                             NSLog(@"22222");
-                         }];
+    }else{
+        YBZChangeLanguageViewController *changelanguageVC = [[YBZChangeLanguageViewController alloc]initWithTitle:@"切换语言"];
+        changelanguageVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:changelanguageVC animated:YES];
     }
     
 }
@@ -792,9 +743,16 @@
 
 -(void)showRewardHall{
 
-    YBZRewardHallViewController *rewardVC = [[YBZRewardHallViewController alloc]init];
-    rewardVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:rewardVC animated:YES];
+    if (loginStates == NO) {
+        YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
+        YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
+        logVC.view.backgroundColor = [UIColor whiteColor];
+        [self presentViewController:nav animated:YES completion:nil];
+    }else{
+        YBZRewardHallViewController *rewardVC = [[YBZRewardHallViewController alloc]init];
+        rewardVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:rewardVC animated:YES];
+    }
 }
 
 
@@ -812,12 +770,6 @@
     
     
 }
-
-
-
-
-
-
 
 
 #pragma mark - getters
@@ -967,7 +919,7 @@
         //_customMadeLabel.backgroundColor = [UIColor greenColor];
         [_Btn3Label setText:@"定制翻译"];
 //        [_Btn3Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-//        [_Btn3Label setTextColor:[UIColor grayColor]];
+        [_Btn3Label setTextColor:[UIColor grayColor]];
         
         _Btn3Label.textAlignment = NSTextAlignmentCenter;
         
@@ -1358,9 +1310,17 @@
 
 
 - (void)showMyReward{
-    YBZMyRewardViewController *myRewardVC = [[YBZMyRewardViewController alloc]init];
-    myRewardVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:myRewardVC animated:YES];
+    
+    if (loginStates == NO) {
+        YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
+        YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
+        logVC.view.backgroundColor = [UIColor whiteColor];
+        [self presentViewController:nav animated:YES completion:nil];
+    }else{
+        YBZMyRewardViewController *myRewardVC = [[YBZMyRewardViewController alloc]init];
+        myRewardVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:myRewardVC animated:YES];
+    }
 }
 
 

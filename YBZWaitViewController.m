@@ -8,36 +8,38 @@
 
 #import "YBZWaitViewController.h"
 #import "QuickTransViewController.h"
-@interface YBZWaitViewController ()
+#import "YBZGifView.h"
+#import "AFNetworking.h"
+#import "WebAgent.h"
 
+@interface YBZWaitViewController ()
+#define kWidth  [UIScreen mainScreen].bounds.size.width
+#define kHeight  [UIScreen mainScreen].bounds.size.height
+
+@property(nonatomic,strong)UILabel *userNameLabel;
 @end
 
 @implementation YBZWaitViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
+    self.title = @"口语即时";
     self.view.backgroundColor = [UIColor whiteColor];
-    UIView *blackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    blackView.backgroundColor = [UIColor blackColor];
-    blackView.alpha = 0.4;
     
-    
-    UILabel *waitLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height/3, [UIScreen mainScreen].bounds.size.width, 100)];
-    
-    waitLabel.textAlignment = NSTextAlignmentCenter;
-    waitLabel.font = FONT_15;
-    waitLabel.text = @"系统正在给您匹配译员，请耐心等待...";
-    
-    [self.view addSubview:blackView];
-    [self.view addSubview:waitLabel];
+    [self showGifImageMethodThree];
+    [self.view addSubview:self.userNameLabel];
 
-   
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithTranslator:) name:@"beginChatWithTranslator" object:nil];
     
 }
-
+#pragma mark 播放动态图片方式 第三方显示本地动态图片
+-(void)showGifImageMethodThree
+{
+    //得到图片的路径
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"匹配译员动态图" ofType:@"gif"];
+    YBZGifView *dataView2 = [[YBZGifView alloc] initWithFrame:CGRectMake(kWidth*0.4, kHeight*0.32, kWidth*0.15, kWidth*0.13) filePath:path];
+    [self.view addSubview:dataView2];
+}
 #pragma mark - 观察者方法
 
 -(void)beginChatWithTranslator:(NSNotification *)noti{
@@ -45,12 +47,7 @@
     
     NSString *translatorId = noti.object[@"translatorID"];
     NSString *language = noti.object[@"language_catgory"];
-    NSString *pay_number = noti.userInfo[@"pay_number"];
-    
-    
-    
-    
-    
+  
     NSString *VoiceLanguage;
     NSString *TransLanguage;
     if ([language isEqualToString:@"YingYu"]) {
@@ -164,11 +161,32 @@
     
     
     [self.navigationController pushViewController:quickVC animated:YES];
-    
-    
-    
+  
 }
 
+-(UILabel *)userNameLabel{
+    if (!_userNameLabel) {
+        _userNameLabel = [[UILabel alloc]init];
+        _userNameLabel.font = FONT_15;
+
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:@"亲！正在为您匹配译员，请耐心等待!"];
+        
+        NSRange  qinRange = NSMakeRange(0, 2);
+        NSRange  pipeiRange = NSMakeRange(2, 9);
+        NSRange  waitRange = NSMakeRange(11, 6);
+        
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:qinRange];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:174.0/255.0f green:174.0/255.0f blue:174.0/255.0f alpha:0.9] range:pipeiRange];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.0/255.0f green:129.0/255.0f blue:204.0/255.0f alpha:0.9] range:waitRange];
+        
+        [_userNameLabel setFrame:CGRectMake(0, kHeight/3.0, kWidth, 100)];
+        [_userNameLabel setAttributedText:str];
+        [_userNameLabel setTextAlignment:NSTextAlignmentCenter];
+        
+
+    }
+    return _userNameLabel;
+}
 
 @end
 
