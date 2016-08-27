@@ -56,17 +56,22 @@
 
 @end
 
-@implementation YBZMyRewardViewController
+@implementation YBZMyRewardViewController{
+    NSString *user_ID;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    user_ID = user_id[@"user_id"];
     self.dataArr = [[NSMutableArray alloc]init];
     [self loadDataFromWeb];
     self.view.backgroundColor = myRewardBackgroundColor;
 
     self.mainTableView.backgroundColor = myRewardBackgroundColor;
     self.title = @"我的悬赏";
-    
+
     self.mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.24, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
     self.mainTableView.delegate = self;
     self.mainTableView.dataSource = self;
@@ -207,7 +212,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
 
-    [WebAgent myRewardrewardID:@"111" success:^(id responseObject) {
+    [WebAgent myRewardrewardID:user_ID success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSLog(@"asd%@",dic);
