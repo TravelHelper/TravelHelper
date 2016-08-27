@@ -68,13 +68,11 @@
     self.contentTextView.delegate = self;
     [self.titleTextView becomeFirstResponder];//弹出键盘
     //定制导航栏
+    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.backBtn];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255.0f/255.0f green:221.0f/255.0f blue:1.0f/255.0f alpha:1];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.backBtn];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(sendBtnIClick)];
-
-    
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:15],NSFontAttributeName, nil] forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FONT_15,NSFontAttributeName, nil] forState:UIControlStateNormal];
     self.title = @"发布悬赏";
     
     [self.view addSubview:self.mainScrollView];
@@ -100,8 +98,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendLanguage:) name:@"sendLanguage"object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMoney:) name:@"sendMoney"object:nil];
 
-    //自定义返回键
-//     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.backBtn];
+   
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
     //将触摸事件添加到当前view
     [self.view addGestureRecognizer:tapGestureRecognizer];
@@ -142,6 +139,7 @@
                          _bottomView.center = CGPointMake(_bottomView.center.x, keyBoardEndY - _bottomView.bounds.size.height/2.0);
                          _seletLanguageBtn.center = CGPointMake(_seletLanguageBtn.center.x, keyBoardEndY - _bottomView.bounds.size.height - kScreenWidth*0.24);
                          _seletMoneyBtn.center = CGPointMake(_seletLanguageBtn.center.x, _seletLanguageBtn.center.y-kScreenHeight*0.026-10);
+                         _userIconImageV.center = CGPointMake(_userIconImageV.center.x, keyBoardEndY - _bottomView.bounds.size.height-kScreenHeight*0.2);
                      }];
 }
 
@@ -156,7 +154,7 @@
     }
     
     if (_titleTextView.text.length == 0) {
-        self.titleLabel.text = @"悬赏标题(5到15字以内)";
+        self.titleLabel.text = @"悬赏标题(15字以内)";
     }else{
         self.titleLabel.text = @"";
     }
@@ -184,8 +182,8 @@
 
 -(UILabel *)fengeLabel{
     if (!_fengeLabel) {
-        _fengeLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth*0.025, CGRectGetMaxY(self.titleTextView.frame)+2, kScreenWidth*0.95, kScreenWidth*0.004)];
-        _fengeLabel.backgroundColor = [UIColor grayColor];
+        _fengeLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth*0.025, CGRectGetMaxY(self.titleTextView.frame)+2, kScreenWidth*0.95, kScreenWidth*0.002)];
+        _fengeLabel.backgroundColor = [UIColor colorWithRed:132.0/255.0f green:132.0/255.0f blue:132.0/255.0f alpha:1];
     }
     return _fengeLabel;
 }
@@ -193,7 +191,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, kScreenWidth*0.03, self.view.bounds.size.width*0.8, 20)];
         _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.text = @"悬赏标题点石成金不是单纯的是是";
+        _titleLabel.text = @"悬赏标题(15字以内)";
         _titleLabel.font = FONT_15;
         _titleLabel.textColor = [UIColor grayColor];
         _titleLabel.enabled = NO;
@@ -207,7 +205,7 @@
         
         _tishiLabel = [[UILabel alloc]initWithFrame:CGRectMake(5,0, self.view.bounds.size.width, 40)];
         _tishiLabel.backgroundColor = [UIColor clearColor];
-        _tishiLabel.text = @"填写需要翻译的内容描述（35字以内）";
+        _tishiLabel.text = @"填写需要翻译的内容描述（45字以内）";
         _tishiLabel.font = FONT_14;
         _tishiLabel.textColor = [UIColor grayColor];
         _tishiLabel.enabled = NO;
@@ -220,7 +218,6 @@
         _titleTextView = [[UITextView alloc]initWithFrame:CGRectMake(kMargin, kScreenWidth*0.02,  kScreenWidth-kMargin*2, kScreenHeight*0.065)];
         _titleTextView.delegate = self;
         _titleTextView.font = FONT_20;
-        _titleTextView.backgroundColor = [UIColor greenColor];
         _titleTextView.keyboardType = UIKeyboardTypeDefault;
         _titleTextView.returnKeyType = UIReturnKeySend;
     }
@@ -232,7 +229,6 @@
         _contentTextView = [[UITextView alloc]initWithFrame:CGRectMake(kMargin, CGRectGetMaxY(self.titleTextView.frame)+kScreenHeight*0.01, kScreenWidth-kMargin*2, kScreenHeight*0.13)];
         _contentTextView.delegate = self;
         _contentTextView.font = FONT_14;
-        _contentTextView.backgroundColor = [UIColor redColor];
         _contentTextView.keyboardType = UIKeyboardTypeDefault;
         _contentTextView.returnKeyType = UIReturnKeySend;
     }
@@ -243,7 +239,7 @@
     
     if(!_titleCharacterNumberLabel){
         
-        _titleCharacterNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.titleTextView.frame)-kL-kMargin,CGRectGetMaxY(self.titleTextView.frame)-kL-kMargin,kL,kL)];
+        _titleCharacterNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.titleTextView.frame)-kMargin,CGRectGetMaxY(self.titleTextView.frame)-kL-kMargin,kL,kL)];
         _titleCharacterNumberLabel.font = FONT_12;
         _titleCharacterNumberLabel.backgroundColor = [UIColor clearColor];
         _titleCharacterNumberLabel.text = [NSString stringWithFormat:@"%i",kMaxTitleWordNumbers];
@@ -256,7 +252,7 @@
     
     if(!_contentCharacterNumberLabel){
         
-        _contentCharacterNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.contentTextView.frame)-kL-kMargin,CGRectGetMaxY(self.contentTextView.frame)-kL-kMargin,kL,kL)];
+        _contentCharacterNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.contentTextView.frame)-kMargin,CGRectGetMaxY(self.contentTextView.frame)-kL-kMargin,kL,kL)];
         _contentCharacterNumberLabel.backgroundColor = [UIColor clearColor];
         _contentCharacterNumberLabel.font = FONT_12;
         _contentCharacterNumberLabel.text = [NSString stringWithFormat:@"%i",kMaxContentWordNumbers];
@@ -285,7 +281,7 @@
 }
 -(UIButton *)moneyBtn{
     if (!_moneyBtn) {
-        UIImage *img = [UIImage imageNamed:@"reword_money"];
+        UIImage *img = [UIImage imageNamed:@"reward_money"];
         _moneyBtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth*0.769, kScreenHeight*0.017, kScreenWidth*0.073, kScreenWidth*0.073)];
         [_moneyBtn setImage:img forState:UIControlStateNormal];
         [_moneyBtn addTarget:self action:@selector(moneyBtnClickEvent) forControlEvents:UIControlEventTouchUpInside];
@@ -296,7 +292,7 @@
     if (!_moneyLabel) {
         _moneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.moneyBtn.frame), CGRectGetMinY(self.moneyBtn.frame), kScreenWidth*0.07, kScreenWidth*0.07)];
         _moneyLabel.textColor = [UIColor redColor];
-        _moneyLabel.text = @"20";
+//        _moneyLabel.text = @"20";
         _moneyLabel.font = FONT_13;
     }
     return _moneyLabel;
@@ -347,9 +343,7 @@
 }
 -(UIButton *)seletLanguageBtn{
     if (!_seletLanguageBtn) {
-        UIImage *img = [UIImage imageNamed:@"gezhi"];
         UIImageView *imgV = [[UIImageView alloc]initWithFrame:CGRectMake(0.0234*kScreenWidth, 0, kScreenWidth*0.04, kScreenHeight*0.026)];
-        [imgV setImage:img];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth*0.07, 0, kScreenWidth*0.166, kScreenHeight*0.026)];
         NSString *a = @"意大利语huuhu";
         CGSize size = [a sizeWithAttributes:@{NSFontAttributeName:FONT_12}];
@@ -365,18 +359,19 @@
         [_seletLanguageBtn addSubview:imgV];
         [_seletLanguageBtn addSubview:label];
         [_seletLanguageBtn addSubview:_returnLanguage];
-        _seletLanguageBtn.backgroundColor = [UIColor whiteColor];
-        [_seletLanguageBtn.layer setMasksToBounds:YES];
-        [_seletLanguageBtn.layer setCornerRadius:8.0];
-        [_seletLanguageBtn.layer setBorderWidth:1.0];
-        _seletLanguageBtn.layer.borderColor = [UIColor grayColor].CGColor;
+//        _seletLanguageBtn.backgroundColor = [UIColor whiteColor];
+//        [_seletLanguageBtn.layer setMasksToBounds:YES];
+//        [_seletLanguageBtn.layer setCornerRadius:8.0];
+//        [_seletLanguageBtn.layer setBorderWidth:1.0];
+//        _seletLanguageBtn.layer.borderColor = [UIColor grayColor].CGColor;
+        [_seletLanguageBtn setImage:[UIImage imageNamed:@"languagebtn"] forState:UIControlStateNormal];
         
     }
     return _seletLanguageBtn;
 }
 -(UIButton *)cancelBtn{
     if (!_cancelBtn) {
-        _cancelBtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth*0.21, 0, kScreenWidth*0.05, kScreenWidth*0.05)];
+        _cancelBtn = [[UIButton alloc]init];
         [_cancelBtn setImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
         _cancelBtn.backgroundColor = [UIColor clearColor];
         [_cancelBtn addTarget:self action:@selector(cancelPic) forControlEvents:UIControlEventTouchUpInside];
@@ -386,7 +381,7 @@
 -(UIImageView *)userIconImageV
 {
     if (!_userIconImageV) {
-        _userIconImageV = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWidth*0.7,CGRectGetMaxY(self.contentTextView.frame)+10,kScreenWidth*0.26,kScreenWidth*0.27)];
+        _userIconImageV = [[UIImageView alloc]init];
         _userIconImageV.userInteractionEnabled = YES;
         _userIconImageV.backgroundColor = [UIColor whiteColor];
     }
@@ -397,6 +392,8 @@
 -(void)changePhotoImage:(NSNotification *)noti{
     UIImage *image = noti.userInfo[@"image"];
     self.userIconImageV.image = image;
+    self.userIconImageV.frame = CGRectMake(kScreenWidth-(image.size.width/image.size.height*kScreenHeight*0.15)-kScreenWidth*0.04,kScreenHeight*0.3,image.size.width/image.size.height*kScreenHeight*0.15,kScreenHeight*0.15);
+    self.cancelBtn.frame = CGRectMake(image.size.width/image.size.height*kScreenHeight*0.15-kScreenWidth*0.05, 0, kScreenWidth*0.05, kScreenWidth*0.05);
     [self.userIconImageV addSubview:self.cancelBtn];
 }
 
@@ -516,8 +513,7 @@
 //悬赏
 -(void)moneyBtnClickEvent{
     
-    YBZRewardMoneyViewController *rewardMoneyVC = [[YBZRewardMoneyViewController alloc]init];
-    [self.navigationController pushViewController:rewardMoneyVC animated:YES];
+  
     
 }
 -(void)seletMoneyBtnClick{
@@ -542,12 +538,12 @@
 
 -(void)sendMoney:(NSNotification *)noti{
     NSDictionary *texDic = [noti userInfo];
-    self.returnMoney.text = [texDic objectForKey:@"money"];
+    self.moneyLabel.text = [texDic objectForKey:@"money"];
 }
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"sendUrl" object:nil];
-     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"sendLanguage" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"sendLanguage" object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"returntag" object:nil];
 
 
