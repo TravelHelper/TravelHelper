@@ -143,10 +143,11 @@
                                 
                                 
                                 isLoginstate = @"true";
-
+                                
                                
                                 //登陆成功
                                 [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"Login" object:nil];
                                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                                 //------------------
                                 [userDefaults setObject:useridDic forKey:@"user_id"];

@@ -66,8 +66,7 @@
         NSDictionary *dict = dic[@"data"][0];
         NSMutableArray *arr = dict[@"answer_list"];
         NSUInteger i;
-        if (arr[0] == nil ) {
-            arr = [NSMutableArray array];
+        if ([arr isKindOfClass:[NSString class]] ) {
             i=0;
         }else{
             i=arr.count;

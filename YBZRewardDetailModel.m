@@ -21,7 +21,7 @@
         self.rewardTime = time;
         self.answerPeopleNum = number;
         self.rewardTag = tag;
-        if (array != nil) {
+        if (![array isKindOfClass:[NSString class]]) {
             self.answerArr = array;
         }else{
             self.answerArr = nil;

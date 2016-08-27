@@ -200,6 +200,10 @@
 -(void)reloadoutcell
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadoutcell" object:nil userInfo:@{@"状态":logout}];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"changeLoginState" object:nil];
+    
+    
 }
 @end
 
