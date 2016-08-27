@@ -22,6 +22,9 @@
         self.backgroundColor = [UIColor clearColor];//免费翻译每条cell背景色
         self.frameInfo = [[ChatFrameInfo alloc]initWithModel:model];
         self.headView.frame = self.frameInfo.headBgViewFrame;
+        
+        
+        
         self.headImageView.frame = self.frameInfo.headImageViewFrame;
         self.textView.frame = self.frameInfo.chatTextViewFrame;
         self.pictureView.frame = self.frameInfo.chatPictureViewFrame;
@@ -44,6 +47,31 @@
         [self addSubview:self.playTransTextBtn];
         
         
+//        self.headImageView.backgroundColor=[UIColor grayColor];
+        
+        NSString *name = model.senderImgPictureURL;
+        
+        NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
+        
+        NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+        
+        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+        
+        UIImage *headImg=[[UIImage alloc]init];
+        headImg=[UIImage imageWithData:data];
+        if(headImg){
+            [self.headImageView setImage:headImg];
+//            self.headImageView.image=headImg;
+        }else{
+            headImg = [UIImage imageNamed:@"translator"];
+            [self.headImageView setImage:headImg];
+//            self.headImageView.image=headImg;
+        }
+        
+        
+        [self.headView addSubview:self.headImageView];
+        
+        [self addSubview:self.headView];
         [self getAudioToTranslationText:model.AVtoStringContent];
         [self getSecondLabelText:model.audioSecond];
         

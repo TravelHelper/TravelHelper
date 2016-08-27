@@ -36,6 +36,7 @@
 @implementation YBZChangeLanguageViewController{
 
     NSString *user_id;
+    NSString *message_id;
 }
 
 - (void)viewDidLoad {
@@ -297,6 +298,30 @@
             NSDictionary *dict = [self getLanguageWithString:language];
             [WebAgent sendRemoteNotificationsWithuseId:dictionary[0][@"user_id"] WithsendMessage:@"进入聊天" WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:user_id success:^(id responseObject) {
                 NSLog(@"反馈推送—进入聊天通知成功！");
+                NSDate *sendDate = [NSDate date];
+                NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
+                [dateformatter setDateFormat:@"YYYY-MM-dd"];
+                NSString *morelocationString = [dateformatter stringFromDate:sendDate];
+                [WebAgent creatUserList:morelocationString andUser_id:user_id success:^(id responseObject) {
+                    
+                    NSData *data = [[NSData alloc] initWithData:responseObject];
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                    NSLog(@"%@",dic);
+                    message_id = dic[@"data"];
+                    
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                  
+                    [userDefaults setObject:message_id forKey:@"messageId"];
+                    
+                    
+                    
+                } failure:^(NSError *error) {
+                    
+                }];
+                
+                
+                
+
                 QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:user_id WithTargetID:dictionary[0][@"user_id"] WithUserIdentifier:@"USER" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
                 [self.navigationController pushViewController:quickVC animated:YES];
             } failure:^(NSError *error) {
@@ -321,6 +346,26 @@
                     [alertVC addAction:okAction];
                     [self presentViewController:alertVC animated:YES completion:nil];
                 }else{
+                    NSDate *sendDate = [NSDate date];
+                    NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
+                    [dateformatter setDateFormat:@"YYYY-MM-dd"];
+                    NSString *morelocationString = [dateformatter stringFromDate:sendDate];
+                    [WebAgent creatUserList:morelocationString andUser_id:user_id success:^(id responseObject) {
+                        
+                        NSData *data = [[NSData alloc] initWithData:responseObject];
+                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                        NSLog(@"%@",dic);
+                        
+                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                        [userDefaults setObject:message_id forKey:@"messageId"];
+
+                        
+                        
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                    
                     
                     for (int i = 0 ; i< arr.count; i++) {
                         NSString *user_ID = arr[i];
@@ -333,6 +378,8 @@
                         } failure:^(NSError *error) {
                             NSLog(@"发送远程推送失败－－－>%@",error);
                         }];
+                        
+                        
                         
                     }
                 }

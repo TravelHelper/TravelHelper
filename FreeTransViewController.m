@@ -498,6 +498,11 @@
     
     if ([object[@"senderID"] isEqualToString:self.senderID]) {
         model.isSender = 1;
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user = [userDefaults dictionaryForKey:@"user_id"];
+//        userIDinfo = user[@"user_id"];
+        model.senderImgPictureURL=user[@"user_id"];;
     }else{
         model.isSender = 0;
     }
@@ -923,7 +928,7 @@
     // 设置文字(也可以不设置,默认的文字在MJRefreshConst中修改)
     self.bottomTableView.headerPullToRefreshText = @"下拉可以刷新了";
     self.bottomTableView.headerReleaseToRefreshText = @"松开马上刷新了";
-    self.bottomTableView.headerRefreshingText = @"MJ哥正在帮你刷新中,不客气";
+    self.bottomTableView.headerRefreshingText = @"数据刷新中";
 
 }
 

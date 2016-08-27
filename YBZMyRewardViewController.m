@@ -103,7 +103,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel2:) name:@"setTextALabel2" object:nil];
     //右键头
     UIImageView *editImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [editImage setImage:[UIImage imageNamed:@"edit"]];
+    [editImage setImage:[UIImage imageNamed:@"add"]];
     self.rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(0,0,30,30)];
     //    [_rightBtn addTarget:self selfaction:@selector(searchprogram)forControlEvents:UIControlEventTouchUpInside];
     [_rightBtn addTarget:self action:@selector(searchprogram) forControlEvents:UIControlEventTouchUpInside];
@@ -473,7 +473,7 @@
 }
 -(void)searchprogram{
     YBZSendRewardViewController *sendRewardVC = [[YBZSendRewardViewController alloc]init];
-    [self.navigationController pushViewController:sendRewardVC animated:nil];
+    [self.navigationController pushViewController:sendRewardVC animated:YES];
 }
 
 
