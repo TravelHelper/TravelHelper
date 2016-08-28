@@ -408,58 +408,10 @@
     
     if(tableView==self.mainTableView){
         NSDictionary *aa = self.dataArr[indexPath.row];
-       // NSString *reward_id = aa[@""]
-        NSString *time = aa[@"release_time"];
-        NSString *title = aa[@"reward_title"];
-        NSString *text = aa[@"reward_text"];
-        NSString *url = aa[@"reward_url"];
-        NSString *money = aa[@"reward_money"];
-        NSString *language = aa[@"language"];
         NSString *reward_id = aa[@"reward_id"];
-        NSString *reward_url = aa[@"reward_url"];
-
-        if (reward_id == nil) {
-            reward_id = [NSString stringOfUUID];
-        }
         YBZTranslatorDetailViewController *detailVC = [[YBZTranslatorDetailViewController alloc]init];
-        detailVC.data = @{@"time":time,
-                          @"title":title,
-                          @"text":text,
-                          @"url":url,
-                          @"money":money,
-                          @"language":language,
-                          @"reward_id":reward_id,
-                          @"reward_url":reward_url};
-        NSLog(@"%@",detailVC.data[@"reward_id"]);
-        //存
-        NSDictionary *answerChange = @{reward_id:@"0"};
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:answerChange forKey:@"answer"];
-        
-        
-        [WebAgent returnPeopleReward:detailVC.data[@"reward_id"] success:^(id responseObject) {
-            NSData *data = [[NSData alloc]initWithData:responseObject];
-            NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            self.countPeople = str[@"count"];
-            NSLog(@"--------------->%@",str[@"count"]);
-            detailVC.countPeople = self.countPeople;
-            NSLog(@"------------->%ld",(long)detailVC.countPeople);
-            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-            NSDictionary *userID = [userdefault objectForKey:@"user_id"];
-            [WebAgent returnTextReward_id:reward_id user_id:userID[@"user_id"] success:^(id responseObject) {
-                NSData *data = [[NSData alloc]initWithData:responseObject];
-                NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                detailVC.showAnswerLabel.text = str[@"answer_text"];
-                NSLog(@"--------------->%@",detailVC.showAnswerLabel.text);
-                [self.navigationController pushViewController:detailVC animated:YES];
-            } failure:^(NSError *error) {
-            
-            }];
-        }
-        failure:^(NSError *error) {
-            NSLog(@"--------------->%@",error);
-        }];
-            
+        detailVC.reward_id = reward_id;
+        [self.navigationController pushViewController:detailVC animated:YES];
     }
     
 }

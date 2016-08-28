@@ -87,7 +87,6 @@
 		7D3E996D1D6D420900F13F42 /* ExpandTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99691D6D420900F13F42 /* ExpandTableVC.m */; };
 		7D3E996E1D6D420900F13F42 /* ExpandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E996B1D6D420900F13F42 /* ExpandCell.m */; };
 		7D3E99751D6D421500F13F42 /* YBZRewardHallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99701D6D421500F13F42 /* YBZRewardHallViewController.m */; };
-		7D3E99761D6D421500F13F42 /* YBZTranslatorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99721D6D421500F13F42 /* YBZTranslatorDetailViewController.m */; };
 		7D3E99771D6D421500F13F42 /* YBZTranslatorAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99741D6D421500F13F42 /* YBZTranslatorAnswerViewController.m */; };
 		7D3E99831D6D42B500F13F42 /* UnfoldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E997C1D6D42B500F13F42 /* UnfoldCell.m */; };
 		7D3E99841D6D42B500F13F42 /* MessageInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E997E1D6D42B500F13F42 /* MessageInfoCell.m */; };
@@ -127,6 +126,8 @@
 		7D8427611D634AAB000BFEAD /* InformationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D84275C1D634AAB000BFEAD /* InformationTableViewCell.xib */; };
 		7D8427621D634AAB000BFEAD /* CellInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84275E1D634AAB000BFEAD /* CellInformation.m */; };
 		7DF218BF1D5F82ED002F9D6D /* YBZWaitingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */; };
+		7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */; };
+		7DFD9BF71D714401007BDE4D /* YBZRewardHallDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */; };
 		A012EDAD1D5099E000144BAD /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDA91D5099E000144BAD /* libopencore-amrnb.a */; };
 		A012EDAE1D5099E000144BAD /* RCConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A012EDAA1D5099E000144BAD /* RCConfig.plist */; };
 		A012EDAF1D5099E000144BAD /* release_notes_ios.txt in Resources */ = {isa = PBXBuildFile; fileRef = A012EDAB1D5099E000144BAD /* release_notes_ios.txt */; };
@@ -409,8 +410,6 @@
 		7D3E996B1D6D420900F13F42 /* ExpandCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandCell.m; sourceTree = "<group>"; };
 		7D3E996F1D6D421500F13F42 /* YBZRewardHallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRewardHallViewController.h; sourceTree = "<group>"; };
 		7D3E99701D6D421500F13F42 /* YBZRewardHallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRewardHallViewController.m; sourceTree = "<group>"; };
-		7D3E99711D6D421500F13F42 /* YBZTranslatorDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZTranslatorDetailViewController.h; sourceTree = "<group>"; };
-		7D3E99721D6D421500F13F42 /* YBZTranslatorDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTranslatorDetailViewController.m; sourceTree = "<group>"; };
 		7D3E99731D6D421500F13F42 /* YBZTranslatorAnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZTranslatorAnswerViewController.h; sourceTree = "<group>"; };
 		7D3E99741D6D421500F13F42 /* YBZTranslatorAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTranslatorAnswerViewController.m; sourceTree = "<group>"; };
 		7D3E997B1D6D42B500F13F42 /* UnfoldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnfoldCell.h; sourceTree = "<group>"; };
@@ -486,6 +485,10 @@
 		7D84275E1D634AAB000BFEAD /* CellInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellInformation.m; sourceTree = "<group>"; };
 		7DF218BD1D5F82ED002F9D6D /* YBZWaitingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZWaitingViewController.h; sourceTree = "<group>"; };
 		7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZWaitingViewController.m; sourceTree = "<group>"; };
+		7DFD9BF21D714179007BDE4D /* YBZTranslatorDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZTranslatorDetailViewController.h; sourceTree = "<group>"; };
+		7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTranslatorDetailViewController.m; sourceTree = "<group>"; };
+		7DFD9BF51D714401007BDE4D /* YBZRewardHallDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRewardHallDetailModel.h; sourceTree = "<group>"; };
+		7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRewardHallDetailModel.m; sourceTree = "<group>"; };
 		A012EDA91D5099E000144BAD /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
 		A012EDAA1D5099E000144BAD /* RCConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RCConfig.plist; sourceTree = "<group>"; };
 		A012EDAB1D5099E000144BAD /* release_notes_ios.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes_ios.txt; sourceTree = "<group>"; };
@@ -919,6 +922,8 @@
 			children = (
 				7D3E99631D6D420200F13F42 /* Model.h */,
 				7D3E99641D6D420200F13F42 /* Model.m */,
+				7DFD9BF51D714401007BDE4D /* YBZRewardHallDetailModel.h */,
+				7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -941,10 +946,10 @@
 			children = (
 				7D3E996F1D6D421500F13F42 /* YBZRewardHallViewController.h */,
 				7D3E99701D6D421500F13F42 /* YBZRewardHallViewController.m */,
-				7D3E99711D6D421500F13F42 /* YBZTranslatorDetailViewController.h */,
-				7D3E99721D6D421500F13F42 /* YBZTranslatorDetailViewController.m */,
 				7D3E99731D6D421500F13F42 /* YBZTranslatorAnswerViewController.h */,
 				7D3E99741D6D421500F13F42 /* YBZTranslatorAnswerViewController.m */,
+				7DFD9BF21D714179007BDE4D /* YBZTranslatorDetailViewController.h */,
+				7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1802,7 +1807,6 @@
 				1B05138B1D3F5DAC00F05C9D /* AFURLRequestSerialization.m in Sources */,
 				1ED863EA1D38868500529094 /* YBZSingleCodeCell.m in Sources */,
 				A03ED0A41D2DE49600BD9C0A /* YBZBaseViewController.m in Sources */,
-				7D3E99761D6D421500F13F42 /* YBZTranslatorDetailViewController.m in Sources */,
 				1ED863DB1D349ABA00529094 /* YBZChangeLanguageCell.m in Sources */,
 				7D3E99651D6D420200F13F42 /* Model.m in Sources */,
 				1B0513891D3F5DAC00F05C9D /* AFNetworkReachabilityManager.m in Sources */,
@@ -1837,6 +1841,7 @@
 				1E70550E1D5180AB00A000F5 /* YBZLanguageSearchResultViewController.m in Sources */,
 				A03ED0D91D2E0ACA00BD9C0A /* YBZUserEwalletsViewController.m in Sources */,
 				A0532CAB1D38CB3700FC1AB1 /* AboutViewController.m in Sources */,
+				7DFD9BF71D714401007BDE4D /* YBZRewardHallDetailModel.m in Sources */,
 				7D84273A1D634638000BFEAD /* CollectionCellFrameInfo.m in Sources */,
 				A0552ED61D3A2C8C00E04D7A /* SelectedCellFrameInfo.m in Sources */,
 				1ED8630C1D2F39DD00529094 /* MASConstraintMaker.m in Sources */,
@@ -1922,6 +1927,7 @@
 				1ED8636A1D3347F500529094 /* SYTableFooterView.m in Sources */,
 				1B0513911D3F5DAC00F05C9D /* AFImageDownloader.m in Sources */,
 				1B96DA411D435ADC00FD5BA6 /* NSString+SZYKit.m in Sources */,
+				7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */,
 				1ED8630E1D2F39DD00529094 /* MASViewAttribute.m in Sources */,
 				7D8427621D634AAB000BFEAD /* CellInformation.m in Sources */,
 				A0532CD11D38D7BA00FC1AB1 /* PersonalSignatureVC.m in Sources */,

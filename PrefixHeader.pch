@@ -130,8 +130,8 @@
 #define myRewardBackgroundColor UIColorFromRGB(0xEFEFEF)
 
 
-#define API_HOST @"http://192.168.1.104/TravelHelper/index.php/Home/"
-#define positionImg    @"http://192.168.1.104/TravelHelper/upload.php"
+#define API_HOST @"http://192.168.1.108/TravelHelper/index.php/Home/"
+#define positionImg    @"http://192.168.1.108/TravelHelper/upload.php"
 
 
 

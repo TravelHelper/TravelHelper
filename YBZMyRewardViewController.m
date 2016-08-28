@@ -205,13 +205,11 @@
 #pragma mark - 页面跳转
 -(void)interpretClick{
     [self.navigationController popViewControllerAnimated:YES];
+
 }
 
 -(void)loadDataFromWeb{
     
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-
     [WebAgent myRewardrewardID:user_ID success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
