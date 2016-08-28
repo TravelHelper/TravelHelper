@@ -154,6 +154,63 @@
     
 }
 
+//添加翻译订单信息
++(void)creatUserList:(NSString *)now_time
+          andUser_id:(NSString *)user_id
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"now_time":now_time,@"user_id":user_id};
+    
+    [[APIClient sharedClient] POST:@"Appraisal/creatUserList/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+
+
++(void)UpdateUserListWithID:(NSString *)ID
+          andAnswerId:(NSString *)answer_id
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"ID":ID,@"answer_id":answer_id};
+    
+    [[APIClient sharedClient] POST:@"Appraisal/UpdateUserList/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+
+
++(void)UpdateUserMessageWithID:(NSString *)ID
+          andStar:(NSString *)star
+          andMoney:(NSString *)money
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"ID":ID,@"star":star,@"money":money};
+    
+    [[APIClient sharedClient] POST:@"Appraisal/UpdateUserMessage/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+
+
+
 
 //Help
 +(void)user_id:(NSString *)user_id
