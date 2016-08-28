@@ -537,22 +537,65 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
         failure(error);
     }];
 }
-//悬赏大厅
+//悬赏大厅_all
 +(void)proceed_state:(NSString *)proceed_state
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure
 {
-    
-    
     NSDictionary *dict = @{@"proceed_state":proceed_state};
-    
-    
     [[APIClient sharedClient] POST:@"Reward/AllRewardInformation/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failure(error);
     }];
-    
+}
+//悬赏大厅_money
++(void)money:(NSString *)money
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure
+{
+    [[APIClient sharedClient] POST:@"Reward/getmoneyrewardhall/" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+
+//悬赏大厅_language
++(void)language:(NSString *)language
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"language":language};
+    [[APIClient sharedClient] POST:@"Reward/getlanguagerewardhall/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+
+//悬赏大厅_time
++(void)time:(NSString *)time
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure
+{
+    [[APIClient sharedClient] POST:@"Reward/gettimerewardhall/" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+//悬赏大厅_search
++(void)searchContent:(NSString *)searchContent
+    success:(void (^)(id responseObject))success
+    failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"searchContent":searchContent};
+    [[APIClient sharedClient] POST:@"Reward/getsearchContentrewardhall/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
 }
 //我的悬赏
 +(void)myRewardrewardID:(NSString *)rewardID

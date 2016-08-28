@@ -93,7 +93,7 @@
     //数据内容
     self.m_btn_tableView1.m_TableViewData = @[@"解决",@"未解决"];
     self.m_btn_tableView2.m_TableViewData = @[@"英文",@"中文",@"韩文",@"日文",@"泰文",@"法文",@"俄文"];
-    self.m_btn_tableView3.m_TableViewData = @[@"时间由早到晚",@"时间由晚到早"];
+    self.m_btn_tableView3.m_TableViewData = @[@"由早到晚",@"由晚到早"];
 
     
     [self.m_btn_tableView1 addViewData];
@@ -208,9 +208,7 @@
 }
 
 -(void)loadDataFromWeb{
-    
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+
 
     [WebAgent myRewardrewardID:user_ID success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];

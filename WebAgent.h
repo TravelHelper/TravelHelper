@@ -174,7 +174,18 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)proceed_state:(NSString *)proceed_state
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure;
-
++(void)language:(NSString *)language
+        success:(void (^)(id responseObject))success
+        failure:(void (^)(NSError *error))failure;
++(void)money:(NSString *)money
+     success:(void (^)(id responseObject))success
+     failure:(void (^)(NSError *error))failure;
++(void)time:(NSString *)time
+     success:(void (^)(id responseObject))success
+     failure:(void (^)(NSError *error))failure;
++(void)searchContent:(NSString *)searchContent
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure;
 
 //悬赏详情
 +(void)rewardDetial:(NSString *)rewardId
