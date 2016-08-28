@@ -45,17 +45,17 @@
 @property(nonatomic,strong)UIButton *moneyBtn;
 @property(nonatomic,strong)UIButton *backBtn;
 @property(nonatomic,strong)UIButton *seletLanguageBtn;
-@property(nonatomic,strong)UIButton *seletMoneyBtn;
+@property(nonatomic,strong)UIButton *seletTagBtn;
 @property(nonatomic,strong)UILabel *tishiLabel;
 @property(nonatomic,strong)UIButton *cancelBtn;
 @property(nonatomic,strong)NSString *pictureUrl;
 @property(nonatomic,strong)UILabel *returnLanguage;
-@property(nonatomic,strong)UILabel *returnMoney;
+@property(nonatomic,strong)UILabel *returnTagLabel;
 @property(nonatomic,strong)NSString *tag;
-@property (nonatomic ,strong) UILabel *alertLabel;
-@property (nonnull,strong) NSString *imageName;
-@property (nonatomic,strong) UILabel *titleLabel;
-@property(nonatomic,strong)UILabel *moneyLabel;
+@property(nonatomic,strong) UILabel *alertLabel;
+@property(nonnull,strong) NSString *imageName;
+@property(nonatomic,strong) UILabel *titleLabel;
+@property(nonatomic,strong)UILabel *returnMoneyLabel;
 
 @end
 
@@ -80,7 +80,7 @@
     [self.view addSubview:self.bottomView];
     [self.mainScrollView addSubview:self.titleTextView];
     [self.mainScrollView addSubview:self.contentTextView];
-    [self.mainScrollView addSubview:self.seletMoneyBtn];
+    [self.mainScrollView addSubview:self.seletTagBtn];
     [self.mainScrollView addSubview:self.seletLanguageBtn];
     [self.contentTextView addSubview:self.tishiLabel];
     [self.titleTextView addSubview:self.titleLabel];
@@ -93,11 +93,13 @@
     self.selectPhoto.avatarImageView = self.userIconImageV;
     
     // 观察者方法
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePhotoImage:) name:@"changePhotoImage" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeContentViewPoint:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideContentViewPoint:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendUrl:) name:@"sendUrl" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePhotoImage:) name:@"changePhotoImage" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendLanguage:) name:@"sendLanguage"object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMoney:) name:@"sendMoney"object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendTag:) name:@"sendTag"object:nil];
 
    
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
@@ -139,7 +141,7 @@
                          [UIView setAnimationCurve:[curve intValue]];
                          _bottomView.center = CGPointMake(_bottomView.center.x, keyBoardEndY - _bottomView.bounds.size.height/2.0);
                          _seletLanguageBtn.center = CGPointMake(_seletLanguageBtn.center.x, keyBoardEndY - _bottomView.bounds.size.height - kScreenWidth*0.24);
-                         _seletMoneyBtn.center = CGPointMake(_seletLanguageBtn.center.x, _seletLanguageBtn.center.y-kScreenHeight*0.026-10);
+                         _seletTagBtn.center = CGPointMake(_seletLanguageBtn.center.x, _seletLanguageBtn.center.y-kScreenHeight*0.026-10);
                          _userIconImageV.center = CGPointMake(_userIconImageV.center.x, keyBoardEndY - _bottomView.bounds.size.height-kScreenHeight*0.2);
                      }];
 }
@@ -289,14 +291,13 @@
     }
     return _moneyBtn;
 }
--(UILabel *)moneyLabel{
-    if (!_moneyLabel) {
-        _moneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.moneyBtn.frame), CGRectGetMinY(self.moneyBtn.frame), kScreenWidth*0.07, kScreenWidth*0.07)];
-        _moneyLabel.textColor = [UIColor redColor];
-//        _moneyLabel.text = @"20";
-        _moneyLabel.font = FONT_13;
+-(UILabel *)returnMoneyLabel{
+    if (!_returnMoneyLabel) {
+        _returnMoneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.moneyBtn.frame), CGRectGetMinY(self.moneyBtn.frame), kScreenWidth*0.07, kScreenWidth*0.07)];
+        _returnMoneyLabel.textColor = [UIColor redColor];
+        _returnMoneyLabel.font = FONT_13;
     }
-    return _moneyLabel;
+    return _returnMoneyLabel;
 }
 -(UIView *)bottomView{
     if (!_bottomView) {
@@ -305,7 +306,7 @@
         [_bottomView addSubview:self.picBtn];
         [_bottomView addSubview:self.tagBtn];
         [_bottomView addSubview:self.moneyBtn];
-        [_bottomView addSubview:self.moneyLabel];
+        [_bottomView addSubview:self.returnMoneyLabel];
     }
     
     return _bottomView;
@@ -321,8 +322,8 @@
     return _backBtn;
 }
 
--(UIButton *)seletMoneyBtn{
-    if (!_seletMoneyBtn) {
+-(UIButton *)seletTagBtn{
+    if (!_seletTagBtn) {
         UIImage *img = [UIImage imageNamed:@"tag"];
         UIImageView *imgV = [[UIImageView alloc]initWithFrame:CGRectMake(0.0234*kScreenWidth, 0, kScreenWidth*0.04, kScreenHeight*0.026)];
         [imgV setImage:img];
@@ -330,17 +331,16 @@
         label.text = @"标签内容";
         label.font = FONT_12;
         label.textColor = [UIColor colorWithRed:132.0/255.0f green:132.0/255.0f blue:132.0/255.0f alpha:1];
-        _returnMoney = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(label.frame)+5, 0,0.1*kScreenWidth, kScreenHeight*0.026)];
-        _seletMoneyBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMinX(self.seletLanguageBtn.frame), CGRectGetMinY(self.seletLanguageBtn.frame)-kScreenHeight*0.026-10, kScreenWidth*0.4+5, kScreenHeight*0.026)];
-        _returnMoney.font = FONT_12;
-        _returnMoney.textColor = [UIColor colorWithRed:132.0/255.0f green:132.0/255.0f blue:132.0/255.0f alpha:1];
-        [_seletMoneyBtn addSubview:imgV];
-        [_seletMoneyBtn addSubview:label];
-        [_seletMoneyBtn addSubview:_returnMoney];
-        _seletMoneyBtn.backgroundColor = [UIColor whiteColor];
-        [_seletMoneyBtn addTarget:self action:@selector(seletMoneyBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        _returnTagLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(label.frame)+2, 0,0.1*kScreenWidth, kScreenHeight*0.026)];
+        _seletTagBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMinX(self.seletLanguageBtn.frame), CGRectGetMinY(self.seletLanguageBtn.frame)-kScreenHeight*0.026-10, kScreenWidth*0.4+5, kScreenHeight*0.026)];
+        _returnTagLabel.font = FONT_12;
+        _returnTagLabel.textColor = [UIColor colorWithRed:132.0/255.0f green:132.0/255.0f blue:132.0/255.0f alpha:1];
+        [_seletTagBtn addSubview:imgV];
+        [_seletTagBtn addSubview:label];
+        [_seletTagBtn addSubview:_returnTagLabel];
+        _seletTagBtn.backgroundColor = [UIColor clearColor];
     }
-    return _seletMoneyBtn;
+    return _seletTagBtn;
 }
 -(UIButton *)seletLanguageBtn{
     if (!_seletLanguageBtn) {
@@ -360,11 +360,6 @@
         [_seletLanguageBtn addSubview:imgV];
         [_seletLanguageBtn addSubview:label];
         [_seletLanguageBtn addSubview:_returnLanguage];
-//        _seletLanguageBtn.backgroundColor = [UIColor whiteColor];
-//        [_seletLanguageBtn.layer setMasksToBounds:YES];
-//        [_seletLanguageBtn.layer setCornerRadius:8.0];
-//        [_seletLanguageBtn.layer setBorderWidth:1.0];
-//        _seletLanguageBtn.layer.borderColor = [UIColor grayColor].CGColor;
         [_seletLanguageBtn setImage:[UIImage imageNamed:@"languagebtn"] forState:UIControlStateNormal];
         
     }
@@ -388,6 +383,96 @@
     }
     return _userIconImageV;
 }
+#pragma mark - 发送upload
+
+-(void)sendBtnIClick{
+    if (self.userIconImageV.image) {
+        
+        UIImage *image=self.userIconImageV.image;
+        NSString *urlc = [NSString stringWithFormat:@"%@",positionImg];
+        NSURL *URL = [NSURL URLWithString:urlc];
+        AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc]init];
+        [securityPolicy setAllowInvalidCertificates:YES];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        [manager setSecurityPolicy:securityPolicy];
+        [manager POST:URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            
+            NSData *data = UIImageJPEGRepresentation(image, 0.1);
+            self.imageName = [NSString stringOfUUID];
+            [formData appendPartWithFileData:data name:@"file" fileName:self.imageName mimeType:@"image/png"];
+            
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"--------------->%@",responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"--------------->%@",error);
+        }];
+        
+    }
+    //网络接口
+    // 测试数据
+    self.returnMoneyLabel.text = @"20";
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+
+    if (!self.titleTextView.text || !self.contentTextView.text || !self.returnMoneyLabel.text || !self.returnLanguage.text || !self.imageName)
+    {
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请补全内容" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            }];
+            [alertVC addAction:okAction];
+            [self presentViewController:alertVC animated:YES completion:nil];
+       
+    }
+    else{
+        if (!self.returnTagLabel.text) {
+            self.returnTagLabel.text = @"无";
+        }
+        NSLog(@"--------------->%@",self.titleTextView.text);
+        NSLog(@"--------------->%@",self.contentTextView.text);
+        NSLog(@"--------------->%@",self.returnLanguage.text);
+        NSLog(@"------------->%@",self.returnTagLabel.text);
+        [WebAgent sendRewardRewardID:user_id[@"user_id"]
+                         rewardTitle:self.titleTextView.text
+                          rewardText:self.contentTextView.text
+                           rewardUrl:self.imageName
+                         rewardMoney:self.returnMoneyLabel.text
+                      rewardLanguage:self.returnLanguage.text
+                           rewardtag:self.returnTagLabel.text
+                             success:^(id responseObject) {
+                            
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"发送成功" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }];
+            [alertVC addAction:okAction];
+            [self presentViewController:alertVC animated:YES completion:nil];
+             NSLog(@"－－－－－－－success");
+                                 
+        } failure:^(NSError *error) {
+            
+            NSLog(@"----------->%@",error);
+            CGSize size = [@"网络错误" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:25]}];
+            self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width) / 2, 500, size.width + 10, size.height + 6)];
+            self.alertLabel.backgroundColor = [UIColor blackColor];
+            self.alertLabel.layer.cornerRadius = 5;
+            self.alertLabel.layer.masksToBounds = YES;
+            self.alertLabel.alpha = 0.8;
+            self.alertLabel.text = @"网络错误";
+            self.alertLabel.font = [UIFont systemFontOfSize:14];
+            [self.alertLabel setTextAlignment:NSTextAlignmentCenter];
+            self.alertLabel.textColor = [UIColor whiteColor];
+            [self.view addSubview:self.alertLabel];
+            [UIView animateWithDuration:2 animations:^{
+                self.alertLabel.alpha = 0;
+            } completion:^(BOOL finished) {
+                [self.alertLabel removeFromSuperview];
+            }];
+        }];
+    }
+}
 #pragma mark - 响应事件
 //picture
 -(void)changePhotoImage:(NSNotification *)noti{
@@ -401,89 +486,6 @@
 -(void)cancelPic{
     self.userIconImageV.image = nil;
     [self.cancelBtn removeFromSuperview];
-}
-//发送
--(void)sendBtnIClick{
-    
-    UIImage *image=self.userIconImageV.image;
-    NSString *urlc = [NSString stringWithFormat:@"%@",positionImg];
-    NSURL *URL = [NSURL URLWithString:urlc];
-    AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc]init];
-    [securityPolicy setAllowInvalidCertificates:YES];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    [manager setSecurityPolicy:securityPolicy];
-    [manager POST:URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        
-        NSData *data = UIImageJPEGRepresentation(image, 0.1);
-        self.imageName = [NSString stringOfUUID];
-        [formData appendPartWithFileData:data name:@"file" fileName:self.imageName mimeType:@"image/png"];
-        
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"--------------->%@",responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"--------------->%@",error);
-    }];
-    
-    //网络接口
-    //观察者
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendUrl:) name:@"sendUrl" object:nil];
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *myDictionary = [userinfo dictionaryForKey:@"user_id"];
-
-    
-    NSLog(@"--------------->%@",self.titleTextView.text);
-    if ([myDictionary[@"user_id"] isEqualToString:@""]&[self.titleTextView.text isEqualToString:@""]&[self.contentTextView.text isEqualToString:@""]&[self.pictureUrl isEqualToString:@""]&[self.returnMoney.text isEqualToString:@""]&[self.returnLanguage.text isEqualToString:@""])
-    
-    
-    {
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还未登陆" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            NSLog(@"------------>未登录");
-        }];
-        [alertVC addAction:okAction];
-        [self presentViewController:alertVC animated:YES completion:nil];
-     
-        //myDictionary[@"user_id"]
-    }else{
-        NSLog(@"------------->%@,%@,%@",self.returnMoney.text,self.returnLanguage.text,self.tag);
-        [WebAgent sendRewardRewardID:@"111" rewardTitle:self.titleTextView.text rewardText:self.contentTextView.text rewardUrl:self.imageName rewardMoney:self.returnMoney.text rewardLanguage:self.returnLanguage.text rewardtag:self.tag success:^(id responseObject) {
-            
-            NSLog(@"发送成功");
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"发送成功" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            }];
-            [alertVC addAction:okAction];
-            [self presentViewController:alertVC animated:YES completion:nil];
-            
-        } failure:^(NSError *error) {
-            
-            NSLog(@"----------->%@",error);
-            NSLog(@"%@",error);
-            CGSize size = [@"网络错误" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:25]}];
-            self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width) / 2, 500, size.width + 10, size.height + 6)];
-            self.alertLabel.backgroundColor = [UIColor blackColor];
-            self.alertLabel.layer.cornerRadius = 5;
-            self.alertLabel.layer.masksToBounds = YES;
-            self.alertLabel.alpha = 0.8;
-            self.alertLabel.text = @"网络错误";
-            self.alertLabel.font = [UIFont systemFontOfSize:14];
-            [self.alertLabel setTextAlignment:NSTextAlignmentCenter];
-            self.alertLabel.textColor = [UIColor whiteColor];
-            [self.view addSubview:self.alertLabel];
-            
-            //设置动画
-            [UIView animateWithDuration:2 animations:^{
-                self.alertLabel.alpha = 0;
-            } completion:^(BOOL finished) {
-                //将警告Label透明后 在进行删除
-                [self.alertLabel removeFromSuperview];
-            }];
-        }];
-    }
 }
 //返回
 -(void)backBtnIClick{
@@ -513,20 +515,18 @@
 
 //悬赏
 -(void)moneyBtnClickEvent{
-    
-  
-    
-}
--(void)seletMoneyBtnClick{
     YBZRewardMoneyViewController *rewardMoneyVC = [[YBZRewardMoneyViewController alloc]init];
     [self.navigationController pushViewController:rewardMoneyVC animated:YES];
-
 }
+
 //语言
 -(void)seletLanguageBtnClick{
     YBZRewardChooseLanguageViewController *languageVC = [[YBZRewardChooseLanguageViewController alloc]init];
     [self.navigationController pushViewController:languageVC animated:YES];
 }
+
+#pragma mark -观察者－发送通知
+
 -(void)sendUrl:(NSNotification *)noti{
     NSDictionary *textDic = [noti userInfo];
     self.pictureUrl = [textDic objectForKey:@"url"];
@@ -539,13 +539,20 @@
 
 -(void)sendMoney:(NSNotification *)noti{
     NSDictionary *texDic = [noti userInfo];
-    self.moneyLabel.text = [texDic objectForKey:@"money"];
+    self.returnMoneyLabel.text = [texDic objectForKey:@"money"];
+}
+-(void)sendTag:(NSNotification *)noti{
+    NSDictionary *texDic = [noti userInfo];
+    self.returnTagLabel.text = [texDic objectForKey:@"tag"];
+//    CGSize labelSize=[self.returnTagLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width*0.3, 0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: self.returnTagLabel.font} context:nil].size;
+    [self.returnTagLabel sizeToFit];
 }
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"sendUrl" object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"sendLanguage" object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"returntag" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"sendMoney" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"sendTag" object:nil];
 
 
 }
