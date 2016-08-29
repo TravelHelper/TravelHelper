@@ -127,6 +127,7 @@
 		7D8427611D634AAB000BFEAD /* InformationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D84275C1D634AAB000BFEAD /* InformationTableViewCell.xib */; };
 		7D8427621D634AAB000BFEAD /* CellInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84275E1D634AAB000BFEAD /* CellInformation.m */; };
 		7DF218BF1D5F82ED002F9D6D /* YBZWaitingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */; };
+		7DF2554F1D742F2F006822AD /* RewardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF2554E1D742F2F006822AD /* RewardCell.m */; };
 		7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */; };
 		7DFD9BF71D714401007BDE4D /* YBZRewardHallDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */; };
 		A012EDAD1D5099E000144BAD /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDA91D5099E000144BAD /* libopencore-amrnb.a */; };
@@ -488,6 +489,8 @@
 		7D84275E1D634AAB000BFEAD /* CellInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellInformation.m; sourceTree = "<group>"; };
 		7DF218BD1D5F82ED002F9D6D /* YBZWaitingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZWaitingViewController.h; sourceTree = "<group>"; };
 		7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZWaitingViewController.m; sourceTree = "<group>"; };
+		7DF2554D1D742F2F006822AD /* RewardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RewardCell.h; sourceTree = "<group>"; };
+		7DF2554E1D742F2F006822AD /* RewardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewardCell.m; sourceTree = "<group>"; };
 		7DFD9BF21D714179007BDE4D /* YBZTranslatorDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZTranslatorDetailViewController.h; sourceTree = "<group>"; };
 		7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTranslatorDetailViewController.m; sourceTree = "<group>"; };
 		7DFD9BF51D714401007BDE4D /* YBZRewardHallDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRewardHallDetailModel.h; sourceTree = "<group>"; };
@@ -940,6 +943,8 @@
 				7D3E99691D6D420900F13F42 /* ExpandTableVC.m */,
 				7D3E996A1D6D420900F13F42 /* ExpandCell.h */,
 				7D3E996B1D6D420900F13F42 /* ExpandCell.m */,
+				7DF2554D1D742F2F006822AD /* RewardCell.h */,
+				7DF2554E1D742F2F006822AD /* RewardCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1796,6 +1801,7 @@
 			files = (
 				A0532C981D38C6B400FC1AB1 /* InformationModel.m in Sources */,
 				1ED863D61D3390F000529094 /* UIScrollView+MJExtension.m in Sources */,
+				7DF2554F1D742F2F006822AD /* RewardCell.m in Sources */,
 				1ED863081D2F39DD00529094 /* AFViewShaker.m in Sources */,
 				7D8427531D634A1E000BFEAD /* ExchangeViewController.m in Sources */,
 				A012EE071D509CAB00144BAD /* StringTransViewController.m in Sources */,

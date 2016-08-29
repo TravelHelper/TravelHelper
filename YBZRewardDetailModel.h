@@ -16,10 +16,12 @@
 @property (nonatomic, strong) NSString *rewardTime;
 @property (nonatomic, strong) NSString *rewardTag;
 @property (nonatomic, strong) NSString *rewardState;
+@property (nonatomic, strong) NSString *acceptAnswer;
 @property (nonatomic, assign) NSUInteger answerPeopleNum;
 @property (nonatomic, strong) NSMutableArray *answerArr;
 
-- (instancetype)initWithTitle:(NSString *)title AndContent:(NSString *)content AndImageUrl:(NSString *)image AndTime:(NSString *)time AndTag:(NSString *)tag AndNumber:(NSUInteger)number AndAnswerList:(NSMutableArray *)array AndState:(NSString* )state ;
+
+- (instancetype)initWithTitle:(NSString *)title AndContent:(NSString *)content AndImageUrl:(NSString *)image AndTime:(NSString *)time AndTag:(NSString *)tag AndNumber:(NSUInteger)number AndAnswerList:(NSMutableArray *)array AndState:(NSString* )state AndAcceptId:(NSString *)accept_id;
 
 
 @end

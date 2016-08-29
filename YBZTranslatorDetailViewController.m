@@ -11,7 +11,7 @@
 #import "WebAgent.h"
 #import "YBZRewardHallDetailModel.h"
 #import "YBZTranslatorAnswerViewController.h"
-@interface YBZTranslatorDetailViewController ()<UITableViewDelegate,UITableViewDataSource>{
+@interface YBZTranslatorDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     UIView *splitView;
 }
@@ -59,7 +59,6 @@
 -(void)viewWillAppear:(BOOL)animated{
 
     [self loadDataFromWeb];
-    [self.answerTableView reloadData];
 }
 
 
@@ -87,6 +86,8 @@
         NSLog(@"1");
         [self setAllControlsFrame];
         [self addAllControls];
+        [self.answerTableView reloadData];
+
         
     } failure:^(NSError *error) {
         
@@ -107,9 +108,9 @@
     textLabelSize = [info boundingRectWithSize:CGSizeMake(0.932*SCREEN_WIDTH, 0.077*SCREEN_HEIGHT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.034*SCREEN_WIDTH]} context:nil].size;
     self.contentLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.058*SCREEN_HEIGHT, 0.932*SCREEN_WIDTH, textLabelSize.height);
     self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
-    self.timeLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3, 0.017*SCREEN_HEIGHT);
+    self.timeLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/2, 0.017*SCREEN_HEIGHT);
     self.answerNumLabel.frame = CGRectMake(2*SCREEN_WIDTH/3, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3-0.034*SCREEN_WIDTH, 0.017*SCREEN_HEIGHT);
-    self.rewardMoneyLabel.frame = CGRectMake(0.697*SCREEN_WIDTH, 0.350*SCREEN_HEIGHT, 0.288*SCREEN_WIDTH, 0.055*SCREEN_HEIGHT);
+    self.rewardMoneyLabel.frame = CGRectMake(0.677*SCREEN_WIDTH, 0.350*SCREEN_HEIGHT, 0.308*SCREEN_WIDTH, 0.055*SCREEN_HEIGHT);
 }
 
 
@@ -153,6 +154,7 @@
     return cell;
 }
 
+
 #pragma mark -----onClick-----
 -(void)turnToAnswerTheReward{
 
@@ -173,7 +175,7 @@
         _contentView.backgroundColor = [UIColor whiteColor];
         splitView = [[UIView alloc]initWithFrame:CGRectMake(0.034*SCREEN_WIDTH, 0.34*SCREEN_HEIGHT, SCREEN_WIDTH-0.068*SCREEN_WIDTH, 0.0034*SCREEN_HEIGHT)];
         splitView.backgroundColor = myRewardBackgroundColor;
-        tagImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tag00"]];
+        tagImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tag"]];
         tagImage.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.365*SCREEN_HEIGHT, 0.034*SCREEN_WIDTH, 0.034*SCREEN_WIDTH);
         UILabel *tagLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.077*SCREEN_WIDTH, 0.363*SCREEN_HEIGHT, 0.61*SCREEN_WIDTH, 0.02*SCREEN_HEIGHT)];
         if (_rewardDetailModel.rewardTag != nil && ![_rewardDetailModel.rewardTag isEqualToString:@""]) {

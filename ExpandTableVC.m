@@ -20,6 +20,9 @@
 {
     self = [super initWithStyle:style];
     if (self) {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.tableView.layer.borderWidth = 0.4;
+        self.tableView.layer.borderColor = [UIColor grayColor].CGColor;
     }
     return self;
 }
@@ -45,6 +48,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.m_ContentArr.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    return 0.0653*SCREEN_HEIGHT;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

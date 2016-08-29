@@ -19,6 +19,7 @@
 #import "YBZTranslatorAnswerViewController.h"
 #import "YBZDetailViewController.h"
 #import "YBZSendRewardViewController.h"
+#import "RewardCell.h"
 
 #define kScreenWith        [UIScreen mainScreen].bounds.size.width
 #define kSelectFontSize    [UIScreen mainScreen].bounds.size.width*0.04
@@ -33,7 +34,7 @@
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 
-@interface YBZRewardHallViewController ()<UITableViewDelegate,UITableViewDataSource,Btn_TableViewDelegate,UITextFieldDelegate>
+@interface YBZRewardHallViewController ()<UITableViewDelegate,UITableViewDataSource,Btn_TableViewDelegate,UITextFieldDelegate,UIScrollViewDelegate>
 
 
 @property (strong ,nonatomic) Btn_TableView *m_btn_tableView1;
@@ -79,10 +80,10 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     user_ID = user_id[@"user_id"];
-    self.dataArr = [[NSMutableArray alloc]init];
+    self.dataArr = [NSMutableArray array];
     [self loadDataFromWeb];
 //    [self.navigationController.navigationBar addSubview:self.navView];
-    self.navigationController.navigationBar.clipsToBounds = YES;
+//    self.navigationController.navigationBar.clipsToBounds = YES;
     self.title = @"悬赏大厅";
    
     [self.view addSubview:self.backgroundImageView];
@@ -98,6 +99,11 @@
 
 }
 
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.view endEditing:YES];
+}
+
 -(void)addNameAndJiantou{
     self.m_btn_tableView1 = [[Btn_TableView alloc] initWithFrame:CGRectMake(0, 64+kScreenWith*0.11, kScreenWith*0.333, kScreenWith*0.1)];
     self.m_btn_tableView2 = [[Btn_TableView alloc] initWithFrame:CGRectMake(kScreenWith*0.333, 64+kScreenWith*0.11, kScreenWith*0.333, kScreenWith*0.1)];
@@ -108,17 +114,17 @@
     self.m_btn_tableView3.delegate_Btn_TableView = self;
     _stateLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWith*0.3333, kScreenWith*0.088)];
     _stateLabel.text = @"金额排序";
-    _stateLabel.backgroundColor = UIColorFromRGB(0xffd703);
+    _stateLabel.backgroundColor = [UIColor whiteColor];
     _stateLabel.font = [UIFont systemFontOfSize:kSelectFontSize];
     _stateLabel.textAlignment = NSTextAlignmentCenter;
     _languageLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWith*0.3333, kScreenWith*0.088)];
     _languageLabel.text = @"语言筛选";
-    _languageLabel.backgroundColor = UIColorFromRGB(0xffd703);
+    _languageLabel.backgroundColor = [UIColor whiteColor];
     _languageLabel.font = [UIFont systemFontOfSize:kSelectFontSize];
     _languageLabel.textAlignment = NSTextAlignmentCenter;
     _timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWith*0.3333, kScreenWith*0.088)];
     _timeLabel.text = @"时间排序";
-    _timeLabel.backgroundColor = UIColorFromRGB(0xffd703);
+    _timeLabel.backgroundColor = [UIColor whiteColor];
 
     _timeLabel.font = [UIFont systemFontOfSize:kSelectFontSize];
     _timeLabel.textAlignment = NSTextAlignmentCenter;
@@ -212,22 +218,16 @@
 
 -(void)loadDataFromWeb{
         
-        [WebAgent proceed_state:@"0" success:^(id responseObject) {
+    [WebAgent getRewardHallInfo:user_ID success:^(id responseObject) {
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSLog(@"select------------->%@",self.select);
-            NSArray *reward_info = dic[@"reward_info"];
-            NSLog(@"reward_info------------->%@",reward_info);
-            [self.dataArr removeAllObjects];
-            int i=0;
-            if ([reward_info isEqual:@""]) {
-                NSLog(@"----------------->没有需要解答的内容");
-            }else{
-                for (i = 0 ; i < reward_info.count; i++) {
-                    [self.dataArr addObject:reward_info[i]];
-                    [self.mainTableView reloadData];
-                }
-             }
+        if (![dic[@"data"] isKindOfClass:[NSString class]]) {
+            self.dataArr = dic[@"data"];
+        }else{
+            self.dataArr = nil;
+        }
+        [self.mainTableView reloadData];
+        
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
             
@@ -249,7 +249,7 @@
         }
         if ([self.select isEqualToString:@"由低到高"]) {
             for (int i = 0 ; i < descMoney.count; i++) {
-                [self.dataArr addObject:descMoney[descMoney.count-i]];
+                [self.dataArr addObject:descMoney[descMoney.count-i-1] ];
                 [self.mainTableView reloadData];
             }
         }
@@ -295,7 +295,7 @@
         }
         if ([self.select isEqualToString:@"由晚到早"]) {
             for (int i = 0 ; i < descTime.count; i++) {
-                [self.dataArr addObject:descTime[descTime.count - i]];
+                [self.dataArr addObject:descTime[descTime.count - i-1]];
                 [self.mainTableView reloadData];
             }
         }
@@ -304,6 +304,7 @@
         [self errorAction];
     }];
 }
+
 -(void)searchDataFromWeb{
     
     [WebAgent searchContent:self.searchTextField.text success:^(id responseObject) {
@@ -375,120 +376,19 @@
 //控制表视图的行数
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
-    return self.dataArr.count;
+    if (self.dataArr != nil) {
+        return self.dataArr.count;
+    }else{
+        return 0;
+    }
 
 }
 //控制每一行使用什么样式
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *aa = self.dataArr[indexPath.row];
-    NSString *time = aa[@"release_time"];
-    NSString *title = aa[@"reward_title"];
-    NSString *text = aa[@"reward_text"];
-    //    NSString *url = aa[@"reward_url"];
-    NSString *money = aa[@"reward_money"];
-    NSString *state = aa[@"proceed_state"];
-    //    NSString *rewardID = aa[@"reward_id"];
-    NSLog(@"------------->%@",title);
-    UITableViewCell  *cell= [[UITableViewCell alloc]init];
-    cell.backgroundColor = [UIColor clearColor];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
+    NSDictionary *model = self.dataArr[indexPath.row];
+    RewardCell *cell = [[RewardCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RewardCell" AndModel:model];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    
-    if ([self.select2  isEqual: @"1"]) {
-        self.mainTableView.allowsSelection=NO;
-    }
-    else{
-        self.mainTableView.allowsSelection=YES;
-    }
-    
-    self.textV = [[UIView alloc]initWithFrame:CGRectMake(kScreenWith*0.048,kScreenWith*0.03,kScreenWith*0.902,kScreenWith*0.262)];
-    self.textV.backgroundColor = [UIColor colorWithRed:55.0f/255.0f green:53.0f/255.0f blue:77.0f/255.0f alpha:1];
-    self.textV.layer.cornerRadius = 5.0;
-    
-    //标题
-    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.035, kScreenWith*0.017, kScreenWith*0.48, kScreenWith*0.059)];
-    self.titleLabel.text = title;
-    self.titleLabel.font = [UIFont systemFontOfSize:kTitleFontSize];
-    [self.titleLabel setTextColor:[UIColor colorWithRed:238.0f/255.0f green:204.0f/255.0f blue:69.0f/255.0f alpha:1]];
-    //内容
-    NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-    // 表情图片
-    attch.image = [UIImage imageNamed:@"我的悬赏_图片"];
-    // 设置图片大小
-    attch.bounds = CGRectMake(0, 0, kScreenWith*0.05, kScreenWith*0.03);
-    // 创建带有图片的富文本
-    NSMutableAttributedString *attri =[[NSMutableAttributedString alloc] initWithString:text];
-    NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-    [attri appendAttributedString:string];
-    // 用label的attributedText属性来使用富文本
-    self.contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.035, kScreenWith*0.076, kScreenWith*0.75, kScreenWith*0.108)];
-    self.contentLabel.attributedText = attri;
-    self.contentLabel.textColor = [UIColor whiteColor];
-    self.contentLabel.font = [UIFont systemFontOfSize:kContentFontSize];
-    //设置显示两行
-    self.contentLabel.numberOfLines = 2;
-    
-    
-    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.032, kScreenWith*0.194, kScreenWith*0.18, kScreenWith*0.04)];
-    [label1 setTextColor:[UIColor whiteColor]];
-    label1.text = @"发布日期：";
-    [label1 setNumberOfLines:0];
-    label1.adjustsFontSizeToFitWidth = YES;
-    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.459, kScreenWith*0.194, kScreenWith*0.5, kScreenWith*0.04)];
-    [label2 setTextColor:[UIColor whiteColor]];
-    label2.text = @"悬赏金额：              游币";
-    [label2 setNumberOfLines:0];
-    label2.adjustsFontSizeToFitWidth = YES;
-    UIImageView *stateImg = [[UIImageView alloc]init];
-    stateImg.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+10, kScreenWith*0.017, 23,23);
-    UILabel *answerLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.titleLabel.frame)+20,kScreenWith*0.037, 6, 10)];
-    
-    if ([state isEqualToString:@"1"]) {
-        [stateImg setImage:[UIImage imageNamed:@"state1"]];
-    }else{
-        answerLabel.font = [UIFont systemFontOfSize:10];
-        answerLabel.backgroundColor = [UIColor clearColor];
-        answerLabel.text = @"5";
-        answerLabel.textColor = [UIColor blackColor];
-        [stateImg setImage:[UIImage imageNamed:@"state2"]];
-    }
-    
-    
-    UIImage* image = [UIImage imageNamed:@"right"];
-    UIImageView *right   = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.contentLabel.frame)+5, kScreenWith*0.25, 18,23)];
-    [right setImage:image];
-    
-    self.dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.18, kScreenWith*0.194, kScreenWith*0.24, kScreenWith*0.04)];
-    [self.dateLabel setTextColor:[UIColor whiteColor]];
-    self.dateLabel.font = FONT_14;
-    self.dateLabel.text = time;
-    [self.dateLabel setNumberOfLines:0];
-    self.dateLabel.adjustsFontSizeToFitWidth = YES;
-    
-    self.moneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.62, kScreenWith*0.194, kScreenWith*0.148, kScreenWith*0.04)];
-    self.moneyLabel.text = money;
-    [self.moneyLabel setTextColor:[UIColor redColor]];
-    UIImageView *imgV =[[UIImageView alloc]initWithFrame:CGRectMake(kScreenWith*0.82, kScreenWith*0.09, kScreenWith*0.04, kScreenWith*0.06)];
-    [imgV setImage:[UIImage imageNamed:@"右_白_箭头"]];
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWith*0.425, kScreenWith*0.199, kScreenWith*0.003, kScreenWith*0.034)];
-    label.backgroundColor = [UIColor whiteColor];
-    
-    [self.textV addSubview:label];
-    [self.textV addSubview:imgV];
-    [self.textV addSubview:self.titleLabel];
-    [self.textV addSubview:self.contentLabel];
-    [self.textV addSubview:label1];
-    [self.textV addSubview:label2];
-    [self.textV addSubview:self.dateLabel];
-    [self.textV addSubview:self.moneyLabel];
-    [self.textV addSubview:right];
-    [self.textV addSubview:stateImg];
-    [self.textV addSubview:answerLabel];
-    
-    [cell addSubview:self.textV];
     return cell;
 }
 
@@ -523,7 +423,7 @@
 -(UIView *)navView{
     if (!_navView) {
         _navView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenWith, 64)];
-        _navView.backgroundColor = UIColorFromRGB(0xffd703);
+        _navView.backgroundColor =[UIColor whiteColor];
         [_navView addSubview:self.searchTextField];
     }
     return _navView;
@@ -531,8 +431,10 @@
 -(UITextField *)searchTextField{
     if (!_searchTextField) {
         _searchTextField = [[UITextField alloc]initWithFrame:CGRectMake(kScreenWith*0.03, kScreenWith*0.02, UIScreenWidth*0.94, kScreenWith*0.08)];
-        _searchTextField.placeholder = @"搜索感兴趣的话题、分类、电影、歌曲、书籍、国家等🔍";
+        _searchTextField.placeholder = @"     搜索感兴趣的话题、分类、电影、语言等🔍";
         _searchTextField.backgroundColor = [UIColor whiteColor];
+        _searchTextField.layer.borderColor = [UIColor grayColor].CGColor;
+        _searchTextField.layer.borderWidth = 0.3;
         _searchTextField.font = FONT_12;
         _searchTextField.delegate = self;
         [_searchTextField.layer setMasksToBounds:YES];
@@ -555,7 +457,8 @@
 - (UITableView *)mainTableView
 {
     if (!_mainTableView) {
-        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.35, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
+        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.35, self.view.bounds.size.width, self.view.bounds.size.height-0.225*SCREEN_HEIGHT+20) style:UITableViewStylePlain];
+        [_mainTableView registerClass:[RewardCell class] forCellReuseIdentifier:@"RewardCell"];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.showsVerticalScrollIndicator = YES;

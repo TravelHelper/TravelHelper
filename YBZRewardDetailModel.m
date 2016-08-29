@@ -10,7 +10,7 @@
 
 @implementation YBZRewardDetailModel
 
-- (instancetype)initWithTitle:(NSString *)title AndContent:(NSString *)content AndImageUrl:(NSString *)image AndTime:(NSString *)time AndTag:(NSString *)tag AndNumber:(NSUInteger)number AndAnswerList:(NSMutableArray *)array AndState:(NSString *)state
+- (instancetype)initWithTitle:(NSString *)title AndContent:(NSString *)content AndImageUrl:(NSString *)image AndTime:(NSString *)time AndTag:(NSString *)tag AndNumber:(NSUInteger)number AndAnswerList:(NSMutableArray *)array AndState:(NSString *)state AndAcceptId:(NSString *)accept_id
 {
     self = [super init];
     if (self) {
@@ -21,6 +21,7 @@
         self.rewardTime = time;
         self.answerPeopleNum = number;
         self.rewardTag = tag;
+        self.acceptAnswer = accept_id;
         if (![array isKindOfClass:[NSString class]]) {
             self.answerArr = array;
         }else{

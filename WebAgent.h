@@ -157,6 +157,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                                 failure:(void (^)(NSError *error))failure;
 //发布悬赏
 +(void)sendRewardRewardID:(NSString *)rewardID
+               rewarderID:(NSString *)rewarderID
               rewardTitle:(NSString *)rewardTitle
                rewardText:(NSString *)rewardText
                 rewardUrl:(NSString *)rewardUrl
@@ -171,9 +172,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
             success:(void (^)(id responseObject))success
             failure:(void (^)(NSError *error))failure;
 //悬赏大厅
-+(void)proceed_state:(NSString *)proceed_state
-             success:(void (^)(id responseObject))success
-             failure:(void (^)(NSError *error))failure;
++(void)getRewardHallInfo:(NSString *)user_id
+                 success:(void (^)(id responseObject))success
+                 failure:(void (^)(NSError *error))failure;
 +(void)language:(NSString *)language
         success:(void (^)(id responseObject))success
         failure:(void (^)(NSError *error))failure;
@@ -192,7 +193,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
             success:(void (^)(id responseObject))success
             failure:(void (^)(NSError *error))failure;
 //我的悬赏
-+(void)myRewardrewardID:(NSString *)rewardID
++(void)myRewardrewardID:(NSString *)user_id
                 success:(void (^)(id responseObject))success
                 failure:(void (^)(NSError *error))failure;
 //提交回答
@@ -242,5 +243,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                       andMoney:(NSString *)money
                        success:(void (^)(id responseObject))success
                        failure:(void (^)(NSError *error))failure;
-
+//上传回答
++(void)upLoadMyChoose:(NSString *)answer_id
+          AndRewardId:(NSString *)reward_id
+              success:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure;
 @end

@@ -553,6 +553,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //发布悬赏
 +(void)sendRewardRewardID:(NSString *)rewardID
+               rewarderID:(NSString *)rewarderID
               rewardTitle:(NSString *)rewardTitle
                rewardText:(NSString *)rewardText
                 rewardUrl:(NSString *)rewardUrl
@@ -566,7 +567,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     if (rewardtag == nil) {
         rewardtag = @"";
     }
-    NSDictionary *dict = @{@"user_id":rewardID,
+    NSDictionary *dict = @{@"reward_id":rewardID,
+                           @"rewarder_id":rewarderID,
                            @"reward_title":rewardTitle,
                            @"reward_text":rewardText,
                            @"reward_url":rewardUrl,
@@ -595,12 +597,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 }
 //悬赏大厅_all
-+(void)proceed_state:(NSString *)proceed_state
++(void)getRewardHallInfo:(NSString *)user_id
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure
 {
-    NSDictionary *dict = @{@"proceed_state":proceed_state};
-    [[APIClient sharedClient] POST:@"Reward/AllRewardInformation/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"Reward/get_reward_hall_list/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failure(error);
@@ -655,14 +657,32 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 }
 //我的悬赏
-+(void)myRewardrewardID:(NSString *)rewardID
++(void)myRewardrewardID:(NSString *)user_id
                 success:(void (^)(id responseObject))success
                 failure:(void (^)(NSError *error))failure
 {
     
     
-    NSDictionary *dict = @{@"rewarder_id":rewardID};
+    NSDictionary *dict = @{@"rewarder_id":user_id};
     [[APIClient sharedClient] POST:@"Reward/myReward/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+
+//上传回答
++(void)upLoadMyChoose:(NSString *)answer_id
+          AndRewardId:(NSString *)reward_id
+                success:(void (^)(id responseObject))success
+                failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"answer_id":answer_id ,
+                                            @"reward_id":reward_id};
+    [[APIClient sharedClient] POST:@"Reward/chooseAnswer/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failure(error);

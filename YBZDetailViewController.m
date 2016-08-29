@@ -51,6 +51,7 @@
     self.view.backgroundColor = UIColorFromRGB(0xEFEFEF);
     //设置标题
     self.title = @"悬赏详情";
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewData) name:@"NeedToReloadData" object:nil];
     [self loadDataFromWeb];
 
     
@@ -77,11 +78,11 @@
         }else{
             str = dict[@"language"];
         }
-        _rewardDetailModel = [[YBZRewardDetailModel alloc]initWithTitle:dict[@"reward_title"] AndContent:dict[@"reward_text"] AndImageUrl:dict[@"reward_pic_url"] AndTime:dict[@"release_time"]  AndTag:str AndNumber:i AndAnswerList:arr AndState:dict[@"proceed_state"]];
+        _rewardDetailModel = [[YBZRewardDetailModel alloc]initWithTitle:dict[@"reward_title"] AndContent:dict[@"reward_text"] AndImageUrl:dict[@"reward_pic_url"] AndTime:dict[@"release_time"]  AndTag:str AndNumber:i AndAnswerList:arr AndState:dict[@"proceed_state"] AndAcceptId:dict[@"accepted_id"]];
         NSLog(@"1");
         [self setAllControlsFrame];
         [self addAllControls];
-
+        [self.answerTableView reloadData];
     } failure:^(NSError *error) {
         
     }];
@@ -101,7 +102,7 @@
     textLabelSize = [info boundingRectWithSize:CGSizeMake(0.932*SCREEN_WIDTH, 0.077*SCREEN_HEIGHT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.034*SCREEN_WIDTH]} context:nil].size;
     self.contentLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.058*SCREEN_HEIGHT, 0.932*SCREEN_WIDTH, textLabelSize.height);
     self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
-    self.timeLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3, 0.017*SCREEN_HEIGHT);
+    self.timeLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/2, 0.017*SCREEN_HEIGHT);
     self.answerNumLabel.frame = CGRectMake(2*SCREEN_WIDTH/3, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3-0.034*SCREEN_WIDTH, 0.017*SCREEN_HEIGHT);
 }
 
@@ -134,6 +135,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSDictionary *dict = _rewardDetailModel.answerArr[indexPath.row];
+    [dict setValue:_rewardDetailModel.acceptAnswer forKey:@"accept_id"];
     [dict setValue:_rewardDetailModel.rewardState forKey:@"proceed_state"];
     AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
     return cell.height;
@@ -149,6 +151,12 @@
 
 
 
+-(void)reloadTableViewData{
+
+    [self loadDataFromWeb];
+}
+
+
 #pragma mark -----getters-----
 
 -(UIView *)contentView{
@@ -158,7 +166,7 @@
         _contentView.backgroundColor = [UIColor whiteColor];
         splitView = [[UIView alloc]initWithFrame:CGRectMake(0.034*SCREEN_WIDTH, 0.34*SCREEN_HEIGHT, SCREEN_WIDTH-0.068*SCREEN_WIDTH, 0.0034*SCREEN_HEIGHT)];
         splitView.backgroundColor = myRewardBackgroundColor;
-        tagImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tag00"]];
+        tagImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tag"]];
         tagImage.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.365*SCREEN_HEIGHT, 0.034*SCREEN_WIDTH, 0.034*SCREEN_WIDTH);
         UILabel *tagLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.077*SCREEN_WIDTH, 0.363*SCREEN_HEIGHT, 0.9*SCREEN_WIDTH, 0.02*SCREEN_HEIGHT)];
         if (_rewardDetailModel.rewardTag != nil && ![_rewardDetailModel.rewardTag isEqualToString:@""]) {

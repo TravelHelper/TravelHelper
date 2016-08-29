@@ -217,7 +217,7 @@
 -(void)affirmButClick
 {
     NSLog(@"确定");
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"returntag" object:nil userInfo:@{@"tag":self.inputTextField.text}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTag" object:nil userInfo:@{@"tag":self.inputTextField.text}];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
