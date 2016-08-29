@@ -20,6 +20,7 @@
 #import "YBZWaitingViewController.h"
 #import "YBZMyRewardViewController.h"
 #import "YBZRewardHallViewController.h"
+#import "FeedBackViewController.h"
 
 #define kImageCount 5
 //#define MJRandomData [NSString stringWithFormat:@"随机数据---%d", arc4random_uniform(1000000)]
@@ -197,7 +198,6 @@
             NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
             NSDictionary *dict = @{@"user_loginState":str[@"state"]};
             [userinfo setObject:dict forKey:@"user_loginState"];
             if ([dict[@"user_loginState"]isEqualToString:@"1"]) {
@@ -397,11 +397,11 @@
     // 设置文字(也可以不设置,默认的文字在MJRefreshConst中修改)
     self.popularCellView.headerPullToRefreshText = @"下拉可以刷新了";
     self.popularCellView.headerReleaseToRefreshText = @"松开马上刷新了";
-    self.popularCellView.headerRefreshingText = @"MJ哥正在帮你刷新中,不客气";
+    self.popularCellView.headerRefreshingText = @"正在你刷新中...";
     
     self.popularCellView.footerPullToRefreshText = @"上拉可以加载更多数据了";
     self.popularCellView.footerReleaseToRefreshText = @"松开马上加载更多数据了";
-    self.popularCellView.footerRefreshingText = @"MJ哥正在帮你加载中,不客气";
+    self.popularCellView.footerRefreshingText = @"正在加载中...";
 }
 
 #pragma mark 开始进入刷新状态
@@ -672,9 +672,15 @@
 
 -(void)intoFreeTranslationClick{
     
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//    FeedBackViewController *con=[[FeedBackViewController alloc]initWithtargetID:user_id[@"user_id"]];
+    
+    
     
     YBZFreeTranslationViewController *freeTransVC = [[YBZFreeTranslationViewController alloc]initWithTitle:@"免费翻译"];
     freeTransVC.hidesBottomBarWhenPushed = YES;
+//    con.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:freeTransVC animated:YES];
     
 }

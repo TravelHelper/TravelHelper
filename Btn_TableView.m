@@ -91,7 +91,7 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     self.cellName = [[NSString alloc]init];
     self.cellName = cell.textLabel.text;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"setTextALabel" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setTextALabel" object:nil userInfo:@{@"条件":cell.textLabel.text}];
    
 }
 

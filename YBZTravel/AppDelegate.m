@@ -163,6 +163,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
+    
+
+    
     // IOS 7 Support Required
     application.applicationIconBadgeNumber = (NSInteger)0;
     [JPUSHService handleRemoteNotification:userInfo];
@@ -180,10 +183,25 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     if ([content isEqualToString:@"匹配成功"]) {
         
+        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+        NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+
+        [WebAgent UpdateUserListWithID:mseeage_id andAnswerId:yonghuID success:^(id responseObject) {
+            NSLog(@"SUCCESS");
+            
+        } failure:^(NSError *error) {
+            
+        }];
+        
+        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"beginChatWithTranslator" object:@{@"translatorID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+        
+        
         
     }else if ([content isEqualToString:@"进入聊天"]){
            [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+        
+        
         
     }else if ([content isEqualToString:@"退出聊天"]){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"backToRoot" object:@{@"yonghuID":yonghuID}];

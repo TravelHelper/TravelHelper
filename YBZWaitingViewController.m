@@ -9,9 +9,14 @@
 #import "YBZWaitingViewController.h"
 #import "QuickTransViewController.h"
 #import "WebAgent.h"
+#import "YBZGifView.h"
+
 
 @interface YBZWaitingViewController ()
+#define kWidth  [UIScreen mainScreen].bounds.size.width
+#define kHeight  [UIScreen mainScreen].bounds.size.height
 
+@property(nonatomic,strong)UILabel *userNameLabel;
 @end
 
 @implementation YBZWaitingViewController{
@@ -21,27 +26,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self showGifImageMethodThree];
+    [self.view addSubview:self.userNameLabel];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"取消等候" style:UIBarButtonItemStylePlain target:self action:@selector(popToRoot)];
     self.view.backgroundColor = [UIColor whiteColor];
-    // Do any additional setup after loading the view.
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     userID = user_id[@"user_id"];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithUser:) name:@"pushIntoTransView" object:nil];
-
-    [self.view addSubview:[self getReturnBtn]];
 }
 
--(UIButton *)getReturnBtn{
-
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.backgroundColor = [UIColor yellowColor];
-    [btn setTitle:@"取消等候" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(popToRoot) forControlEvents:UIControlEventTouchUpInside];
-    btn.frame = CGRectMake(70, 200, 100,100);
-    return btn;
+-(void)showGifImageMethodThree
+{
+    //得到图片的路径
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"匹配译员动态图" ofType:@"gif"];
+    YBZGifView *dataView2 = [[YBZGifView alloc] initWithFrame:CGRectMake(kWidth*0.4, kHeight*0.32, kWidth*0.15, kWidth*0.13) filePath:path];
+    [self.view addSubview:dataView2];
 }
-
 -(void)viewWillAppear:(BOOL)animated{
 
     
@@ -54,9 +56,7 @@
     } failure:^(NSError *error) {
         
     }];
-    
 }
-
 
 -(void)beginChatWithUser:(NSNotification *)noti{
 
@@ -176,5 +176,29 @@
                            @"trans":TransLanguage
                            };
     return dict;
+}
+
+-(UILabel *)userNameLabel{
+    if (!_userNameLabel) {
+        _userNameLabel = [[UILabel alloc]init];
+        _userNameLabel.font = FONT_15;
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:@"亲！正在为您寻找用户，请耐心等待!"];
+        
+        NSRange  qinRange = NSMakeRange(0, 2);
+        NSRange  pipeiRange = NSMakeRange(2, 9);
+        NSRange  waitRange = NSMakeRange(11, 6);
+        
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:qinRange];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:174.0/255.0f green:174.0/255.0f blue:174.0/255.0f alpha:0.9] range:pipeiRange];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.0/255.0f green:129.0/255.0f blue:204.0/255.0f alpha:0.9] range:waitRange];
+        
+        [_userNameLabel setFrame:CGRectMake(0, kHeight/3.0, kWidth, 100)];
+        [_userNameLabel setAttributedText:str];
+        [_userNameLabel setTextAlignment:NSTextAlignmentCenter];
+        
+        
+    }
+    return _userNameLabel;
 }
 @end

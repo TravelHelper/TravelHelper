@@ -71,13 +71,6 @@
 -(void)selectrightAction
 {
     
-    NSString *comlaintValue = self.complaintText.text;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"complaintText" object:nil
-                                                      userInfo:@{@"投诉":comlaintValue}];
-
-    
-    [self.navigationController popViewControllerAnimated:YES];
-  
 }
 
 -(void)backAction

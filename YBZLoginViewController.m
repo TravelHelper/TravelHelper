@@ -186,12 +186,7 @@
                                 //------------------
 //                                [userDefaults setObject:useridDic forKey:@"user_id"];
                                  [self reloadcell];
-                                [self dismissViewControllerAnimated:YES completion:nil];
-                                
-                                
-                                
-                                
-                                
+                                [self dismissViewControllerAnimated:YES completion:nil]; 
                                 
                             }else{
                                 [self showMssage:@"密码错误" becomeFirstResponder:_pswerTextField];

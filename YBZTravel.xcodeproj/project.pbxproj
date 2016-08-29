@@ -32,6 +32,7 @@
 		1C09F7311D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09F72E1D5F25FE00B8CE3C /* YBZChooseTranslatorViewController.m */; };
 		1C09F7321D5F25FE00B8CE3C /* YBZOtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09F7301D5F25FE00B8CE3C /* YBZOtherViewController.m */; };
 		1C8C5FDB1D6F0E2700763AB9 /* 匹配译员动态图.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1C8C5FDA1D6F0E2700763AB9 /* 匹配译员动态图.gif */; };
+		1CD149101D718AC00054A90C /* NewSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CD1490F1D718AC00054A90C /* NewSearchViewController.m */; };
 		1CF4DAE21D6F043700F6BA94 /* YBZGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF4DAE11D6F043700F6BA94 /* YBZGifView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1CF5443B1D609CB2001B4381 /* YBZTongyongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF5443A1D609CB2001B4381 /* YBZTongyongViewController.m */; };
 		1E70550A1D517F3D00A000F5 /* YBZFreeTranslationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7055071D517F3D00A000F5 /* YBZFreeTranslationInfo.m */; };
@@ -303,6 +304,8 @@
 		1C09F72F1D5F25FE00B8CE3C /* YBZOtherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZOtherViewController.h; sourceTree = "<group>"; };
 		1C09F7301D5F25FE00B8CE3C /* YBZOtherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOtherViewController.m; sourceTree = "<group>"; };
 		1C8C5FDA1D6F0E2700763AB9 /* 匹配译员动态图.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "匹配译员动态图.gif"; sourceTree = "<group>"; };
+		1CD1490E1D718AC00054A90C /* NewSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewSearchViewController.h; sourceTree = "<group>"; };
+		1CD1490F1D718AC00054A90C /* NewSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewSearchViewController.m; sourceTree = "<group>"; };
 		1CF4DAE01D6F043700F6BA94 /* YBZGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZGifView.h; sourceTree = "<group>"; };
 		1CF4DAE11D6F043700F6BA94 /* YBZGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZGifView.m; sourceTree = "<group>"; };
 		1CF544391D609CB2001B4381 /* YBZTongyongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZTongyongViewController.h; sourceTree = "<group>"; };
@@ -950,6 +953,8 @@
 				7D3E99741D6D421500F13F42 /* YBZTranslatorAnswerViewController.m */,
 				7DFD9BF21D714179007BDE4D /* YBZTranslatorDetailViewController.h */,
 				7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */,
+				1CD1490E1D718AC00054A90C /* NewSearchViewController.h */,
+				1CD1490F1D718AC00054A90C /* NewSearchViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1913,6 +1918,7 @@
 				A0532CCE1D38D4FE00FC1AB1 /* UserViewController.m in Sources */,
 				A0532C761D38C32200FC1AB1 /* UserSetoutTableViewCell.m in Sources */,
 				A012EE061D509CAB00144BAD /* NSString+HBWmd5.m in Sources */,
+				1CD149101D718AC00054A90C /* NewSearchViewController.m in Sources */,
 				1B0513951D3F5DAC00F05C9D /* UIImageView+AFNetworking.m in Sources */,
 				1ED863D81D3390F000529094 /* UIView+MJExtension.m in Sources */,
 				7D3E99771D6D421500F13F42 /* YBZTranslatorAnswerViewController.m in Sources */,
@@ -2114,6 +2120,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2143,6 +2150,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

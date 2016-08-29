@@ -47,7 +47,7 @@
 @property(nonatomic,strong) NSString * senderID;
 @property(nonatomic,strong) NSMutableArray *dataArr;
 @property(nonatomic,strong) NSMutableArray *dataSource;
-@property(nonatomic,strong) UIRefreshControl *refreshController;
+//@property(nonatomic,strong) UIRefreshControl *refreshController;
 @property(nonatomic,strong) UIView *bottomView;
 @property(nonatomic,strong) UIView *subBottomView;
 @property(nonatomic,strong) UILabel *shortLabel;
@@ -79,7 +79,7 @@
 @property (nonatomic,strong) NSString *userIdentifier;
 @property (nonatomic,strong) NSString *voice_Language;
 @property (nonatomic,strong) NSString *trans_Language;
-
+@property (nonatomic,strong) UIImageView *backgroundImageView;
 @end
 
 @implementation QuickTransViewController{
@@ -116,7 +116,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setTitle:@"即使翻译"];
+
+    
+    [self setTitle:@"即时翻译"];
+    [self.view addSubview:self.backgroundImageView];
     
     [self setupRefresh];
     
@@ -125,7 +128,7 @@
     self.isZero = NO;
     self.isKeyboardShow = NO;
     //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-    self.view.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@""]];
+    
     _stringTransVC = [[StringTransViewController alloc]init];
     [_stringTransVC viewDidLoad];
     
@@ -159,14 +162,23 @@
     //键盘收起
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    
+
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(determinePlayARecord:) name:@"determinePlayARecord" object:nil];
     
     [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
+    
+    
     //    [self performSelector:@selector(sendAwebMessage) withObject:nil afterDelay:10];
 }
 
 
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden=YES;
+    self.backgroundImageView.frame = [UIScreen mainScreen].bounds;
+}
 #pragma mark - 融云->链接融云服务器 & 获取token
 
 -(void)connectRongCloudServerWithToken:(NSString *)token{
@@ -389,7 +401,7 @@
                 [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 
                 
-                //语音存在本地，并且加入展示数组⬆️
+                //语音存在本地，并且加入展示数组
                 
                 if (self.isKeyboardShow == YES) {
                     
@@ -728,20 +740,20 @@
 }
 //加载datasource
 -(void)reloadDataSourceWithNumber:(long)count{
-    _dataSource = [[NSMutableArray alloc]init];
-    long dataCount = _dataArr.count;
+    self.dataSource = [[NSMutableArray alloc]init];
+    long dataCount = self.dataArr.count;
     if (dataCount>=count) {
         long j=0;
         long m=count;
         for (long i=count; i >0; i--) {
             
-            [_dataSource insertObject:_dataArr[dataCount-m] atIndex:j];
+            [self.dataSource insertObject:self.dataArr[dataCount-m] atIndex:j];
             m--;
             j++;
         }
     }else{
         for (int i=0; i<_dataArr.count; i++) {
-            [_dataSource insertObject:_dataArr[i] atIndex:i];
+            [self.dataSource insertObject:self.dataArr[i] atIndex:i];
         }
     }
 }
@@ -767,19 +779,22 @@
     if([object[@"senderID"]isKindOfClass:[NSDictionary class]]){
         if ([object[@"senderID"][@"user_id"] isEqualToString:userIDinfo]) {
             model.isSender = 1;
+            model.senderImgPictureURL = self.user_id;
         }else{
             model.isSender = 0;
+            model.senderImgPictureURL = self.target_id;
         }
-
+        
     }else{
         
         if ([object[@"senderID"]isEqualToString:userIDinfo]) {
-            model.isSender = 0;
-        }else{
             model.isSender = 1;
+            model.senderImgPictureURL = self.user_id;
+        }else{
+            model.isSender = 0;
+            model.senderImgPictureURL = self.target_id;
         }
-
-    
+        
     }
     
     
@@ -793,7 +808,7 @@
     model.AVtoStringContent = object[@"AVtoStringContent"];
     model.audioSecond = object[@"audioSecond"];
     model.chatAudioContent = object[@"chatAudioContent"];
-    model.senderImgPictureURL = object[@"senderImgPictureURL"];
+//    model.senderImgPictureURL = object[@"senderImgPictureURL"];
     model.sendTime = object[@"sendTime"];
     
     
@@ -846,6 +861,11 @@
     
     
     if (button == self.reportAudioBtn) {
+        [self.view addSubview:self.bottomView];
+        [self.bottomView addSubview:self.subBottomView];
+        [self.cancelSayView removeFromSuperview];
+        [self.subBottomView addSubview:self.sayView];
+        
         self.isCancelSendRecord = NO;
         self.isZero = NO;
         iFlySpeechRecognizerString = @"";
@@ -866,8 +886,7 @@
         [self.cwViewController recordButtonClick];
         
         
-        [self.view addSubview:self.bottomView];
-        [self.bottomView addSubview:self.subBottomView];
+        
         
         if (self.isRecognizer == NO) {
             [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
@@ -876,6 +895,10 @@
     }
     
     if (button == self.reportEnglishBtn) {
+        
+        [self.view addSubview:self.bottomView];
+        [self.bottomView addSubview:self.subBottomView];
+
         self.isCancelSendRecord = NO;
         self.isZero = NO;
         iFlySpeechRecognizerString = @"";
@@ -894,9 +917,6 @@
         [self.cwViewController getSavePath];
         [self.cwViewController recordButtonClick];
         
-        
-        [self.view addSubview:self.bottomView];
-        [self.bottomView addSubview:self.subBottomView];
         
         if (self.isRecognizer == NO) {
             [self iFlySpeechRecognizerBegin:LANGUAGE_ENGLISH];
@@ -946,31 +966,31 @@
             
             //取消发送View热区
             
-            CGFloat leftBorder = (CGRectGetMinX(self.subBottomView.frame) - CGRectGetMinX(self.reportAudioBtn.frame));
-            CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportAudioBtn.frame));
-            CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportAudioBtn.frame) + CGRectGetMinY(self.inputBottomView.frame)));
-            CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportAudioBtn.frame) + CGRectGetMinY(self.inputBottomView.frame)));
+            CGFloat leftBorder = (CGRectGetMinX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)-self.subBottomView.frame.origin.x-100);
+            CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)+CGRectGetMaxX(self.subBottomView.frame)+100);
+            CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))-CGRectGetMinY(self.subBottomView.frame)-100);
+            CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))+150);
             
             
             if (x > leftBorder && x < rightBorder && y > topBorder && y < bottomBorder) {
-                
-                self.isCancelSendRecord = YES;
-               
-                NSLog(@"取消发送语音");
-                [self.cwViewController pauseRecordBtnClick];
                 [self.sayView removeFromSuperview];
                 [self.subBottomView addSubview:self.cancelSayView];
+                self.isCancelSendRecord = YES;
+                
+                NSLog(@"取消发送语音");
+//                [self.cwViewController pauseRecordBtnClick];
+                
                 if (self.isRecognizer == YES) {
                     [self iFlySpeechRecognizerStop];
                 }
                 
                 
             }else{
-                
-                [self.cwViewController goOnRecordBtnClick];
-                self.isCancelSendRecord = NO;
                 [self.cancelSayView removeFromSuperview];
                 [self.subBottomView addSubview:self.sayView];
+                [self.cwViewController goOnRecordBtnClick];
+                self.isCancelSendRecord = NO;
+               
                 
                 if (self.isRecognizer == NO) {
                     [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
@@ -997,10 +1017,10 @@
             
             //取消发送View热区
             
-            CGFloat leftBorder = (CGRectGetMinX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame));
-            CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame));
-            CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame)));
-            CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame)));
+            CGFloat leftBorder = (CGRectGetMinX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)-self.subBottomView.frame.origin.x);
+            CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)+CGRectGetMaxX(self.subBottomView.frame));
+            CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))-CGRectGetMinY(self.subBottomView.frame));
+            CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))+CGRectGetMaxY(self.subBottomView.frame));
             
             
             if (x > leftBorder && x < rightBorder && y > topBorder && y < bottomBorder) {
@@ -1047,7 +1067,7 @@
     NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
     NSLog(@"ButtonEnded!");
     
-    
+    [self removeRecordPageView];
     
     if (self.isCancelSendRecord == YES) {
         
@@ -1071,14 +1091,14 @@
             self.shortLabel.text = @"说话时间过短，小于1秒";
             self.shortLabel.font = FONT_10;
             self.shortLabel.textAlignment = NSTextAlignmentCenter;
-            self.shortLabel.backgroundColor = [UIColor purpleColor];
+            self.shortLabel.backgroundColor = [UIColor clearColor];
             [self.subBottomView addSubview:self.shortLabel];
             
             [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
             
         }else{
             
-            [self removeRecordPageView];
+            
             [self sendRecordAudioWithRecordURLString:self.cellMessageID];
             
         }
@@ -1236,27 +1256,6 @@
 
 #pragma mark - 私有方法
 
--(NSArray *)getData{
-    
-    NSArray *arr= @[
-                    @{@"senderID":@"0001",@"chatTextContent":@"可以吗？",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"这段文字要很长很长，因为我要测试他能不能多换几行",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"这段儿短点",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"嗯哼",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"发几个表情符号～～～～～～～～ － 。－",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"你好韦富钟",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"这段文字要很长很长，因为我要测试他能不能多换几行",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"这段儿短点",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"嗯哼",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"发几个表情符号～～～～～～～～ － 。－",@"chatContentType":@"text",@"chatPictureURLContent":@""},      @{@"senderID":@"0001",@"chatTextContent":@"你好韦富钟",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"这段文字要很长很长，因为我要测试他能不能多换几行",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"这段儿短点",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"嗯哼",@"chatContentType":@"text",@"chatPictureURLContent":@"",@"sendIdentifier":@"FREETRANS"},
-                    @{@"senderID":@"0002",@"chatTextContent":@"发几个表情符号～～～～～～～～ － 。－",@"chatContentType":@"audio",@"chatPictureURLContent":@"",@"messageID":@"123",@"AVtoStringContent":@"这段文字要很长很长，因为我要测试他能不能多测试他能不能多测试他能不能多测试他能不能多测试他能不能多换几行",@"audioSecond":@"3fs"}
-                    ];
-    return arr;
-}
-
 
 - (void)AddTapGestureRecognizer{
     
@@ -1293,7 +1292,7 @@
     // 设置文字(也可以不设置,默认的文字在MJRefreshConst中修改)
     self.bottomTableView.headerPullToRefreshText = @"下拉可以刷新了";
     self.bottomTableView.headerReleaseToRefreshText = @"松开马上刷新了";
-    self.bottomTableView.headerRefreshingText = @"MJ哥正在帮你刷新中,不客气";
+    self.bottomTableView.headerRefreshingText = @"数据刷新中";
     
 }
 
@@ -1376,7 +1375,7 @@
                 [self.navigationController popToRootViewControllerAnimated:YES];
                 [WebAgent interpreterRequireStateWithuserId:self.target_id success:^(id responseObject) {
                     
-
+                    
                     NSLog(@"译员成功返回首页");
                     
                     
@@ -1387,14 +1386,20 @@
             }
             else
             {
-                FeedBackViewController *fbvc = [[FeedBackViewController alloc]init];
+                
+                FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.target_id];
                 [self.navigationController pushViewController:fbvc animated:YES];
             }
-
+            
             
         } failure:^(NSError *error) {
+            NSLog(@"失败");
+            [self.navigationController popViewControllerAnimated:YES];
         }];
     } failure:^(NSError *error) {
+        NSLog(@"失败");
+        
+        [self.navigationController popViewControllerAnimated:YES];
         
     }];
 }
@@ -1485,7 +1490,7 @@
 
 -(BaseTableView *)bottomTableView{
     if (!_bottomTableView) {
-        _bottomTableView = [[BaseTableView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - CGRectGetHeight(self.inputBottomView.frame)) style:UITableViewStylePlain];
+        _bottomTableView = [[BaseTableView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height -64- CGRectGetHeight(self.inputBottomView.frame)) style:UITableViewStylePlain];
         _bottomTableView.backgroundColor = [UIColor clearColor];
         _bottomTableView.idelegate = self;
         _bottomTableView.delegate = self;
@@ -1495,9 +1500,9 @@
         _bottomTableView.allowsSelection = YES;
         _bottomTableView.showsVerticalScrollIndicator = YES;
         _bottomTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        [_bottomTableView addSubview:self.refreshController];
+//        [_bottomTableView addSubview:self.refreshController];
         
-        
+        _bottomTableView.backgroundColor=[UIColor clearColor];
         
     }
     return _bottomTableView;
@@ -1542,7 +1547,7 @@
     
     if (!_inputTextView) {
         _inputTextView = [[UITextView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth*0.085)];
-        _inputTextView.backgroundColor = [UIColor whiteColor];
+        _inputTextView.backgroundColor = [UIColor clearColor];
         _inputTextView.layer.cornerRadius = 4;
         _inputTextView.keyboardType = UIKeyboardTypeDefault;
         _inputTextView.returnKeyType = UIReturnKeySend;
@@ -1620,19 +1625,19 @@
 //}
 
 
--(UIRefreshControl *)refreshController{
-    
-    if (!_refreshController) {
-        
-        _refreshController = [[UIRefreshControl alloc]init];
-        [_refreshController addTarget:self
-                               action:@selector(refreshView:)
-                     forControlEvents:UIControlEventValueChanged];
-        [_refreshController setAttributedTitle:[[NSAttributedString alloc] initWithString:@"加载更多数据。。"]];
-    }
-    
-    return _refreshController;
-}
+//-(UIRefreshControl *)refreshController{
+//    
+//    if (!_refreshController) {
+//        
+//        _refreshController = [[UIRefreshControl alloc]init];
+//        [_refreshController addTarget:self
+//                               action:@selector(refreshView:)
+//                     forControlEvents:UIControlEventValueChanged];
+//        [_refreshController setAttributedTitle:[[NSAttributedString alloc] initWithString:@"加载更多数据。。"]];
+//    }
+//    
+//    return _refreshController;
+//}
 
 -(UIView *)bottomView{
     
@@ -1658,5 +1663,13 @@
     
 }
 
+-(UIImageView *)backgroundImageView
+{
+    if (!_backgroundImageView) {
+        _backgroundImageView = [[UIImageView alloc] init];
+        _backgroundImageView.image = [UIImage imageNamed:@"backgroundImage"];
+    }
+    return _backgroundImageView;
+}
 
 @end

@@ -10,6 +10,7 @@
 
 @interface FeedBackViewController : UIViewController
 
+- (instancetype)initWithtargetID:(NSString *)targetID;
 
 @end
 
