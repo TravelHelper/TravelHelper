@@ -70,7 +70,6 @@
         
         
         [self.headView addSubview:self.headImageView];
-        
         [self addSubview:self.headView];
         [self getAudioToTranslationText:model.AVtoStringContent];
         [self getSecondLabelText:model.audioSecond];
