@@ -7,15 +7,33 @@
 //
 
 #import "complaintViewController.h"
+#import "WebAgent.h"
+
 #define kScreenWith  [UIScreen mainScreen].bounds.size.width
 
 @interface complaintViewController ()
 @property (nonatomic, strong) UITextView *complaintText;
-
+@property (nonatomic, strong) NSString *targetId;
 
 @end
 
 @implementation complaintViewController
+
+
+
+
+
+- (instancetype)initWithTargetId:(NSString *)targetId
+{
+    self = [super init];
+    if (self) {
+        self.targetId=targetId;
+    }
+    return self;
+}
+
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -48,7 +66,7 @@
     self.view.backgroundColor = [UIColor lightGrayColor];
     self.title  = @"投诉";
     //添加保存按钮
-    UIBarButtonItem *rightBtn=[[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(selectrightAction)];
+    UIBarButtonItem *rightBtn=[[UIBarButtonItem alloc]initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(selectrightAction)];
     self.navigationItem.rightBarButtonItem = rightBtn;
     
     //自定义返回键
@@ -70,6 +88,77 @@
 
 -(void)selectrightAction
 {
+    [self resignFirstResponder];
+    
+    if([self.complaintText.text isEqualToString:@""]){
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"举报信息不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+
+    }else{
+    
+    UIAlertController *control = [UIAlertController alertControllerWithTitle:@"举报" message:@"是否提交举报信息？" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+//        NSLog(@"aaaa");
+        NSLog(@"%@",self.complaintText.text);
+        NSDate *answerTime=[NSDate date];
+        NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+        [dateformatter setDateFormat:@"YYYY-MM-dd HH:mm"];
+        NSString *locationString=[dateformatter stringFromDate:answerTime];
+        
+        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+        NSDictionary *userIDDictionary = [userdefault objectForKey:@"user_id"];
+        NSString *userID=userIDDictionary[@"user_id"];
+        
+//        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+        NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+        [WebAgent UpdateUsertipoffWithMseeageId:mseeage_id TranslatorId:self.targetId reporterId:userID report_text:self.complaintText.text report_time:locationString success:^(id responseObject) {
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            //        NSDictionary *info = dic[@"user_info"];
+            
+            NSString *need=dic[@"data"];
+            
+            NSLog(@"%@",need);
+            
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"举报成功" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+
+        } failure:^(NSError *error) {
+            
+        }];
+//        [WebAgent UpdateUsertipoffWithTranslatorId:self.targetId reporterId:userID report_text:self.complaintText.text report_time:locationString success:^(id responseObject) {
+//            NSData *data = [[NSData alloc] initWithData:responseObject];
+//            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//            
+//            //        NSDictionary *info = dic[@"user_info"];
+//            
+//            NSString *need=dic[@"data"];
+//            
+//            NSLog(@"%@",need);
+//            
+//            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"举报成功" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//            [alertView show];
+//
+//        } failure:^(NSError *error) {
+//            
+//        }];
+
+        
+    }];
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [control addAction:action1];
+    [control addAction:action2];
+    [self presentViewController:control animated:YES completion:nil];
+
+    
+    
+    
+    
+    }
     
 }
 

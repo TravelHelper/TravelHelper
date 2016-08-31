@@ -4,7 +4,7 @@
 //
 //  Created by tjufe on 16/7/21.
 //  Copyright © 2016年 tjufe. All rights reserved.
-//
+//  if([self.userIdentifier isEqualToString:@"TRANSTOR"])
 
 #import "QuickTransViewController.h"
 #import "BaseTableView.h"
@@ -88,6 +88,10 @@
     CGFloat    KeyboardWillShowHeight;
     NSTimeInterval *KeyboardWillShowInterval;
     NSString *userIDinfo;
+    
+    int userCount;
+    int translatorCount;
+    
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
@@ -115,8 +119,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-
     
     [self setTitle:@"即时翻译"];
     [self.view addSubview:self.backgroundImageView];
@@ -176,8 +178,12 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    userCount=0;
+    translatorCount=0;
     self.tabBarController.tabBar.hidden=YES;
     self.backgroundImageView.frame = [UIScreen mainScreen].bounds;
+    
 }
 #pragma mark - 融云->链接融云服务器 & 获取token
 
@@ -285,6 +291,39 @@
                                       pushData:nil
                                        success:^(long messageId) {
                                            NSLog(@"发送成功。当前消息ID：%ld", messageId);
+                                           
+                                           
+                                           if([self.userIdentifier isEqualToString:@"TRANSTOR"]){
+                                               
+                                               translatorCount++;
+                                               
+                                               NSString *strCount=[NSString stringWithFormat:@"%d",translatorCount];
+                                               
+                                               NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+                                               NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+                                               [WebAgent UpdateTranslatorMessageCount:mseeage_id andTranslator_price:strCount success:^(id responseObject) {
+                                                   
+                                               } failure:^(NSError *error) {
+                                                   
+                                               }];
+                                               
+                                               
+                                           }else{
+                                               
+                                               userCount++;
+                                               NSString *strCount=[NSString stringWithFormat:@"%d",userCount];
+                                               
+                                               NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+                                               NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+                                               [WebAgent UpdateUserMessageCount:mseeage_id andUser_price:strCount success:^(id responseObject) {
+                                                   
+                                               } failure:^(NSError *error) {
+                                                   
+                                               }];
+                                               
+                                           }
+
+                                           
                                        } error:^(RCErrorCode nErrorCode, long messageId) {
                                            NSLog(@"发送失败。消息ID：%ld， 错误码：%ld", messageId, (long)nErrorCode);
                                        }];
@@ -297,6 +336,21 @@
     
     
     if ([self.target_id isEqualToString:message.senderUserId]) {
+        
+        
+        
+        
+        if([self.userIdentifier isEqualToString:@"TRANSTOR"]){
+            
+            userCount++;
+        
+        }else{
+        
+            translatorCount++;
+        
+        }
+        
+        
         if ([message.content isMemberOfClass:[RCTextMessage class]]) {
             RCTextMessage *testMessage = (RCTextMessage *)message.content;
             
@@ -321,6 +375,9 @@
                 
                 [self.dataArr insertObject:dict atIndex:count];
                 ascCount = ascCount + 1;
+                
+                
+                
                 [self reloadDataSourceWithNumber:ascCount];
                 [self.bottomTableView reloadData];
                 
@@ -391,6 +448,9 @@
                 
                 [self.dataArr insertObject:dic atIndex:count];
                 ascCount = ascCount + 1;
+                
+                
+                
                 [self reloadDataSourceWithNumber:ascCount];
                 [self.bottomTableView reloadData];
                 
@@ -950,7 +1010,7 @@
     return _cancelSayView;
 }
 -(void)button:(UIButton *)button BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    
+    dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     if (button == self.reportAudioBtn) {
         //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
         UITouch *touch = [[event touchesForView:button] anyObject];
@@ -979,22 +1039,35 @@
                 
                 NSLog(@"取消发送语音");
 //                [self.cwViewController pauseRecordBtnClick];
+                dispatch_async(queue, ^{
+                    // 在另一个线程中启动下载功能，加GCD控制
+                    if (self.isRecognizer == YES) {
+                        [self iFlySpeechRecognizerStop];
+                    }
+                    
+                });
                 
-                if (self.isRecognizer == YES) {
-                    [self iFlySpeechRecognizerStop];
-                }
-                
+
                 
             }else{
                 [self.cancelSayView removeFromSuperview];
                 [self.subBottomView addSubview:self.sayView];
-                [self.cwViewController goOnRecordBtnClick];
-                self.isCancelSendRecord = NO;
-               
                 
-                if (self.isRecognizer == NO) {
-                    [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
-                }
+                
+                dispatch_async(queue, ^{
+                    // 在另一个线程中启动下载功能，加GCD控制
+                    [self.cwViewController goOnRecordBtnClick];
+                    self.isCancelSendRecord = NO;
+                    
+                    
+                    if (self.isRecognizer == NO) {
+                        [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
+                    }
+                    
+                });
+                
+
+               
                 
                 NSLog(@"继续录音");
                 
@@ -1366,8 +1439,10 @@
 }
 
 -(void)sendMessageAndPop{
-    
-    [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo success:^(id responseObject) {
+    NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+    NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+
+    [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo WithMessionID:mseeage_id success:^(id responseObject) {
         [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
             
             if([self.userIdentifier isEqualToString:@"TRANSTOR"])
@@ -1444,6 +1519,9 @@
 -(void)sendMessageBtnClick{
     
     [self sendTextMessageMethodWithString:self.inputTextView.text];
+    
+    
+    
     NSLog(@"发送消息");
 }
 

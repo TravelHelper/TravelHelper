@@ -288,46 +288,56 @@
 
 //封装－－－匹配译员
 -(void)matchTranslatorWithsenderID:(NSString *)senderID WithsendMessage:(NSString *)sendMessage WithlanguageCatgory:(NSString *)language WithpayNumber:(NSString *)payNumber{
+    NSDate *sendDate = [NSDate date];
+    NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"YYYY-MM-dd"];
+    NSString *morelocationString = [dateformatter stringFromDate:sendDate];
     
+    
+    
+    
+    
+    [WebAgent creatUserList:morelocationString andUser_id:user_id WithLanguage:language success:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",dic);
+        message_id = dic[@"data"];
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        
+        [userDefaults setObject:message_id forKey:@"messageId"];
+
     [WebAgent selectWaitingQueue:language success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSArray   *dictionary = dic[@"data"];
+        
         if (dictionary.count !=0){
             NSLog(@"开始聊天");
             NSDictionary *dict = [self getLanguageWithString:language];
-            [WebAgent sendRemoteNotificationsWithuseId:dictionary[0][@"user_id"] WithsendMessage:@"进入聊天" WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:user_id success:^(id responseObject) {
-                NSLog(@"反馈推送—进入聊天通知成功！");
-                NSDate *sendDate = [NSDate date];
-                NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
-                [dateformatter setDateFormat:@"YYYY-MM-dd"];
-                NSString *morelocationString = [dateformatter stringFromDate:sendDate];
-                [WebAgent creatUserList:morelocationString andUser_id:user_id success:^(id responseObject) {
-                    
-                    NSData *data = [[NSData alloc] initWithData:responseObject];
-                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                    NSLog(@"%@",dic);
-                    message_id = dic[@"data"];
-                    
-                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                  
-                    [userDefaults setObject:message_id forKey:@"messageId"];
-                    
-                    
+            
+            
+            
+            
+                [WebAgent UpdateUserListWithID:message_id andAnswerId:dictionary[0][@"user_id"] success:^(id responseObject) {
+                    NSLog(@"SUCCESS");
                     
                 } failure:^(NSError *error) {
                     
                 }];
                 
-                
-                
-
-                QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:user_id WithTargetID:dictionary[0][@"user_id"] WithUserIdentifier:@"USER" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
-                [self.navigationController pushViewController:quickVC animated:YES];
-            } failure:^(NSError *error) {
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"进入聊天页面失败" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
-                [alert show];
-            }];
+                [WebAgent sendRemoteNotificationsWithuseId:dictionary[0][@"user_id"] WithsendMessage:@"进入聊天" WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:user_id WithMessionID:message_id success:^(id responseObject) {
+                    NSData *data = [[NSData alloc] initWithData:responseObject];
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                    NSLog(@"反馈推送—进入聊天通知成功！");
+                    
+                    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:user_id WithTargetID:dictionary[0][@"user_id"] WithUserIdentifier:@"USER" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+                    [self.navigationController pushViewController:quickVC animated:YES];
+                } failure:^(NSError *error) {
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"进入聊天页面失败" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
+                    [alert show];
+                }];
         }else {
             [WebAgent matchTranslatorWithchooseLanguage:language user_id:senderID success:^(id responseObject) {
                 
@@ -346,31 +356,31 @@
                     [alertVC addAction:okAction];
                     [self presentViewController:alertVC animated:YES completion:nil];
                 }else{
-                    NSDate *sendDate = [NSDate date];
-                    NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
-                    [dateformatter setDateFormat:@"YYYY-MM-dd"];
-                    NSString *morelocationString = [dateformatter stringFromDate:sendDate];
-                    [WebAgent creatUserList:morelocationString andUser_id:user_id success:^(id responseObject) {
-                        
-                        NSData *data = [[NSData alloc] initWithData:responseObject];
-                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                        NSLog(@"%@",dic);
-                        
-                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                        [userDefaults setObject:message_id forKey:@"messageId"];
-
-                        
-                        
-                        
-                    } failure:^(NSError *error) {
-                        
-                    }];
+//                    NSDate *sendDate = [NSDate date];
+//                    NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
+//                    [dateformatter setDateFormat:@"YYYY-MM-dd"];
+//                    NSString *morelocationString = [dateformatter stringFromDate:sendDate];
+//                    [WebAgent creatUserList:morelocationString andUser_id:user_id success:^(id responseObject) {
+//                        
+//                        NSData *data = [[NSData alloc] initWithData:responseObject];
+//                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//                        NSLog(@"%@",dic);
+//                        message_id = dic[@"data"];
+//                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//                        [userDefaults setObject:message_id forKey:@"messageId"];
+//
+//                        
+//                        
+//                        
+//                    } failure:^(NSError *error) {
+//                        
+//                    }];
                     
                     
                     for (int i = 0 ; i< arr.count; i++) {
                         NSString *user_ID = arr[i];
                         NSString * strid = [user_ID stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
-                        [WebAgent sendRemoteNotificationsWithuseId:strid WithsendMessage:sendMessage WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:senderID success:^(id responseObject) {
+                        [WebAgent sendRemoteNotificationsWithuseId:strid WithsendMessage:sendMessage WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:senderID WithMessionID:message_id success:^(id responseObject) {
                             NSData *data = [[NSData alloc]initWithData:responseObject];
                             NSString *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                             NSLog(@"%@",str);
@@ -397,7 +407,9 @@
         
     }];
     
-    
+    } failure:^(NSError *error) {
+        
+    }];
     
 }
 
@@ -407,121 +419,121 @@
         NSLog(@"英文");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于英语的口语即时翻译请求" WithlanguageCatgory:@"YingYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于英语的口语即时翻译请求" WithlanguageCatgory:@"英语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 1) {
         NSLog(@"法语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于法语的口语即时翻译请求" WithlanguageCatgory:@"FaYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于法语的口语即时翻译请求" WithlanguageCatgory:@"法语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 2) {
         NSLog(@"德语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于德语的口语即时翻译请求" WithlanguageCatgory:@"DeYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于德语的口语即时翻译请求" WithlanguageCatgory:@"德语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 3) {
         NSLog(@"日语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于日语的口语即时翻译请求" WithlanguageCatgory:@"RiYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于日语的口语即时翻译请求" WithlanguageCatgory:@"日语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 4) {
         NSLog(@"意大利语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于意大利语的口语即时翻译请求" WithlanguageCatgory:@"YiDaLiYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于意大利语的口语即时翻译请求" WithlanguageCatgory:@"意大利语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 5) {
         NSLog(@"西班牙");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于西班牙的口语即时翻译请求" WithlanguageCatgory:@"XiBanYa" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于西班牙的口语即时翻译请求" WithlanguageCatgory:@"西班牙语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 6) {
         NSLog(@"韩文");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于韩文的口语即时翻译请求" WithlanguageCatgory:@"HanYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于韩文的口语即时翻译请求" WithlanguageCatgory:@"韩语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 7) {
         NSLog(@"葡萄牙语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于葡萄牙语的口语即时翻译请求" WithlanguageCatgory:@"PuTaoYaYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于葡萄牙语的口语即时翻译请求" WithlanguageCatgory:@"葡萄牙语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 8) {
         NSLog(@"俄语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于俄语的口语即时翻译请求" WithlanguageCatgory:@"EYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于俄语的口语即时翻译请求" WithlanguageCatgory:@"俄语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 9) {
         NSLog(@"丹麦语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于丹麦语的口语即时翻译请求" WithlanguageCatgory:@"DanMaiYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于丹麦语的口语即时翻译请求" WithlanguageCatgory:@"丹麦语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 10) {
         NSLog(@"美国语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于美国语的口语即时翻译请求" WithlanguageCatgory:@"MeiYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于美国语的口语即时翻译请求" WithlanguageCatgory:@"美语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 11) {
         NSLog(@"泰语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于泰语的口语即时翻译请求" WithlanguageCatgory:@"TaiYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于泰语的口语即时翻译请求" WithlanguageCatgory:@"泰语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 12) {
         NSLog(@"阿拉伯语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于阿拉伯语的口语即时翻译请求" WithlanguageCatgory:@"ALaBoYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于阿拉伯语的口语即时翻译请求" WithlanguageCatgory:@"阿拉伯语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 13) {
         NSLog(@"希腊语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于希腊语的口语即时翻译请求" WithlanguageCatgory:@"XiLaYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于希腊语的口语即时翻译请求" WithlanguageCatgory:@"希腊语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 14) {
         NSLog(@"荷兰语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于荷兰语的口语即时翻译请求" WithlanguageCatgory:@"HeLanYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于荷兰语的口语即时翻译请求" WithlanguageCatgory:@"荷兰语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 15) {
         NSLog(@"波兰语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于波兰语的口语即时翻译请求" WithlanguageCatgory:@"BoLanYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于波兰语的口语即时翻译请求" WithlanguageCatgory:@"波兰语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 16) {
         NSLog(@"芬兰语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于芬兰语的口语即时翻译请求" WithlanguageCatgory:@"FenLanYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于芬兰语的口语即时翻译请求" WithlanguageCatgory:@"芬兰语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 17) {
         NSLog(@"捷克语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于捷克语的口语即时翻译请求" WithlanguageCatgory:@"JieKeYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于捷克语的口语即时翻译请求" WithlanguageCatgory:@"捷克语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 18) {
         NSLog(@"瑞典语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于瑞典语的口语即时翻译请求" WithlanguageCatgory:@"RuiDianYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于瑞典语的口语即时翻译请求" WithlanguageCatgory:@"瑞典语" WithpayNumber:@"20"];
     }
     if (indexPath.row == 19) {
         NSLog(@"匈牙利语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
-        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于匈牙利语的口语即时翻译请求" WithlanguageCatgory:@"XiongYaLiYu" WithpayNumber:@"20"];
+        [self matchTranslatorWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于匈牙利语的口语即时翻译请求" WithlanguageCatgory:@"匈牙利语" WithpayNumber:@"20"];
     }
 
     

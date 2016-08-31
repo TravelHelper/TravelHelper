@@ -568,7 +568,12 @@
         self.isCancelSendRecord = NO;
         self.isZero = NO;
         iFlySpeechRecognizerString = @"";
-        
+    
+        if(self.bottomView){
+            [self.cancelSayView removeFromSuperview];
+            [self.subBottomView addSubview:self.sayView];
+        }
+    
         //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
         UITouch *touch = [[event touchesForView:button] anyObject];
         
@@ -603,22 +608,22 @@
 -(UIImageView *)sayView{
     if (!_sayView) {
         _sayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL, krequL)];
-        UIImage *img = [UIImage imageNamed:@"用户翻译-口语即时-语音输入"];
+        UIImage *img = [UIImage imageNamed:@"0_01"];
         [_sayView setImage:img];
     }
     return _sayView;
 }
 -(UIImageView *)cancelSayView{
     if (!_cancelSayView) {
-        _cancelSayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL, krequL)];
-        UIImage *img = [UIImage imageNamed:@"用户翻译-口语即时-取消发送"];
+        _cancelSayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL+10, krequL)];
+        UIImage *img = [UIImage imageNamed:@"0_02"];
         [_cancelSayView setImage:img];
     }
     return _cancelSayView;
 }
 -(void)button:(UIButton *)button BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     
-    
+        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
         UITouch *touch = [[event touchesForView:button] anyObject];
         NSString *xString = [NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x];
@@ -642,8 +647,9 @@
 //            CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)+CGRectGetMaxX(self.subBottomView.frame)+100);
 //            CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))-CGRectGetMinY(self.subBottomView.frame)-100);
 //            CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))+150);
-//            
-            
+//
+            //1.获得全局的并发队列
+           
             if (x > leftBorder && x < rightBorder && y > topBorder && y < bottomBorder) {
                 [self.sayView removeFromSuperview];
                 [self.subBottomView addSubview:self.cancelSayView];
@@ -652,23 +658,36 @@
                 NSLog(@"取消发送语音");
                 //                [self.cwViewController pauseRecordBtnClick];
                 
-                if (self.isRecognizer == YES) {
-                    [self iFlySpeechRecognizerStop];
-                }
+                //2.添加任务到队列中，就可以执行任务
+                //异步函数：具备开启新线程的能力
+                dispatch_async(queue, ^{
+                    // 在另一个线程中启动下载功能，加GCD控制
+                    if (self.isRecognizer == YES) {
+                        [self iFlySpeechRecognizerStop];
+                    }
+                    
+                });
+
                 
+               
                 
             }else{
                 [self.cancelSayView removeFromSuperview];
                 [self.subBottomView addSubview:self.sayView];
-                [self.cwViewController goOnRecordBtnClick];
-                self.isCancelSendRecord = NO;
+                dispatch_async(queue, ^{
+                    [self.cwViewController goOnRecordBtnClick];
+                    self.isCancelSendRecord = NO;
+                    
+                    
+                    if (self.isRecognizer == NO) {
+                        [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
+                    }
+                    
+                    NSLog(@"继续录音");
+                    
+                });
+
                 
-                
-                if (self.isRecognizer == NO) {
-                    [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
-                }
-                
-                NSLog(@"继续录音");
                 
             }
         }

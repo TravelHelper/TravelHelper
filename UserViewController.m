@@ -51,6 +51,37 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
 }
+
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    if(user_id[@"user_id"] != NULL)
+    {
+        
+        [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSString *msg=dic[@"msg"];
+            if([msg isEqualToString:@"SUCCESS"]){
+            
+                NSString *user_identity=dic[@"user_identity"];
+                NSLog(@"%@",user_identity);
+            
+            }
+            
+            
+        } failure:^(NSError *error) {
+            
+        }];
+        
+    }
+
+
+}
+
+
 -(void)reloadcell:(NSNotification *)noti
 {
     NSDictionary *isLoginDic = [noti userInfo];

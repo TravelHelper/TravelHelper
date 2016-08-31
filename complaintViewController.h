@@ -10,4 +10,9 @@
 
 @interface complaintViewController : UIViewController
 
+
+- (instancetype)initWithTargetId:(NSString *)targetId;
+
+
+
 @end

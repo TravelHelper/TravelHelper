@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabBarController.tabBar.hidden=YES;
 }
 
 - (instancetype)initWithTitle:(NSString *)title

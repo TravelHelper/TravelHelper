@@ -181,6 +181,14 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSDictionary *aps = [userInfo valueForKey:@"aps"];
     NSString *content = [aps valueForKey:@"alert"]; //推送显示的内容
     
+    NSString *messionID = [userInfo valueForKey:@"ID"];
+    
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    [userDefaults setObject:messionID forKey:@"messageId"];
+
+    
     if ([content isEqualToString:@"匹配成功"]) {
         
         NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
