@@ -16,6 +16,8 @@
 #import "YBZInterpretViewController.h"
 #import "complaintViewController.h"
 #import "NSString+SZYKit.h"
+#import "UIAlertController+SZYKit.h"
+#import "MBProgressHUD+XMG.h"
 
 #define kScreenWindth    [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight    [UIScreen mainScreen].bounds.size.height
@@ -43,7 +45,7 @@
 @implementation FeedBackViewController{
 
     float starValue;
-    
+    MBProgressHUD *HUD;
 }
 
 
@@ -66,7 +68,7 @@
     [self.view addSubview:self.sendBtn];
     [self.view addSubview:self.tipoffBtn];
     [self.view addSubview:self.alphaBtn];
-    [self.view addSubview:self.orderBtn];
+//    [self.view addSubview:self.orderBtn];
     //加载数据
     [self loadDateFromWeb];
     [self initLeftButton];
@@ -103,9 +105,18 @@
 - (void)starsScore:(GTStarsScore *)starsScore valueChange:(CGFloat)value{
     
     
-    starValue=value;
+    starValue=value/2;
     
-    NSLog(@"%lf",value);
+    if(starValue>=0.48){
+    
+        starValue=0.5;
+    }
+    if(starValue<=0.02){
+    
+        starValue=0.0;
+    }
+    
+    NSLog(@"%lf",starValue);
     
 }
 
@@ -210,19 +221,42 @@
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
     
     
-    NSString *stringFloat = [NSString stringWithFormat:@"%f",starValue];
+    NSString *stringFloat = [NSString stringWithFormat:@"%.1f",starValue*10];
     
-    [WebAgent UpdateUserMessageWithID:mseeage_id andStar:stringFloat andMoney:@"0" success:^(id responseObject) {
+    
+    
+    NSString *messageContent=[NSString stringWithFormat:@"当前评价分数为:%@颗星星，是否确认？",stringFloat];
+    [UIAlertController showAlertAtViewController:self title:@"提示" message:messageContent cancelTitle:@"确定" confirmTitle:@"取消" cancelHandler:^(UIAlertAction *action) {
         
-    } failure:^(NSError *error) {
+        [WebAgent UpdateUserMessageWithID:mseeage_id andStar:stringFloat andMoney:@"0" success:^(id responseObject) {
+            
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSLog(@"%@",dic);
+            
+            [MBProgressHUD showSuccess:@"评价成功！正在为您返回主页"];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+            
+        } failure:^(NSError *error) {
+            [MBProgressHUD showError:@"评价失败,请检查网络"];
+        }];
+        
+        
+        
+        
+        
+    } confirmHandler:^(UIAlertAction *action) {
         
     }];
     
-}
+    
+    
+    
+  }
 
 -(void)tipoffClick{
 
-    complaintViewController *comVC = [[complaintViewController alloc]init];
+    complaintViewController *comVC = [[complaintViewController alloc]initWithTargetId:self.target_id];
     [self.navigationController pushViewController:comVC animated:YES];
     
 }

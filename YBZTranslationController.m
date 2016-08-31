@@ -21,8 +21,13 @@
 #import "YBZMyRewardViewController.h"
 #import "YBZRewardHallViewController.h"
 #import "FeedBackViewController.h"
+#import "UserViewController.h"
+#import "UIImage+needkit.h"
 
 #define kImageCount 5
+#define kScreenWindth    [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight    [UIScreen mainScreen].bounds.size.height
+
 //#define MJRandomData [NSString stringWithFormat:@"随机数据---%d", arc4random_uniform(1000000)]
 
 
@@ -108,6 +113,10 @@
     //self.view.backgroundColor = [UIColor grayColor];
     
     //[self.view addSubview:self.popularCell];
+    
+    
+    [self initLeftButton];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeState) name:@"changeLoginState" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Login) name:@"Login" object:nil];
     [self getLoginState];
@@ -149,13 +158,12 @@
     //
     //        [self.scrollView addSubview:imageView];
     //    }
-    [self addImageView];
-    [self startTimer];
+    
     
     
     //集成刷新控件
     [self setupRefresh];
-    
+    [self startTimer];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recieveARemoteRequire:) name:@"recieveARemoteRequire" object:nil];
     
 }
@@ -164,7 +172,41 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-     self.tabBarController.tabBar.hidden=NO;
+     self.tabBarController.tabBar.hidden=YES;
+    
+    
+    //获取轮播图
+    
+    [WebAgent getFrontImagesuccess:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSArray *arr=dic[@"data"];
+        NSLog(@"%@",arr);
+        [self addImageViewWithdata:arr];
+        
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
+
+
+}
+
+-(void)initLeftButton
+{
+    
+    //左上角的按钮
+    UIButton *boultButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0.07*kScreenWindth, 0.07*kScreenWindth)];
+    [boultButton setImage:[UIImage imageNamed:@"userHead"] forState:UIControlStateNormal];
+    [boultButton addTarget:self action:@selector(turnToUserClick) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:boultButton];
+}
+
+-(void)turnToUserClick{
+
+    UserViewController   *userVC  = [[UserViewController alloc]init];
+    [self.navigationController pushViewController:userVC animated:YES];
 
 }
 
@@ -355,8 +397,9 @@
             
 
             self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
-            
-            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID[@"user_id"] success:^(id responseObject) {
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID[@"user_id"] WithMessionID:mseeage_id success:^(id responseObject) {
                 NSLog(@"反馈推送—匹配成功通知成功！");
             } failure:^(NSError *error) {
                 NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);
@@ -1099,7 +1142,9 @@
     
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 0.406)];
-        _scrollView.backgroundColor = [UIColor redColor];
+        UIImage *img=[UIImage imageNamed:@"img_01"];
+        UIImage *resultImg=[img imageByScalingToSize:_scrollView.bounds.size];
+        _scrollView.backgroundColor = [UIColor colorWithPatternImage:resultImg];
         
         //取消弹簧效果
         _scrollView.bounces = NO;
@@ -1210,17 +1255,36 @@
 }
 
 
-- (void)addImageView{
+- (void)addImageViewWithdata:(NSArray *)imgArr{
     
     for (int i = 0; i < kImageCount; i++) {
-        NSString *imageName = [NSString stringWithFormat:@"img_%02d", i + 1];
-        UIImage *image = [UIImage imageNamed:imageName];
+        if(i<imgArr.count){
+        NSString *urlStr=[NSString stringWithFormat:@"%@%@",serviseId,imgArr[i]];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        UIImage *img = [UIImage imageWithData:data];
+            
+            
+             //这里之后要去修改轮播图的图源！
+            //已将img_01设为未加载时待机图！
+//            NSString *imageName = [NSString stringWithFormat:@"img_%02d", i + 1];
+//            UIImage *image = [UIImage imageNamed:imageName];
+//            
+//            UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.scrollView.bounds];
+//            imageView.image = image;
+//            imageView.backgroundColor = [UIColor whiteColor];
+//            
+//            [self.scrollView addSubview:imageView];
+            
+            
+        }
         
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.scrollView.bounds];
-        imageView.image = image;
-        imageView.backgroundColor = [UIColor whiteColor];
         
-        [self.scrollView addSubview:imageView];
+       
+        
+        
+        
+        
     }
     
     //计算imageView
@@ -1262,7 +1326,7 @@
 
 - (UITableView *)popularCellView{
     if (!_popularCellView) {
-        _popularCellView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, UIScreenWidth, UIScreenHeight - 108)];
+        _popularCellView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, UIScreenWidth, UIScreenHeight - 108 +64)];
         
         
         _popularCellView.backgroundColor = [UIColor clearColor];

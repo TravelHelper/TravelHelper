@@ -129,6 +129,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                     WithlanguageCatgory:(NSString *)language_catgory
                           WithpayNumber:(NSString *)pay_number
                            WithSenderID:(NSString *)sender_id
+                          WithMessionID:(NSString *)ID
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
 //语言
@@ -232,6 +233,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 +(void)creatUserList:(NSString *)now_time
           andUser_id:(NSString *)user_id
+        WithLanguage:(NSString *)spoken_language
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure;
 +(void)UpdateUserListWithID:(NSString *)ID
@@ -243,9 +245,44 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                       andMoney:(NSString *)money
                        success:(void (^)(id responseObject))success
                        failure:(void (^)(NSError *error))failure;
+
+
++(void)UpdateUsertipoffWithMseeageId:(NSString *)messageId
+                        TranslatorId:(NSString *)translatorId
+                          reporterId:(NSString *)reporter_id
+                         report_text:(NSString *)report_text
+                         report_time:(NSString *)report_time
+                             success:(void(^)(id responseObject))success
+                             failure:(void (^)(NSError *error))failure;
+
+
+
+
++(void)UpdateTranslatorMessageCount:(NSString *)ID
+                andTranslator_price:(NSString *)translator_price
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure;
+
++(void)UpdateUserMessageCount:(NSString *)ID
+                andUser_price:(NSString *)user_price
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure;
++(void)getuserTranslateState:(NSString *)userID
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure;
+
++(void)getFrontImagesuccess:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure;
+
+//+(void)UpdateUserMessageCount:(NSString *)ID
+//                andUser_price:(NSString *)user_price
+//                      success:(void (^)(id responseObject))success
+//                      failure:(void (^)(NSError *error))failure;
+
 //上传回答
 +(void)upLoadMyChoose:(NSString *)answer_id
           AndRewardId:(NSString *)reward_id
               success:(void (^)(id responseObject))success
               failure:(void (^)(NSError *error))failure;
+
 @end

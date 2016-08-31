@@ -157,12 +157,13 @@
 //添加翻译订单信息
 +(void)creatUserList:(NSString *)now_time
           andUser_id:(NSString *)user_id
+        WithLanguage:(NSString *)spoken_language
                   success:(void (^)(id responseObject))success
                   failure:(void (^)(NSError *error))failure
 {
     
     
-    NSDictionary *dict = @{@"now_time":now_time,@"user_id":user_id};
+    NSDictionary *dict = @{@"now_time":now_time,@"user_id":user_id,@"spoken_language":spoken_language};
     
     [[APIClient sharedClient] POST:@"Appraisal/creatUserList/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
@@ -171,6 +172,7 @@
     }];
     
 }
+
 
 
 +(void)UpdateUserListWithID:(NSString *)ID
@@ -305,6 +307,22 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
     
 }
+
++(void)getuserTranslateState:(NSString *)userID
+              success:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure
+{
+    
+    NSDictionary *dict = @{@"user_id":userID};
+    
+    [[APIClient sharedClient] POST:@"User/getUserTransState/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+
 
 //登录
 +(void)userLogin:(NSString *)userPhone
@@ -500,6 +518,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                        WithlanguageCatgory:(NSString *)language_catgory
                           WithpayNumber:(NSString *)pay_number
                            WithSenderID:(NSString *)sender_id
+                          WithMessionID:(NSString *)ID
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure
 {
@@ -507,7 +526,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                            @"sender_id":sender_id,
                            @"send_message":send_message,
                            @"language_catgory":language_catgory,
-                           @"pay_number":pay_number};
+                           @"pay_number":pay_number,
+                           @"ID":ID};
     [[APIClient sharedClient] POST:@"Test/sendRemoteNotifications" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -760,9 +780,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                 failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"user_id":user_id};
-    [[APIClient sharedClient] POST:@"Reward/rest_money/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject){
+
+    [[APIClient sharedClient] POST:@"Reward/rest_money/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);
     }];
 }
@@ -774,9 +797,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 {
 
     NSDictionary *dict = @{@"user_id":user_id};
-    [[APIClient sharedClient] POST:@"Reward/returntext/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject){
+
+    [[APIClient sharedClient] POST:@"Reward/returntext/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);
     }];
 }
@@ -793,11 +819,93 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                            @"user_id":user_id,
                            @"answer_time":answer_time,
                            @"reward_text":reward_text};
-    [[APIClient sharedClient] POST:@"Reward/upLoad/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+  
+    [[APIClient sharedClient] POST:@"Reward/upLoad/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);
     }];
+
+}
+
+
++(void)UpdateUsertipoffWithMseeageId:(NSString *)messageId
+                        TranslatorId:(NSString *)translatorId
+               reporterId:(NSString *)reporter_id
+           report_text:(NSString *)report_text
+           report_time:(NSString *)report_time
+               success:(void(^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"id":messageId,
+                           @"translator_id":translatorId,
+                           @"reporter_id":reporter_id,
+                           @"report_text":report_text,
+                           @"report_time":report_time};
+
+    [[APIClient sharedClient] POST:@"Appraisal/UpdateUsertipoff/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
+
++(void)UpdateTranslatorMessageCount:(NSString *)ID
+                       andTranslator_price:(NSString *)translator_price
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"ID":ID,@"translator_price":translator_price};
+    
+
+    [[APIClient sharedClient] POST:@"Appraisal/UpdateTranslatorMessageCount/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
+
++(void)UpdateUserMessageCount:(NSString *)ID
+                andUser_price:(NSString *)user_price
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"ID":ID,@"user_price":user_price};
+    
+
+    [[APIClient sharedClient] POST:@"Appraisal/UpdateUserMessageCount/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
+
++(void)getFrontImagesuccess:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure{
+
+    [[APIClient sharedClient] POST:@"frontimage/getImage/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+
 }
 
 @end

@@ -236,6 +236,11 @@
 		A0552ED61D3A2C8C00E04D7A /* SelectedCellFrameInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552EC91D3A2C8C00E04D7A /* SelectedCellFrameInfo.m */; };
 		A0552ED71D3A2C8C00E04D7A /* SelectedMessageInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */; };
 		A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */; };
+		FEE492141D73D9DA00CCED58 /* UIAlertController+SZYKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */; };
+		FEE4921B1D73DE0A00CCED58 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE492171D73DE0A00CCED58 /* MBProgressHUD+XMG.m */; };
+		FEE4921C1D73DE0A00CCED58 /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FEE492181D73DE0A00CCED58 /* MBProgressHUD.bundle */; };
+		FEE4921D1D73DE0A00CCED58 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE4921A1D73DE0A00CCED58 /* MBProgressHUD.m */; };
+		FEE492201D7564FC00CCED58 /* UIImage+needkit.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE4921F1D7564FC00CCED58 /* UIImage+needkit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -669,6 +674,15 @@
 		A0552ECA1D3A2C8C00E04D7A /* SelectedMessageInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedMessageInfoCell.h; sourceTree = "<group>"; };
 		A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedMessageInfoCell.m; sourceTree = "<group>"; };
 		A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectedMessageInfoCell.xib; sourceTree = "<group>"; };
+		FEE492121D73D9DA00CCED58 /* UIAlertController+SZYKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+SZYKit.h"; sourceTree = "<group>"; };
+		FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+SZYKit.m"; sourceTree = "<group>"; };
+		FEE492161D73DE0A00CCED58 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
+		FEE492171D73DE0A00CCED58 /* MBProgressHUD+XMG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+XMG.m"; sourceTree = "<group>"; };
+		FEE492181D73DE0A00CCED58 /* MBProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MBProgressHUD.bundle; sourceTree = "<group>"; };
+		FEE492191D73DE0A00CCED58 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		FEE4921A1D73DE0A00CCED58 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		FEE4921E1D7564FC00CCED58 /* UIImage+needkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+needkit.h"; sourceTree = "<group>"; };
+		FEE4921F1D7564FC00CCED58 /* UIImage+needkit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+needkit.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1108,6 +1122,7 @@
 		A012EDB31D509A1C00144BAD /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				FEE492151D73DE0A00CCED58 /* MBProgressHUD */,
 				1E7056081D53250A00A000F5 /* AdSupport.framework */,
 				1E7056061D5324F400A000F5 /* Security.framework */,
 				1E7056041D5324C600A000F5 /* CoreFoundation.framework */,
@@ -1251,6 +1266,10 @@
 		A03ED0891D2DE2F600BD9C0A /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				FEE4921E1D7564FC00CCED58 /* UIImage+needkit.h */,
+				FEE4921F1D7564FC00CCED58 /* UIImage+needkit.m */,
+				FEE492121D73D9DA00CCED58 /* UIAlertController+SZYKit.h */,
+				FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */,
 				1ED863EF1D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.h */,
 				1ED863F01D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m */,
 				1ED863EC1D3887E200529094 /* UITextField+Validator.h */,
@@ -1635,6 +1654,18 @@
 			name = Location;
 			sourceTree = "<group>";
 		};
+		FEE492151D73DE0A00CCED58 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				FEE492161D73DE0A00CCED58 /* MBProgressHUD+XMG.h */,
+				FEE492171D73DE0A00CCED58 /* MBProgressHUD+XMG.m */,
+				FEE492181D73DE0A00CCED58 /* MBProgressHUD.bundle */,
+				FEE492191D73DE0A00CCED58 /* MBProgressHUD.h */,
+				FEE4921A1D73DE0A00CCED58 /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1761,6 +1792,7 @@
 				7D04F3601D4303A9008BD5EB /* EvaluatePeopleCell.xib in Resources */,
 				A0532C791D38C32200FC1AB1 /* UserSetTableViewCell.xib in Resources */,
 				1ED8636D1D3347F500529094 /* SYTableHeaderView.xib in Resources */,
+				FEE4921C1D73DE0A00CCED58 /* MBProgressHUD.bundle in Resources */,
 				A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */,
 				A0532CC51D38D03E00FC1AB1 /* star_yellow.png in Resources */,
 				A012EDAE1D5099E000144BAD /* RCConfig.plist in Resources */,
@@ -1838,6 +1870,7 @@
 				A03ED0F61D2E3F1700BD9C0A /* YBZProductDetailInfoViewController.m in Sources */,
 				7D3E99AC1D6D42D700F13F42 /* YBZSendRewardViewController.m in Sources */,
 				1B0513921D3F5DAC00F05C9D /* AFNetworkActivityIndicatorManager.m in Sources */,
+				FEE492141D73D9DA00CCED58 /* UIAlertController+SZYKit.m in Sources */,
 				7D3E996C1D6D420900F13F42 /* Btn_TableView.m in Sources */,
 				1ED863D31D3390F000529094 /* MJRefreshConst.m in Sources */,
 				A03ED0A71D2DE4BA00BD9C0A /* YBZRootViewController.m in Sources */,
@@ -1926,6 +1959,7 @@
 				A012EE061D509CAB00144BAD /* NSString+HBWmd5.m in Sources */,
 				1CD149101D718AC00054A90C /* NewSearchViewController.m in Sources */,
 				1B0513951D3F5DAC00F05C9D /* UIImageView+AFNetworking.m in Sources */,
+				FEE492201D7564FC00CCED58 /* UIImage+needkit.m in Sources */,
 				1ED863D81D3390F000529094 /* UIView+MJExtension.m in Sources */,
 				7D3E99771D6D421500F13F42 /* YBZTranslatorAnswerViewController.m in Sources */,
 				A03ED0BF1D2DF1A100BD9C0A /* YBZFreeTranslationViewController.m in Sources */,
@@ -1955,6 +1989,7 @@
 				A03ED0E51D2E2B2300BD9C0A /* YBZTranslaterSelectLanguageViewController.m in Sources */,
 				7D8427391D634638000BFEAD /* CollectionModel.m in Sources */,
 				7D8427381D634638000BFEAD /* DetailsView.m in Sources */,
+				FEE4921B1D73DE0A00CCED58 /* MBProgressHUD+XMG.m in Sources */,
 				A03ED0E21D2E2AA400BD9C0A /* YBZFindKeyViewController.m in Sources */,
 				1B0513971D3F5DAC00F05C9D /* UIRefreshControl+AFNetworking.m in Sources */,
 				7D3E99851D6D42B500F13F42 /* BottomView.m in Sources */,
@@ -1965,6 +2000,7 @@
 				A0552ED71D3A2C8C00E04D7A /* SelectedMessageInfoCell.m in Sources */,
 				1ED8636C1D3347F500529094 /* SYTableHeaderView.m in Sources */,
 				7D8427511D634A1E000BFEAD /* IncomeViewController.m in Sources */,
+				FEE4921D1D73DE0A00CCED58 /* MBProgressHUD.m in Sources */,
 				7DF218BF1D5F82ED002F9D6D /* YBZWaitingViewController.m in Sources */,
 				7D3E996D1D6D420900F13F42 /* ExpandTableVC.m in Sources */,
 				7D3E99AD1D6D42D700F13F42 /* SelectPhoto.m in Sources */,
