@@ -20,7 +20,9 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.tableView.layer.borderWidth = 0.4;
+        self.tableView.layer.borderColor = [UIColor grayColor].CGColor;
     }
     return self;
 }
@@ -29,41 +31,28 @@
 {
     [super viewDidLoad];
     self.m_ContentArr = [NSArray array];
-    
-    
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.scrollEnabled =NO;
-     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
+//    self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#pragma mark - warning Potentially incomplete method implementation.
-    // Return the number of sections.
+
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#pragma mark - warning Incomplete method implementation.
-    // Return the number of rows in the section.
     return self.m_ContentArr.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    return 0.0653*SCREEN_HEIGHT;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -73,12 +62,10 @@
     if (nil == cell) {
         cell = [[ExpandCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
-    //[cell setCellContentData:[self.m_ContentArr objectAtIndex:indexPath.row]];
     cell.textLabel.text = [self.m_ContentArr objectAtIndex:indexPath.row];
-    cell.textLabel.font = [UIFont systemFontOfSize: 14];
+    cell.textLabel.font = FONT_14;
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.backgroundColor = [UIColor clearColor];
+    cell.textLabel.backgroundColor = [UIColor whiteColor];
     
     return cell;
 }

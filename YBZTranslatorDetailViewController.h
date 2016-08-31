@@ -2,7 +2,7 @@
 //  YBZTranslatorDetailViewController.h
 //  YBZTravel
 //
-//  Created by sks on 16/8/14.
+//  Created by 孙锐 on 16/8/27.
 //  Copyright © 2016年 tjufe. All rights reserved.
 //
 
@@ -10,9 +10,6 @@
 
 @interface YBZTranslatorDetailViewController : YBZBaseViewController
 
+@property (nonatomic, strong) NSString *reward_id;
 
-@property(nonatomic,strong) NSDictionary *data;
-@property(nonatomic,strong) UITextView *answerTextView; //显示回答内容
-@property(nonatomic,assign) NSString    *countPeople;
-@property(nonatomic,strong) UILabel *showAnswerLabel;
 @end

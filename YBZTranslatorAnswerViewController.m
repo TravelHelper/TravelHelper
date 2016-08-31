@@ -31,7 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.view.backgroundColor = myRewardBackgroundColor;
     [self.view addSubview:self.pictureView];
     [self.view addSubview:self.textView];
     [self.view addSubview:self.imageView];
@@ -77,7 +77,7 @@
         lineView.backgroundColor = [UIColor colorWithRed:225.0f/255.0 green:225.0f/255.0 blue:225.0f/255.0 alpha:1];
         [_pictureView addSubview:lineView];
         
-        UIImageView *choosePicture = [[UIImageView alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 50, 2 , 50, 48)];
+        UIImageView *choosePicture = [[UIImageView alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 50, 10 , 40, 33)];
         UIImage *image = [UIImage imageNamed:@"回答"];
         choosePicture.image = image;
         //image点击事件
@@ -134,6 +134,7 @@
 }
 -(void)back
 {
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark - 提交按钮、点击事件以及提交接口
@@ -200,9 +201,6 @@
         else
         {
             [self.textView resignFirstResponder];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"answer" object:nil
-                                                              userInfo:@{@"answer":self.textView.text}];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }

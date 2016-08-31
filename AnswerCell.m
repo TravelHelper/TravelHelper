@@ -7,6 +7,7 @@
 //
 
 #import "AnswerCell.h"
+#import "WebAgent.h"
 
 @interface AnswerCell()
 
@@ -22,6 +23,7 @@
 
     BOOL needChoose;
     NSDictionary *data;
+    NSString *acceptID;
 }
 
 - (void)awakeFromNib {
@@ -36,11 +38,13 @@
         data = dict;
         if ([dict[@"proceed_state"]isEqualToString:@"0"]) {
             needChoose = YES;
+            acceptID = @"";
         }else{
             needChoose = NO;
+            acceptID = data[@"accept_id"];
         }
         [self setAllControlsFrame];
-
+        
         [self addAllControls];
         
         
@@ -72,12 +76,29 @@
     [self addSubview:self.answerContentLabel];
     if (needChoose == YES) {
         [self addSubview:self.acceptBtn];
+    }else{
+        if ([data[@"answer_id"] isEqualToString:acceptID]) {
+            UIImageView *chooseImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"right"]];
+            chooseImageView.frame = self.acceptBtn.frame;
+            [self addSubview:chooseImageView];
+        }
     }
 }
 
--(void)acceptAnswer{
+-(void)acceptAnswerBtnClick{
 
-    NSLog(@"采纳回答");
+    
+    [WebAgent upLoadMyChoose:data[@"answer_id"] AndRewardId:data[@"reward_id"] success:^(id responseObject) {
+        [self.acceptBtn removeFromSuperview];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NeedToReloadData" object:nil];
+        UIImageView *chooseImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"right"]];
+        chooseImageView.frame = self.acceptBtn.frame;
+        [self addSubview:chooseImageView];
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
 }
 
 
@@ -139,7 +160,7 @@
     if (!_acceptBtn) {
         _acceptBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_acceptBtn setImage:[UIImage imageNamed:@"accept"] forState:UIControlStateNormal];
-        [_acceptBtn addTarget:self action:@selector(acceptAnswer) forControlEvents:UIControlEventTouchUpInside];
+        [_acceptBtn addTarget:self action:@selector(acceptAnswerBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _acceptBtn;
 }

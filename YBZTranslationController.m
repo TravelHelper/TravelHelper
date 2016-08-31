@@ -240,7 +240,6 @@
             NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
             NSDictionary *dict = @{@"user_loginState":str[@"state"]};
             [userinfo setObject:dict forKey:@"user_loginState"];
             if ([dict[@"user_loginState"]isEqualToString:@"1"]) {

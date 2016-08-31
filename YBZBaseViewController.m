@@ -23,7 +23,10 @@
 {
     self = [super init];
     if (self) {
-      
+        UIView *topView = [[UIView alloc]init];
+        topView.frame = CGRectMake(0, -20, SCREEN_WIDTH, 20);
+        topView.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:220.0f/255.0f blue:0 alpha:1.0f];
+        [self.view addSubview:topView];
         self.title  = title;
         
     }
