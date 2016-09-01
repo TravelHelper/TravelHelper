@@ -79,7 +79,7 @@
                 NSLog(@"%@",user_identity);
                 if([user_identity isEqualToString:@"TRANSTOR"]){
                 
-                    [self.view addSubview:self.translatorTableView];
+                    [self.view addSubview:self.mainTableView];
                     
                     
                 }else{
@@ -262,7 +262,7 @@
                 _avatarImag.image = [UIImage imageNamed:@"translator"];
                 [cell addSubview:_avatarImag];
             }
-            cell.nameLable.frame=CGRectMake(90, 7, 150, 40);
+            cell.nameLable.frame=CGRectMake(70, 7, 150, 40);
 //            [cell addSubview:self.starView];
             [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
                     NSLog(@"%@",user_id[@"user_id"]);
@@ -295,7 +295,13 @@
         {
             if ( section == 1 && row == 0)
             {
-                cell.imageView.image = [UIImage imageNamed:@"order"];
+                
+                _avatarImag = [[UIImageView alloc]init];
+                _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06);
+                _avatarImag.layer.masksToBounds=YES;
+                _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
+                _avatarImag.image= [UIImage imageNamed:@"order"];
+                [cell addSubview:_avatarImag];
                 cell.nameLable.text = @"我的订单";
                  return cell;
             }
@@ -303,7 +309,13 @@
             {
                 if ( section == 1 && row == 1)
                 {
-                    cell.imageView.image = [UIImage imageNamed:@"collect"];
+                    _avatarImag = [[UIImageView alloc]init];
+                    _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06);
+                    _avatarImag.layer.masksToBounds=YES;
+                    _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
+                    _avatarImag.image= [UIImage imageNamed:@"collect"];
+                    [cell addSubview:_avatarImag];
+                   
                     cell.nameLable.text = @"我的收藏";
                      return cell;
                 }
@@ -311,7 +323,16 @@
                 {
                     if ( section == 1 && row == 2)
                     {
-                        cell.imageView.image = [UIImage imageNamed:@"money"];
+                        
+                        _avatarImag = [[UIImageView alloc]init];
+                        _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06);
+                        _avatarImag.layer.masksToBounds=YES;
+                        _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
+                        _avatarImag.image= [UIImage imageNamed:@"money"];
+                        [cell addSubview:_avatarImag];
+
+                        
+                       
                         cell.nameLable.text = @"我的悬赏";
                          return cell;
                     }
@@ -319,7 +340,16 @@
                     {
                         if ( section == 2 && row == 0)
                         {
-                            cell.imageView.image = [UIImage imageNamed:@"push"];
+                            
+                            _avatarImag = [[UIImageView alloc]init];
+                            _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06);
+                            _avatarImag.layer.masksToBounds=YES;
+                            _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
+                            _avatarImag.image= [UIImage imageNamed:@"push"];
+                            [cell addSubview:_avatarImag];
+
+                            
+                           
                             cell.nameLable.text = @"电子钱包";
                              return cell;
                         }
@@ -327,7 +357,16 @@
                         {
                             if ( section == 2 && row == 1)
                             {
-                                cell.imageView.image = [UIImage imageNamed:@"set"];
+                                
+                                _avatarImag = [[UIImageView alloc]init];
+                                _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06);
+                                _avatarImag.layer.masksToBounds=YES;
+                                _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
+                                _avatarImag.image= [UIImage imageNamed:@"set"];
+                                [cell addSubview:_avatarImag];
+
+                                
+                               
                                 cell.nameLable.text = @"设置";
                                  return cell;
                             }

@@ -19,7 +19,7 @@
         _imgView = [[UIImageView alloc]initWithFrame:CGRectMake(KGap*2,KGap*0.7,KGap*4,KGap*4)];
         [self addSubview:self.imgView];
  
-        _nameLable = [[UILabel alloc]initWithFrame:CGRectMake(KGap*9,KGap*0.7,KGap*8,KGap*4)];
+        _nameLable = [[UILabel alloc]initWithFrame:CGRectMake(KGap*7,KGap*0.7,KGap*8,KGap*4)];
         [self addSubview:self.nameLable];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
