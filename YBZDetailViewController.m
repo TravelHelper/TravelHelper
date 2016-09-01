@@ -119,6 +119,9 @@
     [self.contentView addSubview:self.rewardImageView];
     [self.contentView addSubview:self.timeLabel];
     [self.contentView addSubview:self.answerNumLabel];
+    if ([_rewardDetailModel.rewardState isEqualToString:@"1"] ) {
+        self.bottomAlertLabel.text = @"  您已采纳满意答案，感谢您的使用！";
+    }
 }
 
 

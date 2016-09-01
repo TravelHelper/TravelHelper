@@ -47,7 +47,6 @@
         
         [self addAllControls];
         
-        
     }
     return self;
 }
@@ -78,7 +77,7 @@
         [self addSubview:self.acceptBtn];
     }else{
         if ([data[@"answer_id"] isEqualToString:acceptID]) {
-            UIImageView *chooseImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"right"]];
+            UIImageView *chooseImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"已采纳"]];
             chooseImageView.frame = self.acceptBtn.frame;
             [self addSubview:chooseImageView];
         }
@@ -91,7 +90,7 @@
     [WebAgent upLoadMyChoose:data[@"answer_id"] AndRewardId:data[@"reward_id"] success:^(id responseObject) {
         [self.acceptBtn removeFromSuperview];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NeedToReloadData" object:nil];
-        UIImageView *chooseImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"right"]];
+        UIImageView *chooseImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"已采纳"]];
         chooseImageView.frame = self.acceptBtn.frame;
         [self addSubview:chooseImageView];
         
