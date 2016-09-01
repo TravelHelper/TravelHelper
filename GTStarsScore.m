@@ -132,6 +132,13 @@ const NSInteger kStarCount = 5;
     }
 }
 
+
+-(void)setToValue:(CGFloat)x{
+
+    self.yellowView.gt_width=x;
+
+}
+
 - (void)setScoreScale:(CGFloat)scoreScale {
     _scoreScale = scoreScale;
     CGFloat starW = scoreScale * self.gt_width / self.scale;

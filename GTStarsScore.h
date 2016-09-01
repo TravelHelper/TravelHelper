@@ -13,8 +13,9 @@
 /** 分数比例 10分 / 100 = 0.1 */
 @property (nonatomic, assign) CGFloat scoreScale;
 @property (nonatomic, assign) CGFloat value;
-
+-(void)setToValue:(CGFloat)x;
 @end
+
 
 @protocol GTStarsScoreDelegate<NSObject>
 

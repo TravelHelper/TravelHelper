@@ -221,7 +221,6 @@
 		A0532CC51D38D03E00FC1AB1 /* star_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = A0532CC01D38D03E00FC1AB1 /* star_yellow.png */; };
 		A0532CC61D38D03E00FC1AB1 /* UIView+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CC21D38D03E00FC1AB1 /* UIView+Extention.m */; };
 		A0532CCC1D38D4FE00FC1AB1 /* UserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CC81D38D4FE00FC1AB1 /* UserTableViewCell.m */; };
-		A0532CCD1D38D4FE00FC1AB1 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0532CC91D38D4FE00FC1AB1 /* UserTableViewCell.xib */; };
 		A0532CCE1D38D4FE00FC1AB1 /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CCB1D38D4FE00FC1AB1 /* UserViewController.m */; };
 		A0532CD11D38D7BA00FC1AB1 /* PersonalSignatureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CD01D38D7BA00FC1AB1 /* PersonalSignatureVC.m */; };
 		A0532CD41D38D7D300FC1AB1 /* PickAvatarImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CD31D38D7D300FC1AB1 /* PickAvatarImage.m */; };
@@ -647,7 +646,6 @@
 		A0532CC21D38D03E00FC1AB1 /* UIView+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extention.m"; sourceTree = "<group>"; };
 		A0532CC71D38D4FE00FC1AB1 /* UserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTableViewCell.h; sourceTree = "<group>"; };
 		A0532CC81D38D4FE00FC1AB1 /* UserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTableViewCell.m; sourceTree = "<group>"; };
-		A0532CC91D38D4FE00FC1AB1 /* UserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
 		A0532CCA1D38D4FE00FC1AB1 /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
 		A0532CCB1D38D4FE00FC1AB1 /* UserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewController.m; sourceTree = "<group>"; };
 		A0532CCF1D38D7BA00FC1AB1 /* PersonalSignatureVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalSignatureVC.h; sourceTree = "<group>"; };
@@ -1317,7 +1315,6 @@
 			children = (
 				A0532CC71D38D4FE00FC1AB1 /* UserTableViewCell.h */,
 				A0532CC81D38D4FE00FC1AB1 /* UserTableViewCell.m */,
-				A0532CC91D38D4FE00FC1AB1 /* UserTableViewCell.xib */,
 				A0532CCA1D38D4FE00FC1AB1 /* UserViewController.h */,
 				A0532CCB1D38D4FE00FC1AB1 /* UserViewController.m */,
 				A03ED0CC1D2E083300BD9C0A /* DetailViewController */,
@@ -1781,7 +1778,6 @@
 			files = (
 				1ED863091D2F39DD00529094 /* Info.plist in Resources */,
 				1E70560B1D5326A400A000F5 /* PushConfig.plist in Resources */,
-				A0532CCD1D38D4FE00FC1AB1 /* UserTableViewCell.xib in Resources */,
 				7D84273C1D634638000BFEAD /* CollectionMessageInfoCell.xib in Resources */,
 				A0552ED11D3A2C8C00E04D7A /* LocMessageInfoCell.xib in Resources */,
 				7D3E99981D6D42C300F13F42 /* LanguageCell.xib in Resources */,

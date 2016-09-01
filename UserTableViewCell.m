@@ -7,6 +7,7 @@
 //
 
 #import "UserTableViewCell.h"
+
 #define KGap 10
 
 @implementation UserTableViewCell
@@ -16,14 +17,21 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         _imgView = [[UIImageView alloc]initWithFrame:CGRectMake(KGap*2,KGap*0.7,KGap*4,KGap*4)];
-        [self.contentView addSubview:self.imgView];
+        [self addSubview:self.imgView];
  
-        _nameLable = [[UILabel alloc]initWithFrame:CGRectMake(KGap*9,KGap*0.7,KGap*20,KGap*4)];
-        [self.contentView addSubview:self.nameLable];
+        _nameLable = [[UILabel alloc]initWithFrame:CGRectMake(KGap*9,KGap*0.7,KGap*8,KGap*4)];
+        [self addSubview:self.nameLable];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
     }
     
     
     return self;
 }
+
+
+
+
+
+
 @end

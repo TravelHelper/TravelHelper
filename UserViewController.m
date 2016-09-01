@@ -19,10 +19,12 @@
 #import "YBZLoginViewController.h"
 #import "YBZBaseNaviController.h"
 #import "YBZMyFavoriteViewController.h"
+#import "MBProgressHUD+XMG.h"
+#import "GTStarsScore.h"
 
 
 
-@interface UserViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface UserViewController ()<UITableViewDelegate,UITableViewDataSource,GTStarsScoreDelegate>
 {
     Boolean is;
     Boolean it;
@@ -35,7 +37,9 @@
 @property (nonatomic , strong) UILabel *alertLabel;
 @property (nonatomic , strong) UIImageView *avatarImag;
 @property(nonatomic,strong)UIImage *photoImg;
-
+@property (nonatomic,strong)UIImageView *adImageView;
+@property (nonatomic, strong)UITableView *translatorTableView;
+@property (nonatomic, strong) GTStarsScore *starView;
 
 @end
 
@@ -46,7 +50,6 @@
     is=false;
     it=false;
     self.title = @"我的";
-    [self.view addSubview:self.mainTableView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
@@ -55,11 +58,17 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden=YES;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//    [self.view addSubview:self.mainTableView];
+
+    
+    
+    
     if(user_id[@"user_id"] != NULL)
     {
-        
+//        [self.view addSubview:self.mainTableView];
         [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -68,14 +77,31 @@
             
                 NSString *user_identity=dic[@"user_identity"];
                 NSLog(@"%@",user_identity);
+                if([user_identity isEqualToString:@"TRANSTOR"]){
+                
+                    [self.view addSubview:self.translatorTableView];
+                    
+                    
+                }else{
+                
+                    [self.view addSubview:self.mainTableView];
+                
+                }
+                
             
             }
             
             
         } failure:^(NSError *error) {
             
+            [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+            
         }];
         
+    }else{
+    
+        [self.view addSubview:self.mainTableView];
+    
     }
 
 
@@ -123,36 +149,66 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
-    if(section == 0)
-    {
-        return 1;
-    }
-    else
-    {
-        if(section == 1)
+    if(tableView==self.mainTableView){
+        if(section == 0)
         {
-            return 3;
+            return 1;
         }
         else
         {
-            if(section == 2)
+            if(section == 1)
             {
-                return 2;
+                return 3;
             }
             else
             {
-                return 1;
+                if(section == 2)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 1;
+                }
             }
         }
+    }else{
+    
+        if(section == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            if(section == 1)
+            {
+                return 1;
+            }
+            else
+            {
+                if(section == 2)
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 2;
+                }
+            }
+        }
+
+    
     }
 
 }
 
 //分组数量
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    
-    return 4;
+    if(tableView==self.mainTableView){
+        return 4;
+    }else{
+        return 4;
+    }
 }
 
 
@@ -166,6 +222,11 @@
 //样式
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    
+    if(tableView==self.mainTableView){
+    
+    
     UserTableViewCell *cell = [[UserTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELLID"];
     NSInteger section = indexPath.section;
     NSUInteger row = indexPath.row;
@@ -179,8 +240,9 @@
          NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
          NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
          NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
-
-        _avatarImag = [[UIImageView alloc]initWithFrame:CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06)];
+//        [cell showStar];
+        _avatarImag = [[UIImageView alloc]init];
+        _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06);
         _avatarImag.layer.masksToBounds=YES;
         _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
          NSLog(@"----------------------------------------------");
@@ -194,18 +256,25 @@
             _photoImg=[UIImage imageWithData:data];
             if(_photoImg){
                 _avatarImag.image = _photoImg;
-                [cell.contentView addSubview:_avatarImag];
+                [cell addSubview:_avatarImag];
                 it=false;
             }else{
                 _avatarImag.image = [UIImage imageNamed:@"translator"];
-                [cell.contentView addSubview:_avatarImag];
+                [cell addSubview:_avatarImag];
             }
+            cell.nameLable.frame=CGRectMake(90, 7, 150, 40);
+//            [cell addSubview:self.starView];
             [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
                     NSLog(@"%@",user_id[@"user_id"]);
                     NSData *data = [[NSData alloc]initWithData:responseObject];
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                     NSDictionary *userInfo = dic[@"user_info"];
                     cell.nameLable.text = userInfo[@"user_nickname"];
+                
+                
+                
+                
+                
                     }failure:^(NSError *error) {
                             NSLog(@"%@",error);
                      }];}
@@ -264,9 +333,10 @@
                             }
                             else
                             {
-                                UIImageView *imageV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, self.view.bounds.size.height * 0.12)];
-                                imageV.image = [UIImage imageNamed:@"游广告"];
-                                [cell.contentView addSubview:imageV];
+                                self.adImageView= [[UIImageView alloc]init];
+                                self.adImageView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, self.view.bounds.size.height * 0.12);
+                                self.adImageView.image = [UIImage imageNamed:@"游广告"];
+                                [cell.contentView addSubview:self.adImageView];
                                 return cell;
                             }
                         }
@@ -276,6 +346,131 @@
             }
         }
         
+        
+        
+    }else{
+        
+        
+        //翻译者的tableview造型！0.0
+        
+        UserTableViewCell *cell = [[UserTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELLID"];
+        NSInteger section = indexPath.section;
+        NSUInteger row = indexPath.row;
+        if (section != 3) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;//最右边>号
+        }else{
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        if ( section == 0 && row == 0) {
+            //----------------------------
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+            NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
+            
+            _avatarImag = [[UIImageView alloc]init];
+            _avatarImag.layer.masksToBounds=YES;
+            _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
+            NSLog(@"----------------------------------------------");
+            NSLog(@"%hhu %@",is,user_loginState[@"user_loginState"]);
+            if (is || [user_loginState[@"user_loginState"] isEqual:@"1"])    {
+                
+                NSString *name = user_id[@"user_id"];
+                NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
+                NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+                _photoImg=[UIImage imageWithData:data];
+                if(_photoImg){
+                    _avatarImag.image = _photoImg;
+                    [cell addSubview:_avatarImag];
+                    it=false;
+                }else{
+                    _avatarImag.image = [UIImage imageNamed:@"translator"];
+                    [cell addSubview:_avatarImag];
+                }
+                [cell addSubview:self.starView];
+                [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
+                    NSLog(@"%@",user_id[@"user_id"]);
+                    NSData *data = [[NSData alloc]initWithData:responseObject];
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                    NSDictionary *userInfo = dic[@"user_info"];
+                    cell.nameLable.text = userInfo[@"user_nickname"];
+                }failure:^(NSError *error) {
+                    NSLog(@"%@",error);
+                }];}
+            else{
+                
+                _avatarImag.image = [UIImage imageNamed:@"translator"];
+                [cell.contentView addSubview:_avatarImag];
+                cell.nameLable.text = @"登录／注册";
+            }
+            if (it) {
+                _avatarImag.image = [UIImage imageNamed:@"translator"];
+                [cell.contentView addSubview:_avatarImag];
+                cell.nameLable.text = @"登录／注册";
+            }
+            return cell;
+        }
+        else
+        {
+            if ( section == 1 && row == 0)
+            {
+                cell.imageView.image = [UIImage imageNamed:@"order"];
+                cell.nameLable.text = @"我的订单";
+                return cell;
+            }
+            else
+            {
+                if ( section == 1 && row == 1)
+                {
+                    cell.imageView.image = [UIImage imageNamed:@"collect"];
+                    cell.nameLable.text = @"我的收藏";
+                    return cell;
+                }
+                else
+                {
+                    if ( section == 1 && row == 2)
+                    {
+                        cell.imageView.image = [UIImage imageNamed:@"money"];
+                        cell.nameLable.text = @"我的悬赏";
+                        return cell;
+                    }
+                    else
+                    {
+                        if ( section == 2 && row == 0)
+                        {
+                            cell.imageView.image = [UIImage imageNamed:@"push"];
+                            cell.nameLable.text = @"电子钱包";
+                            return cell;
+                        }
+                        else
+                        {
+                            if ( section == 2 && row == 1)
+                            {
+                                cell.imageView.image = [UIImage imageNamed:@"set"];
+                                cell.nameLable.text = @"设置";
+                                return cell;
+                            }
+                            else
+                            {
+                                self.adImageView= [[UIImageView alloc]init];
+                                
+                                self.adImageView.image = [UIImage imageNamed:@"游广告"];
+                                [cell.contentView addSubview:self.adImageView];
+                                return cell;
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+
+        
+        
+        
+    
+    }
+    
    
     
 }
@@ -283,15 +478,29 @@
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (indexPath.section == 3) {
-        return self.view.bounds.size.height * 0.12;
+    
+    if(tableView==self.mainTableView){
+        if (indexPath.section == 3) {
+            return self.view.bounds.size.height * 0.12;
+        }else{
+            return self.view.bounds.size.height * 0.08;
+        }
     }else{
+    
         return self.view.bounds.size.height * 0.08;
+        
     }
 }
 //点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:( NSIndexPath *)indexPath
 {
+    
+    
+    
+    if(tableView==self.mainTableView){
+    
+    
+    
     CGSize size = [@"敬请期待!" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:22]}];
     self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width - 30) / 2, ([UIScreen mainScreen].bounds.size.height - size.height - 60) / 2, size.width + 30, size.height + 40)];
     self.alertLabel.backgroundColor = [UIColor blackColor];
@@ -333,6 +542,26 @@
     
     if ( section == 3 && row == 0) {
 
+    }
+        
+        
+        
+        
+    }else{
+    
+    //翻译者tableview的点击事件~~
+        NSInteger section = indexPath.section;
+        NSUInteger row = indexPath.row;
+        
+        if ( section == 2 && row == 1) {
+            
+            
+        }
+        
+        
+        
+    
+    
     }
 }
 
@@ -476,12 +705,34 @@
     }
 }
 
+
+
+- (void)starsScore:(GTStarsScore *)starsScore valueChange:(CGFloat)value{
+    
+    
+    //    starValue=value/2;
+    //
+    //    if(starValue>=0.48){
+    //
+    //        starValue=0.5;
+    //    }
+    //    if(starValue<=0.02){
+    //
+    //        starValue=0.0;
+    //    }
+    
+    NSLog(@"%lf",value);
+    
+}
+
+
+
 #pragma mark - getters
 
 -(UITableView *)mainTableView{
     
     if (!_mainTableView) {
-        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
+        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
 
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
@@ -489,5 +740,31 @@
     }
     return _mainTableView;
 }
+
+-(UITableView *)translatorTableView{
+    
+    if (!_translatorTableView) {
+        _translatorTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
+        
+        _translatorTableView.delegate = self;
+        _translatorTableView.dataSource = self;
+        
+    }
+    return _translatorTableView;
+}
+
+-(GTStarsScore *)starView{
+    
+    if(!_starView){
+        
+        _starView=[[GTStarsScore alloc]initWithFrame:CGRectMake(180, (self.view.bounds.size.height * 0.08-0.027*self.view.bounds.size.height)/2+5, 0, 0.027*self.view.bounds.size.height)];
+        _starView.delegate=self;
+        
+    }
+    return _starView;
+    
+}
+
+
 
 @end
