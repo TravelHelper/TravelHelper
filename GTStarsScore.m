@@ -13,10 +13,14 @@ const NSInteger kStarCount = 5;
 /** 黄色星星视图 */
 @property (nonatomic, strong) UIView *yellowView;
 
-@property (nonatomic, assign) CGRect tempFrame;
+
 
 /** 比例 */
 @property (nonatomic, assign) CGFloat scale;
+
+@property (nonatomic,strong)UIPanGestureRecognizer *pan;
+
+@property(nonatomic,strong)UITapGestureRecognizer *tap;
 
 @end
 
@@ -84,11 +88,11 @@ const NSInteger kStarCount = 5;
     self.gt_origin = self.tempFrame.origin;
     
     // 添加手势
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
-    [self addGestureRecognizer:pan];
+    self.pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    [self addGestureRecognizer:self.pan];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    [self addGestureRecognizer:tap];
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    [self addGestureRecognizer:self.tap];
     
 }
 
@@ -135,7 +139,7 @@ const NSInteger kStarCount = 5;
 
 -(void)setToValue:(CGFloat)x{
 
-    self.yellowView.gt_width=x;
+    self.yellowView.gt_width=x*self.bounds.size.width;
 
 }
 
@@ -143,6 +147,12 @@ const NSInteger kStarCount = 5;
     _scoreScale = scoreScale;
     CGFloat starW = scoreScale * self.gt_width / self.scale;
     [self changeYellowView:CGPointMake(starW, 0)];
+}
+
+-(void)toRemoveGesture{
+    [self removeGestureRecognizer:self.pan];
+    [self removeGestureRecognizer:self.tap];
+
 }
 
 @end
