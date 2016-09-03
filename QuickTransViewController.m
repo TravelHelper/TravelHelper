@@ -1508,7 +1508,7 @@
 -(void)selectLangueageClick{
     
     [self cancelResignFirstResponder];
-    NSLog(@"跳转到新的切换语言页面");
+   // NSLog(@"跳转到新的切换语言页面");
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setObject:nil forKey:@"ChatHisTory"];
