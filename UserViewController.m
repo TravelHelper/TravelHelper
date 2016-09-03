@@ -56,51 +56,51 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     //    [self.view addSubview:self.mainTableView];
     
 //    
-//     [self.view addSubview:self.translatorTableView];
-//     [self.view addSubview:self.mainTableView];
-    
-    if(user_id[@"user_id"] != NULL)
-    {
-        //        [self.view addSubview:self.mainTableView];
-        [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
-            NSData *data = [[NSData alloc]initWithData:responseObject];
-            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSString *msg=dic[@"msg"];
-            if([msg isEqualToString:@"SUCCESS"]){
-                
-                NSString *user_identity=dic[@"user_identity"];
-                NSLog(@"%@",user_identity);
-                if([user_identity isEqualToString:@"TRANSTOR"]){
-                    [self.translatorTableView removeFromSuperview];
-                    
-                    [self.view addSubview:self.translatorTableView];
-                    
-                }else{
-                    
-                    [self.view addSubview:self.mainTableView];
-                    
-                }
-                
-                
-            }
-            
-            
-        } failure:^(NSError *error) {
-            
-            [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
-            
-        }];
-        
-    }else{
-        
-        [self.view addSubview:self.mainTableView];
-        
-    }
+     [self.view addSubview:self.translatorTableView];
+     [self.view addSubview:self.mainTableView];
+//    
+//    if(user_id[@"user_id"] != NULL)
+//    {
+//        //        [self.view addSubview:self.mainTableView];
+//        [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+//            NSData *data = [[NSData alloc]initWithData:responseObject];
+//            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//            NSString *msg=dic[@"msg"];
+//            if([msg isEqualToString:@"SUCCESS"]){
+//                
+//                NSString *user_identity=dic[@"user_identity"];
+//                NSLog(@"%@",user_identity);
+//                if([user_identity isEqualToString:@"TRANSTOR"]){
+//                    [self.translatorTableView removeFromSuperview];
+//                    
+//                    [self.view addSubview:self.translatorTableView];
+//                    
+//                }else{
+//                    
+//                    [self.view addSubview:self.mainTableView];
+//                    
+//                }
+//                
+//                
+//            }
+//            
+//            
+//        } failure:^(NSError *error) {
+//            
+//            [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+//            
+//        }];
+//        
+//    }else{
+//        
+//        [self.view addSubview:self.mainTableView];
+//        
+//    }
 
 }
 
@@ -336,11 +336,14 @@
           
             _avatarImag.image = [UIImage imageNamed:@"translator"];
             [cell.contentView addSubview:_avatarImag];
+            
+            cell.nameLable.frame=CGRectMake(70, 7, 120, 40);
             cell.nameLable.text = @"登录／注册";
         }
         if (it) {
             _avatarImag.image = [UIImage imageNamed:@"translator"];
             [cell.contentView addSubview:_avatarImag];
+            cell.nameLable.frame=CGRectMake(70, 7, 120, 40);
             cell.nameLable.text = @"登录／注册";
         }
          return cell;
@@ -937,7 +940,7 @@
 -(UITableView *)mainTableView{
     
     if (!_mainTableView) {
-        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
+        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
 
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
