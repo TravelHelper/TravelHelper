@@ -1054,15 +1054,9 @@
     NSLog(@"弹出按钮");
     [UIView animateWithDuration:0.3 animations:^{
         self.backgroundImageView.transform =CGAffineTransformMakeTranslation(0, -200);
-        self.selectLangueageBtn.transform =CGAffineTransformMakeTranslation(0, -200);
-        self.inputTextView.transform =CGAffineTransformMakeTranslation(0, -200);
-        self.bottomTableView.transform =CGAffineTransformMakeTranslation(0, -200);
-        self.bottomView.transform = CGAffineTransformMakeTranslation(0, -200);
-        self.changeSendContentBtn.transform =CGAffineTransformMakeTranslation(0, -200);
-        self.reportAudioBtn.transform = CGAffineTransformMakeTranslation(0, -200);
-        self.sendMessageBtn.transform = CGAffineTransformMakeTranslation(0, -200);
         self.btnview.transform =CGAffineTransformMakeTranslation(0, -200);
-
+        self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -200);
+        
         
     }completion:^(BOOL finished) {
         
@@ -1233,17 +1227,9 @@
 //上移view上的按钮点击事件
 -(void)btn01click
 {
-   
-    
     [UIView animateWithDuration:0.3 animations:^{
         self.backgroundImageView.transform =CGAffineTransformIdentity;
-        self.selectLangueageBtn.transform =CGAffineTransformIdentity;
-        self.inputTextView.transform =CGAffineTransformIdentity;
-        self.bottomTableView.transform =CGAffineTransformIdentity;
-        self.bottomView.transform = CGAffineTransformIdentity;
-        self.changeSendContentBtn.transform =CGAffineTransformIdentity;
-        self.reportAudioBtn.transform = CGAffineTransformIdentity;
-        self.sendMessageBtn.transform = CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
         self.btnview.transform =CGAffineTransformIdentity;
     }completion:^(BOOL finished) {
         
