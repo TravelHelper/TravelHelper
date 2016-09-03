@@ -185,6 +185,11 @@
         [self addImageViewWithdata:arr];
         
         
+        
+        
+        
+        
+        
     } failure:^(NSError *error) {
         
     }];

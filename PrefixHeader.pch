@@ -131,8 +131,9 @@
 
 
 
-#define API_HOST @"http://172.23.58.2/TravelHelper/index.php/Home/"
-#define positionImg    @"http://172.23.58.2/TravelHelper/upload.php"
+
+#define API_HOST @"http://192.168.1.101/TravelHelper/index.php/Home/"
+#define positionImg    @"http://192.168.1.101/TravelHelper/upload.php"
 
 
 
@@ -142,7 +143,7 @@
 
 
 
-#define serviseId @"172.23.58.2"
+#define serviseId @"192.168.1.101"
 
 
 #endif /* PrefixHeader_pch */
