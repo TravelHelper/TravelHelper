@@ -21,7 +21,7 @@
 #import "YBZMyFavoriteViewController.h"
 #import "MBProgressHUD+XMG.h"
 #import "GTStarsScore.h"
-
+#import "YBZMyOrderViewController.h"
 
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource,GTStarsScoreDelegate>
@@ -693,6 +693,14 @@
         [self intoUserDetailInfoClick];
         
     }
+ 
+    if ( section == 1 && row == 0)
+    {
+        NSLog(@"点击进入我的订单");
+        YBZMyOrderViewController *myorderVC = [[YBZMyOrderViewController alloc] init];
+        [self.navigationController pushViewController:myorderVC animated:YES];
+        
+    }
     if ( section == 1 && row==1) {
         
         YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
@@ -742,6 +750,7 @@
             [self intoUserDetailInfoClick];
             
         }
+        
         if ( section == 2 && row==1) {
             
             YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
