@@ -114,9 +114,9 @@
     
     self.isequal = YES;
     
-    UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(donghuahuishou)];
-    TapGestureTecognizer.cancelsTouchesInView=NO;
-    [self.view addGestureRecognizer:TapGestureTecognizer];
+//    UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(donghuahuishou)];
+//    TapGestureTecognizer.cancelsTouchesInView=NO;
+//    [self.view addGestureRecognizer:TapGestureTecognizer];
 
     
     
@@ -803,6 +803,14 @@
     NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
     
     NSLog(@"Began!");
+    self.isequal=YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)tableView:(UITableView *)tableView BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -1066,33 +1074,28 @@
 }
 
 -(void)changeSendContentClick{
-    
+    self.isequal=YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
     if (self.changeSendContentBtn.tag == 1001) {
         //输入转语音
         [self.inputBottomView addSubview:self.reportAudioBtn];
         [self cancelResignFirstResponder];
         self.changeSendContentBtn.tag = 1002;
         [self.changeSendContentBtn setImage:[UIImage imageNamed:@"keyboard"] forState:UIControlStateNormal];
-        [UIView animateWithDuration:0.3 animations:^{
-            self.backgroundImageView.transform =CGAffineTransformIdentity;
-            self.inputBottomView.transform = CGAffineTransformIdentity;
-            self.btnview.transform =CGAffineTransformIdentity;
-        }completion:^(BOOL finished) {
-            
-        }];
+
         
     }else{
         //语音转输入
         self.changeSendContentBtn.tag = 1001;
         [self.changeSendContentBtn setImage:[UIImage imageNamed:@"yuyin"] forState:UIControlStateNormal];
         [self.reportAudioBtn removeFromSuperview];
-        [UIView animateWithDuration:0.3 animations:^{
-            self.backgroundImageView.transform =CGAffineTransformIdentity;
-            self.inputBottomView.transform = CGAffineTransformIdentity;
-            self.btnview.transform =CGAffineTransformIdentity;
-        }completion:^(BOOL finished) {
-            
-        }];
+        
     }
 }
 
@@ -1287,19 +1290,19 @@
     }
     return _btnview;
 }
-
--(void)donghuahuishou
-{
-    //self.isequal = YES;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.backgroundImageView.transform =CGAffineTransformIdentity;
-        self.inputBottomView.transform = CGAffineTransformIdentity;
-        self.btnview.transform =CGAffineTransformIdentity;
-    }completion:^(BOOL finished) {
-        
-    }];
-
-}
+//
+//-(void)donghuahuishou
+//{
+//    self.isequal = YES;
+//    [UIView animateWithDuration:0.3 animations:^{
+//        self.backgroundImageView.transform =CGAffineTransformIdentity;
+//        self.inputBottomView.transform = CGAffineTransformIdentity;
+//        self.btnview.transform =CGAffineTransformIdentity;
+//    }completion:^(BOOL finished) {
+//        
+//    }];
+//
+//}
 //上移view上的按钮点击事件
 -(void)btn01click
 {
