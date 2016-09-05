@@ -290,7 +290,7 @@
 -(void)matchTranslatorWithsenderID:(NSString *)senderID WithsendMessage:(NSString *)sendMessage WithlanguageCatgory:(NSString *)language WithpayNumber:(NSString *)payNumber{
     NSDate *sendDate = [NSDate date];
     NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
-    [dateformatter setDateFormat:@"YYYY-MM-dd"];
+    [dateformatter setDateFormat:@"YYYY-MM-dd HH:mm"];
     NSString *morelocationString = [dateformatter stringFromDate:sendDate];
     
     

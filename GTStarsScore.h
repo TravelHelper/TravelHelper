@@ -13,8 +13,11 @@
 /** 分数比例 10分 / 100 = 0.1 */
 @property (nonatomic, assign) CGFloat scoreScale;
 @property (nonatomic, assign) CGFloat value;
-
+@property (nonatomic, assign) CGRect tempFrame;
+-(void)setToValue:(CGFloat)x;
+-(void)toRemoveGesture;
 @end
+
 
 @protocol GTStarsScoreDelegate<NSObject>
 

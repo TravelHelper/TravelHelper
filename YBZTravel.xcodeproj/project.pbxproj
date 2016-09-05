@@ -78,6 +78,11 @@
 		1ED863EB1D38868500529094 /* YBZSingleCodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863E71D38868500529094 /* YBZSingleCodeInfo.m */; };
 		1ED863EE1D3887E200529094 /* UITextField+Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863ED1D3887E200529094 /* UITextField+Validator.m */; };
 		1ED863F11D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863F01D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m */; };
+		531144771D794F95000B98E8 /* YBZMyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144761D794F95000B98E8 /* YBZMyOrderViewController.m */; };
+		531144921D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144911D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m */; };
+		5311449B1D79DD5B000B98E8 /* YBZMyOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5311449A1D79DD5B000B98E8 /* YBZMyOrderModel.m */; };
+		531144A21D7A69E6000B98E8 /* YBZOrderDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144A11D7A69E6000B98E8 /* YBZOrderDetailsViewController.m */; };
+		531144CA1D7AC8EC000B98E8 /* YBZbtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144C91D7AC8EC000B98E8 /* YBZbtnView.m */; };
 		7D0315BB1D6F1E5E00983D23 /* YBZDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */; };
 		7D0315BE1D6F228100983D23 /* AnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BD1D6F228100983D23 /* AnswerCell.m */; };
 		7D0315C11D6F28E700983D23 /* YBZRewardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315C01D6F28E700983D23 /* YBZRewardDetailModel.m */; };
@@ -221,7 +226,6 @@
 		A0532CC51D38D03E00FC1AB1 /* star_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = A0532CC01D38D03E00FC1AB1 /* star_yellow.png */; };
 		A0532CC61D38D03E00FC1AB1 /* UIView+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CC21D38D03E00FC1AB1 /* UIView+Extention.m */; };
 		A0532CCC1D38D4FE00FC1AB1 /* UserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CC81D38D4FE00FC1AB1 /* UserTableViewCell.m */; };
-		A0532CCD1D38D4FE00FC1AB1 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0532CC91D38D4FE00FC1AB1 /* UserTableViewCell.xib */; };
 		A0532CCE1D38D4FE00FC1AB1 /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CCB1D38D4FE00FC1AB1 /* UserViewController.m */; };
 		A0532CD11D38D7BA00FC1AB1 /* PersonalSignatureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CD01D38D7BA00FC1AB1 /* PersonalSignatureVC.m */; };
 		A0532CD41D38D7D300FC1AB1 /* PickAvatarImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A0532CD31D38D7D300FC1AB1 /* PickAvatarImage.m */; };
@@ -400,6 +404,16 @@
 		1ED863ED1D3887E200529094 /* UITextField+Validator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Validator.m"; sourceTree = "<group>"; };
 		1ED863EF1D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+YBZBarButtonItem.h"; sourceTree = "<group>"; };
 		1ED863F01D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+YBZBarButtonItem.m"; sourceTree = "<group>"; };
+		531144751D794F95000B98E8 /* YBZMyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMyOrderViewController.h; sourceTree = "<group>"; };
+		531144761D794F95000B98E8 /* YBZMyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyOrderViewController.m; sourceTree = "<group>"; };
+		531144901D79AB5B000B98E8 /* YBZMyOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMyOrderTableViewCell.h; sourceTree = "<group>"; };
+		531144911D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyOrderTableViewCell.m; sourceTree = "<group>"; };
+		531144991D79DD5B000B98E8 /* YBZMyOrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMyOrderModel.h; sourceTree = "<group>"; };
+		5311449A1D79DD5B000B98E8 /* YBZMyOrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyOrderModel.m; sourceTree = "<group>"; };
+		531144A01D7A69E6000B98E8 /* YBZOrderDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZOrderDetailsViewController.h; sourceTree = "<group>"; };
+		531144A11D7A69E6000B98E8 /* YBZOrderDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOrderDetailsViewController.m; sourceTree = "<group>"; };
+		531144C81D7AC8EC000B98E8 /* YBZbtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZbtnView.h; sourceTree = "<group>"; };
+		531144C91D7AC8EC000B98E8 /* YBZbtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZbtnView.m; sourceTree = "<group>"; };
 		7D0315B91D6F1E5E00983D23 /* YBZDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZDetailViewController.h; sourceTree = "<group>"; };
 		7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZDetailViewController.m; sourceTree = "<group>"; };
 		7D0315BC1D6F228100983D23 /* AnswerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerCell.h; sourceTree = "<group>"; };
@@ -647,7 +661,6 @@
 		A0532CC21D38D03E00FC1AB1 /* UIView+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extention.m"; sourceTree = "<group>"; };
 		A0532CC71D38D4FE00FC1AB1 /* UserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTableViewCell.h; sourceTree = "<group>"; };
 		A0532CC81D38D4FE00FC1AB1 /* UserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTableViewCell.m; sourceTree = "<group>"; };
-		A0532CC91D38D4FE00FC1AB1 /* UserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
 		A0532CCA1D38D4FE00FC1AB1 /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
 		A0532CCB1D38D4FE00FC1AB1 /* UserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewController.m; sourceTree = "<group>"; };
 		A0532CCF1D38D7BA00FC1AB1 /* PersonalSignatureVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalSignatureVC.h; sourceTree = "<group>"; };
@@ -937,6 +950,87 @@
 			path = MJRefresh;
 			sourceTree = "<group>";
 		};
+		531144711D794F62000B98E8 /* My Order */ = {
+			isa = PBXGroup;
+			children = (
+				531144741D794F83000B98E8 /* Controller */,
+				531144731D794F79000B98E8 /* View */,
+				531144721D794F70000B98E8 /* Model */,
+			);
+			name = "My Order";
+			path = YBZTravelUITests;
+			sourceTree = "<group>";
+		};
+		531144721D794F70000B98E8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				531144991D79DD5B000B98E8 /* YBZMyOrderModel.h */,
+				5311449A1D79DD5B000B98E8 /* YBZMyOrderModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		531144731D794F79000B98E8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				531144901D79AB5B000B98E8 /* YBZMyOrderTableViewCell.h */,
+				531144911D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		531144741D794F83000B98E8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				531144751D794F95000B98E8 /* YBZMyOrderViewController.h */,
+				531144761D794F95000B98E8 /* YBZMyOrderViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		5311449C1D7A6992000B98E8 /* OrderDetails */ = {
+			isa = PBXGroup;
+			children = (
+				5311449F1D7A69C8000B98E8 /* Controller */,
+				5311449E1D7A69C5000B98E8 /* View */,
+				5311449D1D7A69C1000B98E8 /* Model */,
+			);
+			name = OrderDetails;
+			path = YBZTravelUITests;
+			sourceTree = "<group>";
+		};
+		5311449D1D7A69C1000B98E8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		5311449E1D7A69C5000B98E8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		5311449F1D7A69C8000B98E8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				531144A01D7A69E6000B98E8 /* YBZOrderDetailsViewController.h */,
+				531144A11D7A69E6000B98E8 /* YBZOrderDetailsViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		531144C71D7AC8D6000B98E8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				531144C81D7AC8EC000B98E8 /* YBZbtnView.h */,
+				531144C91D7AC8EC000B98E8 /* YBZbtnView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		7D3E99601D6D41DB00F13F42 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1158,6 +1252,7 @@
 		A012EDE61D509C7600144BAD /* TransFree&Quick */ = {
 			isa = PBXGroup;
 			children = (
+				531144C71D7AC8D6000B98E8 /* View */,
 				7D28E3571D6DAAB600B51EF7 /* QuickTransViewController.h */,
 				7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */,
 				A012EE081D509CE700144BAD /* testViewController.h */,
@@ -1209,6 +1304,8 @@
 				A03ED0541D2DE20700BD9C0A /* YBZTravel */,
 				A03ED0551D2DE20700BD9C0A /* Supporting Files */,
 				A03ED06E1D2DE20800BD9C0A /* YBZTravelTests */,
+				531144711D794F62000B98E8 /* My Order */,
+				5311449C1D7A6992000B98E8 /* OrderDetails */,
 				A03ED0791D2DE20800BD9C0A /* YBZTravelUITests */,
 				A03ED0531D2DE20700BD9C0A /* Products */,
 			);
@@ -1317,7 +1414,6 @@
 			children = (
 				A0532CC71D38D4FE00FC1AB1 /* UserTableViewCell.h */,
 				A0532CC81D38D4FE00FC1AB1 /* UserTableViewCell.m */,
-				A0532CC91D38D4FE00FC1AB1 /* UserTableViewCell.xib */,
 				A0532CCA1D38D4FE00FC1AB1 /* UserViewController.h */,
 				A0532CCB1D38D4FE00FC1AB1 /* UserViewController.m */,
 				A03ED0CC1D2E083300BD9C0A /* DetailViewController */,
@@ -1781,7 +1877,6 @@
 			files = (
 				1ED863091D2F39DD00529094 /* Info.plist in Resources */,
 				1E70560B1D5326A400A000F5 /* PushConfig.plist in Resources */,
-				A0532CCD1D38D4FE00FC1AB1 /* UserTableViewCell.xib in Resources */,
 				7D84273C1D634638000BFEAD /* CollectionMessageInfoCell.xib in Resources */,
 				A0552ED11D3A2C8C00E04D7A /* LocMessageInfoCell.xib in Resources */,
 				7D3E99981D6D42C300F13F42 /* LanguageCell.xib in Resources */,
@@ -1858,6 +1953,7 @@
 				A0532CD41D38D7D300FC1AB1 /* PickAvatarImage.m in Sources */,
 				A012EE001D509CAB00144BAD /* CWViewController.m in Sources */,
 				A0552ED51D3A2C8C00E04D7A /* PlaceNameModel.m in Sources */,
+				531144771D794F95000B98E8 /* YBZMyOrderViewController.m in Sources */,
 				1B05138F1D3F5DAC00F05C9D /* README.md in Sources */,
 				7D8427601D634AAB000BFEAD /* InformationTableViewCell.m in Sources */,
 				A0532C7A1D38C32200FC1AB1 /* UserSetViewController.m in Sources */,
@@ -1866,6 +1962,7 @@
 				1B05138C1D3F5DAC00F05C9D /* AFURLResponseSerialization.m in Sources */,
 				A0532C861D38C3F600FC1AB1 /* AccountAndSafeViewController.m in Sources */,
 				7D84273D1D634638000BFEAD /* FreeWalkerInfoCell.m in Sources */,
+				5311449B1D79DD5B000B98E8 /* YBZMyOrderModel.m in Sources */,
 				1ED8631B1D2F839F00529094 /* YBZPopularViewCell.m in Sources */,
 				A03ED0F61D2E3F1700BD9C0A /* YBZProductDetailInfoViewController.m in Sources */,
 				7D3E99AC1D6D42D700F13F42 /* YBZSendRewardViewController.m in Sources */,
@@ -1882,6 +1979,7 @@
 				1B7B673A1D41C0A900346609 /* WebAgent.m in Sources */,
 				1ED863D41D3390F000529094 /* MJRefreshFooterView.m in Sources */,
 				A03ED0A11D2DE46F00BD9C0A /* YBZBaseNaviController.m in Sources */,
+				531144A21D7A69E6000B98E8 /* YBZOrderDetailsViewController.m in Sources */,
 				1E70550E1D5180AB00A000F5 /* YBZLanguageSearchResultViewController.m in Sources */,
 				A03ED0D91D2E0ACA00BD9C0A /* YBZUserEwalletsViewController.m in Sources */,
 				A0532CAB1D38CB3700FC1AB1 /* AboutViewController.m in Sources */,
@@ -1907,6 +2005,7 @@
 				1ED8630F1D2F39DD00529094 /* MASViewConstraint.m in Sources */,
 				A03ED0DF1D2E2A9700BD9C0A /* YBZRegisterViewController.m in Sources */,
 				1B05138D1D3F5DAC00F05C9D /* AFURLSessionManager.m in Sources */,
+				531144921D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m in Sources */,
 				A03ED0C51D2DF33A00BD9C0A /* YBZLoginViewController.m in Sources */,
 				1B610CE41D47590A00541B6B /* EmailViewController.m in Sources */,
 				A012EE051D509CAB00144BAD /* ChatFrameInfo.m in Sources */,
@@ -1926,6 +2025,7 @@
 				7D3E99B01D6D42D700F13F42 /* YBZChoosePhotoViewController.m in Sources */,
 				7D3E99AB1D6D42D700F13F42 /* YBZMyRewardViewController.m in Sources */,
 				1CF4DAE21D6F043700F6BA94 /* YBZGifView.m in Sources */,
+				531144CA1D7AC8EC000B98E8 /* YBZbtnView.m in Sources */,
 				1ED863111D2F39DD00529094 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				1ED863EB1D38868500529094 /* YBZSingleCodeInfo.m in Sources */,
 				A0552EB71D3A166A00E04D7A /* FreeTravelViewController.m in Sources */,

@@ -17,7 +17,7 @@
 #import "iflyMSC/IFlyMSC.h"
 #import "StringTransViewController.h"
 #import "MJRefresh.h"
-
+#import "YBZbtnView.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -28,8 +28,6 @@
 #define kScreenHight  [UIScreen mainScreen].bounds.size.height
 #define krequL   [UIScreen mainScreen].bounds.size.width*0.44
 @property (nonatomic,strong) NSString *selectedCellMessageID;
-
-
 @property(nonatomic,strong) UIImageView *backgroundImageView;
 @property(nonatomic,strong) BaseTableView *bottomTableView;
 @property(nonatomic,strong) UIView      *inputBottomView;
@@ -73,6 +71,8 @@
 @property (nonatomic,strong) NSString *voice_Language;
 @property (nonatomic,strong) NSString *trans_Language;
 
+
+@property (nonatomic,strong) YBZbtnView *btnview;
 @end
 
 @implementation FreeTransViewController{
@@ -111,7 +111,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setupRefresh];
+//    [self setupRefresh];
     
     [self.view addSubview:self.backgroundImageView];
     
@@ -156,8 +156,13 @@
     
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(determinePlayARecord:) name:@"determinePlayARecord" object:nil];
+    [self.view addSubview:self.btnview];
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.btnview.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 200);
+}
 
 #pragma mark - 语音听写私有方法 & IFlySpeechRecognizerDelegate
 
@@ -562,9 +567,9 @@
 
         [self.view addSubview:self.bottomView];
         [self.bottomView addSubview:self.subBottomView];
-        [self.cancelSayView removeFromSuperview];
-        [self.subBottomView addSubview:self.sayView];
-        
+//        [self.cancelSayView removeFromSuperview];
+//        [self.subBottomView addSubview:self.sayView];
+    
         self.isCancelSendRecord = NO;
         self.isZero = NO;
         iFlySpeechRecognizerString = @"";
@@ -608,7 +613,7 @@
 -(UIImageView *)sayView{
     if (!_sayView) {
         _sayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL, krequL)];
-        UIImage *img = [UIImage imageNamed:@"0_01"];
+        UIImage *img = [UIImage imageNamed:@"01"];
         [_sayView setImage:img];
     }
     return _sayView;
@@ -616,7 +621,7 @@
 -(UIImageView *)cancelSayView{
     if (!_cancelSayView) {
         _cancelSayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL+10, krequL)];
-        UIImage *img = [UIImage imageNamed:@"0_02"];
+        UIImage *img = [UIImage imageNamed:@"02"];
         [_cancelSayView setImage:img];
     }
     return _cancelSayView;
@@ -725,23 +730,23 @@
         
         [self iFlySpeechRecognizerStop];
         
-        if ([self.cwViewController.secondString intValue] < 1 ) {
-            
-            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
-            self.shortLabel.text = @"说话时间过短，小于1秒";
-            self.shortLabel.font = FONT_10;
-            self.shortLabel.textAlignment = NSTextAlignmentCenter;
-            self.shortLabel.backgroundColor = [UIColor clearColor];
-            [self.subBottomView addSubview:self.shortLabel];
-            
-            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
-            
-        }else{
-            
+//        if ([self.cwViewController.secondString intValue] < 1 ) {
+//            
+//            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+//            self.shortLabel.text = @"说话时间过短，小于1秒";
+//            self.shortLabel.font = FONT_10;
+//            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+//            self.shortLabel.backgroundColor = [UIColor clearColor];
+//            [self.subBottomView addSubview:self.shortLabel];
+//            
+//            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+//            
+//        }else{
+        
             
             [self sendRecordAudioWithRecordURLString:self.cellMessageID];
             
-        }
+//        }
         
         
         self.isZero = YES;
@@ -1042,10 +1047,20 @@
     }
 }
 
--(void)selectLangueageClick{
+-(void)selectLangueageClick1{
     
     [self cancelResignFirstResponder];
     NSLog(@"跳转到新的切换语言页面");
+    NSLog(@"弹出按钮");
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformMakeTranslation(0, -200);
+        self.btnview.transform =CGAffineTransformMakeTranslation(0, -200);
+        self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -200);
+        
+        
+    }completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)sendMessageBtnClick{
@@ -1122,7 +1137,7 @@
         _selectLangueageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _selectLangueageBtn.frame = CGRectMake(kScreenWidth*0.9, kScreenWidth*0.02, kScreenWidth*0.085, kScreenWidth*0.085);
         [_selectLangueageBtn setImage:[UIImage imageNamed:@"dustbin"] forState:UIControlStateNormal];
-        [_selectLangueageBtn addTarget:self action:@selector(selectLangueageClick) forControlEvents:UIControlEventTouchUpInside];
+        [_selectLangueageBtn addTarget:self action:@selector(selectLangueageClick1) forControlEvents:UIControlEventTouchUpInside];
     }
     return _selectLangueageBtn;
 }
@@ -1159,20 +1174,6 @@
     return _reportAudioBtn;
 }
 
-//-(UIButton *)sendMessageBtn{
-//
-//    if (!_sendMessageBtn) {
-//        _sendMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _sendMessageBtn.frame = CGRectMake( CGRectGetMaxX(self.inputTextView.frame) - 35,  kScreenWidth*0.031,kScreenWidth*0.078,kScreenWidth*0.078);
-//        _sendMessageBtn.backgroundColor = [UIColor grayColor];
-//        [_sendMessageBtn setImage:[UIImage imageNamed:@"send"] forState:UIControlStateNormal];
-//        _sendMessageBtn.layer.cornerRadius = 15;
-//        _sendMessageBtn.layer.masksToBounds = YES;
-//        [_sendMessageBtn addTarget:self action:@selector(sendMessageBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//    return _sendMessageBtn;
-//}
-
 -(UIRefreshControl *)refreshController{
     
     if (!_refreshController) {
@@ -1203,7 +1204,7 @@
     
     if (!_subBottomView) {
         _subBottomView = [[UIView alloc]initWithFrame:CGRectMake((kScreenWidth - krequL)/2, ([UIScreen mainScreen].bounds.size.height - krequL)/2, krequL, krequL)];
-
+        
         _subBottomView.userInteractionEnabled = NO;
     }
     
@@ -1211,7 +1212,34 @@
     
 }
 
+-(YBZbtnView *)btnview
+{
+    if(!_btnview)
+    {
+        _btnview = [[YBZbtnView alloc] init];
+        _btnview.backgroundColor = [UIColor lightGrayColor];
+        [_btnview.btn01 addTarget:self action:@selector(btn01click) forControlEvents:UIControlEventTouchUpInside];
+        [_btnview.btn02 addTarget:self action:@selector(btn02click) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnview;
+}
 
+//上移view上的按钮点击事件
+-(void)btn01click
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void)btn02click
+{
+    
+}
 @end
 
 

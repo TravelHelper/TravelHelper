@@ -170,6 +170,19 @@
     [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
     
     
+    if([self.userIdentifier isEqualToString:@"TRANSTOR"]){
+        //1.获得全局的并发队列
+        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        //2.添加任务到队列中，就可以执行任务
+        //异步函数：具备开启新线程的能力
+        dispatch_async(queue, ^{
+            // 在另一个线程中启动下载功能，加GCD控制
+//            [WebAgent ]
+        
+        });
+
+    }
+    
     //    [self performSelector:@selector(sendAwebMessage) withObject:nil afterDelay:10];
 }
 
@@ -996,7 +1009,7 @@
 -(UIImageView *)sayView{
     if (!_sayView) {
         _sayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL, krequL)];
-        UIImage *img = [UIImage imageNamed:@"用户翻译-口语即时-语音输入"];
+        UIImage *img = [UIImage imageNamed:@"01"];
         [_sayView setImage:img];
     }
     return _sayView;
@@ -1004,7 +1017,7 @@
 -(UIImageView *)cancelSayView{
     if (!_cancelSayView) {
         _cancelSayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, krequL, krequL)];
-        UIImage *img = [UIImage imageNamed:@"用户翻译-口语即时-取消发送"];
+        UIImage *img = [UIImage imageNamed:@"02"];
         [_cancelSayView setImage:img];
     }
     return _cancelSayView;
@@ -1508,7 +1521,7 @@
 -(void)selectLangueageClick{
     
     [self cancelResignFirstResponder];
-    NSLog(@"跳转到新的切换语言页面");
+   // NSLog(@"跳转到新的切换语言页面");
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setObject:nil forKey:@"ChatHisTory"];
