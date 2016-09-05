@@ -22,8 +22,8 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.btn01.frame = CGRectMake(20, 20, 100, 50);
-    self.btn02.frame = CGRectMake(SCREEN_WIDTH-120, 20, 100, 50);
+    self.btn01.frame = CGRectMake(20, 10, 80, 40);
+    self.btn02.frame = CGRectMake(SCREEN_WIDTH-100, 10, 80, 40);
 }
 
 -(UIButton *)btn01
@@ -31,7 +31,8 @@
     if(!_btn01)
     {
         _btn01 = [[UIButton alloc] init];
-        _btn01.backgroundColor = [UIColor blueColor];
+        //_btn01.backgroundColor = [UIColor blueColor];
+        [_btn01 setTitle:@"清空记录" forState:UIControlStateNormal];
     }
     return _btn01;
 }
@@ -41,7 +42,8 @@
     if(!_btn02)
     {
         _btn02 = [[UIButton alloc] init];
-        _btn02.backgroundColor = [UIColor greenColor];
+       // _btn02.backgroundColor = [UIColor greenColor];
+        [_btn02 setTitle:@"更改背景" forState:UIControlStateNormal];
     }
     return _btn02;
 }

@@ -73,6 +73,7 @@
 
 
 @property (nonatomic,strong) YBZbtnView *btnview;
+@property (nonatomic,assign) BOOL isequal;
 @end
 
 @implementation FreeTransViewController{
@@ -110,6 +111,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.isequal = YES;
+    
+    UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(donghuahuishou)];
+    TapGestureTecognizer.cancelsTouchesInView=NO;
+    [self.view addGestureRecognizer:TapGestureTecognizer];
+
+    
     
 //    [self setupRefresh];
     
@@ -877,6 +886,13 @@
         self.bottomTableView.transform = CGAffineTransformIdentity;
     }];
     
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
 }
 
 
@@ -913,6 +929,7 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
+   
     //开始输入聊天信息
 }
 
@@ -1056,11 +1073,26 @@
         [self cancelResignFirstResponder];
         self.changeSendContentBtn.tag = 1002;
         [self.changeSendContentBtn setImage:[UIImage imageNamed:@"keyboard"] forState:UIControlStateNormal];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformIdentity;
+            self.inputBottomView.transform = CGAffineTransformIdentity;
+            self.btnview.transform =CGAffineTransformIdentity;
+        }completion:^(BOOL finished) {
+            
+        }];
+        
     }else{
         //语音转输入
         self.changeSendContentBtn.tag = 1001;
         [self.changeSendContentBtn setImage:[UIImage imageNamed:@"yuyin"] forState:UIControlStateNormal];
         [self.reportAudioBtn removeFromSuperview];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformIdentity;
+            self.inputBottomView.transform = CGAffineTransformIdentity;
+            self.btnview.transform =CGAffineTransformIdentity;
+        }completion:^(BOOL finished) {
+            
+        }];
     }
 }
 
@@ -1069,15 +1101,30 @@
     [self cancelResignFirstResponder];
     NSLog(@"跳转到新的切换语言页面");
     NSLog(@"弹出按钮");
-    [UIView animateWithDuration:0.3 animations:^{
-        self.backgroundImageView.transform =CGAffineTransformMakeTranslation(0, -200);
-        self.btnview.transform =CGAffineTransformMakeTranslation(0, -200);
-        self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -200);
-        
-        
-    }completion:^(BOOL finished) {
-        
-    }];
+    
+    if (self.isequal==YES) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformMakeTranslation(0, -60);
+            self.btnview.transform =CGAffineTransformMakeTranslation(0, -60);
+            self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -60);
+            self.isequal = !self.isequal;
+        }completion:^(BOOL finished) {
+            
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformIdentity;
+            self.inputBottomView.transform = CGAffineTransformIdentity;
+            self.btnview.transform =CGAffineTransformIdentity;
+            self.isequal = !self.isequal;
+        }completion:^(BOOL finished) {
+         
+        }];
+
+    }
+   
 }
 
 -(void)sendMessageBtnClick{
@@ -1241,9 +1288,9 @@
     return _btnview;
 }
 
-//上移view上的按钮点击事件
--(void)btn01click
+-(void)donghuahuishou
 {
+    //self.isequal = YES;
     [UIView animateWithDuration:0.3 animations:^{
         self.backgroundImageView.transform =CGAffineTransformIdentity;
         self.inputBottomView.transform = CGAffineTransformIdentity;
@@ -1251,14 +1298,19 @@
     }completion:^(BOOL finished) {
         
     }];
+
+}
+//上移view上的按钮点击事件
+-(void)btn01click
+{
+    NSLog(@"清空记录");
 }
 
 -(void)btn02click
 {
-    
-    
-    
-    
+
+    NSLog(@"更改背景");
+
 }
 @end
 
