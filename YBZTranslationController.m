@@ -125,10 +125,10 @@
     [self.view addSubview:self.popularCellView];
 
     
-    [self.bottomView addSubview:self.newsView];
-    [self.newsView addSubview:self.newsLabel];
-    [self.newsView addSubview:self.newsLeftImageView];
-    [self.newsView addSubview:self.newsRightImageView];
+//    [self.bottomView addSubview:self.newsView];
+//    [self.newsView addSubview:self.newsLabel];
+//    [self.newsView addSubview:self.newsLeftImageView];
+//    [self.newsView addSubview:self.newsRightImageView];
     
     
     [self.bottomView addSubview:self.userBtn];
@@ -835,7 +835,7 @@
         }else{
             _userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
         }
-        _userBtn.frame = CGRectMake(-25, CGRectGetMaxY(self.newsView.frame) + 15, UIScreenWidth / 2 + 15, 32);
+        _userBtn.frame = CGRectMake(-25,CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 15, 32);
         
         [_userBtn addTarget:self action:@selector(userIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
         _userBtn.layer.cornerRadius = 16;
@@ -865,7 +865,7 @@
         }else{
             _translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
         }
-        _translaterBtn.frame = CGRectMake(CGRectGetMaxX(self.userBtn.frame) + 20, CGRectGetMaxY(self.newsView.frame) + 15, UIScreenWidth / 2 + 25, 32);
+        _translaterBtn.frame = CGRectMake(CGRectGetMaxX(self.userBtn.frame) + 20, CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 25, 32);
         [_translaterBtn addTarget:self action:@selector(interpretIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
         _translaterBtn.layer.cornerRadius = 16;
     }

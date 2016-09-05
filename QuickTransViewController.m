@@ -555,7 +555,24 @@
 
 - (void) onError:(IFlySpeechError *) errorCode{
     
-    
+    if ([self.cwViewController.secondString intValue] < 1 ) {
+        
+        self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+        self.shortLabel.text = @"说话时间过短，小于1秒";
+        self.shortLabel.font = FONT_10;
+        self.shortLabel.textAlignment = NSTextAlignmentCenter;
+        self.shortLabel.backgroundColor = [UIColor clearColor];
+        [self.subBottomView addSubview:self.shortLabel];
+        
+        [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+        
+    }else{
+        
+        
+        [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+        
+    }
+
     NSLog(@"错误描述--->%@",errorCode);
     
 }
@@ -1171,23 +1188,23 @@
         
         [self iFlySpeechRecognizerStop];
         
-        if ([self.cwViewController.secondString intValue] < 1 ) {
-            
-            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
-            self.shortLabel.text = @"说话时间过短，小于1秒";
-            self.shortLabel.font = FONT_10;
-            self.shortLabel.textAlignment = NSTextAlignmentCenter;
-            self.shortLabel.backgroundColor = [UIColor clearColor];
-            [self.subBottomView addSubview:self.shortLabel];
-            
-            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
-            
-        }else{
-            
-            
-            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
-            
-        }
+//        if ([self.cwViewController.secondString intValue] < 1 ) {
+//            
+//            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+//            self.shortLabel.text = @"说话时间过短，小于1秒";
+//            self.shortLabel.font = FONT_10;
+//            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+//            self.shortLabel.backgroundColor = [UIColor clearColor];
+//            [self.subBottomView addSubview:self.shortLabel];
+//            
+//            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+//            
+//        }else{
+//            
+//            
+//            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+//            
+//        }
         
         
         self.isZero = YES;

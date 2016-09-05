@@ -22,12 +22,15 @@
 #import "MBProgressHUD+XMG.h"
 #import "GTStarsScore.h"
 #import "YBZMyOrderViewController.h"
+#import "MBProgressHUD+XMG.h"
 
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource,GTStarsScoreDelegate>
 {
     Boolean is;
     Boolean it;
+    MBProgressHUD *HUD;
+    NSString *user_identity;
 }
 
 @property(nonatomic,strong)UITableView *mainTableView;
@@ -49,6 +52,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    user_identity=[[NSString alloc]init];
     self.automaticallyAdjustsScrollViewInsets = NO;//!!!!!!
     is=false;
     it=false;
@@ -123,8 +127,8 @@
             NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSString *msg=dic[@"msg"];
             if([msg isEqualToString:@"SUCCESS"]){
-            
-                NSString *user_identity=dic[@"user_identity"];
+
+                user_identity=dic[@"user_identity"];
                 NSLog(@"%@",user_identity);
                 if([user_identity isEqualToString:@"TRANSTOR"]){
 //                    [self.translatorTableView removeFromSuperview];
@@ -135,10 +139,10 @@
                     
                 }else{
                 
-                    [self.mainTableView setHidden:NO];
-                    [self.translatorTableView setHidden:YES];
+                    [self.mainTableView setHidden:YES];
+                    [self.translatorTableView setHidden:NO];
 //                    [self.view addSubview:self.mainTableView];
-                    [self.mainTableView reloadData];
+                    [self.translatorTableView reloadData];
                 }
                 
             
@@ -459,6 +463,63 @@
         }
         if ( section == 0 && row == 0) {
             //----------------------------
+//            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//            NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
+//            //        [cell showStar];
+//            _avatarImag = [[UIImageView alloc]init];
+//            _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.01, self.view.bounds.size.height * 0.06, self.view.bounds.size.height * 0.06);
+//            _avatarImag.layer.masksToBounds=YES;
+//            _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
+//            NSLog(@"----------------------------------------------");
+//            NSLog(@"%hhu %@",is,user_loginState[@"user_loginState"]);
+//            if (is || [user_loginState[@"user_loginState"] isEqual:@"1"])    {
+//                
+//                NSString *name = user_id[@"user_id"];
+//                NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
+//                NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+//                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+//                _photoImg=[UIImage imageWithData:data];
+//                if(_photoImg){
+//                    _avatarImag.image = _photoImg;
+//                    [cell addSubview:_avatarImag];
+//                    it=false;
+//                }else{
+//                    _avatarImag.image = [UIImage imageNamed:@"translator"];
+//                    [cell addSubview:_avatarImag];
+//                }
+//                cell.nameLable.frame=CGRectMake(70,  (self.view.bounds.size.height * 0.08-40)/2+5, 0.24*self.view.bounds.size.width, 40);
+//                [cell addSubview:self.starView];
+//                
+//      ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////
+//                
+//                [self.starView setToValue:0.5];//设置分值
+//                [self.starView toRemoveGesture];
+//                
+//                UILabel *pointLabel=[[UILabel alloc]initWithFrame:CGRectMake(0.76*self.view.bounds.size.width,  (self.view.bounds.size.height * 0.09-0.027*self.view.bounds.size.height)/2+5, 0.53*self.view.bounds.size.width, 0.02*self.view.bounds.size.height)];
+//                
+//                
+//                //设置显示分值
+//                pointLabel.text=@"2.5";
+//                pointLabel.textColor=[UIColor lightGrayColor];
+//                pointLabel.font=[UIFont systemFontOfSize:12.5];
+//                [cell addSubview:pointLabel];
+//                
+//                [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
+//                    NSLog(@"%@",user_id[@"user_id"]);
+//                    NSData *data = [[NSData alloc]initWithData:responseObject];
+//                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//                    NSDictionary *userInfo = dic[@"user_info"];
+//                    cell.nameLable.text = userInfo[@"user_nickname"];
+//                    
+//                    
+//                    
+//                    
+//                    
+//                }failure:^(NSError *error) {
+//                    NSLog(@"%@",error);
+//                }];}
+            
             NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
             NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
             NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
@@ -484,23 +545,8 @@
                     _avatarImag.image = [UIImage imageNamed:@"translator"];
                     [cell addSubview:_avatarImag];
                 }
-                cell.nameLable.frame=CGRectMake(70,  (self.view.bounds.size.height * 0.08-40)/2+5, 0.24*self.view.bounds.size.width, 40);
-                [cell addSubview:self.starView];
-                
-      ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////    ///////////
-                
-                [self.starView setToValue:0.5];//设置分值
-                [self.starView toRemoveGesture];
-                
-                UILabel *pointLabel=[[UILabel alloc]initWithFrame:CGRectMake(0.76*self.view.bounds.size.width,  (self.view.bounds.size.height * 0.09-0.027*self.view.bounds.size.height)/2+5, 0.53*self.view.bounds.size.width, 0.02*self.view.bounds.size.height)];
-                
-                
-                //设置显示分值
-                pointLabel.text=@"2.5";
-                pointLabel.textColor=[UIColor lightGrayColor];
-                pointLabel.font=[UIFont systemFontOfSize:12.5];
-                [cell addSubview:pointLabel];
-                
+                cell.nameLable.frame=CGRectMake(70, 7, 150, 40);
+                //            [cell addSubview:self.starView];
                 [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
                     NSLog(@"%@",user_id[@"user_id"]);
                     NSData *data = [[NSData alloc]initWithData:responseObject];
@@ -515,6 +561,7 @@
                 }failure:^(NSError *error) {
                     NSLog(@"%@",error);
                 }];}
+
             else{
                 
                 _avatarImag.image = [UIImage imageNamed:@"translator"];
@@ -532,24 +579,53 @@
         {
             if ( section == 1 && row == 0)
             {
-                //评价星级之类的！！
-                CGFloat screenWidth=self.view.bounds.size.width;
-                CGFloat screenHeight=self.view.bounds.size.height;
-                UILabel *gradeLabel=[[UILabel alloc]initWithFrame:CGRectMake(0.196*screenWidth, 0.015*screenHeight, 0.12*screenWidth, 0.022*screenHeight)];
-//                gradeLabel.backgroundColor=[UIColor redColor];
-                gradeLabel.text=@"等级";
-                [cell addSubview:gradeLabel];
+//                //评价星级之类的！！
+//                CGFloat screenWidth=self.view.bounds.size.width;
+//                CGFloat screenHeight=self.view.bounds.size.height;
+//                UILabel *gradeLabel=[[UILabel alloc]initWithFrame:CGRectMake(0.196*screenWidth, 0.015*screenHeight, 0.12*screenWidth, 0.022*screenHeight)];
+////                gradeLabel.backgroundColor=[UIColor redColor];
+//                gradeLabel.text=@"等级";
+//                [cell addSubview:gradeLabel];
+//                
+//                UIView *scorllView=[[UIView alloc]initWithFrame:CGRectMake(screenWidth/2-0.5, screenHeight*0.01, 1, screenHeight*0.1)];
+//                scorllView.backgroundColor=[UIColor grayColor];
+//                scorllView.alpha=0.3;
+//                
+//                [cell addSubview:scorllView];
+//                
+//                UILabel *activityLabel=[[UILabel alloc]initWithFrame:CGRectMake(0.672*screenWidth, 0.015*screenHeight, 0.18*screenWidth, 0.022*screenHeight)];
+//                //                gradeLabel.backgroundColor=[UIColor redColor];
+//                activityLabel.text=@"活跃度";
+//                [cell addSubview:activityLabel];
+                UILabel *translatorLabel = [[UILabel alloc]init];
                 
-                UIView *scorllView=[[UIView alloc]initWithFrame:CGRectMake(screenWidth/2-0.5, screenHeight*0.01, 1, screenHeight*0.1)];
-                scorllView.backgroundColor=[UIColor grayColor];
-                scorllView.alpha=0.3;
+                if([user_identity isEqualToString:@"TRANSTOR"]){
+                    
+                    
+                    
+                }else{
+                    
+                    
+                    
+                }
                 
-                [cell addSubview:scorllView];
                 
-                UILabel *activityLabel=[[UILabel alloc]initWithFrame:CGRectMake(0.672*screenWidth, 0.015*screenHeight, 0.18*screenWidth, 0.022*screenHeight)];
-                //                gradeLabel.backgroundColor=[UIColor redColor];
-                activityLabel.text=@"活跃度";
-                [cell addSubview:activityLabel];
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
                 
                 
@@ -678,16 +754,16 @@
     
     
     
-    CGSize size = [@"敬请期待!" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:22]}];
-    self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width - 30) / 2, ([UIScreen mainScreen].bounds.size.height - size.height - 60) / 2, size.width + 30, size.height + 40)];
-    self.alertLabel.backgroundColor = [UIColor blackColor];
-    self.alertLabel.layer.cornerRadius = 8;
-    self.alertLabel.layer.masksToBounds = YES;
-    self.alertLabel.alpha = 0.8;
-    self.alertLabel.text = @"敬请期待!";
-    self.alertLabel.font = [UIFont systemFontOfSize:22];
-    [self.alertLabel setTextAlignment:NSTextAlignmentCenter];
-    self.alertLabel.textColor = [UIColor whiteColor];
+//    CGSize size = [@"敬请期待!" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:22]}];
+//    self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width - 30) / 2, ([UIScreen mainScreen].bounds.size.height - size.height - 60) / 2, size.width + 30, size.height + 40)];
+//    self.alertLabel.backgroundColor = [UIColor blackColor];
+//    self.alertLabel.layer.cornerRadius = 8;
+//    self.alertLabel.layer.masksToBounds = YES;
+//    self.alertLabel.alpha = 0.8;
+//    self.alertLabel.text = @"敬请期待!";
+//    self.alertLabel.font = [UIFont systemFontOfSize:22];
+//    [self.alertLabel setTextAlignment:NSTextAlignmentCenter];
+//    self.alertLabel.textColor = [UIColor whiteColor];
     
     NSInteger section = indexPath.section;
     NSUInteger row = indexPath.row;
@@ -735,16 +811,16 @@
     }else{
     
     //翻译者tableview的点击事件~~
-        CGSize size = [@"敬请期待!" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:22]}];
-        self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width - 30) / 2, ([UIScreen mainScreen].bounds.size.height - size.height - 60) / 2, size.width + 30, size.height + 40)];
-        self.alertLabel.backgroundColor = [UIColor blackColor];
-        self.alertLabel.layer.cornerRadius = 8;
-        self.alertLabel.layer.masksToBounds = YES;
-        self.alertLabel.alpha = 0.8;
-        self.alertLabel.text = @"敬请期待!";
-        self.alertLabel.font = [UIFont systemFontOfSize:22];
-        [self.alertLabel setTextAlignment:NSTextAlignmentCenter];
-        self.alertLabel.textColor = [UIColor whiteColor];
+//        CGSize size = [@"敬请期待!" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:22]}];
+//        self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width - 30) / 2, ([UIScreen mainScreen].bounds.size.height - size.height - 60) / 2, size.width + 30, size.height + 40)];
+//        self.alertLabel.backgroundColor = [UIColor blackColor];
+//        self.alertLabel.layer.cornerRadius = 8;
+//        self.alertLabel.layer.masksToBounds = YES;
+//        self.alertLabel.alpha = 0.8;
+//        self.alertLabel.text = @"敬请期待!";
+//        self.alertLabel.font = [UIFont systemFontOfSize:22];
+//        [self.alertLabel setTextAlignment:NSTextAlignmentCenter];
+//        self.alertLabel.textColor = [UIColor whiteColor];
         
         NSInteger section = indexPath.section;
         NSUInteger row = indexPath.row;
@@ -753,19 +829,29 @@
             [self intoUserDetailInfoClick];
             
         }
-        
-        if ( section == 2 && row==1) {
-            
-            YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
-            myVC.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:myVC animated:YES];
+        if ( section == 2 && row==0) {
+            [MBProgressHUD showError:@"敬请期待下次更新"];
             
         }
-        if ( section == 3 && row == 0) {
+        if ( section == 2 && row==1) {
+            [MBProgressHUD showError:@"敬请期待下次更新"];
+//            [self.view addSubview:self.alertLabel];
+//            YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
+//            myVC.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:myVC animated:YES];
             
-            YBZMoneyBagViewController *bagVC = [[YBZMoneyBagViewController alloc]init];
-            bagVC.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:bagVC animated:YES];
+        }
+        if ( section == 2 && row==2) {
+            [MBProgressHUD showError:@"敬请期待下次更新"];
+            
+        }
+
+        if ( section == 3 && row == 0) {
+            [MBProgressHUD showError:@"敬请期待下次更新"];
+//            [self.view addSubview:self.alertLabel];
+//            YBZMoneyBagViewController *bagVC = [[YBZMoneyBagViewController alloc]init];
+//            bagVC.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:bagVC animated:YES];
             
         }
         
