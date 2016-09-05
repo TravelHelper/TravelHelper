@@ -1734,7 +1734,7 @@
 				TargetAttributes = {
 					A03ED0511D2DE20700BD9C0A = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 2SPA2FSXHP;
+						DevelopmentTeam = 23GQX4X34D;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2169,7 +2169,7 @@
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.YBZhelper.haobowen;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -2199,7 +2199,7 @@
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.YBZhelper.haobowen;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

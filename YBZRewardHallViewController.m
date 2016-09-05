@@ -99,6 +99,12 @@
 
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+    [self loadDataFromWeb];
+}
+
+
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self.view endEditing:YES];
