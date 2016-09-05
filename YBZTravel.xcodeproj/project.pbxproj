@@ -82,6 +82,7 @@
 		531144921D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144911D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m */; };
 		5311449B1D79DD5B000B98E8 /* YBZMyOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5311449A1D79DD5B000B98E8 /* YBZMyOrderModel.m */; };
 		531144A21D7A69E6000B98E8 /* YBZOrderDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144A11D7A69E6000B98E8 /* YBZOrderDetailsViewController.m */; };
+		531144CA1D7AC8EC000B98E8 /* YBZbtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144C91D7AC8EC000B98E8 /* YBZbtnView.m */; };
 		7D0315BB1D6F1E5E00983D23 /* YBZDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */; };
 		7D0315BE1D6F228100983D23 /* AnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BD1D6F228100983D23 /* AnswerCell.m */; };
 		7D0315C11D6F28E700983D23 /* YBZRewardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315C01D6F28E700983D23 /* YBZRewardDetailModel.m */; };
@@ -411,6 +412,8 @@
 		5311449A1D79DD5B000B98E8 /* YBZMyOrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyOrderModel.m; sourceTree = "<group>"; };
 		531144A01D7A69E6000B98E8 /* YBZOrderDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZOrderDetailsViewController.h; sourceTree = "<group>"; };
 		531144A11D7A69E6000B98E8 /* YBZOrderDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOrderDetailsViewController.m; sourceTree = "<group>"; };
+		531144C81D7AC8EC000B98E8 /* YBZbtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZbtnView.h; sourceTree = "<group>"; };
+		531144C91D7AC8EC000B98E8 /* YBZbtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZbtnView.m; sourceTree = "<group>"; };
 		7D0315B91D6F1E5E00983D23 /* YBZDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZDetailViewController.h; sourceTree = "<group>"; };
 		7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZDetailViewController.m; sourceTree = "<group>"; };
 		7D0315BC1D6F228100983D23 /* AnswerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerCell.h; sourceTree = "<group>"; };
@@ -1019,6 +1022,15 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		531144C71D7AC8D6000B98E8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				531144C81D7AC8EC000B98E8 /* YBZbtnView.h */,
+				531144C91D7AC8EC000B98E8 /* YBZbtnView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		7D3E99601D6D41DB00F13F42 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1240,6 +1252,7 @@
 		A012EDE61D509C7600144BAD /* TransFree&Quick */ = {
 			isa = PBXGroup;
 			children = (
+				531144C71D7AC8D6000B98E8 /* View */,
 				7D28E3571D6DAAB600B51EF7 /* QuickTransViewController.h */,
 				7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */,
 				A012EE081D509CE700144BAD /* testViewController.h */,
@@ -2012,6 +2025,7 @@
 				7D3E99B01D6D42D700F13F42 /* YBZChoosePhotoViewController.m in Sources */,
 				7D3E99AB1D6D42D700F13F42 /* YBZMyRewardViewController.m in Sources */,
 				1CF4DAE21D6F043700F6BA94 /* YBZGifView.m in Sources */,
+				531144CA1D7AC8EC000B98E8 /* YBZbtnView.m in Sources */,
 				1ED863111D2F39DD00529094 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				1ED863EB1D38868500529094 /* YBZSingleCodeInfo.m in Sources */,
 				A0552EB71D3A166A00E04D7A /* FreeTravelViewController.m in Sources */,
