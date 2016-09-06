@@ -459,7 +459,8 @@
         if (section != 1) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;//最右边>号
         }else{
-            cell.accessoryType = UITableViewCellAccessoryNone;
+             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//            cell.accessoryType = UITableViewCellAccessoryNone;
         }
         if ( section == 0 && row == 0) {
             //----------------------------
@@ -597,19 +598,28 @@
 //                //                gradeLabel.backgroundColor=[UIColor redColor];
 //                activityLabel.text=@"活跃度";
 //                [cell addSubview:activityLabel];
-                UILabel *translatorLabel = [[UILabel alloc]init];
+                
+                
+                
+                UILabel *translatorLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.078*SCREEN_WIDTH, 0.015*SCREEN_HEIGHT, 0.335*SCREEN_WIDTH, 0.055*SCREEN_HEIGHT)];
+//                translatorLabel.backgroundColor=[UIColor orangeColor];
+                
+                
+//                UIButton *rightBtn=[[UIButton alloc]initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)];
                 
                 if([user_identity isEqualToString:@"TRANSTOR"]){
                     
+                    translatorLabel.text=@"身份：议员";
                     
                     
                 }else{
                     
-                    
+                    translatorLabel.text=@"身份：用户";
+ 
                     
                 }
                 
-                
+                [cell addSubview:translatorLabel];
                 
                 
                 
@@ -737,7 +747,7 @@
         }
     }else{
         if(indexPath.section==1){
-            return self.view.bounds.size.height * 0.12;
+            return self.view.bounds.size.height * 0.08;
         }else{
             return self.view.bounds.size.height * 0.08;
         }
