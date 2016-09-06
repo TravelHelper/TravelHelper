@@ -18,6 +18,7 @@
 #import "YBZLoginViewController.h"
 #import "YBZBaseNaviController.h"
 #import "YBZTongyongViewController.h"
+#import "MBProgressHUD+XMG.h"
 @interface UserSetViewController ()<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
 {
     NSString *logout;
@@ -138,8 +139,10 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section == 0 && indexPath.row == 0){
-        AccountAndSafeViewController *aasVC = [[AccountAndSafeViewController alloc]init];
-        [self.navigationController pushViewController:aasVC animated:YES];
+        
+        [MBProgressHUD showError:@"该功能尚未开放！"];
+//        AccountAndSafeViewController *aasVC = [[AccountAndSafeViewController alloc]init];
+//        [self.navigationController pushViewController:aasVC animated:YES];
     }
     else
     {

@@ -39,8 +39,6 @@
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>YES</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>YES</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
@@ -64,5 +62,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>YES</string>
 </dict>
 </plist>

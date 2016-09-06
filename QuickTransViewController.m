@@ -22,7 +22,10 @@
 #import "WebAgent.h"
 #import "FeedBackViewController.h"
 #import "MJRefresh.h"
-
+#import "YBZbtnView.h"
+#import "MBProgressHUD+XMG.h"
+#import "AFNetworking.h"
+#import "AFHTTPSessionManager.h"
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
 
@@ -30,7 +33,7 @@
 #define kScreenHight  [UIScreen mainScreen].bounds.size.height
 #define krequL   [UIScreen mainScreen].bounds.size.width*0.44
 
-@interface QuickTransViewController ()<UITextViewDelegate,UIGestureRecognizerDelegate,BaseTableViewDelegate,BaseAudioButtonDelegate,UITableViewDataSource,UITableViewDelegate,IFlySpeechRecognizerDelegate,RCIMClientReceiveMessageDelegate>
+@interface QuickTransViewController ()<UITextViewDelegate,UIGestureRecognizerDelegate,BaseTableViewDelegate,BaseAudioButtonDelegate,UITableViewDataSource,UITableViewDelegate,IFlySpeechRecognizerDelegate,RCIMClientReceiveMessageDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 
 @property (nonatomic,strong) NSString *selectedCellMessageID;
@@ -80,6 +83,9 @@
 @property (nonatomic,strong) NSString *voice_Language;
 @property (nonatomic,strong) NSString *trans_Language;
 @property (nonatomic,strong) UIImageView *backgroundImageView;
+
+@property (nonatomic,strong) YBZbtnView *btnview;
+@property (nonatomic,assign) BOOL isequal;
 @end
 
 @implementation QuickTransViewController{
@@ -184,6 +190,25 @@
     }
     
     //    [self performSelector:@selector(sendAwebMessage) withObject:nil afterDelay:10];
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+    NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg.jpg",user_id[@"user_id"]];
+    
+    NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,resultName];
+    
+    NSURL *url = [NSURL URLWithString:url2];
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    UIImage *img = [UIImage imageWithData:data];
+    if(img){
+        [self.backgroundImageView setImage:img];
+    }
+    
+
+    
+    
+    
 }
 
 
@@ -555,7 +580,24 @@
 
 - (void) onError:(IFlySpeechError *) errorCode{
     
-    
+    if ([self.cwViewController.secondString intValue] < 1 ) {
+        
+        self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+        self.shortLabel.text = @"说话时间过短，小于1秒";
+        self.shortLabel.font = FONT_10;
+        self.shortLabel.textAlignment = NSTextAlignmentCenter;
+        self.shortLabel.backgroundColor = [UIColor clearColor];
+        [self.subBottomView addSubview:self.shortLabel];
+        
+        [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+        
+    }else{
+        
+        
+        [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+        
+    }
+
     NSLog(@"错误描述--->%@",errorCode);
     
 }
@@ -1171,23 +1213,23 @@
         
         [self iFlySpeechRecognizerStop];
         
-        if ([self.cwViewController.secondString intValue] < 1 ) {
-            
-            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
-            self.shortLabel.text = @"说话时间过短，小于1秒";
-            self.shortLabel.font = FONT_10;
-            self.shortLabel.textAlignment = NSTextAlignmentCenter;
-            self.shortLabel.backgroundColor = [UIColor clearColor];
-            [self.subBottomView addSubview:self.shortLabel];
-            
-            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
-            
-        }else{
-            
-            
-            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
-            
-        }
+//        if ([self.cwViewController.secondString intValue] < 1 ) {
+//            
+//            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+//            self.shortLabel.text = @"说话时间过短，小于1秒";
+//            self.shortLabel.font = FONT_10;
+//            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+//            self.shortLabel.backgroundColor = [UIColor clearColor];
+//            [self.subBottomView addSubview:self.shortLabel];
+//            
+//            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+//            
+//        }else{
+//            
+//            
+//            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+//            
+//        }
         
         
         self.isZero = YES;
@@ -1219,6 +1261,14 @@
     NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
     
     NSLog(@"Began!");
+    self.isequal=YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)tableView:(UITableView *)tableView BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -1527,6 +1577,30 @@
     [userDefault setObject:nil forKey:@"ChatHisTory"];
     [userDefault synchronize];
     
+    //弹出下方view
+    if (self.isequal==YES) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformMakeTranslation(0, -60);
+            self.btnview.transform =CGAffineTransformMakeTranslation(0, -60);
+            self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -60);
+            self.isequal = !self.isequal;
+        }completion:^(BOOL finished) {
+            
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformIdentity;
+            self.inputBottomView.transform = CGAffineTransformIdentity;
+            self.btnview.transform =CGAffineTransformIdentity;
+            self.isequal = !self.isequal;
+        }completion:^(BOOL finished) {
+            
+        }];
+        
+    }
+    
 }
 
 -(void)sendMessageBtnClick{
@@ -1578,6 +1652,18 @@
 
 
 #pragma mark - getters
+
+-(YBZbtnView *)btnview
+{
+    if(!_btnview)
+    {
+        _btnview = [[YBZbtnView alloc] init];
+        _btnview.backgroundColor = [UIColor lightGrayColor];
+        [_btnview.btn01 addTarget:self action:@selector(btn01click) forControlEvents:UIControlEventTouchUpInside];
+        [_btnview.btn02 addTarget:self action:@selector(btn02click) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnview;
+}
 
 -(BaseTableView *)bottomTableView{
     if (!_bottomTableView) {
@@ -1649,40 +1735,6 @@
     return _inputTextView;
 }
 
-//-(BaseAudioButton *)reportAudioBtn{
-//
-//    if (!_reportAudioBtn) {
-//        _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
-//        _reportAudioBtn.mdelegate = self;
-//        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.085);
-//        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
-//        [_reportAudioBtn setTitle:@"按住说中文" forState:UIControlStateNormal];
-//        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
-//        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
-//
-//        [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
-//
-//    }
-//
-//    return _reportAudioBtn;
-//
-//}
-//
-//-(BaseAudioButton *)reportEnglishBtn{
-//
-//    if (!_reportEnglishBtn) {
-//        _reportEnglishBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
-//        _reportEnglishBtn.mdelegate = self;
-//        _reportEnglishBtn.frame = CGRectMake(CGRectGetMaxX(self.reportAudioBtn.frame), kScreenWidth*0.02, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
-//        [_reportEnglishBtn setTitle:@"按住说英语" forState:UIControlStateNormal];
-//        [_reportEnglishBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//        _reportEnglishBtn.backgroundColor = [UIColor yellowColor];
-//    }
-//
-//    return _reportEnglishBtn;
-//
-//}
-
 -(BaseAudioButton *)reportAudioBtn{
     
     if (!_reportAudioBtn) {
@@ -1699,36 +1751,6 @@
     return _reportAudioBtn;
 }
 
-
-
-//-(UIButton *)sendMessageBtn{
-//
-//    if (!_sendMessageBtn) {
-//        _sendMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _sendMessageBtn.frame = CGRectMake( CGRectGetMaxX(self.inputTextView.frame) - 35,  kScreenWidth*0.031,kScreenWidth*0.078,kScreenWidth*0.078);
-//        _sendMessageBtn.backgroundColor = [UIColor grayColor];
-//        [_sendMessageBtn setImage:[UIImage imageNamed:@"send"] forState:UIControlStateNormal];
-//        _sendMessageBtn.layer.cornerRadius = 15;
-//        _sendMessageBtn.layer.masksToBounds = YES;
-//        [_sendMessageBtn addTarget:self action:@selector(sendMessageBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//    return _sendMessageBtn;
-//}
-
-
-//-(UIRefreshControl *)refreshController{
-//    
-//    if (!_refreshController) {
-//        
-//        _refreshController = [[UIRefreshControl alloc]init];
-//        [_refreshController addTarget:self
-//                               action:@selector(refreshView:)
-//                     forControlEvents:UIControlEventValueChanged];
-//        [_refreshController setAttributedTitle:[[NSAttributedString alloc] initWithString:@"加载更多数据。。"]];
-//    }
-//    
-//    return _refreshController;
-//}
 
 -(UIView *)bottomView{
     
@@ -1762,5 +1784,210 @@
     }
     return _backgroundImageView;
 }
+
+-(void)btn01click
+{
+    ascCount = 0;
+    self.dataArr=[NSMutableArray array];
+    self.dataSource=[NSMutableArray array];
+    [self.bottomTableView reloadData];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ChatHisTory"];
+    
+    NSLog(@"清空记录");
+    
+    [MBProgressHUD showSuccess:@"记录清除成功！"];
+    
+    self.isequal=YES;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void)btn02click
+{
+    
+    self.isequal=YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
+    [self changeIcon];
+    
+    NSLog(@"更改背景");
+    
+}
+
+- (void)changeIcon
+{
+    UIAlertController *alertController;
+    
+    __block NSUInteger blockSourceType = 0;
+    
+    // 判断是否支持相机
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        //支持访问相机与相册情况
+        alertController = [UIAlertController alertControllerWithTitle:@"选择图片" message:@"请选择做为头像的图片" preferredStyle:    UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"从相册中选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击从相册中选取");
+            //相册
+            blockSourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            
+            imagePickerController.delegate = self;
+            
+            imagePickerController.allowsEditing = YES;
+            
+            imagePickerController.sourceType = blockSourceType;
+            
+            [self presentViewController:imagePickerController animated:YES completion:nil];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击拍照");
+            //相机
+            blockSourceType = UIImagePickerControllerSourceTypeCamera;
+            
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            
+            imagePickerController.delegate = self;
+            
+            imagePickerController.allowsEditing = YES;
+            
+            imagePickerController.sourceType = blockSourceType;
+            
+            [self presentViewController:imagePickerController animated:YES completion:nil];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击取消");
+            // 取消
+            return;
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    else
+    {
+        //只支持访问相册情况
+        alertController = [UIAlertController alertControllerWithTitle:@"选择图片" message:@"请选择做为头像的图片" preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"从相册中选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击从相册中选取");
+            //相册
+            blockSourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            
+            imagePickerController.delegate = self;
+            
+            imagePickerController.allowsEditing = YES;
+            
+            imagePickerController.sourceType = blockSourceType;
+            
+            [self presentViewController:imagePickerController animated:YES completion:^{
+                
+            }];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击取消");
+            // 取消
+            return;
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
+#pragma mark - 选择图片后,回调选择
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    
+    [self.backgroundImageView setImage:image];
+    
+    NSLog(@"aa");
+    
+    NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
+    NSURL *URL = [NSURL URLWithString:urlc];
+    AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+    [securityPolicy setAllowInvalidCertificates:YES];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    [manager setSecurityPolicy:securityPolicy];
+    [manager POST:URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //获取当前时间所闻文件名，防止图片重复
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"yyyyMMddHHmmss";
+        
+        NSData *data = UIImageJPEGRepresentation(image, 0.1);
+        
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        //            NSDictionary *myDictionary = [userinfo dictionaryForKey:@"myDictionary"];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        
+        NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg",user_id[@"user_id"]];
+        
+        //            NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
+        //        NSString *name = user_id[@"user_id"];
+        
+        [formData appendPartWithFileData:data name:@"file" fileName:resultName mimeType:@"image/png"];
+        
+        //            NSString *str = [NSString stringWithFormat:@"file:///Applications/XAMPP/xamppfiles/htdocs/OralEduServer/uploadImg/%@.jpg",name];
+        //
+        //            NSDictionary *para=@{@"user_moblie":name,@"user_newurl":str};
+        //
+        //            [HttpTool postWithparamsWithURL:@"Update/UrlUpdate" andParam:para success:^(id responseObject) {
+        //                NSData *data = [[NSData allo c] initWithData:responseObject];
+        //                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        //
+        //                NSLog(@"%@",dic);
+        //
+        //
+        //
+        //
+        //            } failure:^(NSError *error) {
+        //                NSLog(@"%@",error);
+        //            }];
+        //
+        
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject);
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+    
+    
+    
+    
+}
+
 
 @end
