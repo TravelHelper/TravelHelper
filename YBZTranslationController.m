@@ -23,6 +23,9 @@
 #import "FeedBackViewController.h"
 #import "UserViewController.h"
 #import "UIImage+needkit.h"
+#import <CoreLocation/CoreLocation.h>
+#import "MBProgressHUD+XMG.h"
+
 
 #define kImageCount 5
 #define kScreenWindth    [UIScreen mainScreen].bounds.size.width
@@ -95,14 +98,15 @@
 @property(nonatomic,assign) NSString* isLogin;
 @property(nonatomic,assign) BOOL isUser;
 
-
-
+@property (nonatomic , strong)CLLocationManager *locationManager;
+@property (nonatomic , strong) NSString *address_str;
 @end
 
 @implementation YBZTranslationController{
 
     NSString *userID;
     BOOL loginStates;
+    NSString *user_identity;
 }
 
 - (void)viewDidLoad {
@@ -110,6 +114,9 @@
     [super viewDidLoad];
     self.isUser = YES;
     
+    self.address_str = [[NSString alloc] init];
+    
+    [self positioning];
     //self.view.backgroundColor = [UIColor grayColor];
     
     //[self.view addSubview:self.popularCell];
@@ -174,7 +181,7 @@
     [super viewWillAppear:animated];
      self.tabBarController.tabBar.hidden=YES;
     
-    
+    [self userIdentifierClick];
     //获取轮播图
     
     [WebAgent getFrontImagesuccess:^(id responseObject) {
@@ -672,49 +679,102 @@
 
 -(void)interpretIdentifierClick{
     
-    self.userBtn.selected = NO;
-    self.userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
-    [_userBtnImageView setImage:[UIImage imageNamed:@"译员界面 用户"]];
-    
-    self.translaterBtn.selected = YES;
-    self.translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
-    [_translaterBtnImageView setImage:[UIImage imageNamed:@"译员界面 译员"]];
     
     
-    [self.bottomView addSubview:self.Btn5];
-    [self.bottomView addSubview:self.Btn5Label];
-    [self.bottomView addSubview:self.Btn6];
-    [self.bottomView addSubview:self.Btn6Label];
-    [self.bottomView addSubview:self.Btn7];
-    [self.bottomView addSubview:self.Btn7Label];
-    [self.bottomView addSubview:self.Btn8];
-    [self.bottomView addSubview:self.Btn8Label];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+   
+    if(user_id[@"user_id"] != NULL)
+    {
+        
+        [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSString *msg=dic[@"msg"];
+            if([msg isEqualToString:@"SUCCESS"]){
+                
+                user_identity=dic[@"user_identity"];
+                NSLog(@"%@",user_identity);
+                if([user_identity isEqualToString:@"TRANSTOR"]){
+                    
+                    
+                    self.userBtn.selected = NO;
+                    self.userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
+                    [_userBtnImageView setImage:[UIImage imageNamed:@"译员界面 用户"]];
+                    
+                    self.translaterBtn.selected = YES;
+                    self.translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
+                    [_translaterBtnImageView setImage:[UIImage imageNamed:@"译员界面 译员"]];
+                    
+                    
+                    [self.bottomView addSubview:self.Btn5];
+                    [self.bottomView addSubview:self.Btn5Label];
+                    [self.bottomView addSubview:self.Btn6];
+                    [self.bottomView addSubview:self.Btn6Label];
+                    [self.bottomView addSubview:self.Btn7];
+                    [self.bottomView addSubview:self.Btn7Label];
+                    [self.bottomView addSubview:self.Btn8];
+                    [self.bottomView addSubview:self.Btn8Label];
+                    
+                    
+                    [self.Btn5 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+                    //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClick) forControlEvents:UIControlEventTouchUpInside];
+                    [self.Btn5Label setText:@"口语即时"];
+                    
+                    [self.Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+                    //[self.Btn6 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+                    [self.Btn6Label setText:@"定制翻译"];
+                    
+                    [self.Btn7 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+                    //[self.Btn7 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+                    [self.Btn7Label setText:@"悬赏大厅"];
+                    
+                    [self.Btn8 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
+                    //[self.Btn8 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+                    [self.Btn8Label setText:@"每日签到"];
+                    
+                    [self.Btn1 removeFromSuperview];
+                    [self.Btn2 removeFromSuperview];
+                    [self.Btn3 removeFromSuperview];
+                    [self.Btn4 removeFromSuperview];
+                    [self.Btn1Label removeFromSuperview];
+                    [self.Btn2Label removeFromSuperview];
+                    [self.Btn3Label removeFromSuperview];
+                    [self.Btn4Label removeFromSuperview];
+                    
+                    
+                }else{
+                    //跳转到成为议员页面！！！！
+                    NSLog(@"成为议员去吧");
+                    
+                    
+                    
+                    
+                    
+                }
+                
+                
+            }
+            
+            
+        } failure:^(NSError *error) {
+            
+            [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+            
+        }];
+
+        
+        
+
+        
+        
+    }else{
     
     
-    [self.Btn5 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
-    //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.Btn5Label setText:@"口语即时"];
+        [MBProgressHUD showError:@"请先登录！"];
     
-    [self.Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
-    //[self.Btn6 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-    [self.Btn6Label setText:@"定制翻译"];
     
-    [self.Btn7 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
-    //[self.Btn7 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-    [self.Btn7Label setText:@"悬赏大厅"];
-    
-    [self.Btn8 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
-    //[self.Btn8 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-    [self.Btn8Label setText:@"每日签到"];
-    
-    [self.Btn1 removeFromSuperview];
-    [self.Btn2 removeFromSuperview];
-    [self.Btn3 removeFromSuperview];
-    [self.Btn4 removeFromSuperview];
-    [self.Btn1Label removeFromSuperview];
-    [self.Btn2Label removeFromSuperview];
-    [self.Btn3Label removeFromSuperview];
-    [self.Btn4Label removeFromSuperview];
+    }
 }
 
 
@@ -780,7 +840,7 @@
         logVC.view.backgroundColor = [UIColor whiteColor];
         [self presentViewController:nav animated:YES completion:nil];
     }else{
-        YBZChangeLanguageViewController *changelanguageVC = [[YBZChangeLanguageViewController alloc]initWithTitle:@"切换语言"];
+        YBZChangeLanguageViewController *changelanguageVC = [[YBZChangeLanguageViewController alloc]initWithTitle:@"选择语言"];
         changelanguageVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:changelanguageVC animated:YES];
     }
@@ -1264,10 +1324,22 @@
     
     for (int i = 0; i < kImageCount; i++) {
         if(i<imgArr.count){
-        NSString *urlStr=[NSString stringWithFormat:@"%@%@",serviseId,imgArr[i]];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *img = [UIImage imageWithData:data];
+            
+            NSString *urlStr=[NSString stringWithFormat:@"http://%@%@",serviseId,imgArr[i]];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            UIImage *img = [UIImage imageWithData:data];
+            if(img){
+            
+                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.scrollView.bounds];
+                    imageView.image = img;
+                    imageView.backgroundColor = [UIColor whiteColor];
+                
+                    [self.scrollView addSubview:imageView];
+
+                
+                
+            }
             
             
              //这里之后要去修改轮播图的图源！
@@ -1399,6 +1471,79 @@
 
     
 }
+
+-(void)nextpus
+{
+    
+}
+
+-(void)positioning
+{
+    self.locationManager=[[CLLocationManager alloc] init];
+    self.locationManager.delegate=self;
+    self.locationManager.desiredAccuracy=kCLLocationAccuracyBest;
+    self.locationManager.distanceFilter=10;
+    
+    [self.locationManager requestWhenInUseAuthorization];//使用程序其间允许访问位置数据（iOS8定位需要）
+    
+    [self.locationManager startUpdatingLocation];//开启定位
+}
+
+- (void)locate{
+    // 判断定位操作是否被允许
+    if([CLLocationManager locationServicesEnabled]) {
+        //定位初始化
+        _locationManager=[[CLLocationManager alloc] init];
+        _locationManager.delegate=self;
+        _locationManager.desiredAccuracy=kCLLocationAccuracyBest;
+        _locationManager.distanceFilter=10;
+        [_locationManager startUpdatingLocation];//开启定位
+    }else {
+        //提示用户无法进行定位操作
+        //        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@提示 message:@定位不成功 ,请确认开启定位 delegate:nil cancelButtonTitle:@取消 otherButtonTitles:@确定, nil];
+        //        [alertView show];
+        
+    }
+    // 开始定位
+    [_locationManager startUpdatingLocation];
+}
+
+#pragma mark - CoreLocation Delegate
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    //此处locations存储了持续更新的位置坐标值，取最后一个值为最新位置，如果不想让其持续更新位置，则在此方法中获取到一个值之后让locationManager stopUpdatingLocation
+    CLLocation *currentLocation = [locations lastObject];
+    // 获取当前所在的城市名
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    //根据经纬度反向地理编译出地址信息
+    [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *array, NSError *error)
+     {
+         if (array.count > 0)
+         {
+             CLPlacemark *placemark = [array objectAtIndex:0];
+             //NSLog(@%@,placemark.name);//具体位置
+             //获取城市
+             NSString *city = placemark.locality;
+             if (!city) {
+                 //四大直辖市的城市信息无法通过locality获得，只能通过获取省份的方法来获得（如果city为空，则可知为直辖市）
+                 city = placemark.administrativeArea;
+             }
+             self.address_str = city;
+             NSLog(@"定位完成:%@",self.address_str);
+              self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:self.address_str style:UIBarButtonItemStylePlain target:self action:@selector(nextpus)];
+             //系统会一直更新数据，直到选择停止更新，因为我们只需要获得一次经纬度即可，所以获取之后就停止更新
+             [manager stopUpdatingLocation];
+         }else if (error == nil && [array count] == 0)
+         {
+             NSLog(@"No results were returned.");
+         }else if (error != nil)
+         {
+             NSLog(@"An error occurred = %@", error);
+         }
+     }];
+}
+
 
 @end
 
