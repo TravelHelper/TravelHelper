@@ -22,7 +22,7 @@
 #import "WebAgent.h"
 #import "FeedBackViewController.h"
 #import "MJRefresh.h"
-
+#import "YBZbtnView.h"
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
 
@@ -80,6 +80,9 @@
 @property (nonatomic,strong) NSString *voice_Language;
 @property (nonatomic,strong) NSString *trans_Language;
 @property (nonatomic,strong) UIImageView *backgroundImageView;
+
+@property (nonatomic,strong) YBZbtnView *btnview;
+@property (nonatomic,assign) BOOL isequal;
 @end
 
 @implementation QuickTransViewController{
@@ -1236,6 +1239,14 @@
     NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
     
     NSLog(@"Began!");
+    self.isequal=YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)tableView:(UITableView *)tableView BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -1544,6 +1555,30 @@
     [userDefault setObject:nil forKey:@"ChatHisTory"];
     [userDefault synchronize];
     
+    //弹出下方view
+    if (self.isequal==YES) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformMakeTranslation(0, -60);
+            self.btnview.transform =CGAffineTransformMakeTranslation(0, -60);
+            self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -60);
+            self.isequal = !self.isequal;
+        }completion:^(BOOL finished) {
+            
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformIdentity;
+            self.inputBottomView.transform = CGAffineTransformIdentity;
+            self.btnview.transform =CGAffineTransformIdentity;
+            self.isequal = !self.isequal;
+        }completion:^(BOOL finished) {
+            
+        }];
+        
+    }
+    
 }
 
 -(void)sendMessageBtnClick{
@@ -1595,6 +1630,18 @@
 
 
 #pragma mark - getters
+
+-(YBZbtnView *)btnview
+{
+    if(!_btnview)
+    {
+        _btnview = [[YBZbtnView alloc] init];
+        _btnview.backgroundColor = [UIColor lightGrayColor];
+        [_btnview.btn01 addTarget:self action:@selector(btn01click) forControlEvents:UIControlEventTouchUpInside];
+        [_btnview.btn02 addTarget:self action:@selector(btn02click) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnview;
+}
 
 -(BaseTableView *)bottomTableView{
     if (!_bottomTableView) {
@@ -1666,40 +1713,6 @@
     return _inputTextView;
 }
 
-//-(BaseAudioButton *)reportAudioBtn{
-//
-//    if (!_reportAudioBtn) {
-//        _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
-//        _reportAudioBtn.mdelegate = self;
-//        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.085);
-//        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
-//        [_reportAudioBtn setTitle:@"按住说中文" forState:UIControlStateNormal];
-//        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
-//        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
-//
-//        [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
-//
-//    }
-//
-//    return _reportAudioBtn;
-//
-//}
-//
-//-(BaseAudioButton *)reportEnglishBtn{
-//
-//    if (!_reportEnglishBtn) {
-//        _reportEnglishBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
-//        _reportEnglishBtn.mdelegate = self;
-//        _reportEnglishBtn.frame = CGRectMake(CGRectGetMaxX(self.reportAudioBtn.frame), kScreenWidth*0.02, (CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8))/2, kScreenWidth*0.085);
-//        [_reportEnglishBtn setTitle:@"按住说英语" forState:UIControlStateNormal];
-//        [_reportEnglishBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//        _reportEnglishBtn.backgroundColor = [UIColor yellowColor];
-//    }
-//
-//    return _reportEnglishBtn;
-//
-//}
-
 -(BaseAudioButton *)reportAudioBtn{
     
     if (!_reportAudioBtn) {
@@ -1716,36 +1729,6 @@
     return _reportAudioBtn;
 }
 
-
-
-//-(UIButton *)sendMessageBtn{
-//
-//    if (!_sendMessageBtn) {
-//        _sendMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _sendMessageBtn.frame = CGRectMake( CGRectGetMaxX(self.inputTextView.frame) - 35,  kScreenWidth*0.031,kScreenWidth*0.078,kScreenWidth*0.078);
-//        _sendMessageBtn.backgroundColor = [UIColor grayColor];
-//        [_sendMessageBtn setImage:[UIImage imageNamed:@"send"] forState:UIControlStateNormal];
-//        _sendMessageBtn.layer.cornerRadius = 15;
-//        _sendMessageBtn.layer.masksToBounds = YES;
-//        [_sendMessageBtn addTarget:self action:@selector(sendMessageBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//    return _sendMessageBtn;
-//}
-
-
-//-(UIRefreshControl *)refreshController{
-//    
-//    if (!_refreshController) {
-//        
-//        _refreshController = [[UIRefreshControl alloc]init];
-//        [_refreshController addTarget:self
-//                               action:@selector(refreshView:)
-//                     forControlEvents:UIControlEventValueChanged];
-//        [_refreshController setAttributedTitle:[[NSAttributedString alloc] initWithString:@"加载更多数据。。"]];
-//    }
-//    
-//    return _refreshController;
-//}
 
 -(UIView *)bottomView{
     
@@ -1778,6 +1761,18 @@
         _backgroundImageView.image = [UIImage imageNamed:@"backgroundImage"];
     }
     return _backgroundImageView;
+}
+
+-(void)btn01click
+{
+    NSLog(@"清空记录");
+}
+
+-(void)btn02click
+{
+    
+    NSLog(@"更改背景");
+    
 }
 
 @end

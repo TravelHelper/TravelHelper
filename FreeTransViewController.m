@@ -1315,18 +1315,7 @@
     return _btnview;
 }
 //
-//-(void)donghuahuishou
-//{
-//    self.isequal = YES;
-//    [UIView animateWithDuration:0.3 animations:^{
-//        self.backgroundImageView.transform =CGAffineTransformIdentity;
-//        self.inputBottomView.transform = CGAffineTransformIdentity;
-//        self.btnview.transform =CGAffineTransformIdentity;
-//    }completion:^(BOOL finished) {
-//        
-//    }];
-//
-//}
+
 //上移view上的按钮点击事件
 -(void)btn01click
 {
