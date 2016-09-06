@@ -18,11 +18,14 @@
 #import "StringTransViewController.h"
 #import "MJRefresh.h"
 #import "YBZbtnView.h"
+#import "MBProgressHUD+XMG.h"
+#import "AFNetworking.h"
+#import "AFHTTPSessionManager.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
 
-@interface FreeTransViewController ()<UITextViewDelegate,UIGestureRecognizerDelegate,BaseTableViewDelegate,BaseAudioButtonDelegate,UITableViewDataSource,UITableViewDelegate,IFlySpeechRecognizerDelegate>
+@interface FreeTransViewController ()<UITextViewDelegate,UIGestureRecognizerDelegate,BaseTableViewDelegate,BaseAudioButtonDelegate,UITableViewDataSource,UITableViewDelegate,IFlySpeechRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 #define kScreenWidth   [UIScreen mainScreen].bounds.size.width
 #define kScreenHight  [UIScreen mainScreen].bounds.size.height
@@ -80,6 +83,7 @@
     NSInteger  ascCount;
     NSString   *iFlySpeechRecognizerString;
     CGFloat    KeyboardWillShowHeight;
+    MBProgressHUD *HUD;
     
 }
 
@@ -166,11 +170,31 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(determinePlayARecord:) name:@"determinePlayARecord" object:nil];
     [self.view addSubview:self.btnview];
+    
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+    NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg.jpg",user_id[@"user_id"]];
+    
+    NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,resultName];
+    
+    NSURL *url = [NSURL URLWithString:url2];
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    UIImage *img = [UIImage imageWithData:data];
+    if(img){
+        [self.backgroundImageView setImage:img];
+    }
+
+    
+    
+    
 }
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.btnview.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 200);
+    
 }
 
 #pragma mark - 语音听写私有方法 & IFlySpeechRecognizerDelegate
@@ -1306,15 +1330,209 @@
 //上移view上的按钮点击事件
 -(void)btn01click
 {
+    ascCount = 0;
+    self.dataArr=[NSMutableArray array];
+    self.dataSource=[NSMutableArray array];
+    [self.bottomTableView reloadData];
+    
     NSLog(@"清空记录");
+    
+    [MBProgressHUD showSuccess:@"记录清除成功！"];
+    
+    self.isequal=YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)btn02click
 {
-
+    self.isequal=YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        
+    }];
+    [self changeIcon];
+    
     NSLog(@"更改背景");
 
 }
+
+
+
+- (void)changeIcon
+{
+    UIAlertController *alertController;
+    
+    __block NSUInteger blockSourceType = 0;
+    
+    // 判断是否支持相机
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        //支持访问相机与相册情况
+        alertController = [UIAlertController alertControllerWithTitle:@"选择图片" message:@"请选择做为头像的图片" preferredStyle:    UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"从相册中选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击从相册中选取");
+            //相册
+            blockSourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            
+            imagePickerController.delegate = self;
+            
+            imagePickerController.allowsEditing = YES;
+            
+            imagePickerController.sourceType = blockSourceType;
+            
+            [self presentViewController:imagePickerController animated:YES completion:nil];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击拍照");
+            //相机
+            blockSourceType = UIImagePickerControllerSourceTypeCamera;
+            
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            
+            imagePickerController.delegate = self;
+            
+            imagePickerController.allowsEditing = YES;
+            
+            imagePickerController.sourceType = blockSourceType;
+            
+            [self presentViewController:imagePickerController animated:YES completion:nil];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击取消");
+            // 取消
+            return;
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    else
+    {
+        //只支持访问相册情况
+        alertController = [UIAlertController alertControllerWithTitle:@"选择图片" message:@"请选择做为头像的图片" preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"从相册中选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击从相册中选取");
+            //相册
+            blockSourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            
+            imagePickerController.delegate = self;
+            
+            imagePickerController.allowsEditing = YES;
+            
+            imagePickerController.sourceType = blockSourceType;
+            
+            [self presentViewController:imagePickerController animated:YES completion:^{
+                
+            }];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"点击取消");
+            // 取消
+            return;
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
+#pragma mark - 选择图片后,回调选择
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    
+    [self.backgroundImageView setImage:image];
+    
+    NSLog(@"aa");
+    
+    NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
+    NSURL *URL = [NSURL URLWithString:urlc];
+    AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+    [securityPolicy setAllowInvalidCertificates:YES];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    [manager setSecurityPolicy:securityPolicy];
+    [manager POST:URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //获取当前时间所闻文件名，防止图片重复
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"yyyyMMddHHmmss";
+        
+        NSData *data = UIImageJPEGRepresentation(image, 0.1);
+        
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        //            NSDictionary *myDictionary = [userinfo dictionaryForKey:@"myDictionary"];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        
+        NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg",user_id[@"user_id"]];
+        
+        //            NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
+//        NSString *name = user_id[@"user_id"];
+        
+        [formData appendPartWithFileData:data name:@"file" fileName:resultName mimeType:@"image/png"];
+        
+        //            NSString *str = [NSString stringWithFormat:@"file:///Applications/XAMPP/xamppfiles/htdocs/OralEduServer/uploadImg/%@.jpg",name];
+        //
+        //            NSDictionary *para=@{@"user_moblie":name,@"user_newurl":str};
+        //
+        //            [HttpTool postWithparamsWithURL:@"Update/UrlUpdate" andParam:para success:^(id responseObject) {
+        //                NSData *data = [[NSData allo c] initWithData:responseObject];
+        //                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        //
+        //                NSLog(@"%@",dic);
+        //
+        //
+        //
+        //
+        //            } failure:^(NSError *error) {
+        //                NSLog(@"%@",error);
+        //            }];
+        //
+        
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject);
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+    
+
+
+    
+}
+
+
+
 @end
 
 
