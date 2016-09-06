@@ -26,6 +26,9 @@
     [super viewDidLoad];
     [self initAllNaviController];
     
+//    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"next" style:UIBarButtonItemStylePlain target:self action:@selector(nextpus:)];
+    
+    
 }
 
 -(void)initAllNaviController{

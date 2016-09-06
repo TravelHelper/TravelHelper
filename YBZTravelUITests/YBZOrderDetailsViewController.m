@@ -9,12 +9,15 @@
 #import "YBZOrderDetailsViewController.h"
 #import "GTStarsScore.h"
 #import "Masonry.h"
+#import "UIImageView+WebCache.h"
+#import "SDImageCache.h"
 
 @interface YBZOrderDetailsViewController ()<GTStarsScoreDelegate>
 @property (nonatomic,strong) UIImageView *infoImageView;
 @property (nonatomic,strong) UILabel *namelabel;
 @property (nonatomic,strong) GTStarsScore *starsView;
-@property (nonatomic,strong)  UILabel *orderlabel;
+@property (nonatomic,strong) UILabel *orderlabel;
+@property (nonatomic,strong) UILabel *ordernumberlabel;
 @end
 
 @implementation YBZOrderDetailsViewController
@@ -68,8 +71,11 @@
     if(!_infoImageView)
     {
         _infoImageView = [[UIImageView alloc] init];
-        _infoImageView.backgroundColor = [UIColor greenColor];
+        _infoImageView.layer.masksToBounds = YES;
         _infoImageView.layer.cornerRadius = SCREEN_WIDTH/16;
+        NSString *str = @"http://img1.imgtn.bdimg.com/it/u=262236517,3881457924&fm=206&gp=0.jpg";
+        NSURL *url = [NSURL URLWithString:str];
+        [_infoImageView sd_setImageWithURL:url];
     }
     return _infoImageView;
 }
@@ -91,15 +97,27 @@
     {
         _orderlabel = [[UILabel alloc] init];
         //_orderlabel.backgroundColor = [UIColor lightGrayColor];
-        _orderlabel.layer.cornerRadius = 10;
+        _orderlabel.layer.cornerRadius = 5;
         _orderlabel.textColor = [UIColor lightGrayColor];
         _orderlabel.textAlignment = NSTextAlignmentCenter;
         _orderlabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        _orderlabel.layer.borderWidth = 2.0;
+        _orderlabel.layer.borderWidth = 1.0;
         _orderlabel.text = @"订单状态，已完成";
     }
     return _orderlabel;
 }
+
+-(UILabel *)ordernumberlabel
+{
+    if(!_ordernumberlabel)
+    {
+        _ordernumberlabel = [[UILabel alloc] init];
+        _ordernumberlabel.layer.borderWidth = 1.0;
+        _ordernumberlabel.backgroundColor = [UIColor lightGrayColor];
+    }
+    return _ordernumberlabel;
+}
+
 
 -(GTStarsScore *)starsView{
     if(!_starsView){
@@ -111,7 +129,7 @@
 
 - (void)starsScore:(GTStarsScore *)starsScore valueChange:(CGFloat)value
 {
-    
+    NSLog(@"%f",value);
 }
 
 @end
