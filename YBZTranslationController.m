@@ -23,6 +23,7 @@
 #import "FeedBackViewController.h"
 #import "UserViewController.h"
 #import "UIImage+needkit.h"
+#import "YBZChooseTranslatorViewController.h"
 
 #define kImageCount 5
 #define kScreenWindth    [UIScreen mainScreen].bounds.size.width
@@ -600,8 +601,8 @@
 - (void)tapUIscrollView{
     
     NSLog(@"%ld",(long)self.pageControl.currentPage);
-    
-    
+    YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
     
     //
     //    switch (i = self.pageControl.currentPage) {
