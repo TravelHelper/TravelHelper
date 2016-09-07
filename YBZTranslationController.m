@@ -175,6 +175,28 @@
     [self startTimer];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recieveARemoteRequire:) name:@"recieveARemoteRequire" object:nil];
     
+    //获取轮播图
+    
+    dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //2.添加任务到队列中，就可以执行任务
+    //异步函数：具备开启新线程的能力
+    dispatch_async(queue, ^{
+        // 在另一个线程中启动下载功能，加GCD控制
+        
+        [WebAgent getFrontImagesuccess:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSArray *arr=dic[@"data"];
+            NSLog(@"%@",arr);
+            [self addImageViewWithdata:arr];
+            
+            
+        } failure:^(NSError *error) {
+            
+        }];
+        
+
+    });
 }
 
 
@@ -188,18 +210,7 @@
      self.tabBarController.tabBar.hidden=YES;
     [self getLoginState];
     [self userIdentifierClick];
-    //获取轮播图
-    
-    [WebAgent getFrontImagesuccess:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSArray *arr=dic[@"data"];
-        NSLog(@"%@",arr);
-        [self addImageViewWithdata:arr];
-     
-    } failure:^(NSError *error) {
-        
-    }];
+
     
 
 
@@ -1323,6 +1334,8 @@
             UIImage *img = [UIImage imageWithData:data];
             if(img){
             
+                
+                
                     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.scrollView.bounds];
                     imageView.image = img;
                     imageView.backgroundColor = [UIColor whiteColor];
