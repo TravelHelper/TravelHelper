@@ -247,10 +247,12 @@ static NSString * userStr;
                                 //失败
                             }];
                             
+
                             
                             
                             
                                                   }else{
+
                             [self showMssage:@"验证码错误" becomeFirstResponder:nil];
                         }
                         

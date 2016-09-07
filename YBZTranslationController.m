@@ -185,7 +185,7 @@
     self.navigationItem.hidesBackButton = NO;
     
      self.tabBarController.tabBar.hidden=YES;
-    
+    [self getLoginState];
     [self userIdentifierClick];
     //获取轮播图
     

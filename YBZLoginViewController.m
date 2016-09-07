@@ -176,15 +176,7 @@
                                                  failure:^(NSError *error) {
                                                      NSLog(@"原本222222222的错误%@",error);
                                                  }];
-//                                [JPUSHService setTags:nil alias:userID[@"user_id"] fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias)
-//                                 {
-//                                     
-//                                     NSLog(@"isrescode----%d, itags------%@,ialias--------%@",iResCode,iTags,iAlias);
-//                                 }];
 
-                                
-                                //------------------
-//                                [userDefaults setObject:useridDic forKey:@"user_id"];
                                  [self reloadcell];
                                 [self dismissViewControllerAnimated:YES completion:nil]; 
                                 
