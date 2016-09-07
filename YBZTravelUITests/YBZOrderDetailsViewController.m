@@ -11,13 +11,15 @@
 #import "Masonry.h"
 #import "UIImageView+WebCache.h"
 #import "SDImageCache.h"
-
+#import "YBZOrderDetailsView.h"
 @interface YBZOrderDetailsViewController ()<GTStarsScoreDelegate>
 @property (nonatomic,strong) UIImageView *infoImageView;
 @property (nonatomic,strong) UILabel *namelabel;
 @property (nonatomic,strong) GTStarsScore *starsView;
 @property (nonatomic,strong) UILabel *orderlabel;
 @property (nonatomic,strong) UILabel *ordernumberlabel;
+@property (nonatomic,strong) YBZOrderDetailsView *orderview;
+
 @end
 
 @implementation YBZOrderDetailsViewController
@@ -34,7 +36,8 @@
     [self.starsView setToValue:0.5];//设置分值
     [self.starsView toRemoveGesture];
     [self.view addSubview:self.orderlabel];
-
+    [self.view addSubview:self.ordernumberlabel];
+    [self.view addSubview:self.orderview];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,7 +66,12 @@
         make.centerX.equalTo(self.view);
         make.top.equalTo(self.view).with.offset(200);
     }];
-    
+    [self.ordernumberlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(30, 15));
+        make.top.equalTo(self.view).with.offset(110);
+        make.left.equalTo(self.starsView).with.offset(85);
+    }];
+    self.orderview.frame = CGRectMake(0, 250, SCREEN_WIDTH ,250);
 }
 
 -(UIImageView *)infoImageView
@@ -113,11 +121,23 @@
     {
         _ordernumberlabel = [[UILabel alloc] init];
         _ordernumberlabel.layer.borderWidth = 1.0;
-        _ordernumberlabel.backgroundColor = [UIColor lightGrayColor];
+        //_ordernumberlabel.backgroundColor = [UIColor lightGrayColor];
+        _ordernumberlabel.text = @"75单";
+        _ordernumberlabel.font = [UIFont fontWithName:@"Helvetica" size:12];
+        _ordernumberlabel.textAlignment = NSTextAlignmentCenter;
     }
     return _ordernumberlabel;
 }
 
+-(YBZOrderDetailsView *)orderview
+{
+    if(!_orderview)
+    {
+        _orderview = [[YBZOrderDetailsView alloc] init];
+        _orderview.backgroundColor = [UIColor whiteColor];
+    }
+    return _orderview;
+}
 
 -(GTStarsScore *)starsView{
     if(!_starsView){
