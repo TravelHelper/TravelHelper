@@ -23,6 +23,7 @@
 #import "FeedBackViewController.h"
 #import "UserViewController.h"
 #import "UIImage+needkit.h"
+#import "YBZChooseTranslatorViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "MBProgressHUD+XMG.h"
 
@@ -179,6 +180,10 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = NO;
+    
      self.tabBarController.tabBar.hidden=YES;
     
     [self userIdentifierClick];
@@ -607,8 +612,8 @@
 - (void)tapUIscrollView{
     
     NSLog(@"%ld",(long)self.pageControl.currentPage);
-    
-    
+    YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
     
     //
     //    switch (i = self.pageControl.currentPage) {

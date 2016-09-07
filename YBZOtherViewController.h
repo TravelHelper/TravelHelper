@@ -10,4 +10,9 @@
 
 @interface YBZOtherViewController : UIViewController
 
+@property (nonatomic, strong) NSMutableArray *chooseLanguageArr;
+@property (nonatomic, copy) void(^addLanguageBlock)(NSString *language);
+
+
+
 @end
