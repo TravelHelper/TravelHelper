@@ -846,7 +846,7 @@
             
             if([user_identity isEqualToString:@"译员"]){
                 
-                YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]initWithIdentify:@"译员"];
+                YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
                 [self.navigationController pushViewController:vc animated:YES];
                 
             }else{

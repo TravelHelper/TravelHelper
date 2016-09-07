@@ -29,6 +29,7 @@
     BOOL isRead;
     int chooseNum;
     BOOL isTranslator;
+    NSArray *selectedArr;
     NSString *addLanguage;
     NSString *userID;
     NSString *userLanguage;
@@ -36,7 +37,7 @@
 }
 
 
-- (instancetype)initWithIdentify:(NSString *)identify
+- (instancetype)initWithIdentify:(NSString *)identify AndLanguageArr:(NSArray *)languageArr
 {
     self = [super init];
     if (self) {
@@ -45,6 +46,7 @@
         }else if([identify isEqualToString:@"普通"]){
             isTranslator = NO;
         }
+        selectedArr = [NSArray arrayWithArray:languageArr];
     }
     return self;
 }
@@ -86,10 +88,13 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     userID = user_id[@"user_id"];
-    
-    NSArray *arr = @[];
-    [_chooseLanguageArr addObjectsFromArray:arr];
-}
+    if (selectedArr == nil) {
+        NSArray *arr = @[];
+        [_chooseLanguageArr addObjectsFromArray:arr];
+    }else{
+        [_chooseLanguageArr addObjectsFromArray:selectedArr];
+    }
+   }
 
 
 -(void)setAllControlsFrame{
@@ -227,7 +232,7 @@
         }
     }
     
-    [WebAgent userIdentity:@"议员" userLanguage:userLanguage userID:userID success:^(id responseObject) {
+    [WebAgent userIdentity:@"译员" userLanguage:userLanguage userID:userID success:^(id responseObject) {
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSError *error) {
@@ -286,7 +291,7 @@
         _topView.backgroundColor = [UIColor clearColor];
         UILabel * firstLabel;
         if (isTranslator == NO) {
-            firstLabel = [self getLabelWithFont:0.0887*SCREEN_WIDTH AndText:@"想要成为议员 ?" AndFrame:CGRectMake(0,0.127*SCREEN_HEIGHT-64 ,SCREEN_WIDTH , 0.0887*SCREEN_WIDTH)];
+            firstLabel = [self getLabelWithFont:0.0887*SCREEN_WIDTH AndText:@"想要成为译员 ?" AndFrame:CGRectMake(0,0.127*SCREEN_HEIGHT-64 ,SCREEN_WIDTH , 0.0887*SCREEN_WIDTH)];
         }else{
             firstLabel = [self getLabelWithFont:0.0887*SCREEN_WIDTH AndText:@"需要修改语言 ?" AndFrame:CGRectMake(0,0.127*SCREEN_HEIGHT-64 ,SCREEN_WIDTH , 0.0887*SCREEN_WIDTH)];
         }
@@ -306,7 +311,7 @@
 
     if (!_userProtocol) {
         _userProtocol = [[UILabel alloc]init];
-        _userProtocol.text = @"我已阅读《议员用户协议》";
+        _userProtocol.text = @"我已阅读《译员用户协议》";
         _userProtocol.textColor = [UIColor blackColor];
         _userProtocol.font = [UIFont systemFontOfSize:0.039*SCREEN_WIDTH];
         _userProtocol.textAlignment = NSTextAlignmentLeft;

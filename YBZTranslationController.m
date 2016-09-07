@@ -749,8 +749,8 @@
                     
                     
                 }else{
-                    //跳转到成为议员页面！！！！
-                    NSLog(@"成为议员去吧");
+                    //跳转到成为译员页面！！！！
+                    NSLog(@"成为译员去吧");
                     
                     YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
                     [self.navigationController pushViewController:vc animated:YES];
