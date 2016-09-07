@@ -10,7 +10,7 @@
 
 @interface YBZChooseTranslatorViewController : YBZBaseViewController
 
-
+- (instancetype)initWithIdentify:(NSString *)identify;
 
 
 @end

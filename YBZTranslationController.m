@@ -612,8 +612,8 @@
 - (void)tapUIscrollView{
     
     NSLog(@"%ld",(long)self.pageControl.currentPage);
-    YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
+//    YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+//    [self.navigationController pushViewController:vc animated:YES];
     
     //
     //    switch (i = self.pageControl.currentPage) {
@@ -700,7 +700,7 @@
                 
                 user_identity=dic[@"user_identity"];
                 NSLog(@"%@",user_identity);
-                if([user_identity isEqualToString:@"TRANSTOR"]){
+                if([user_identity isEqualToString:@"译员"]){
                     
                     
                     self.userBtn.selected = NO;
@@ -752,7 +752,9 @@
                     //跳转到成为议员页面！！！！
                     NSLog(@"成为议员去吧");
                     
-                    
+                    YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+                    [self.navigationController pushViewController:vc animated:YES];
+
                     
                     
                     
@@ -1051,7 +1053,7 @@
         //_myOfferBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn4.frame = CGRectMake(CGRectGetMaxX(self.Btn3.frame) + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-        [_Btn4 addTarget:self action:@selector(showMyReward) forControlEvents:UIControlEventTouchUpInside];
+//        [_Btn4 addTarget:self action:@selector(showMyReward) forControlEvents:UIControlEventTouchUpInside];
         _Btn4.layer.cornerRadius = UITranslationBtnSize / 2;
         
     }
@@ -1064,7 +1066,8 @@
         _Btn4Label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.Btn4.frame) - 35, CGRectGetMaxY(self.Btn4.frame) + 2, 70, 15)];
         //_myOfferLabel.backgroundColor = [UIColor greenColor];
         [_Btn4Label setText:@"我的悬赏"];
-        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
+        [_Btn4Label setTextColor:[UIColor grayColor]];
+//        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
 //        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
         
         _Btn4Label.textAlignment = NSTextAlignmentCenter;
@@ -1146,7 +1149,7 @@
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn7.frame = CGRectMake(CGRectGetMidX(self.Btn6.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-        [_Btn7 addTarget:self action:@selector(showRewardHall) forControlEvents:UIControlEventTouchUpInside];
+//        [_Btn7 addTarget:self action:@selector(showRewardHall) forControlEvents:UIControlEventTouchUpInside];
         _Btn7.layer.masksToBounds = YES;
         _Btn7.layer.cornerRadius = UITranslationBtnSize / 2;
         
@@ -1161,7 +1164,7 @@
         //_customMadeLabel.backgroundColor = [UIColor greenColor];
         [_Btn7Label setText:@"定制翻译"];
         [_Btn7Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-//        [_Btn7Label setTextColor:[UIColor grayColor]];
+        [_Btn7Label setTextColor:[UIColor grayColor]];
         
         _Btn7Label.textAlignment = NSTextAlignmentCenter;
         

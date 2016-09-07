@@ -23,6 +23,7 @@
 #import "GTStarsScore.h"
 #import "YBZMyOrderViewController.h"
 #import "MBProgressHUD+XMG.h"
+#import "YBZChooseTranslatorViewController.h"
 
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource,GTStarsScoreDelegate>
@@ -607,9 +608,9 @@
                 
 //                UIButton *rightBtn=[[UIButton alloc]initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)];
                 
-                if([user_identity isEqualToString:@"TRANSTOR"]){
+                if([user_identity isEqualToString:@"译员"]){
                     
-                    translatorLabel.text=@"身份：议员";
+                    translatorLabel.text=@"身份：译员";
                     
                     
                 }else{
@@ -838,6 +839,28 @@
             
             [self intoUserDetailInfoClick];
             
+        }
+        if ( section == 1 && row==0){
+        
+            
+            
+            if([user_identity isEqualToString:@"译员"]){
+                
+                YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]initWithIdentify:@"译员"];
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else{
+            
+                YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }
+            
+            
+
+            
+            
+        
         }
         if ( section == 2 && row==0) {
             [MBProgressHUD showError:@"敬请期待下次更新"];
