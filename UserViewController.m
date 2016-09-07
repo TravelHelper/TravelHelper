@@ -50,6 +50,7 @@
 
 
 
+
 @end
 
 @implementation UserViewController
@@ -63,7 +64,8 @@
     is=false;
     it=false;
     self.title = @"我的";
-    
+    user_language = self.userLanguage;
+    user_identity = self.userIdentify;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tochangeLogin) name:@"changeLogin" object:nil];
     
@@ -151,25 +153,8 @@
     {
 //        [self.view addSubview:self.mainTableView];
         
-        
-        //1.获得全局的并发队列
-        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        //2.添加任务到队列中，就可以执行任务
-        //异步函数：具备开启新线程的能力
-        dispatch_async(queue, ^{
-            // 在另一个线程中启动下载功能，加GCD控制
-            [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
-                NSData *data = [[NSData alloc]initWithData:responseObject];
-                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                NSString *msg=dic[@"msg"];
-                if([msg isEqualToString:@"SUCCESS"]){
-                    
-                    user_identity=dic[@"user_identity"];
-                    
-                    user_language=dic[@"user_language"];
-                    
-                    NSLog(@"%@",user_identity);
-                    if([user_identity isEqualToString:@"TRANSTOR"]){
+
+                    if([user_identity isEqualToString:@"译员"]){
                         //                    [self.translatorTableView removeFromSuperview];
                         [self.mainTableView setHidden:YES];
                         [self.translatorTableView setHidden:NO];
@@ -185,17 +170,13 @@
                     }
                     
                     
-                }
+        
                 
                 
-            } failure:^(NSError *error) {
-                
-                [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
-                
-            }];
+
             
             
-        });
+
         
         
      

@@ -10,4 +10,10 @@
 
 @interface UserViewController : UIViewController
 
+
+@property (nonatomic, strong)NSString *userIdentify;
+@property (nonatomic, strong)NSString *userLanguage;
+
+
+
 @end
