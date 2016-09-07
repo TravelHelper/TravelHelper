@@ -32,6 +32,8 @@
     Boolean it;
     MBProgressHUD *HUD;
     NSString *user_identity;
+    NSString *user_language;
+    
 }
 
 @property(nonatomic,strong)UITableView *mainTableView;
@@ -54,6 +56,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     user_identity=[[NSString alloc]init];
+    user_language=[[NSString alloc]init];
     self.automaticallyAdjustsScrollViewInsets = NO;//!!!!!!
     is=false;
     it=false;
@@ -130,6 +133,9 @@
             if([msg isEqualToString:@"SUCCESS"]){
 
                 user_identity=dic[@"user_identity"];
+                
+                user_language=dic[@"user_language"];
+                
                 NSLog(@"%@",user_identity);
                 if([user_identity isEqualToString:@"TRANSTOR"]){
 //                    [self.translatorTableView removeFromSuperview];
@@ -845,6 +851,10 @@
             
             
             if([user_identity isEqualToString:@"译员"]){
+                
+                
+                NSArray *arr=[user_language componentsSeparatedByString:@","];
+                
                 
                 YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]initWithIdentify:@"译员"];
                 [self.navigationController pushViewController:vc animated:YES];
