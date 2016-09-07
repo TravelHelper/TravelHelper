@@ -9,336 +9,371 @@
 #import "YBZChooseTranslatorViewController.h"
 #import "YBZOtherViewController.h"
 #import "WebAgent.h"
-#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#import "UIImage+needkit.h"
 
 
 @interface YBZChooseTranslatorViewController ()
-@property (nonatomic,strong) UILabel      *questionLabel;
-@property (nonatomic,strong) UILabel      *chooseLanguageLabel;
-@property (nonatomic,strong) UIImageView  *pointDownImage;
-@property (nonatomic,strong) UIButton     *chooseLanguagebtnEnglish;
-@property (nonatomic,strong) UIButton     *chooseLanguagebtnJapan;
-@property (nonatomic,strong) UIButton     *chooseLanguagebtnGermany;
-@property (nonatomic,strong) UIButton     *chooseLanguagebtnFrench;
-@property (nonatomic,strong) UIButton     *chooseLanguagebtnItaly;
-@property (nonatomic,strong) UIButton     *addChooseLanguagebtn;
-@property (nonatomic,strong) UIButton     *protocolBtn;
-@property (nonatomic,strong) UIButton     *agreementBtn;
-@property (nonatomic,strong) UIButton       *returnBtn;
-@property (nonatomic,strong) UIButton       *checkbox;
-@property (nonatomic,strong) NSMutableArray *allLangage;
-@property (nonatomic,strong) NSArray        *otherLangage;
-@property (nonatomic,strong) NSArray        *endLangage;
-@property (nonatomic,strong) NSString       *uploadLanguage;
 
 
+@property (nonatomic, strong) UIView *topView;
+@property (nonatomic, strong) NSMutableArray *chooseLanguageArr;
+@property (nonatomic, strong) UILabel *userProtocol;
+@property (nonatomic, strong) UIButton *protocolChooseBtn;
+@property (nonatomic, strong) UIButton *agreeBtn;
+@property (nonatomic, strong) UIButton *cancelBtn;
 
 @end
 
-@implementation YBZChooseTranslatorViewController
-   NSString     *estimate = @"0";
+@implementation YBZChooseTranslatorViewController{
+
+    BOOL isRead;
+    int chooseNum;
+    BOOL isTranslator;
+    NSArray *selectedArr;
+    NSString *addLanguage;
+    NSString *userID;
+    NSString *userLanguage;
+    UIButton *chooseBtn;
+}
+
+
+- (instancetype)initWithIdentify:(NSString *)identify AndLanguageArr:(NSArray *)languageArr
+{
+    self = [super init];
+    if (self) {
+        if ([identify isEqualToString:@"译员"]) {
+            isTranslator = YES;
+        }else if([identify isEqualToString:@"普通"]){
+            isTranslator = NO;
+        }
+        selectedArr = [NSArray arrayWithArray:languageArr];
+    }
+    return self;
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = UIColorFromRGB(0xffd703);
-     [self.view addSubview:self.questionLabel];
-     [self.view addSubview:self.chooseLanguageLabel];
-     [self.view addSubview:self.chooseLanguagebtnEnglish];
-     [self.view addSubview:self.chooseLanguagebtnJapan];
-     [self.view addSubview:self.chooseLanguagebtnGermany];
-     [self.view addSubview:self.chooseLanguagebtnFrench];
-     [self.view addSubview:self.chooseLanguagebtnItaly];
-     [self.view addSubview:self.addChooseLanguagebtn];
-     [self.view addSubview:self.protocolBtn];
-     [self.view addSubview:self.agreementBtn];
-     [self.view addSubview:self.returnBtn];
-     [self.view addSubview:self.checkbox];
-    
-    //注册观察者
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showData:) name:@"sendData" object:nil];
-    // Do any additional setup after loading the view.
-}
--(void)showData:(NSNotification *)dataNoti{
-    self.otherLangage = dataNoti.userInfo[@"data"];
-    [self.allLangage addObjectsFromArray:self.otherLangage];
-    NSLog(@"%@",self.otherLangage);
-    NSLog(@"%@",self.allLangage);
-}
-    //注销
--(void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"sendData" object:nil];
-}
-#pragma mark - getters
--(NSMutableArray *)allLangage{
-    if (!_allLangage) {
-        _allLangage = [[NSMutableArray alloc]init];
-    }
-    return _allLangage;
-}
--(UILabel *)questionLabel{
-    if (!_questionLabel) {
-        _questionLabel = [[UILabel alloc]init];
-        _questionLabel.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width-250)/2+20, 64, 250, 60);
-        _questionLabel.text = @"想要成为译员？";
-        _questionLabel.font = [UIFont systemFontOfSize:30];
-        _questionLabel.textColor = [UIColor blackColor];
-    }
-    return _questionLabel;
-}
--(UILabel *)chooseLanguageLabel{
-    if (!_chooseLanguageLabel) {
-        _chooseLanguageLabel = [[UILabel alloc]init];
-        _chooseLanguageLabel.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width-300)/2+30, CGRectGetMaxY(self.questionLabel.frame), 300, 30);
-        _chooseLanguageLabel.text = @"请选择您擅长的语种 （可多选）";
-        _chooseLanguageLabel.font = FONT_16;
-        _chooseLanguageLabel.textColor = [UIColor blackColor];
-    }
-    return _chooseLanguageLabel;
-}
--(UIImageView *)pointDownImage{
-    if (!_pointDownImage) {
-        _pointDownImage = [[UIImageView alloc]init];
-        _pointDownImage.frame = CGRectMake(150, 200, 10, 10);
-        _pointDownImage.backgroundColor = [UIColor blueColor];
-    }
-   return  _pointDownImage;
-}
--(UIButton *)chooseLanguagebtnEnglish{
-    if (!_chooseLanguagebtnEnglish) {
-        _chooseLanguagebtnEnglish = [[UIButton alloc]init];
-        _chooseLanguagebtnEnglish.frame = CGRectMake([UIScreen mainScreen].bounds.size.width/2-100, CGRectGetMaxY(self.chooseLanguageLabel.frame)+50, 60, 60);
-        [_chooseLanguagebtnEnglish setImage:[UIImage imageNamed:@"英国"] forState:UIControlStateNormal];
-        //_chooseLanguagebtn1.backgroundColor = [UIColor redColor];
-        [_chooseLanguagebtnEnglish addTarget:self action:@selector(chooseLanguagebtnEnglishClick:) forControlEvents:UIControlEventTouchUpInside];
-            [_chooseLanguagebtnEnglish setSelected:YES];
-    }
-    return _chooseLanguagebtnEnglish;
-}
--(UIButton *)chooseLanguagebtnJapan{
-    if (!_chooseLanguagebtnJapan) {
-        _chooseLanguagebtnJapan = [[UIButton alloc]init];
-        _chooseLanguagebtnJapan.frame = CGRectMake([UIScreen mainScreen].bounds.size.width/2+40, CGRectGetMaxY(self.chooseLanguageLabel.frame)+50, 60, 60);
-         [_chooseLanguagebtnJapan setImage:[UIImage imageNamed:@"日本"] forState:UIControlStateNormal];
-       // _chooseLanguagebtn2.backgroundColor = [UIColor redColor];
-        [_chooseLanguagebtnJapan addTarget:self action:@selector(chooseLanguagebtnJapanClick:) forControlEvents:UIControlEventTouchUpInside];
-            [_chooseLanguagebtnJapan setSelected:YES];
-    }
-    return _chooseLanguagebtnJapan;
-}
--(UIButton *)chooseLanguagebtnGermany{
-    if (!_chooseLanguagebtnGermany) {
-        _chooseLanguagebtnGermany = [[UIButton alloc]init];
-        _chooseLanguagebtnGermany.frame = CGRectMake([UIScreen mainScreen].bounds.size.width/2-100, CGRectGetMaxY(self.chooseLanguagebtnJapan.frame)+20, 60, 60);
-         [_chooseLanguagebtnGermany setImage:[UIImage imageNamed:@"德国"] forState:UIControlStateNormal];
-        //_chooseLanguagebtn3.backgroundColor = [UIColor redColor];
-        [_chooseLanguagebtnGermany addTarget:self action:@selector(chooseLanguagebtnGermanyClick:) forControlEvents:UIControlEventTouchUpInside];
-            [_chooseLanguagebtnGermany setSelected:YES];
-    }
-    return _chooseLanguagebtnGermany;
-}
--(UIButton *)chooseLanguagebtnFrench{
-    if (!_chooseLanguagebtnFrench) {
-        _chooseLanguagebtnFrench = [[UIButton alloc]init];
-        _chooseLanguagebtnFrench.frame = CGRectMake(CGRectGetMaxX(self.chooseLanguagebtnJapan.frame)-60,CGRectGetMaxY(self.chooseLanguagebtnJapan.frame)+20, 60,60);
-         [_chooseLanguagebtnFrench setImage:[UIImage imageNamed:@"法国"] forState:UIControlStateNormal];
-        //_chooseLanguagebtn4.backgroundColor = [UIColor redColor];
-        [_chooseLanguagebtnFrench addTarget:self action:@selector(chooseLanguagebtnFrenchClick:) forControlEvents:UIControlEventTouchUpInside];
-            [_chooseLanguagebtnFrench setSelected:YES];
-    }
-    return _chooseLanguagebtnFrench;
-}
--(UIButton *)chooseLanguagebtnItaly{
-    if (!_chooseLanguagebtnItaly) {
-        _chooseLanguagebtnItaly = [[UIButton alloc]init];
-        _chooseLanguagebtnItaly.frame = CGRectMake(CGRectGetMaxX(self.chooseLanguagebtnGermany.frame)-60,  CGRectGetMaxY(self.chooseLanguagebtnGermany.frame)+20, 60, 60);
-         [_chooseLanguagebtnItaly setImage:[UIImage imageNamed:@"意大利"] forState:UIControlStateNormal];
-      //  [_chooseLanguagebtn5 setBackgroundColor:[UIColor redColor]];
-        [_chooseLanguagebtnItaly addTarget:self action:@selector(chooseLanguagebtnItalyClick:)forControlEvents:UIControlEventTouchUpInside];
-        [_chooseLanguagebtnItaly setSelected:YES];
-    }
-    return _chooseLanguagebtnItaly;
-}
--(UIButton *)addChooseLanguagebtn{
-    if (!_addChooseLanguagebtn) {
-        _addChooseLanguagebtn = [[UIButton alloc]init];
-        _addChooseLanguagebtn.frame = CGRectMake(CGRectGetMaxX(self.chooseLanguagebtnFrench.frame)-60,  CGRectGetMaxY(self.chooseLanguagebtnGermany.frame)+20, 60, 60);
-     [_addChooseLanguagebtn setImage:[UIImage imageNamed:@"加语言"] forState:UIControlStateNormal];
-        [_addChooseLanguagebtn addTarget:self action:@selector(addChooseLanguagebtnClick) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _addChooseLanguagebtn;
-}
+    //设置背景颜色
+    _chooseLanguageArr = [NSMutableArray array];
+    isRead = NO;
+    chooseNum = 0;
+//    isTranslator = YES;
+    [self getData];
+    [self setBackgroundImagePict];
+    [self setAllControlsFrame];
+    [self addAllControls];
+    addLanguage = [NSString string];
 
--(UIButton *)protocolBtn{
-    if (!_protocolBtn) {
-        _protocolBtn = [[UIButton alloc]init];
-        _protocolBtn.frame = CGRectMake(CGRectGetMaxX(self.checkbox.frame)+10,  CGRectGetMaxY(self.addChooseLanguagebtn.frame)+40, 250, 30);
-        [_protocolBtn setTitle:@"我已阅读《用户译员协议》" forState:UIControlStateNormal];
-       // _protocolBtn.titleLabel.textColor = [UIColor blackColor];
-        [_protocolBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_protocolBtn addTarget:self action:@selector(protocolBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _protocolBtn;
-}
--(UIButton *)agreementBtn{
-    if (!_agreementBtn) {
-        _agreementBtn = [[UIButton alloc]init];
-        _agreementBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width/2-100,  CGRectGetMaxY(self.protocolBtn.frame)+30, 70, 40);
-        _agreementBtn.backgroundColor = [UIColor grayColor];
-         [_agreementBtn setTitle:@"同意" forState:UIControlStateNormal];
-        [_agreementBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_agreementBtn addTarget:self action:@selector(agreementBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _agreementBtn;
-}
-
-
--(UIButton *)returnBtn{
-    if (!_returnBtn) {
-        _returnBtn = [[UIButton alloc]init];
-        _returnBtn.frame = CGRectMake(CGRectGetMaxX(self.agreementBtn.frame)+60,  CGRectGetMaxY(self.protocolBtn.frame)+30, 70, 40);
-        _returnBtn.backgroundColor = [UIColor whiteColor];
-        [_returnBtn setTitle:@"返回" forState:UIControlStateNormal];
-        [_returnBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_returnBtn addTarget:self action:@selector(returnBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _returnBtn;
-}
--(UIButton *)checkbox{
-    if (!_checkbox) {
-        _checkbox = [[UIButton alloc]init];
-        _checkbox.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width-150)/2-70,  CGRectGetMaxY(self.addChooseLanguagebtn.frame)+40, 30, 30);
-        [_checkbox setImage:[UIImage imageNamed:@"同意"]forState:UIControlStateNormal];
-        [_checkbox setImage:[UIImage imageNamed:@"不同意"]forState:UIControlStateSelected];
-        [_checkbox addTarget:self action:@selector(checkboxClick:)forControlEvents:UIControlEventTouchUpInside];
-        [_checkbox setSelected:YES];
-        
-    }
-    return _checkbox;
-}
-#pragma mark - 点击事件
--(void)chooseLanguagebtnEnglishClick:(UIButton *)btn{
-    btn.selected=!btn.selected;
-    if(btn.selected){
-        [self.allLangage removeObject:@"YingYu"];
-      [_chooseLanguagebtnEnglish setBackgroundColor:[UIColor clearColor]];
-    }else{
-        //实现打勾的方法
-        [self.allLangage addObject:@"YingYu"];
-        _chooseLanguagebtnEnglish.backgroundColor = [UIColor grayColor];
-    }
- 
-}
--(void)chooseLanguagebtnJapanClick:(UIButton *)btn{
-    btn.selected=!btn.selected;
-    if(btn.selected){
-        [self.allLangage removeObject:@"RiYu"];
-        [_chooseLanguagebtnJapan setBackgroundColor:[UIColor clearColor]];
-
-    }else{
-        //实现不打勾的方法
-        [self.allLangage addObject:@"RiYu"];
-        _chooseLanguagebtnJapan.backgroundColor = [UIColor grayColor];
-    }
-}
--(void)chooseLanguagebtnGermanyClick:(UIButton *)btn{
-    btn.selected=!btn.selected;
-    if(btn.selected){
-        [self.allLangage removeObject:@"DeYu"];
-        [_chooseLanguagebtnGermany setBackgroundColor:[UIColor clearColor]];
-    }else{
-        //实现打勾的方法
-        [self.allLangage addObject:@"DeYu"];
-        _chooseLanguagebtnGermany.backgroundColor = [UIColor grayColor];
-    }
-}
--(void)chooseLanguagebtnFrenchClick:(UIButton *)btn{
-    btn.selected=!btn.selected;
-    if(btn.selected){
-        [self.allLangage removeObject:@"FaYu"];
-        [_chooseLanguagebtnFrench setBackgroundColor:[UIColor clearColor]];
-    }else{
-        //实现不打勾的方法
-        [self.allLangage addObject:@"FaYu"];
-        _chooseLanguagebtnFrench.backgroundColor = [UIColor grayColor];
-    }
-}
--(void)chooseLanguagebtnItalyClick:(UIButton *)btn{
-    btn.selected=!btn.selected;
-    if(btn.selected){
-        //实现打勾时的方法
-        
-        [self.allLangage removeObject:@"YiDaLiYu"];
-        [_chooseLanguagebtnItaly setBackgroundColor:[UIColor clearColor]];
-        
-    }else{
-            //实现不打勾的方法
-        [self.allLangage addObject:@"YiDaLiYu"];
-        _chooseLanguagebtnItaly.backgroundColor = [UIColor grayColor];
-    }
-
-}
--(void)addChooseLanguagebtnClick{
-    YBZOtherViewController *otherVC = [[YBZOtherViewController alloc]init];
-    [self presentViewController:otherVC animated:YES completion:nil];
-}
--(void)protocolBtnClick{
     
 }
--(void)agreementBtnClick{
-    if ([estimate isEqual:@"0"]) {
-        NSLog(@"%@",self.allLangage);
-        NSLog(@"%@",self.allLangage);
-        NSLog(@"%@",self.otherLangage);
-        NSSet *set = [NSSet setWithArray:self.allLangage];
-        self.endLangage = [set allObjects];
-        NSLog(@"%@",self.endLangage);
 
-        NSString *midString;
-        for (int i = 0; i < self.endLangage.count; i++) {
- 
-            
-            midString = [NSString stringWithFormat:@"%@,",self.endLangage[i]];
-            if (self.uploadLanguage == nil) {
-                self.uploadLanguage = midString;
-            }else{
-                self.uploadLanguage = [NSString stringWithFormat:@"%@%@",self.uploadLanguage,midString];
+-(void)viewWillAppear:(BOOL)animated{
+
+    if (isTranslator == YES) {
+        [self.protocolChooseBtn removeFromSuperview];
+        [self.userProtocol removeFromSuperview];
+    }
+    [self createLanguageImageWithData];
+}
+
+
+-(void)addLanguageArr{
+
+    [_chooseLanguageArr addObject:addLanguage];
+}
+
+-(void)getData{
+
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    userID = user_id[@"user_id"];
+    if (selectedArr == nil) {
+        NSArray *arr = @[];
+        [_chooseLanguageArr addObjectsFromArray:arr];
+    }else{
+        [_chooseLanguageArr addObjectsFromArray:selectedArr];
+    }
+   }
+
+
+-(void)setAllControlsFrame{
+    
+    self.topView.frame = CGRectMake(0, 64, SCREEN_WIDTH, 0.264*SCREEN_HEIGHT-64);
+    self.userProtocol.frame = CGRectMake(0.3*SCREEN_WIDTH, 0.694*SCREEN_HEIGHT, 0.7*SCREEN_WIDTH, 0.039*SCREEN_WIDTH);
+    self.protocolChooseBtn.frame = CGRectMake(0.224*SCREEN_WIDTH, 0.689*SCREEN_HEIGHT, 0.059*SCREEN_WIDTH, 0.059*SCREEN_WIDTH);
+    self.agreeBtn.frame = CGRectMake(0.234*SCREEN_WIDTH, 0.838*SCREEN_HEIGHT, 0.228*SCREEN_WIDTH, 0.05*SCREEN_HEIGHT);
+    self.cancelBtn.frame = CGRectMake(0.538*SCREEN_WIDTH, 0.838*SCREEN_HEIGHT, 0.228*SCREEN_WIDTH, 0.05*SCREEN_HEIGHT);
+}
+
+-(void)addAllControls{
+    
+    [self.view addSubview:self.topView];
+    [self.view addSubview:self.userProtocol];
+    [self.view addSubview:self.protocolChooseBtn];
+    [self.view addSubview:self.agreeBtn];
+    [self.view addSubview:self.cancelBtn];
+}
+
+
+-(void)createLanguageImageWithData{
+
+    if (_chooseLanguageArr.count == 6) {
+        for (int i = 0 ; i < 3 ; i++ ) {
+            for (int j = 0 ; j < 2; j++) {
+                NSString *str = _chooseLanguageArr[i*2+j];
+                [self creatBtnWithBorderAndLanguage:str Andi:i Andj:j];
             }
-            NSLog(@"%@",self.uploadLanguage);
-            
-            
-          NSDictionary  *dict = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
-        [WebAgent userIdentity:@"TRANSTOR" userLanguage:self.uploadLanguage userID:dict[@"user_id"] success:^(id responseObject) {
-            
-          }failure:^(NSError *error) {
-            
-          }];
-            [self dismissViewControllerAnimated:YES completion:nil];
         }
-        
+    }else if (_chooseLanguageArr.count == 0){
+        [self addSelectLanguageBtnWithCount:_chooseLanguageArr.count];
     }else{
-        self.agreementBtn.userInteractionEnabled=NO;
+        for (int i = 0 ; i < (float)(_chooseLanguageArr.count)/2 ; i++ ) {
+            for (int j = 0 ; j+2*i<_chooseLanguageArr.count && j<2; j++) {
+                NSString *str = _chooseLanguageArr[i*2+j];
+                [self creatBtnWithBorderAndLanguage:str Andi:i Andj:j];
+            }
+        }
+        [self addSelectLanguageBtnWithCount:_chooseLanguageArr.count];
     }
+}
+
+
+
+-(void)addSelectLanguageBtnWithCount:(NSUInteger)count{
+
+     chooseBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [chooseBtn setBackgroundImage:[UIImage imageNamed:@"addLanguage"] forState:UIControlStateNormal];
+    [chooseBtn addTarget:self action:@selector(pushSelectLanguageView) forControlEvents:UIControlEventTouchUpInside];
+    int j = count%2;
+    int i = (int)count/2;
+    chooseBtn.frame = CGRectMake(0.297*SCREEN_WIDTH+j*0.234*SCREEN_WIDTH, 0.3117*SCREEN_HEIGHT+i*0.1124*SCREEN_HEIGHT, 0.171875*SCREEN_WIDTH, 0.171875*SCREEN_WIDTH);
+    chooseBtn.tag = 1000;
+    [self.view addSubview:chooseBtn];
+}
+
+
+
+
+-(void)creatBtnWithBorderAndLanguage:(NSString *)language Andi:(int)i Andj:(int)j{
+
+    UIView *view = [[UIView alloc]init];
+    view.layer.borderColor = [UIColor whiteColor].CGColor;
+    view.layer.cornerRadius = 0.015*SCREEN_WIDTH;
+    view.layer.borderWidth = 0.003125*SCREEN_WIDTH;
+    view.backgroundColor = [UIColor clearColor];
+    view.frame = CGRectMake(0.297*SCREEN_WIDTH+j*0.234*SCREEN_WIDTH, 0.3117*SCREEN_HEIGHT+i*0.1124*SCREEN_HEIGHT, 0.171875*SCREEN_WIDTH, 0.171875*SCREEN_WIDTH);
+    UIImage *img = [UIImage imageNamed:language];
+    UIButton *languageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [languageBtn setBackgroundImage:img forState:UIControlStateNormal];
+    languageBtn.frame = CGRectMake(0.0054*SCREEN_WIDTH, 0.0054*SCREEN_WIDTH, 0.161*SCREEN_WIDTH, 0.161*SCREEN_WIDTH);
+    languageBtn.tag = j+i*2;
+    [languageBtn addTarget:self action:@selector(changeLanguage:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:languageBtn];
+    view.tag = 100+j*10+i*10;
+    [self.view addSubview:view];
     
 }
--(void)returnBtnClick{
-          [self dismissViewControllerAnimated:YES completion:nil];
-}
--(void)checkboxClick:(UIButton *)btn{
-    estimate = @"1";
-    self.agreementBtn.userInteractionEnabled=NO;
-    self.agreementBtn.backgroundColor = [UIColor grayColor];
 
-    btn.selected=!btn.selected;
-    if(btn.selected){
-        
-    }else{
-        estimate = @"0";
-        self.agreementBtn.userInteractionEnabled=YES;
-        self.agreementBtn.backgroundColor = [UIColor whiteColor];
 
-        
-      //实现打勾时的方法
+-(void)clearAllViews{
+
+    for (UIView *view in self.view.subviews) {
+        if (view.tag>=100) {
+            [view removeFromSuperview];
+        }
     }
-   
-    //实现不打勾的方法
 }
+
+
+-(void)setBackgroundImagePict{
+
+    self.navigationController.navigationBarHidden = YES;
+    self.navigationItem.hidesBackButton = YES;
+    self.view.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:220.0f/255.0f blue:0 alpha:1.0f];
+}
+
+
+
+
+#pragma mark -----onClick-----
+-(void)loginAndBackToRoot{
+
+    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+-(void)chooseReadOrNot{
+
+    if (isRead == NO) {
+        self.protocolChooseBtn.selected = YES;
+        self.agreeBtn.enabled = YES;
+        [self.agreeBtn setBackgroundColor:[UIColor whiteColor]];
+        isRead = YES;
+    }else{
+        self.protocolChooseBtn.selected = NO;
+        self.agreeBtn.enabled = NO;
+        [self.agreeBtn setBackgroundColor:[UIColor grayColor]];
+
+        isRead = NO;
+    }
+}
+
+
+-(void)agreeToBecomeTranslator{
+
+    NSLog(@"1");
+    userLanguage = [NSString string];
+    for (int i=0; i<_chooseLanguageArr.count; i++) {
+        NSString *str = _chooseLanguageArr[i];
+        if (i==0) {
+            userLanguage = str;
+        }else{
+            userLanguage = [userLanguage stringByAppendingString:[NSString stringWithFormat:@",%@",str]];
+        }
+    }
+    
+    [WebAgent userIdentity:@"译员" userLanguage:userLanguage userID:userID success:^(id responseObject) {
+        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    
+}
+
+
+-(void)pushSelectLanguageView{
+    
+    [self clearAllViews];
+    YBZOtherViewController *vc = [[YBZOtherViewController alloc]init];
+    vc.chooseLanguageArr = [NSMutableArray array];
+    [vc.chooseLanguageArr addObjectsFromArray:_chooseLanguageArr];
+    
+    [vc setAddLanguageBlock:^(NSString *string) {
+        [_chooseLanguageArr addObject:string];
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+-(void)changeLanguage:(UIButton *)sender{
+
+    NSString *language = _chooseLanguageArr[sender.tag];
+    for (NSString *str in _chooseLanguageArr) {
+        if (language == str) {
+            [_chooseLanguageArr removeObject:str];
+            break;
+        }
+    }
+    [self clearAllViews];
+    
+    NSLog(@"%@",language);
+    YBZOtherViewController *vc = [[YBZOtherViewController alloc]init];
+    vc.chooseLanguageArr = [NSMutableArray array];
+    [vc.chooseLanguageArr addObjectsFromArray:_chooseLanguageArr];
+    [vc setAddLanguageBlock:^(NSString *string) {
+        [_chooseLanguageArr addObject:string];
+    }];
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
+
+
+
+#pragma mark -----getters-----
+
+-(UIView *)topView{
+
+    if (!_topView) {
+        _topView = [[UIView alloc]init];
+        _topView.backgroundColor = [UIColor clearColor];
+        UILabel * firstLabel;
+        if (isTranslator == NO) {
+            firstLabel = [self getLabelWithFont:0.0887*SCREEN_WIDTH AndText:@"想要成为译员 ?" AndFrame:CGRectMake(0,0.127*SCREEN_HEIGHT-64 ,SCREEN_WIDTH , 0.0887*SCREEN_WIDTH)];
+        }else{
+            firstLabel = [self getLabelWithFont:0.0887*SCREEN_WIDTH AndText:@"需要修改语言 ?" AndFrame:CGRectMake(0,0.127*SCREEN_HEIGHT-64 ,SCREEN_WIDTH , 0.0887*SCREEN_WIDTH)];
+        }
+
+        UILabel *secondLabel = [self getLabelWithFont:0.0359*SCREEN_WIDTH AndText:@"请选择您擅长的语种（可多选）" AndFrame:CGRectMake(0,0.2*SCREEN_HEIGHT-64 ,SCREEN_WIDTH , 0.0359*SCREEN_WIDTH)];
+        UIImageView *imgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"白色下三角"]];
+        imgView.frame = CGRectMake(0.4758*SCREEN_WIDTH, 0.236*SCREEN_HEIGHT-64, 0.0484*SCREEN_WIDTH, 0.02*SCREEN_HEIGHT);
+        
+        [_topView addSubview:imgView];
+        [_topView addSubview:firstLabel];
+        [_topView addSubview:secondLabel];
+    }
+    return _topView;
+}
+
+-(UILabel *)userProtocol{
+
+    if (!_userProtocol) {
+        _userProtocol = [[UILabel alloc]init];
+        _userProtocol.text = @"我已阅读《译员用户协议》";
+        _userProtocol.textColor = [UIColor blackColor];
+        _userProtocol.font = [UIFont systemFontOfSize:0.039*SCREEN_WIDTH];
+        _userProtocol.textAlignment = NSTextAlignmentLeft;
+    }
+    return _userProtocol;
+}
+
+-(UIButton *)protocolChooseBtn {
+
+    if (!_protocolChooseBtn) {
+        _protocolChooseBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_protocolChooseBtn addTarget:self action:@selector(chooseReadOrNot) forControlEvents:UIControlEventTouchUpInside];
+        [_protocolChooseBtn setBackgroundImage:[UIImage imageNamed:@"同意"] forState:UIControlStateSelected];
+        [_protocolChooseBtn setBackgroundImage:[UIImage imageNamed:@"不同意"] forState:UIControlStateNormal];
+    }
+    return _protocolChooseBtn;
+}
+
+-(UIButton *)agreeBtn{
+
+    if (!_agreeBtn) {
+        _agreeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _agreeBtn.backgroundColor = [UIColor whiteColor];
+        _agreeBtn.layer.cornerRadius = 0.015*SCREEN_WIDTH;
+        if (isTranslator == YES) {
+            [_agreeBtn setTitle:@"确 认" forState:UIControlStateNormal];
+        }else{
+            [_agreeBtn setTitle:@"同 意" forState:UIControlStateNormal];
+            _agreeBtn.enabled = NO;
+            [_agreeBtn setBackgroundColor:[UIColor grayColor]];
+        }
+        [_agreeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_agreeBtn addTarget:self action:@selector(agreeToBecomeTranslator) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _agreeBtn;
+}
+
+-(UIButton *)cancelBtn{
+    
+    if (!_cancelBtn) {
+        _cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _cancelBtn.backgroundColor = [UIColor whiteColor];
+        _cancelBtn.layer.cornerRadius = 0.015*SCREEN_WIDTH;
+        [_cancelBtn setTitle:@"取 消" forState:UIControlStateNormal];
+        [_cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_cancelBtn addTarget:self action:@selector(loginAndBackToRoot) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cancelBtn;
+}
+
+
+#pragma mark -----get方法的辅助方法-----
+
+-(UILabel *)getLabelWithFont:(CGFloat)fontSize AndText:(NSString *)text AndFrame:(CGRect)frame{
+    
+    UILabel *label = [[UILabel alloc]initWithFrame:frame];
+    label.text = text;
+    label.font = [UIFont systemFontOfSize:fontSize];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor blackColor];
+    return label;
+}
+
 @end

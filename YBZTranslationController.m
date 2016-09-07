@@ -23,7 +23,11 @@
 #import "FeedBackViewController.h"
 #import "UserViewController.h"
 #import "UIImage+needkit.h"
+#import "YBZChooseTranslatorViewController.h"
 #import <CoreLocation/CoreLocation.h>
+#import "MBProgressHUD+XMG.h"
+
+
 #define kImageCount 5
 #define kScreenWindth    [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight    [UIScreen mainScreen].bounds.size.height
@@ -103,6 +107,8 @@
 
     NSString *userID;
     BOOL loginStates;
+    NSString *user_identity;
+    NSString *user_language;
 }
 
 - (void)viewDidLoad {
@@ -169,33 +175,42 @@
     [self startTimer];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recieveARemoteRequire:) name:@"recieveARemoteRequire" object:nil];
     
+    //获取轮播图
+    
+    dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //2.添加任务到队列中，就可以执行任务
+    //异步函数：具备开启新线程的能力
+    dispatch_async(queue, ^{
+        // 在另一个线程中启动下载功能，加GCD控制
+        
+        [WebAgent getFrontImagesuccess:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSArray *arr=dic[@"data"];
+            NSLog(@"%@",arr);
+            [self addImageViewWithdata:arr];
+            
+            
+        } failure:^(NSError *error) {
+            
+        }];
+        
+
+    });
 }
 
 
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = NO;
+    
      self.tabBarController.tabBar.hidden=YES;
-    
-    
-    //获取轮播图
-    
-    [WebAgent getFrontImagesuccess:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSArray *arr=dic[@"data"];
-        NSLog(@"%@",arr);
-        [self addImageViewWithdata:arr];
-        
-        
-        
-        
-        
-        
-        
-    } failure:^(NSError *error) {
-        
-    }];
+    [self getLoginState];
+    [self userIdentifierClick];
+
     
 
 
@@ -213,7 +228,13 @@
 
 -(void)turnToUserClick{
 
+    
+    NSString *userIdentify = user_identity;
+    NSString *userLanguage = user_language;
+    NSLog(@"%@,%@",userLanguage,userIdentify);
     UserViewController   *userVC  = [[UserViewController alloc]init];
+    userVC.userIdentify = userIdentify;
+    userVC.userLanguage = userLanguage;
     [self.navigationController pushViewController:userVC animated:YES];
 
 }
@@ -256,7 +277,24 @@
                 loginStates = NO;
             }
             userID = user_id[@"user_id"];
-            
+            [WebAgent getuserTranslateState:userID success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *msg=dic[@"msg"];
+                if([msg isEqualToString:@"SUCCESS"]){
+                    
+                    user_identity=dic[@"user_identity"];
+                    user_language = dic[@"user_language"];
+                    NSLog(@"%@",user_identity);
+                }
+                
+                
+            } failure:^(NSError *error) {
+                
+                [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+                
+            }];
+
             [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
 
             } failure:^(NSError *error) {
@@ -283,102 +321,102 @@
     
     NSString *VoiceLanguage;
     NSString *TransLanguage;
-    if ([language isEqualToString:@"YingYu"]) {
+    if ([language isEqualToString:@"英语"]) {
         
         VoiceLanguage = Voice_YingYu;
         TransLanguage = Trans_YingYu;
     }
-    if ([language isEqualToString:@"MeiYu"]) {
+    if ([language isEqualToString:@"美式英语"]) {
         
         VoiceLanguage = Voice_MeiYu;
         TransLanguage = Trans_MeiYu;
     }
-    if ([language isEqualToString:@"HanYu"]) {
+    if ([language isEqualToString:@"韩语"]) {
         
         VoiceLanguage = Voice_HanYu;
         TransLanguage = Trans_HanYu;
     }
-    if ([language isEqualToString:@"XiBanYa"]) {
+    if ([language isEqualToString:@"西班牙语"]) {
         
         VoiceLanguage = Voice_XiBanYa;
         TransLanguage = Trans_XiBanYa;
     }
-    if ([language isEqualToString:@"TaiYu"]) {
+    if ([language isEqualToString:@"泰语"]) {
         
         VoiceLanguage = Voice_TaiYu;
         TransLanguage = Trans_TaiYu;
     }
-    if ([language isEqualToString:@"ALaBoYu"]) {
+    if ([language isEqualToString:@"阿拉伯语"]) {
         
         VoiceLanguage = Voice_ALaBoYu;
         TransLanguage = Trans_ALaBoYu;
     }
-    if ([language isEqualToString:@"EYu"]) {
+    if ([language isEqualToString:@"俄语"]) {
         
         VoiceLanguage = Voice_EYu;
         TransLanguage = Trans_EYu;
     }
-    if ([language isEqualToString:@"PuTaoYaYu"]) {
+    if ([language isEqualToString:@"葡萄牙语"]) {
         
         VoiceLanguage = Voice_PuTaoYaYu;
         TransLanguage = Trans_PuTaoYaYu;
     }
-    if ([language isEqualToString:@"XiLaYu"]) {
+    if ([language isEqualToString:@"希腊语"]) {
         
         VoiceLanguage = Voice_XiLaYu;
         TransLanguage = Trans_XiLaYu;
     }
-    if ([language isEqualToString:@"HeLanYu"]) {
+    if ([language isEqualToString:@"荷兰语"]) {
         
         VoiceLanguage = Voice_HeLanYu;
         TransLanguage = Trans_HeLanYu;
     }
-    if ([language isEqualToString:@"BoLanYu"]) {
+    if ([language isEqualToString:@"波兰语"]) {
         
         VoiceLanguage = Voice_BoLanYu;
         TransLanguage = Trans_BoLanYu;
     }
-    if ([language isEqualToString:@"DanMaiYu"]) {
+    if ([language isEqualToString:@"丹麦语"]) {
         
         VoiceLanguage = Voice_DanMaiYu;
         TransLanguage = Trans_DanMaiYu;
     }
-    if ([language isEqualToString:@"FenLanYu"]) {
+    if ([language isEqualToString:@"芬兰语"]) {
         
         VoiceLanguage = Voice_FenLanYu;
         TransLanguage = Trans_FenLanYu;
     }
-    if ([language isEqualToString:@"JieKeYu"]) {
+    if ([language isEqualToString:@"捷克语"]) {
         
         VoiceLanguage = Voice_JieKeYu;
         TransLanguage = Trans_JieKeYu;
     }
-    if ([language isEqualToString:@"RuiDianYu"]) {
+    if ([language isEqualToString:@"瑞典语"]) {
         
         VoiceLanguage = Voice_RuiDianYu;
         TransLanguage = Trans_RuiDianYu;
     }
-    if ([language isEqualToString:@"XiongYaLiYu"]) {
+    if ([language isEqualToString:@"匈牙利语"]) {
         
         VoiceLanguage = Voice_XiongYaLiYu;
         TransLanguage = Trans_XiongYaLiYu;
     }
-    if ([language isEqualToString:@"RiYu"]) {
+    if ([language isEqualToString:@"日语"]) {
         
         VoiceLanguage = Voice_RiYu;
         TransLanguage = Trans_RiYu;
     }
-    if ([language isEqualToString:@"FaYu"]) {
+    if ([language isEqualToString:@"法语"]) {
         
         VoiceLanguage = Voice_FaYa;
         TransLanguage = Trans_FaYu;
     }
-    if ([language isEqualToString:@"DeYu"]) {
+    if ([language isEqualToString:@"德语"]) {
         
         VoiceLanguage = Voice_DeYu;
         TransLanguage = Trans_DeYu;
     }
-    if ([language isEqualToString:@"YiDaLiYu"]) {
+    if ([language isEqualToString:@"意大利语"]) {
         
         VoiceLanguage = Voice_YiDaLiYu;
         TransLanguage = Trans_YiDaLiYu;
@@ -603,8 +641,8 @@
 - (void)tapUIscrollView{
     
     NSLog(@"%ld",(long)self.pageControl.currentPage);
-    
-    
+//    YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+//    [self.navigationController pushViewController:vc animated:YES];
     
     //
     //    switch (i = self.pageControl.currentPage) {
@@ -675,49 +713,70 @@
 
 -(void)interpretIdentifierClick{
     
-    self.userBtn.selected = NO;
-    self.userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
-    [_userBtnImageView setImage:[UIImage imageNamed:@"译员界面 用户"]];
-    
-    self.translaterBtn.selected = YES;
-    self.translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
-    [_translaterBtnImageView setImage:[UIImage imageNamed:@"译员界面 译员"]];
     
     
-    [self.bottomView addSubview:self.Btn5];
-    [self.bottomView addSubview:self.Btn5Label];
-    [self.bottomView addSubview:self.Btn6];
-    [self.bottomView addSubview:self.Btn6Label];
-    [self.bottomView addSubview:self.Btn7];
-    [self.bottomView addSubview:self.Btn7Label];
-    [self.bottomView addSubview:self.Btn8];
-    [self.bottomView addSubview:self.Btn8Label];
-    
-    
-    [self.Btn5 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
-    //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.Btn5Label setText:@"口语即时"];
-    
-    [self.Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
-    //[self.Btn6 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-    [self.Btn6Label setText:@"定制翻译"];
-    
-    [self.Btn7 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
-    //[self.Btn7 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-    [self.Btn7Label setText:@"悬赏大厅"];
-    
-    [self.Btn8 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
-    //[self.Btn8 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-    [self.Btn8Label setText:@"每日签到"];
-    
-    [self.Btn1 removeFromSuperview];
-    [self.Btn2 removeFromSuperview];
-    [self.Btn3 removeFromSuperview];
-    [self.Btn4 removeFromSuperview];
-    [self.Btn1Label removeFromSuperview];
-    [self.Btn2Label removeFromSuperview];
-    [self.Btn3Label removeFromSuperview];
-    [self.Btn4Label removeFromSuperview];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+   
+    if(user_id[@"user_id"] != NULL)
+    {
+        if([user_identity isEqualToString:@"译员"]){
+            self.userBtn.selected = NO;
+            self.userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
+            [_userBtnImageView setImage:[UIImage imageNamed:@"译员界面 用户"]];
+            self.translaterBtn.selected = YES;
+            self.translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
+            [_translaterBtnImageView setImage:[UIImage imageNamed:@"译员界面 译员"]];
+                    
+                    
+            [self.bottomView addSubview:self.Btn5];
+            [self.bottomView addSubview:self.Btn5Label];
+            [self.bottomView addSubview:self.Btn6];
+            [self.bottomView addSubview:self.Btn6Label];
+            [self.bottomView addSubview:self.Btn7];
+            [self.bottomView addSubview:self.Btn7Label];
+            [self.bottomView addSubview:self.Btn8];
+            [self.bottomView addSubview:self.Btn8Label];
+            
+            
+            [self.Btn5 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+            //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClickforControlEvents:UIControlEventTouchUpInside
+            
+            [self.Btn5Label setText:@"口语即时"];
+                    
+            [self.Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+                    //[self.Btn6 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+            [self.Btn6Label setText:@"定制翻译"];
+                    
+            [self.Btn7 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+                    //[self.Btn7 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+            [self.Btn7Label setText:@"悬赏大厅"];
+                    
+            [self.Btn8 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
+                    //[self.Btn8 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
+            [self.Btn8Label setText:@"每日签到"];
+                    
+            [self.Btn1 removeFromSuperview];
+            [self.Btn2 removeFromSuperview];
+            [self.Btn3 removeFromSuperview];
+            [self.Btn4 removeFromSuperview];
+            [self.Btn1Label removeFromSuperview];
+            [self.Btn2Label removeFromSuperview];
+            [self.Btn3Label removeFromSuperview];
+            [self.Btn4Label removeFromSuperview];
+                    
+                    
+        }else{
+                    //跳转到成为译员页面！！！！
+            NSLog(@"成为译员去吧");
+                    
+            YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+                    [self.navigationController pushViewController:vc animated:YES];
+        }
+    }else{
+        [MBProgressHUD showError:@"请先登录！"];
+
+    }
 }
 
 
@@ -783,7 +842,7 @@
         logVC.view.backgroundColor = [UIColor whiteColor];
         [self presentViewController:nav animated:YES completion:nil];
     }else{
-        YBZChangeLanguageViewController *changelanguageVC = [[YBZChangeLanguageViewController alloc]initWithTitle:@"切换语言"];
+        YBZChangeLanguageViewController *changelanguageVC = [[YBZChangeLanguageViewController alloc]initWithTitle:@"选择语言"];
         changelanguageVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:changelanguageVC animated:YES];
     }
@@ -989,7 +1048,7 @@
         //_myOfferBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn4.frame = CGRectMake(CGRectGetMaxX(self.Btn3.frame) + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-        [_Btn4 addTarget:self action:@selector(showMyReward) forControlEvents:UIControlEventTouchUpInside];
+//        [_Btn4 addTarget:self action:@selector(showMyReward) forControlEvents:UIControlEventTouchUpInside];
         _Btn4.layer.cornerRadius = UITranslationBtnSize / 2;
         
     }
@@ -1002,7 +1061,8 @@
         _Btn4Label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.Btn4.frame) - 35, CGRectGetMaxY(self.Btn4.frame) + 2, 70, 15)];
         //_myOfferLabel.backgroundColor = [UIColor greenColor];
         [_Btn4Label setText:@"我的悬赏"];
-        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
+        [_Btn4Label setTextColor:[UIColor grayColor]];
+//        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
 //        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
         
         _Btn4Label.textAlignment = NSTextAlignmentCenter;
@@ -1084,7 +1144,7 @@
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn7.frame = CGRectMake(CGRectGetMidX(self.Btn6.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-        [_Btn7 addTarget:self action:@selector(showRewardHall) forControlEvents:UIControlEventTouchUpInside];
+//        [_Btn7 addTarget:self action:@selector(showRewardHall) forControlEvents:UIControlEventTouchUpInside];
         _Btn7.layer.masksToBounds = YES;
         _Btn7.layer.cornerRadius = UITranslationBtnSize / 2;
         
@@ -1099,7 +1159,7 @@
         //_customMadeLabel.backgroundColor = [UIColor greenColor];
         [_Btn7Label setText:@"定制翻译"];
         [_Btn7Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-//        [_Btn7Label setTextColor:[UIColor grayColor]];
+        [_Btn7Label setTextColor:[UIColor grayColor]];
         
         _Btn7Label.textAlignment = NSTextAlignmentCenter;
         
@@ -1267,10 +1327,24 @@
     
     for (int i = 0; i < kImageCount; i++) {
         if(i<imgArr.count){
-        NSString *urlStr=[NSString stringWithFormat:@"%@%@",serviseId,imgArr[i]];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *img = [UIImage imageWithData:data];
+            
+            NSString *urlStr=[NSString stringWithFormat:@"http://%@%@",serviseId,imgArr[i]];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            UIImage *img = [UIImage imageWithData:data];
+            if(img){
+            
+                
+                
+                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.scrollView.bounds];
+                    imageView.image = img;
+                    imageView.backgroundColor = [UIColor whiteColor];
+                
+                    [self.scrollView addSubview:imageView];
+
+                
+                
+            }
             
             
              //这里之后要去修改轮播图的图源！

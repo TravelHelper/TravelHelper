@@ -12,7 +12,8 @@
 
 @property (nonatomic , strong) UIView *bottomView;
 @property (nonatomic , strong) UILabel *titleLabel;
-@property (nonatomic , strong) UILabel *contentLabel;
+@property (nonatomic , strong) UILabel *CNTitleLabel;
+@property (nonatomic , strong) UILabel *symbolTitleLabel;
 @property (nonatomic , strong) UIImageView *leftCountryImageView;
 @property (nonatomic , strong) UIImageView *rightCountryImageView;
 @property (nonatomic , strong) UIButton *btn;

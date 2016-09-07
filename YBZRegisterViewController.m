@@ -14,11 +14,12 @@
 #import "WebAgent.h"
 #import "NSString+SZYKit.h"
 #import "YBZChooseTranslatorViewController.h"
+#import "JPUSHService.h"
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
-
+//注册页111
 @interface YBZRegisterViewController ()<UITextFieldDelegate>
 @property(nonatomic,strong) NSTimer         *timer;
 @property(nonatomic,strong) UIImageView     *phoneImageView;
@@ -59,6 +60,7 @@ static NSString * userStr;
      [self.view addSubview:self.getCodeImageView];
      [self.view addSubview:self.getCodeBtn];
      //   [self.view addSubview:self.putCodeBtn];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toReturn) name:@"needTopop" object:nil];
      self.userShaker = [[AFViewShaker alloc]initWithView:self.phoneTextField];
      self.pswShaker = [[AFViewShaker alloc]initWithView:self.pswTextField];
      self.navigationItem.leftBarButtonItem = [UIBarButtonItem initWithNormalImage:@"return" target:self action:@selector(leftMenuClick) width:ScreenWidth*0.043 height:ScreenHeight*0.024];
@@ -154,6 +156,13 @@ static NSString * userStr;
         [self.getCodeBtn setBackgroundColor:[UIColor purpleColor]];
     }
 }
+-(void)toReturn{
+
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+    
+}
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.phoneTextField resignFirstResponder];
@@ -174,24 +183,76 @@ static NSString * userStr;
                             //                            //注册
                             NSString *user_id = [NSString stringOfUUID];
                               NSString * strid = [user_id stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
-                            NSDictionary *useridDic = @{@"user_id":strid};
-                            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                            [userDefaults setObject:useridDic forKey:@"user_id"];
                             [WebAgent userPhone:self.phoneTextField.text userPsw:self.pswTextField.text userName:self.userTextField.text userID:strid  success:^(id responseObject) {
                                 //成功
+                                
+                                NSDictionary *useridDic = @{@"user_id":strid};
+                                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                                [userDefaults setObject:useridDic forKey:@"user_id"];
+
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"Login" object:nil];
+                                
+                                
+                                
+                                
+                                [WebAgent updateUserLoginState:strid success:^(id responseObject) {
+                                    NSData *data = [[NSData alloc]initWithData:responseObject];
+                                    NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                                    
+                                    NSString *isLogin = str[@"state"];
+                                    NSLog(@"%@",isLogin);
+                                    
+                                        
+                                        [JPUSHService setTags:nil alias:strid fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias)
+                                         {
+                                             
+                                             NSLog(@"isrescode----%d, itags------%@,ialias--------%@",iResCode,iTags,iAlias);
+                                         }];
+                                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                                        NSDictionary *dict = @{@"user_loginState":@"1"};
+                                        [userinfo setObject:dict forKey:@"user_loginState"];
+                                    
+                                    
+                                    
+                                    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"注册成功" preferredStyle:UIAlertControllerStyleAlert];
+                                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                                        //                                [self dismissViewControllerAnimated:YES completion:nil];
+                                        
+                                        [[NSNotificationCenter defaultCenter]postNotificationName:@"changeLogin" object:nil];
+                                        
+                                        
+                                    
+                                        
+                                        
+                                        
+                                    }];
+                                    [alertVC addAction:okAction];
+                                    [self presentViewController:alertVC animated:YES completion:nil];
+                                }
+                                        failure:^(NSError *error) {
+                                                NSLog(@"原本222222222的错误%@",error);
+                                        }];
+                                
+                                
+                                
+                                
+                                
+
+                                
+                                
+                                
+                                
                             } failure:^(NSError *error) {
                                 //失败
                             }];
                             
-                            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"注册成功" preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//                                [self dismissViewControllerAnimated:YES completion:nil];
-                                 YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
-                                [self.navigationController pushViewController:ChooseVC animated:YES];
-                            }];
-                            [alertVC addAction:okAction];
-                            [self presentViewController:alertVC animated:YES completion:nil];
-                        }else{
+
+                            
+                            
+                            
+                                                  }else{
+
                             [self showMssage:@"验证码错误" becomeFirstResponder:nil];
                         }
                         

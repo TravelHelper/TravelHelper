@@ -23,6 +23,7 @@
 #import "GTStarsScore.h"
 #import "YBZMyOrderViewController.h"
 #import "MBProgressHUD+XMG.h"
+#import "YBZChooseTranslatorViewController.h"
 
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource,GTStarsScoreDelegate>
@@ -31,6 +32,9 @@
     Boolean it;
     MBProgressHUD *HUD;
     NSString *user_identity;
+    NSString *user_language;
+    NSString *loginMark;
+    
 }
 
 @property(nonatomic,strong)UITableView *mainTableView;
@@ -46,17 +50,25 @@
 
 
 
+
 @end
 
 @implementation UserViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    loginMark=@"0";
     user_identity=[[NSString alloc]init];
+    user_language=[[NSString alloc]init];
     self.automaticallyAdjustsScrollViewInsets = NO;//!!!!!!
     is=false;
     it=false;
     self.title = @"我的";
+    user_language = self.userLanguage;
+    user_identity = self.userIdentify;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tochangeLogin) name:@"changeLogin" object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
@@ -65,8 +77,7 @@
     //    [self.view addSubview:self.mainTableView];
     
 //    
-     [self.view addSubview:self.translatorTableView];
-     [self.view addSubview:self.mainTableView];
+    
 //    
 //    if(user_id[@"user_id"] != NULL)
 //    {
@@ -107,59 +118,78 @@
 //    }
 
 }
+-(void)tochangeLogin{
+
+    loginMark=@"1";
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"needTopop" object:nil];
+
+}
 
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = NO;
+    
     self.tabBarController.tabBar.hidden=YES;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
 //    [self.view addSubview:self.mainTableView];
 
     
+    if([loginMark isEqualToString:@"1"]){
+    
+        YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
+        [self.navigationController pushViewController:ChooseVC animated:YES];
+        loginMark=@"0";
+        
+    }
+    
     
     
     if(user_id[@"user_id"] != NULL)
     {
 //        [self.view addSubview:self.mainTableView];
-        [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
-            NSData *data = [[NSData alloc]initWithData:responseObject];
-            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSString *msg=dic[@"msg"];
-            if([msg isEqualToString:@"SUCCESS"]){
+        
 
-                user_identity=dic[@"user_identity"];
-                NSLog(@"%@",user_identity);
-                if([user_identity isEqualToString:@"TRANSTOR"]){
-//                    [self.translatorTableView removeFromSuperview];
-                    [self.mainTableView setHidden:YES];
-                    [self.translatorTableView setHidden:NO];
-                    [self.translatorTableView reloadData];
-//                    [self.view addSubview:self.translatorTableView];
+                    if([user_identity isEqualToString:@"译员"]){
+                        //                    [self.translatorTableView removeFromSuperview];
+                        [self.view addSubview:self.translatorTableView];
+//                        [self.view addSubview:self.mainTableView];
+//                        [self.mainTableView setHidden:YES];
+//                        [self.translatorTableView setHidden:NO];
+//                        [self.translatorTableView reloadData];
+                        //                    [self.view addSubview:self.translatorTableView];
+                        
+                    }else{
+                        [self.view addSubview:self.translatorTableView];
+//                        [self.view addSubview:self.mainTableView];
+//                        [self.mainTableView setHidden:YES];
+//                        [self.translatorTableView setHidden:NO];
+                        //                    [self.view addSubview:self.mainTableView];
+//                        [self.translatorTableView reloadData];
+                    }
                     
-                }else{
+                    
+        
                 
-                    [self.mainTableView setHidden:YES];
-                    [self.translatorTableView setHidden:NO];
-//                    [self.view addSubview:self.mainTableView];
-                    [self.translatorTableView reloadData];
-                }
                 
+
             
-            }
             
-            
-        } failure:^(NSError *error) {
-            
-            [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
-            
-        }];
+
+        
+        
+     
         
     }else{
-        [self.mainTableView setHidden:NO];
-        [self.translatorTableView setHidden:YES];
-
+//        [self.view addSubview:self.translatorTableView];
         [self.view addSubview:self.mainTableView];
+//        [self.mainTableView setHidden:NO];
+//        [self.translatorTableView setHidden:YES];
+
+//        [self.view addSubview:self.mainTableView];
     
     }
 
@@ -341,13 +371,13 @@
             _avatarImag.image = [UIImage imageNamed:@"translator"];
             [cell.contentView addSubview:_avatarImag];
             
-            cell.nameLable.frame=CGRectMake(70, 7, 120, 40);
+            cell.nameLable.frame=CGRectMake(70, 7, 150, 40);
             cell.nameLable.text = @"登录／注册";
         }
         if (it) {
             _avatarImag.image = [UIImage imageNamed:@"translator"];
             [cell.contentView addSubview:_avatarImag];
-            cell.nameLable.frame=CGRectMake(70, 7, 120, 40);
+            cell.nameLable.frame=CGRectMake(70, 7, 150, 40);
             cell.nameLable.text = @"登录／注册";
         }
          return cell;
@@ -459,7 +489,8 @@
         if (section != 1) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;//最右边>号
         }else{
-            cell.accessoryType = UITableViewCellAccessoryNone;
+             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//            cell.accessoryType = UITableViewCellAccessoryNone;
         }
         if ( section == 0 && row == 0) {
             //----------------------------
@@ -597,19 +628,28 @@
 //                //                gradeLabel.backgroundColor=[UIColor redColor];
 //                activityLabel.text=@"活跃度";
 //                [cell addSubview:activityLabel];
-                UILabel *translatorLabel = [[UILabel alloc]init];
                 
-                if([user_identity isEqualToString:@"TRANSTOR"]){
+                
+                
+                UILabel *translatorLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.078*SCREEN_WIDTH, 0.015*SCREEN_HEIGHT, 0.335*SCREEN_WIDTH, 0.055*SCREEN_HEIGHT)];
+//                translatorLabel.backgroundColor=[UIColor orangeColor];
+                
+                
+//                UIButton *rightBtn=[[UIButton alloc]initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)];
+                
+                if([user_identity isEqualToString:@"译员"]){
                     
+                    translatorLabel.text=@"身份：译员";
                     
                     
                 }else{
                     
-                    
+                    translatorLabel.text=@"身份：用户";
+ 
                     
                 }
                 
-                
+                [cell addSubview:translatorLabel];
                 
                 
                 
@@ -737,7 +777,7 @@
         }
     }else{
         if(indexPath.section==1){
-            return self.view.bounds.size.height * 0.12;
+            return self.view.bounds.size.height * 0.08;
         }else{
             return self.view.bounds.size.height * 0.08;
         }
@@ -828,6 +868,32 @@
             
             [self intoUserDetailInfoClick];
             
+        }
+        if ( section == 1 && row==0){
+        
+            
+            
+            if([user_identity isEqualToString:@"译员"]){
+                
+                
+                NSArray *arr=[user_language componentsSeparatedByString:@","];
+                
+                
+                YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]initWithIdentify:@"译员" AndLanguageArr:arr];
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else{
+            
+                YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }
+            
+            
+
+            
+            
+        
         }
         if ( section == 2 && row==0) {
             [MBProgressHUD showError:@"敬请期待下次更新"];

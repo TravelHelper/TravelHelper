@@ -29,8 +29,9 @@
     if (self) {
         
         [self.contentView addSubview:self.bottomView];
+        [self.contentView addSubview:self.CNTitleLabel];
         [self.contentView addSubview:self.titleLabel];
-        //[self.contentView addSubview:self.contentLabel];
+        [self.contentView addSubview:self.symbolTitleLabel];
         [self.contentView addSubview:self.leftCountryImageView];
         [self.contentView addSubview:self.rightCountryImageView];
         [self.contentView addSubview:self.btn];
@@ -92,34 +93,47 @@
     return _rightCountryImageView;
 }
 
+- (UILabel *)CNTitleLabel{
+    
+    if (!_CNTitleLabel) {
+        _CNTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(UIScreenWidth / 2 - 50, UIScreenWidth * 0.08 - 20, 80, 15 + 35)];
+        
+        _CNTitleLabel.backgroundColor = [UIColor clearColor];
+        
+        _CNTitleLabel.text = @"中文";
+        
+        //_CNTitleLabel.textAlignment = NSTextAlignmentRight;
+    }
+    return _CNTitleLabel;
+}
+
+
+- (UILabel *)symbolTitleLabel{
+    
+    if (!_symbolTitleLabel) {
+        _symbolTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(UIScreenWidth / 2 - 50, CGRectGetMidY(self.bottomView.frame) - 7, 100, 10)];
+        
+        _symbolTitleLabel.backgroundColor = [UIColor clearColor];
+        
+        _symbolTitleLabel.text = @"——";
+        
+        _symbolTitleLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _symbolTitleLabel;
+}
+
 - (UILabel *)titleLabel{
     
     if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(UIScreenWidth / 2 - 50, UIScreenWidth * 0.08, 100, UIScreenWidth * 0.04)];
+        _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(UIScreenWidth / 2 - 50, UIScreenWidth * 0.08 + 20, 100, UIScreenWidth * 0.04 + 30)];
         
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.adjustsFontSizeToFitWidth = YES;
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.textAlignment = NSTextAlignmentRight;
         
     }
     return _titleLabel;
 }
-
-- (UILabel *)contentLabel{
-    
-    if (!_contentLabel) {
-        _contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(UIScreenWidth / 2 - 40, CGRectGetMaxY(self.titleLabel.frame) + 4, 80, 15)];
-        
-        _contentLabel.backgroundColor = [UIColor redColor];
-        
-        _contentLabel.textAlignment = NSTextAlignmentCenter;
-        
-        
-    }
-    return _contentLabel;
-}
-
-
 
 
 @end

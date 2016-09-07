@@ -71,102 +71,102 @@
     
     NSString *VoiceLanguage;
     NSString *TransLanguage;
-    if ([language isEqualToString:@"YingYu"]) {
+    if ([language isEqualToString:@"英语"]) {
         
         VoiceLanguage = Voice_YingYu;
         TransLanguage = Trans_YingYu;
     }
-    if ([language isEqualToString:@"MeiYu"]) {
+    if ([language isEqualToString:@"美式英语"]) {
         
         VoiceLanguage = Voice_MeiYu;
         TransLanguage = Trans_MeiYu;
     }
-    if ([language isEqualToString:@"HanYu"]) {
+    if ([language isEqualToString:@"韩语"]) {
         
         VoiceLanguage = Voice_HanYu;
         TransLanguage = Trans_HanYu;
     }
-    if ([language isEqualToString:@"XiBanYa"]) {
+    if ([language isEqualToString:@"西班牙语"]) {
         
         VoiceLanguage = Voice_XiBanYa;
         TransLanguage = Trans_XiBanYa;
     }
-    if ([language isEqualToString:@"TaiYu"]) {
+    if ([language isEqualToString:@"泰语"]) {
         
         VoiceLanguage = Voice_TaiYu;
         TransLanguage = Trans_TaiYu;
     }
-    if ([language isEqualToString:@"ALaBoYu"]) {
+    if ([language isEqualToString:@"阿拉伯语"]) {
         
         VoiceLanguage = Voice_ALaBoYu;
         TransLanguage = Trans_ALaBoYu;
     }
-    if ([language isEqualToString:@"EYu"]) {
+    if ([language isEqualToString:@"俄语"]) {
         
         VoiceLanguage = Voice_EYu;
         TransLanguage = Trans_EYu;
     }
-    if ([language isEqualToString:@"PuTaoYaYu"]) {
+    if ([language isEqualToString:@"葡萄牙语"]) {
         
         VoiceLanguage = Voice_PuTaoYaYu;
         TransLanguage = Trans_PuTaoYaYu;
     }
-    if ([language isEqualToString:@"XiLaYu"]) {
+    if ([language isEqualToString:@"希腊语"]) {
         
         VoiceLanguage = Voice_XiLaYu;
         TransLanguage = Trans_XiLaYu;
     }
-    if ([language isEqualToString:@"HeLanYu"]) {
+    if ([language isEqualToString:@"荷兰语"]) {
         
         VoiceLanguage = Voice_HeLanYu;
         TransLanguage = Trans_HeLanYu;
     }
-    if ([language isEqualToString:@"BoLanYu"]) {
+    if ([language isEqualToString:@"波兰语"]) {
         
         VoiceLanguage = Voice_BoLanYu;
         TransLanguage = Trans_BoLanYu;
     }
-    if ([language isEqualToString:@"DanMaiYu"]) {
+    if ([language isEqualToString:@"丹麦语"]) {
         
         VoiceLanguage = Voice_DanMaiYu;
         TransLanguage = Trans_DanMaiYu;
     }
-    if ([language isEqualToString:@"FenLanYu"]) {
+    if ([language isEqualToString:@"芬兰语"]) {
         
         VoiceLanguage = Voice_FenLanYu;
         TransLanguage = Trans_FenLanYu;
     }
-    if ([language isEqualToString:@"JieKeYu"]) {
+    if ([language isEqualToString:@"捷克语"]) {
         
         VoiceLanguage = Voice_JieKeYu;
         TransLanguage = Trans_JieKeYu;
     }
-    if ([language isEqualToString:@"RuiDianYu"]) {
+    if ([language isEqualToString:@"瑞典语"]) {
         
         VoiceLanguage = Voice_RuiDianYu;
         TransLanguage = Trans_RuiDianYu;
     }
-    if ([language isEqualToString:@"XiongYaLiYu"]) {
+    if ([language isEqualToString:@"匈牙利语"]) {
         
         VoiceLanguage = Voice_XiongYaLiYu;
         TransLanguage = Trans_XiongYaLiYu;
     }
-    if ([language isEqualToString:@"RiYu"]) {
+    if ([language isEqualToString:@"日语"]) {
         
         VoiceLanguage = Voice_RiYu;
         TransLanguage = Trans_RiYu;
     }
-    if ([language isEqualToString:@"FaYu"]) {
+    if ([language isEqualToString:@"法语"]) {
         
         VoiceLanguage = Voice_FaYa;
         TransLanguage = Trans_FaYu;
     }
-    if ([language isEqualToString:@"DeYu"]) {
+    if ([language isEqualToString:@"德语"]) {
         
         VoiceLanguage = Voice_DeYu;
         TransLanguage = Trans_DeYu;
     }
-    if ([language isEqualToString:@"YiDaLiYu"]) {
+    if ([language isEqualToString:@"意大利语"]) {
         
         VoiceLanguage = Voice_YiDaLiYu;
         TransLanguage = Trans_YiDaLiYu;
@@ -182,7 +182,6 @@
     if (!_userNameLabel) {
         _userNameLabel = [[UILabel alloc]init];
         _userNameLabel.font = FONT_15;
-        
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:@"亲！正在为您寻找用户，请耐心等待!"];
         
         NSRange  qinRange = NSMakeRange(0, 2);

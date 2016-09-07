@@ -285,4 +285,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
               success:(void (^)(id responseObject))success
               failure:(void (^)(NSError *error))failure;
 
++(void)updateUserLoginState:(NSString *)userID
+                    success:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure;
+
 @end

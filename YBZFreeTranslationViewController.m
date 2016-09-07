@@ -109,7 +109,7 @@
     // Do any additional setup after loading the view.
     
     [self.view addSubview:self.backgroundImageView];
-
+    
     
     [self.view addSubview:self.CN_EN];
     [self.view addSubview:self.CN_JP];
@@ -121,7 +121,7 @@
     [self.view addSubview:self.cellView];
     
     self.navigationItem.title = @"选择语言";
-
+    
     
     [self initData];
 }
@@ -130,67 +130,67 @@
     
     self.cellArr = [[NSMutableArray alloc]init];
     
-    YBZFreeTranslationInfo *freeTranslationCellView1 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 英语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView1 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"英语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView1];
     
-    YBZFreeTranslationInfo *freeTranslationCellView2 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 美式英语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView2 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"美式英语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView2];
     
-    YBZFreeTranslationInfo *freeTranslationCellView3 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 粤语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView3 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"粤语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView3];
     
-    YBZFreeTranslationInfo *freeTranslationCellView4 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 日语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView4 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"日语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView4];
     
-    YBZFreeTranslationInfo *freeTranslationCellView5 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 韩语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView5 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"韩语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView5];
     
-    YBZFreeTranslationInfo *freeTranslationCellView6 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 法语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView6 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"法语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView6];
     
-    YBZFreeTranslationInfo *freeTranslationCellView7 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 西班牙语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView7 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"西班牙语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView7];
     
-    YBZFreeTranslationInfo *freeTranslationCellView8 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 泰语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView8 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"泰语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView8];
     
-    YBZFreeTranslationInfo *freeTranslationCellView9 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 阿拉伯语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView9 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"阿拉伯语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView9];
     
-    YBZFreeTranslationInfo *freeTranslationCellView10 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 俄语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView10 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"俄语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView10];
     
-    YBZFreeTranslationInfo *freeTranslationCellView11 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 葡萄牙语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView11 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"葡萄牙语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView11];
     
-    YBZFreeTranslationInfo *freeTranslationCellView12 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 德语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView12 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"德语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView12];
     
-    YBZFreeTranslationInfo *freeTranslationCellView13 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 意大利语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView13 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"意大利语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView13];
     
-    YBZFreeTranslationInfo *freeTranslationCellView14 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 希腊语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView14 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"希腊语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView14];
     
-    YBZFreeTranslationInfo *freeTranslationCellView15 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 荷兰语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView15 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"荷兰语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView15];
     
-    YBZFreeTranslationInfo *freeTranslationCellView16 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 波兰语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView16 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"波兰语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView16];
     
-    YBZFreeTranslationInfo *freeTranslationCellView17 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 丹麦语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView17 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"丹麦语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView17];
     
-    YBZFreeTranslationInfo *freeTranslationCellView18 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 芬兰语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView18 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"芬兰语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView18];
     
-    YBZFreeTranslationInfo *freeTranslationCellView19 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 捷克语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView19 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"捷克语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView19];
     
-    YBZFreeTranslationInfo *freeTranslationCellView20 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 瑞典语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView20 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"瑞典语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView20];
     
-    YBZFreeTranslationInfo *freeTranslationCellView21 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"汉语 － 匈牙利语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
+    YBZFreeTranslationInfo *freeTranslationCellView21 = [[YBZFreeTranslationInfo alloc]initWithTitle:@"匈牙利语" AndContent:@"可互译" AndLeftImage:nil AndRightImage:nil];
     [self.cellArr addObject:freeTranslationCellView21];
     
     
@@ -223,7 +223,7 @@
     }
     
     cell.titleLabel.text = model.title;
-    cell.contentLabel.text = model.content;
+    //cell.CNTitleLabel.text = model.content;
     
     NSString *imageName = [NSString stringWithFormat:@"countryImg_%02ld", (long)indexPath.row];
     [cell.rightCountryImageView setImage:[UIImage imageNamed:imageName]];
