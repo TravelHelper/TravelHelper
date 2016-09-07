@@ -147,7 +147,7 @@
 -(UIButton *)cancelBtn{
 
     if (!_cancelBtn) {
-        _cancelBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH*0.04, SCREEN_WIDTH*0.11, SCREEN_WIDTH*0.25, SCREEN_WIDTH*0.08)];
+        _cancelBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH*0.04, SCREEN_WIDTH*0.08, SCREEN_WIDTH*0.25, SCREEN_WIDTH*0.08)];
         [_cancelBtn setTitle:@"放弃选择" forState:UIControlStateNormal];
         _cancelBtn.titleLabel.font = [UIFont systemFontOfSize:0.05*SCREEN_WIDTH];
         [_cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
