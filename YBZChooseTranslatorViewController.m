@@ -40,7 +40,7 @@
 {
     self = [super init];
     if (self) {
-        if ([identify isEqualToString:@"议员"]) {
+        if ([identify isEqualToString:@"译员"]) {
             isTranslator = YES;
         }else if([identify isEqualToString:@"普通"]){
             isTranslator = NO;
