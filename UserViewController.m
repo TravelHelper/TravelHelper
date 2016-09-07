@@ -33,6 +33,7 @@
     MBProgressHUD *HUD;
     NSString *user_identity;
     NSString *user_language;
+    NSString *loginMark;
     
 }
 
@@ -55,12 +56,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    loginMark=@"0";
     user_identity=[[NSString alloc]init];
     user_language=[[NSString alloc]init];
     self.automaticallyAdjustsScrollViewInsets = NO;//!!!!!!
     is=false;
     it=false;
     self.title = @"我的";
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tochangeLogin) name:@"changeLogin" object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
@@ -111,6 +117,12 @@
 //    }
 
 }
+-(void)tochangeLogin{
+
+    loginMark=@"1";
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"needTopop" object:nil];
+
+}
 
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -120,6 +132,14 @@
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
 //    [self.view addSubview:self.mainTableView];
 
+    
+    if([loginMark isEqualToString:@"1"]){
+    
+        YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
+        [self.navigationController pushViewController:ChooseVC animated:YES];
+        loginMark=@"0";
+        
+    }
     
     
     
@@ -348,13 +368,13 @@
             _avatarImag.image = [UIImage imageNamed:@"translator"];
             [cell.contentView addSubview:_avatarImag];
             
-            cell.nameLable.frame=CGRectMake(70, 7, 120, 40);
+            cell.nameLable.frame=CGRectMake(70, 7, 150, 40);
             cell.nameLable.text = @"登录／注册";
         }
         if (it) {
             _avatarImag.image = [UIImage imageNamed:@"translator"];
             [cell.contentView addSubview:_avatarImag];
-            cell.nameLable.frame=CGRectMake(70, 7, 120, 40);
+            cell.nameLable.frame=CGRectMake(70, 7, 150, 40);
             cell.nameLable.text = @"登录／注册";
         }
          return cell;

@@ -199,7 +199,8 @@
 #pragma mark -----onClick-----
 -(void)loginAndBackToRoot{
 
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)chooseReadOrNot{
@@ -233,8 +234,8 @@
     }
     
     [WebAgent userIdentity:@"译员" userLanguage:userLanguage userID:userID success:^(id responseObject) {
-        
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSError *error) {
         
     }];

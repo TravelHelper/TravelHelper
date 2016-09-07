@@ -143,11 +143,7 @@
 //#define API_HOST @"http://10.2.208.120/TravelHelper/index.php/Home/"
 
 
-<<<<<<< HEAD
 #define serviseId @"192.168.1.106"
-=======
-#define serviseId @"192.168.1.111"
->>>>>>> 165e30982ce4d20add159d8ef4fc09051b0d3cf1
 
 
 
