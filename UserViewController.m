@@ -127,6 +127,10 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = NO;
+    
     self.tabBarController.tabBar.hidden=YES;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
@@ -146,41 +150,55 @@
     if(user_id[@"user_id"] != NULL)
     {
 //        [self.view addSubview:self.mainTableView];
-        [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
-            NSData *data = [[NSData alloc]initWithData:responseObject];
-            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSString *msg=dic[@"msg"];
-            if([msg isEqualToString:@"SUCCESS"]){
-
-                user_identity=dic[@"user_identity"];
-                
-                user_language=dic[@"user_language"];
-                
-                NSLog(@"%@",user_identity);
-                if([user_identity isEqualToString:@"TRANSTOR"]){
-//                    [self.translatorTableView removeFromSuperview];
-                    [self.mainTableView setHidden:YES];
-                    [self.translatorTableView setHidden:NO];
-                    [self.translatorTableView reloadData];
-//                    [self.view addSubview:self.translatorTableView];
+        
+        
+        //1.获得全局的并发队列
+        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        //2.添加任务到队列中，就可以执行任务
+        //异步函数：具备开启新线程的能力
+        dispatch_async(queue, ^{
+            // 在另一个线程中启动下载功能，加GCD控制
+            [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *msg=dic[@"msg"];
+                if([msg isEqualToString:@"SUCCESS"]){
                     
-                }else{
-                
-                    [self.mainTableView setHidden:YES];
-                    [self.translatorTableView setHidden:NO];
-//                    [self.view addSubview:self.mainTableView];
-                    [self.translatorTableView reloadData];
+                    user_identity=dic[@"user_identity"];
+                    
+                    user_language=dic[@"user_language"];
+                    
+                    NSLog(@"%@",user_identity);
+                    if([user_identity isEqualToString:@"TRANSTOR"]){
+                        //                    [self.translatorTableView removeFromSuperview];
+                        [self.mainTableView setHidden:YES];
+                        [self.translatorTableView setHidden:NO];
+                        [self.translatorTableView reloadData];
+                        //                    [self.view addSubview:self.translatorTableView];
+                        
+                    }else{
+                        
+                        [self.mainTableView setHidden:YES];
+                        [self.translatorTableView setHidden:NO];
+                        //                    [self.view addSubview:self.mainTableView];
+                        [self.translatorTableView reloadData];
+                    }
+                    
+                    
                 }
                 
+                
+            } failure:^(NSError *error) {
+                
+                [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+                
+            }];
             
-            }
             
-            
-        } failure:^(NSError *error) {
-            
-            [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
-            
-        }];
+        });
+        
+        
+     
         
     }else{
         [self.mainTableView setHidden:NO];
