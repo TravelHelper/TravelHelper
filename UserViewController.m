@@ -75,8 +75,7 @@
     //    [self.view addSubview:self.mainTableView];
     
 //    
-     [self.view addSubview:self.translatorTableView];
-     [self.view addSubview:self.mainTableView];
+    
 //    
 //    if(user_id[@"user_id"] != NULL)
 //    {
@@ -171,17 +170,20 @@
                     NSLog(@"%@",user_identity);
                     if([user_identity isEqualToString:@"TRANSTOR"]){
                         //                    [self.translatorTableView removeFromSuperview];
-                        [self.mainTableView setHidden:YES];
-                        [self.translatorTableView setHidden:NO];
-                        [self.translatorTableView reloadData];
+                        [self.view addSubview:self.translatorTableView];
+//                        [self.view addSubview:self.mainTableView];
+//                        [self.mainTableView setHidden:YES];
+//                        [self.translatorTableView setHidden:NO];
+//                        [self.translatorTableView reloadData];
                         //                    [self.view addSubview:self.translatorTableView];
                         
                     }else{
-                        
-                        [self.mainTableView setHidden:YES];
-                        [self.translatorTableView setHidden:NO];
+                        [self.view addSubview:self.translatorTableView];
+//                        [self.view addSubview:self.mainTableView];
+//                        [self.mainTableView setHidden:YES];
+//                        [self.translatorTableView setHidden:NO];
                         //                    [self.view addSubview:self.mainTableView];
-                        [self.translatorTableView reloadData];
+//                        [self.translatorTableView reloadData];
                     }
                     
                     
@@ -201,10 +203,12 @@
      
         
     }else{
-        [self.mainTableView setHidden:NO];
-        [self.translatorTableView setHidden:YES];
-
+//        [self.view addSubview:self.translatorTableView];
         [self.view addSubview:self.mainTableView];
+//        [self.mainTableView setHidden:NO];
+//        [self.translatorTableView setHidden:YES];
+
+//        [self.view addSubview:self.mainTableView];
     
     }
 

@@ -1478,7 +1478,7 @@
 
 -(void)sendAudioInfoClick{
     
-    //    NSLog(@"发送语音");
+        NSLog(@"发送语音");
 }
 
 -(void)benginRecordAudio{

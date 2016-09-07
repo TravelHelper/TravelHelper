@@ -148,7 +148,6 @@
     self.dataArr = [NSMutableArray arrayWithArray:arr];
     self.dataSource = [[NSMutableArray alloc]init];
     
-    self.cwViewController = [[CWViewController alloc]init];
     [self.view addSubview:self.bottomTableView];
     [self.view addSubview:self.inputBottomView];
     [self.inputBottomView addSubview:self.changeSendContentBtn];
@@ -236,22 +235,28 @@
 
 - (void) onError:(IFlySpeechError *) errorCode{
     
-    if ([self.cwViewController.secondString intValue] < 1 ) {
-        
-        self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
-        self.shortLabel.text = @"说话时间过短，小于1秒";
-        self.shortLabel.font = FONT_10;
-        self.shortLabel.textAlignment = NSTextAlignmentCenter;
-        self.shortLabel.backgroundColor = [UIColor clearColor];
-        [self.subBottomView addSubview:self.shortLabel];
-        
-        [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
-        
+    if(self.isCancelSendRecord == YES){
+    
     }else{
+    
+    
+//    if ([self.cwViewController.secondString intValue] < 1 ) {
+//        
+//            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+//            self.shortLabel.text = @"说话时间过短，小于1秒";
+//            self.shortLabel.font = FONT_10;
+//            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+//            self.shortLabel.backgroundColor = [UIColor clearColor];
+//            [self.subBottomView addSubview:self.shortLabel];
+//        
+//            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+//        
+//        }else{
         
         
-        [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
         
+//        }
     }
 
     NSLog(@"错误描述--->%@",errorCode);
@@ -614,7 +619,7 @@
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
     
-
+        self.cwViewController = [[CWViewController alloc]init];
         [self.view addSubview:self.bottomView];
         [self.bottomView addSubview:self.subBottomView];
 //        [self.cancelSayView removeFromSuperview];
@@ -711,17 +716,17 @@
                 self.isCancelSendRecord = YES;
                 
                 NSLog(@"取消发送语音");
-                //                [self.cwViewController pauseRecordBtnClick];
+//                [self.cwViewController pauseRecordBtnClick];
                 
                 //2.添加任务到队列中，就可以执行任务
                 //异步函数：具备开启新线程的能力
-                dispatch_async(queue, ^{
-                    // 在另一个线程中启动下载功能，加GCD控制
-                    if (self.isRecognizer == YES) {
-                        [self iFlySpeechRecognizerStop];
-                    }
-                    
-                });
+//                dispatch_async(queue, ^{
+//                    // 在另一个线程中启动下载功能，加GCD控制
+//                    if (self.isRecognizer == YES) {
+//                        [self iFlySpeechRecognizerStop];
+//                    }
+                
+//                });
 
                 
                
@@ -729,18 +734,19 @@
             }else{
                 [self.cancelSayView removeFromSuperview];
                 [self.subBottomView addSubview:self.sayView];
-                dispatch_async(queue, ^{
-                    [self.cwViewController goOnRecordBtnClick];
-                    self.isCancelSendRecord = NO;
-                    
-                    
-                    if (self.isRecognizer == NO) {
-                        [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
-                    }
-                    
-                    NSLog(@"继续录音");
-                    
-                });
+                self.isCancelSendRecord=NO;
+//                dispatch_async(queue, ^{
+//                    [self.cwViewController goOnRecordBtnClick];
+//                    self.isCancelSendRecord = NO;
+//                    
+//                    
+//                    if (self.isRecognizer == NO) {
+//                        [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
+//                    }
+//                    
+//                    NSLog(@"继续录音");
+//                    
+//                });
 
                 
                 
