@@ -856,7 +856,7 @@
                 NSArray *arr=[user_language componentsSeparatedByString:@","];
                 
                 
-                YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]initWithIdentify:@"译员"];
+                YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]initWithIdentify:@"译员" AndLanguageArr:arr];
                 [self.navigationController pushViewController:vc animated:YES];
                 
             }else{
