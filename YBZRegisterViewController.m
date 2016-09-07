@@ -185,7 +185,9 @@ static NSString * userStr;
                             
                             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"注册成功" preferredStyle:UIAlertControllerStyleAlert];
                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//                                [self dismissViewControllerAnimated:YES completion:nil];
+                                //执行登录
+                                
+                                
                                  YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
                                 [self.navigationController pushViewController:ChooseVC animated:YES];
                             }];
