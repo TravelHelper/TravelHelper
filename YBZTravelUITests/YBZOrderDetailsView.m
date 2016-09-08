@@ -12,6 +12,9 @@
 @property (nonatomic,strong) UILabel *toplabel;
 @property (nonatomic,strong) UILabel *endlabel;
 
+@property (nonatomic,strong) UILabel *haidoulabel;
+@property (nonatomic,strong) UILabel *haibilabel;
+
 @end
 
 @implementation YBZOrderDetailsView
@@ -25,6 +28,8 @@
         [self addSubview:self.typelabel];
         [self addSubview:self.OrderViewnamelabel1];
         [self addSubview:self.OrderViewnamelabel2];
+        [self addSubview:self.haidoulabel];
+        [self addSubview:self.haibilabel];
     }
     return self;
 }
@@ -33,10 +38,37 @@
 {
     [super layoutSubviews];
     self.toplabel.frame = CGRectMake(SCREEN_WIDTH/2-50, 15, 100, 30);
-    self.endlabel.frame = CGRectMake(SCREEN_WIDTH/2-50, 200, 100, 30);
+    self.endlabel.frame = CGRectMake(SCREEN_WIDTH/2-50, SCREEN_HEIGHT/2.5-50, 100, 30);
     self.typelabel.frame = CGRectMake(SCREEN_WIDTH/2-80, 50, 160, 30);
-    self.OrderViewnamelabel1.frame = CGRectMake(70, 90, SCREEN_WIDTH/2-80, 60);
-    self.OrderViewnamelabel2.frame = CGRectMake(SCREEN_WIDTH/2+10, 90, SCREEN_WIDTH/2-80, 60);
+
+    
+//    self.haidoulabel.frame = CGRectMake(70+(SCREEN_WIDTH/2-80)/2, SCREEN_HEIGHT/8+25, (SCREEN_WIDTH/2-80)/3, 40);
+//    self.haibilabel.frame = CGRectMake(SCREEN_WIDTH/2+10+(SCREEN_WIDTH/2-80)/2, SCREEN_HEIGHT/8+25, (SCREEN_WIDTH/2-80)/3, 40);
+//
+    [self.OrderViewnamelabel1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake((SCREEN_WIDTH/2-80)/1.6, SCREEN_WIDTH/8));
+        make.top.equalTo(self).with.offset(SCREEN_HEIGHT/2.6/2);
+        make.left.equalTo(self).with.offset(70);
+    }];
+    [self.OrderViewnamelabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake((SCREEN_WIDTH/2-80)/1.6, SCREEN_WIDTH/8));
+        make.top.equalTo(self).with.offset(SCREEN_HEIGHT/2.6/2);
+        make.right.equalTo(self).with.offset(-70);
+    }];
+    
+    [self.haidoulabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake((SCREEN_WIDTH/2-80)/3,SCREEN_WIDTH/12));
+        make.top.equalTo(self).with.offset(SCREEN_HEIGHT/2.6/2+10);
+        make.left.equalTo(self.OrderViewnamelabel1).with.offset(SCREEN_WIDTH/8+10);
+    }];
+    
+    [self.haibilabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake((SCREEN_WIDTH/2-80)/3,SCREEN_WIDTH/12));
+        make.top.equalTo(self).with.offset(SCREEN_HEIGHT/2.6/2+10);
+        make.left.equalTo(self.OrderViewnamelabel2).with.offset(SCREEN_WIDTH/8+10);
+    }];
+    
+    
 }
 
 -(UILabel *)toplabel
@@ -79,7 +111,12 @@
     if(!_OrderViewnamelabel1)
     {
         _OrderViewnamelabel1 = [[UILabel alloc] init];
-        _OrderViewnamelabel1.text = @"20 嗨豆";
+        //_OrderViewnamelabel1.backgroundColor = [UIColor greenColor];
+        _OrderViewnamelabel1.textAlignment = NSTextAlignmentCenter;
+        _OrderViewnamelabel1.font = [UIFont fontWithName:@"Helvetica" size:30];
+        _OrderViewnamelabel1.adjustsFontSizeToFitWidth = YES;
+        _OrderViewnamelabel1.textColor = UIColorFromRGB(0xffd703);
+        _OrderViewnamelabel1.text = @"20";
     }
     return _OrderViewnamelabel1;
 }
@@ -89,9 +126,38 @@
     if(!_OrderViewnamelabel2)
     {
         _OrderViewnamelabel2 = [[UILabel alloc] init];
-        _OrderViewnamelabel2.text = @"30 嗨币";
+        //_OrderViewnamelabel2.backgroundColor = [UIColor greenColor];
+        _OrderViewnamelabel2.textAlignment = NSTextAlignmentCenter;
+        _OrderViewnamelabel2.adjustsFontSizeToFitWidth = YES;
+        _OrderViewnamelabel2.font = [UIFont fontWithName:@"Helvetica" size:30];
+        _OrderViewnamelabel2.textColor = UIColorFromRGB(0xffd703);
+        _OrderViewnamelabel2.text = @"30";
     }
     return _OrderViewnamelabel2;
+}
+
+-(UILabel *)haidoulabel
+{
+    if(!_haidoulabel)
+    {
+        _haidoulabel = [[UILabel alloc] init];
+       // _haidoulabel.backgroundColor = [UIColor orangeColor];
+        _haidoulabel.adjustsFontSizeToFitWidth = YES;
+        _haidoulabel.text = @"嗨豆";
+    }
+    return _haidoulabel;
+}
+
+-(UILabel *)haibilabel
+{
+    if(!_haibilabel)
+    {
+        _haibilabel = [[UILabel alloc] init];
+        //_haibilabel.backgroundColor = [UIColor orangeColor];
+        _haibilabel.adjustsFontSizeToFitWidth = YES;
+        _haibilabel.text = @"嗨币";
+    }
+    return _haibilabel;
 }
 
 - (void)drawRect:(CGRect)rect
@@ -125,8 +191,8 @@
     CGContextRef ctx3 = UIGraphicsGetCurrentContext();
     CGMutablePathRef path3 = CGPathCreateMutable();
     //把绘图信息添加到路径中
-    CGPathMoveToPoint(path3, NULL, 20,220);
-    CGPathAddLineToPoint(path3, NULL, SCREEN_WIDTH/2-80, 220);
+    CGPathMoveToPoint(path3, NULL, 20,SCREEN_HEIGHT/2.5-30);
+    CGPathAddLineToPoint(path3, NULL, SCREEN_WIDTH/2-80, SCREEN_HEIGHT/2.5-30);
     //把绘图路径添加到上下文中
     CGContextAddPath(ctx3, path3);
     //渲染
@@ -138,8 +204,8 @@
     CGContextRef ctx4 = UIGraphicsGetCurrentContext();
     CGMutablePathRef path4 = CGPathCreateMutable();
     //把绘图信息添加到路径中
-    CGPathMoveToPoint(path4, NULL, SCREEN_WIDTH/2+80,220);
-    CGPathAddLineToPoint(path4, NULL, SCREEN_WIDTH-20,220);
+    CGPathMoveToPoint(path4, NULL, SCREEN_WIDTH/2+80,SCREEN_HEIGHT/2.5-30);
+    CGPathAddLineToPoint(path4, NULL, SCREEN_WIDTH-20,SCREEN_HEIGHT/2.5-30);
     //把绘图路径添加到上下文中
     CGContextAddPath(ctx4, path4);
     //渲染

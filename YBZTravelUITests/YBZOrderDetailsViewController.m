@@ -19,7 +19,7 @@
 @property (nonatomic,strong) UILabel *orderlabel;
 @property (nonatomic,strong) UILabel *ordernumberlabel;
 @property (nonatomic,strong) YBZOrderDetailsView *orderview;
-
+@property (nonatomic,strong) UILabel *thankendlabel;
 @end
 
 @implementation YBZOrderDetailsViewController
@@ -38,6 +38,7 @@
     [self.view addSubview:self.orderlabel];
     [self.view addSubview:self.ordernumberlabel];
     [self.view addSubview:self.orderview];
+    [self.view addSubview:self.thankendlabel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,14 +65,22 @@
     [self.orderlabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(150, 20));
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.view).with.offset(200);
+        make.top.equalTo(self.view).with.offset(SCREEN_HEIGHT/3.5);
     }];
     [self.ordernumberlabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(30, 15));
         make.top.equalTo(self.view).with.offset(110);
         make.left.equalTo(self.starsView).with.offset(85);
     }];
-    self.orderview.frame = CGRectMake(0, 250, SCREEN_WIDTH ,250);
+    
+    self.orderview.frame = CGRectMake(0, SCREEN_HEIGHT/2.6, SCREEN_WIDTH ,SCREEN_HEIGHT/2.5);
+    
+    [self.thankendlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(200, 35));
+        make.centerX.equalTo(self.view);
+        make.bottom.equalTo(self.view).with.offset(-30);
+    }];
+    
 }
 
 -(UIImageView *)infoImageView
@@ -127,6 +136,19 @@
         _ordernumberlabel.textAlignment = NSTextAlignmentCenter;
     }
     return _ordernumberlabel;
+}
+
+-(UILabel *)thankendlabel
+{
+    if(!_thankendlabel)
+    {
+        _thankendlabel = [[UILabel alloc] init];
+        //_thankendlabel.backgroundColor = [UIColor greenColor];
+        _thankendlabel.font = [UIFont fontWithName:@"Helvetica" size:12];
+        _thankendlabel.text = @"感谢您的评价，我们会继续努力的";
+        _thankendlabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _thankendlabel;
 }
 
 -(YBZOrderDetailsView *)orderview
