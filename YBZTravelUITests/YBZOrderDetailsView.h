@@ -12,4 +12,6 @@
 @property (nonatomic,strong) UILabel *OrderViewnamelabel1;
 @property (nonatomic,strong) UILabel *OrderViewnamelabel2;
 @property (nonatomic,strong) UILabel *typelabel;
+
+
 @end
