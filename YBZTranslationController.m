@@ -108,6 +108,7 @@
     NSString *userID;
     BOOL loginStates;
     NSString *user_identity;
+    NSString *user_language;
 }
 
 - (void)viewDidLoad {
@@ -209,6 +210,7 @@
      self.tabBarController.tabBar.hidden=YES;
     [self getLoginState];
     [self userIdentifierClick];
+
     
 
 
@@ -226,7 +228,13 @@
 
 -(void)turnToUserClick{
 
+    
+    NSString *userIdentify = user_identity;
+    NSString *userLanguage = user_language;
+    NSLog(@"%@,%@",userLanguage,userIdentify);
     UserViewController   *userVC  = [[UserViewController alloc]init];
+    userVC.userIdentify = userIdentify;
+    userVC.userLanguage = userLanguage;
     [self.navigationController pushViewController:userVC animated:YES];
 
 }
@@ -269,7 +277,24 @@
                 loginStates = NO;
             }
             userID = user_id[@"user_id"];
-            
+            [WebAgent getuserTranslateState:userID success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *msg=dic[@"msg"];
+                if([msg isEqualToString:@"SUCCESS"]){
+                    
+                    user_identity=dic[@"user_identity"];
+                    user_language = dic[@"user_language"];
+                    NSLog(@"%@",user_identity);
+                }
+                
+                
+            } failure:^(NSError *error) {
+                
+                [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+                
+            }];
+
             [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
 
             } failure:^(NSError *error) {
@@ -695,96 +720,62 @@
    
     if(user_id[@"user_id"] != NULL)
     {
-        
-        [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
-            NSData *data = [[NSData alloc]initWithData:responseObject];
-            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSString *msg=dic[@"msg"];
-            if([msg isEqualToString:@"SUCCESS"]){
-                
-                user_identity=dic[@"user_identity"];
-                NSLog(@"%@",user_identity);
-                if([user_identity isEqualToString:@"译员"]){
+        if([user_identity isEqualToString:@"译员"]){
+            self.userBtn.selected = NO;
+            self.userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
+            [_userBtnImageView setImage:[UIImage imageNamed:@"译员界面 用户"]];
+            self.translaterBtn.selected = YES;
+            self.translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
+            [_translaterBtnImageView setImage:[UIImage imageNamed:@"译员界面 译员"]];
                     
                     
-                    self.userBtn.selected = NO;
-                    self.userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
-                    [_userBtnImageView setImage:[UIImage imageNamed:@"译员界面 用户"]];
+            [self.bottomView addSubview:self.Btn5];
+            [self.bottomView addSubview:self.Btn5Label];
+            [self.bottomView addSubview:self.Btn6];
+            [self.bottomView addSubview:self.Btn6Label];
+            [self.bottomView addSubview:self.Btn7];
+            [self.bottomView addSubview:self.Btn7Label];
+            [self.bottomView addSubview:self.Btn8];
+            [self.bottomView addSubview:self.Btn8Label];
+            
+            
+            [self.Btn5 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+            //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClickforControlEvents:UIControlEventTouchUpInside
+            
+            [self.Btn5Label setText:@"口语即时"];
                     
-                    self.translaterBtn.selected = YES;
-                    self.translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
-                    [_translaterBtnImageView setImage:[UIImage imageNamed:@"译员界面 译员"]];
-                    
-                    
-                    [self.bottomView addSubview:self.Btn5];
-                    [self.bottomView addSubview:self.Btn5Label];
-                    [self.bottomView addSubview:self.Btn6];
-                    [self.bottomView addSubview:self.Btn6Label];
-                    [self.bottomView addSubview:self.Btn7];
-                    [self.bottomView addSubview:self.Btn7Label];
-                    [self.bottomView addSubview:self.Btn8];
-                    [self.bottomView addSubview:self.Btn8Label];
-                    
-                    
-                    [self.Btn5 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
-                    //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClick) forControlEvents:UIControlEventTouchUpInside];
-                    [self.Btn5Label setText:@"口语即时"];
-                    
-                    [self.Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+            [self.Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
                     //[self.Btn6 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-                    [self.Btn6Label setText:@"定制翻译"];
+            [self.Btn6Label setText:@"定制翻译"];
                     
-                    [self.Btn7 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+            [self.Btn7 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
                     //[self.Btn7 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-                    [self.Btn7Label setText:@"悬赏大厅"];
+            [self.Btn7Label setText:@"悬赏大厅"];
                     
-                    [self.Btn8 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
+            [self.Btn8 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
                     //[self.Btn8 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
-                    [self.Btn8Label setText:@"每日签到"];
+            [self.Btn8Label setText:@"每日签到"];
                     
-                    [self.Btn1 removeFromSuperview];
-                    [self.Btn2 removeFromSuperview];
-                    [self.Btn3 removeFromSuperview];
-                    [self.Btn4 removeFromSuperview];
-                    [self.Btn1Label removeFromSuperview];
-                    [self.Btn2Label removeFromSuperview];
-                    [self.Btn3Label removeFromSuperview];
-                    [self.Btn4Label removeFromSuperview];
+            [self.Btn1 removeFromSuperview];
+            [self.Btn2 removeFromSuperview];
+            [self.Btn3 removeFromSuperview];
+            [self.Btn4 removeFromSuperview];
+            [self.Btn1Label removeFromSuperview];
+            [self.Btn2Label removeFromSuperview];
+            [self.Btn3Label removeFromSuperview];
+            [self.Btn4Label removeFromSuperview];
                     
                     
-                }else{
+        }else{
                     //跳转到成为译员页面！！！！
-                    NSLog(@"成为译员去吧");
+            NSLog(@"成为译员去吧");
                     
-                    YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
+            YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]init];
                     [self.navigationController pushViewController:vc animated:YES];
-
-                    
-                    
-                    
-                }
-                
-                
-            }
-            
-            
-        } failure:^(NSError *error) {
-            
-            [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
-            
-        }];
-
-        
-        
-
-        
-        
+        }
     }else{
-    
-    
         [MBProgressHUD showError:@"请先登录！"];
-    
-    
+
     }
 }
 
