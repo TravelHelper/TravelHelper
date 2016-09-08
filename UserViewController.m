@@ -72,6 +72,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
+    
+    
 //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
 //    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     //    [self.view addSubview:self.mainTableView];
@@ -120,8 +122,10 @@
 }
 -(void)tochangeLogin{
 
-    loginMark=@"1";
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"needTopop" object:nil];
+    YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
+    [self.navigationController pushViewController:ChooseVC animated:YES];
+//    loginMark=@"1";
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"needTopop" object:nil];
 
 }
 
@@ -138,13 +142,14 @@
 //    [self.view addSubview:self.mainTableView];
 
     
-    if([loginMark isEqualToString:@"1"]){
+//    if([loginMark isEqualToString:@"1"]){
+//    
+//        YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
+//        [self.navigationController pushViewController:ChooseVC animated:YES];
+//        loginMark=@"0";
+//        
+//    }
     
-        YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
-        [self.navigationController pushViewController:ChooseVC animated:YES];
-        loginMark=@"0";
-        
-    }
     
     if(user_id[@"user_id"] != NULL)
     {
