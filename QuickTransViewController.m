@@ -127,7 +127,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.isequal = YES;
     [self setTitle:@"即时翻译"];
     [self.view addSubview:self.backgroundImageView];
     
@@ -223,6 +223,7 @@
     translatorCount=0;
     self.tabBarController.tabBar.hidden=YES;
     self.backgroundImageView.frame = [UIScreen mainScreen].bounds;
+    self.btnview.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 200);
     
 }
 #pragma mark - 融云->链接融云服务器 & 获取token
@@ -1864,7 +1865,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
@@ -1881,7 +1882,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
@@ -1912,7 +1913,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
