@@ -84,6 +84,8 @@
     NSString   *iFlySpeechRecognizerString;
     CGFloat    KeyboardWillShowHeight;
     MBProgressHUD *HUD;
+    NSTimer *timer;
+    int   countDownNumber;
     
 }
 
@@ -252,9 +254,14 @@
 //            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
 //        
 //        }else{
-        
-        
+        int needNumber=8-countDownNumber;
+        if(needNumber>=1){
             [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+        }else{
+        
+            [MBProgressHUD showError:@"话语长度不能小于1s"];
+            
+        }
         
 //        }
     }
@@ -359,13 +366,18 @@
     if ([self.inputTextView.text  isEqual: @""]) {
         NSLog(@"空了1");
     }
+    
+    int needNumber=8-countDownNumber;
+    
+    NSString *needStr=[NSString stringWithFormat:@"%d\"",needNumber];
+    
     NSDictionary *dict = @{@"senderID":self.senderID,
                            @"chatAudioContent":urlString,
                            @"chatContentType":@"audio",
                            @"chatPictureURLContent":@"",
                            @"messageID":self.cellMessageID,
                            @"sendIdentifier":self.userIdentifier,
-                           @"audioSecond":self.cwViewController.secondString,
+                           @"audioSecond":needStr,
                            @"AVtoStringContent":iFlySpeechRecognizerString,
                            @"sendTime":self.cellMessageID,
                            @"chatTextContent":@"",
@@ -619,6 +631,9 @@
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
     
+    countDownNumber=8;
+     timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
+    
         self.cwViewController = [[CWViewController alloc]init];
         [self.view addSubview:self.bottomView];
         [self.bottomView addSubview:self.subBottomView];
@@ -664,6 +679,7 @@
     
     
     NSLog(@"ButtonCancel!");
+    
 }
 -(UIImageView *)sayView{
     if (!_sayView) {
@@ -683,7 +699,7 @@
 }
 -(void)button:(UIButton *)button BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     
-        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
         UITouch *touch = [[event touchesForView:button] anyObject];
         NSString *xString = [NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x];
@@ -760,6 +776,8 @@
 
 -(void)button:(UIButton *)button BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     
+    [timer invalidate];
+    
     //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
     UITouch *touch = [[event touchesForView:button] anyObject];
     
@@ -821,11 +839,84 @@
 #pragma mark - BaseTableViewDelegate
 
 
+//- (void)startTimer{
+//    
+//    
+//    self.timer = [NSTimer timerWithTimeInterval:2.0 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
+//    // 添加到运行循环
+//    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+//}
 
+
+-(void)countDown{
+    
+    countDownNumber--;
+    if(countDownNumber<=3){
+    
+//        UITouch *touch = [[event touchesForView:button] anyObject];
+        
+        //将XY轴的座标资讯正规化后输出
+//        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
+//        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
+//        NSLog(@"ButtonEnded!");
+        [MBProgressHUD showError:@"话语长度不能大于5s"];
+        [self removeRecordPageView];
+        
+        if (self.isCancelSendRecord == YES) {
+            
+            [self removeRecordPageView];
+            
+            [self.cwViewController cancelButtonClick];
+            self.isZero = YES;
+            [self iFlySpeechRecognizerStop];
+            iFlySpeechRecognizerString = @"";
+            
+        }else{
+            
+            
+            [self.cwViewController recordButtonClick];
+            
+            [self iFlySpeechRecognizerStop];
+            
+            //        if ([self.cwViewController.secondString intValue] < 1 ) {
+            //
+            //            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+            //            self.shortLabel.text = @"说话时间过短，小于1秒";
+            //            self.shortLabel.font = FONT_10;
+            //            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+            //            self.shortLabel.backgroundColor = [UIColor clearColor];
+            //            [self.subBottomView addSubview:self.shortLabel];
+            //
+            //            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+            //
+            //        }else{
+            //        
+            //            
+            //            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+            //            
+            //        }
+            
+            
+            self.isZero = YES;
+            
+            
+        }
+
+        
+        [timer invalidate];
+    
+    }
+
+    NSLog(@"aa");
+
+}
 
 
 -(void)tableView:(UITableView *)tableView BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
+    
+    
+    
     UITouch *touch = [[event touchesForView:tableView] anyObject];
     [self cancelResignFirstResponder];
     //将XY轴的座标资讯正规化后输出
@@ -1384,7 +1475,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
@@ -1401,7 +1492,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
@@ -1432,7 +1523,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
@@ -1458,7 +1549,7 @@
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     [self.backgroundImageView setImage:image];
     

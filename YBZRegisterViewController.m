@@ -153,7 +153,7 @@ static NSString * userStr;
         [self.getCodeBtn setTitle:@"60s后获取" forState:UIControlStateDisabled];
         [self.getCodeBtn setTitle:@"可以发送" forState:UIControlStateNormal];
         [self.getCodeBtn setEnabled:YES];
-        [self.getCodeBtn setBackgroundColor:[UIColor purpleColor]];
+        [self.getCodeBtn setBackgroundColor:[UIColor clearColor]];
     }
 }
 -(void)toReturn{

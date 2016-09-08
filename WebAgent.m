@@ -574,7 +574,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //勿扰模式
 +(void)wuraomoshiWithuseId:(NSString *)user_id
        Withtranslatorallow:(NSString *)translator_allow
-                   success:(void (^)(id responseObject))success
+                   success:(void (^)(id rewuraomoshisponseObject))success
                    failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"user_id":user_id,
