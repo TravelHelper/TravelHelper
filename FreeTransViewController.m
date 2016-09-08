@@ -1384,7 +1384,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
@@ -1401,7 +1401,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
@@ -1432,7 +1432,7 @@
             
             imagePickerController.delegate = self;
             
-            imagePickerController.allowsEditing = YES;
+            imagePickerController.allowsEditing = NO;
             
             imagePickerController.sourceType = blockSourceType;
             
@@ -1458,7 +1458,7 @@
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     [self.backgroundImageView setImage:image];
     

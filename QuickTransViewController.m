@@ -1724,7 +1724,7 @@
     
     if (!_inputTextView) {
         _inputTextView = [[UITextView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth*0.085)];
-        _inputTextView.backgroundColor = [UIColor clearColor];
+        _inputTextView.backgroundColor = [UIColor whiteColor];
         _inputTextView.layer.cornerRadius = 4;
         _inputTextView.keyboardType = UIKeyboardTypeDefault;
         _inputTextView.returnKeyType = UIReturnKeySend;
