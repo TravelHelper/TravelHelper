@@ -20,6 +20,7 @@
 @property (nonatomic,strong) UILabel *ordernumberlabel;
 @property (nonatomic,strong) YBZOrderDetailsView *orderview;
 @property (nonatomic,strong) UILabel *thankendlabel;
+@property (nonatomic, strong) TQStarRatingView *starRatingView;
 @end
 
 @implementation YBZOrderDetailsViewController
@@ -39,6 +40,13 @@
     [self.view addSubview:self.ordernumberlabel];
     [self.view addSubview:self.orderview];
     [self.view addSubview:self.thankendlabel];
+    
+    _starRatingView = [[TQStarRatingView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-70, SCREEN_HEIGHT-120, 140, 30)
+                                            numberOfStar:kNUMBER_OF_STAR];
+
+    _starRatingView.delegate = self;
+    [self.view addSubview:_starRatingView];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,6 +90,17 @@
     }];
     
 }
+
+//-(TQStarRatingView *)starRatingView
+//{
+//    if(!_starRatingView)
+//    {
+//        _starRatingView = [[TQStarRatingView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-50, SCREEN_HEIGHT-50, 100, 30)numberOfStar:kNUMBER_OF_STAR];
+//        _starRatingView.delegate = self;
+//        _starRatingView.backgroundColor = [UIColor orangeColor];
+//    }
+//    return _starRatingView;
+//}
 
 -(UIImageView *)infoImageView
 {
@@ -167,6 +186,12 @@
         _starsView.delegate=self;
     }
     return _starsView;
+}
+
+-(void)starRatingView:(TQStarRatingView *)view score:(float)score
+{
+    NSString *str = [NSString stringWithFormat:@"%0.2f",score * 10 ];
+    NSLog(@"分数 = %@",str);
 }
 
 - (void)starsScore:(GTStarsScore *)starsScore valueChange:(CGFloat)value
