@@ -207,7 +207,7 @@
         [self.backgroundImageView setImage:img];
     }
     
-
+    [self.view addSubview:self.btnview];
     
     
     

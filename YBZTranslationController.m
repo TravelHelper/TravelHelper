@@ -1343,11 +1343,11 @@
             [imageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 
                 NSLog(@"这里可以在图片加载完成之后做些事情");
-                [self.scrollView addSubview:imageView];
+                
                 
             }];
             
-            
+            [self.scrollView addSubview:imageView];
 //            NSData *data = [NSData dataWithContentsOfURL:url];
 //            UIImage *img = [UIImage imageWithData:data];
 //            if(img){

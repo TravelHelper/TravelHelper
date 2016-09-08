@@ -146,13 +146,11 @@
         
     }
     
-    
-    
     if(user_id[@"user_id"] != NULL)
     {
 //        [self.view addSubview:self.mainTableView];
         
-
+        if(user_identity != NULL){
                     if([user_identity isEqualToString:@"译员"]){
                         //                    [self.translatorTableView removeFromSuperview];
                         [self.view addSubview:self.translatorTableView];
@@ -173,8 +171,29 @@
                     
                     
         
+        }else{
+        
+            [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *msg=dic[@"msg"];
+                if([msg isEqualToString:@"SUCCESS"]){
+                    
+                    user_identity=dic[@"user_identity"];
+                    user_language = dic[@"user_language"];
+                    NSLog(@"%@",user_identity);
+                }
                 
                 
+            } failure:^(NSError *error) {
+                
+                [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+                
+            }];
+
+            
+        }
+        
 
             
             
