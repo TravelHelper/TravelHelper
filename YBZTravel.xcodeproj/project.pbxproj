@@ -257,6 +257,9 @@
 		A0552ED61D3A2C8C00E04D7A /* SelectedCellFrameInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552EC91D3A2C8C00E04D7A /* SelectedCellFrameInfo.m */; };
 		A0552ED71D3A2C8C00E04D7A /* SelectedMessageInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */; };
 		A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */; };
+		FE6C6A131D82AB890021B187 /* SMS_SDKLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE6C6A0E1D82AB890021B187 /* SMS_SDKLocalizable.strings */; };
+		FE6C6A141D82AB890021B187 /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A101D82AB890021B187 /* MOBFoundation.framework */; };
+		FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A111D82AB890021B187 /* SMS_SDK.framework */; };
 		FEE492141D73D9DA00CCED58 /* UIAlertController+SZYKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */; };
 		FEE4921B1D73DE0A00CCED58 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE492171D73DE0A00CCED58 /* MBProgressHUD+XMG.m */; };
 		FEE4921C1D73DE0A00CCED58 /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FEE492181D73DE0A00CCED58 /* MBProgressHUD.bundle */; };
@@ -739,6 +742,10 @@
 		A0552ECA1D3A2C8C00E04D7A /* SelectedMessageInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedMessageInfoCell.h; sourceTree = "<group>"; };
 		A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedMessageInfoCell.m; sourceTree = "<group>"; };
 		A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectedMessageInfoCell.xib; sourceTree = "<group>"; };
+		FE6C6A0F1D82AB890021B187 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SMS_SDKLocalizable.strings; sourceTree = "<group>"; };
+		FE6C6A101D82AB890021B187 /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
+		FE6C6A111D82AB890021B187 /* SMS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SMS_SDK.framework; sourceTree = "<group>"; };
+		FE6C6A121D82AB890021B187 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/SMS_SDKLocalizable.strings"; sourceTree = "<group>"; };
 		FEE492121D73D9DA00CCED58 /* UIAlertController+SZYKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+SZYKit.h"; sourceTree = "<group>"; };
 		FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+SZYKit.m"; sourceTree = "<group>"; };
 		FEE492161D73DE0A00CCED58 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
@@ -763,9 +770,11 @@
 				A012EDDF1D509B4600144BAD /* CoreTelephony.framework in Frameworks */,
 				A012EDDD1D509B3A00144BAD /* AVFoundation.framework in Frameworks */,
 				A012EDDB1D509B3200144BAD /* AddressBook.framework in Frameworks */,
+				FE6C6A141D82AB890021B187 /* MOBFoundation.framework in Frameworks */,
 				A012EDD91D509B2800144BAD /* AudioToolbox.framework in Frameworks */,
 				1E7056001D53247700A000F5 /* jpush-ios-2.1.8.a in Frameworks */,
 				A012EDD71D509B1D00144BAD /* SystemConfiguration.framework in Frameworks */,
+				FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */,
 				A012EDD51D509B1300144BAD /* QuartzCore.framework in Frameworks */,
 				A012EDD31D509B0400144BAD /* UIKit.framework in Frameworks */,
 				A012EDD11D509AFC00144BAD /* Foundation.framework in Frameworks */,
@@ -914,6 +923,7 @@
 		1ED862E91D2F39DD00529094 /* ThirdTools */ = {
 			isa = PBXGroup;
 			children = (
+				FE6C6A0C1D82AB890021B187 /* SMSSDK.2.0.0 */,
 				1ED863C01D3390F000529094 /* MJRefresh */,
 				1ED863611D3347F500529094 /* SYRefreshTable */,
 				1ED862EA1D2F39DD00529094 /* AFViewShaker */,
@@ -1845,6 +1855,24 @@
 			name = Location;
 			sourceTree = "<group>";
 		};
+		FE6C6A0C1D82AB890021B187 /* SMSSDK.2.0.0 */ = {
+			isa = PBXGroup;
+			children = (
+				FE6C6A0D1D82AB890021B187 /* SMS_SDK */,
+			);
+			path = SMSSDK.2.0.0;
+			sourceTree = "<group>";
+		};
+		FE6C6A0D1D82AB890021B187 /* SMS_SDK */ = {
+			isa = PBXGroup;
+			children = (
+				FE6C6A0E1D82AB890021B187 /* SMS_SDKLocalizable.strings */,
+				FE6C6A101D82AB890021B187 /* MOBFoundation.framework */,
+				FE6C6A111D82AB890021B187 /* SMS_SDK.framework */,
+			);
+			path = SMS_SDK;
+			sourceTree = "<group>";
+		};
 		FEE492151D73DE0A00CCED58 /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -1925,7 +1953,7 @@
 				TargetAttributes = {
 					A03ED0511D2DE20700BD9C0A = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 2SPA2FSXHP;
+						DevelopmentTeam = 23GQX4X34D;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1952,6 +1980,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = A03ED0491D2DE20700BD9C0A;
 			productRefGroup = A03ED0531D2DE20700BD9C0A /* Products */;
@@ -1978,6 +2007,7 @@
 				A0532C881D38C3F600FC1AB1 /* AccountTableViewCell.xib in Resources */,
 				A0532C851D38C3F600FC1AB1 /* AccountAndSafeOtherTableViewCell.xib in Resources */,
 				1ED8631C1D2F839F00529094 /* YBZPopularViewCell.xib in Resources */,
+				FE6C6A131D82AB890021B187 /* SMS_SDKLocalizable.strings in Resources */,
 				A03ED0651D2DE20800BD9C0A /* LaunchScreen.storyboard in Resources */,
 				7D04F3601D4303A9008BD5EB /* EvaluatePeopleCell.xib in Resources */,
 				A0532C791D38C32200FC1AB1 /* UserSetTableViewCell.xib in Resources */,
@@ -2268,6 +2298,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		FE6C6A0E1D82AB890021B187 /* SMS_SDKLocalizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE6C6A0F1D82AB890021B187 /* en */,
+				FE6C6A121D82AB890021B187 /* zh-Hans */,
+			);
+			name = SMS_SDKLocalizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -2368,20 +2407,25 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/ThirdTools/SMSSDK.2.0.0/SMS_SDK",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.YBZhelper.haobowen;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-licucore",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -2398,20 +2442,25 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/ThirdTools/SMSSDK.2.0.0/SMS_SDK",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.YBZhelper.haobowen;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-licucore",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

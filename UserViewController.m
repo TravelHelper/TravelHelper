@@ -164,6 +164,7 @@
 //                        [self.translatorTableView setHidden:NO];
 //                        [self.translatorTableView reloadData];
                         //                    [self.view addSubview:self.translatorTableView];
+                        [self.translatorTableView reloadData];
                         
                     }else{
                         [self.view addSubview:self.translatorTableView];
@@ -172,6 +173,7 @@
 //                        [self.translatorTableView setHidden:NO];
                         //                    [self.view addSubview:self.mainTableView];
 //                        [self.translatorTableView reloadData];
+                        [self.translatorTableView reloadData];
                     }
                     
                     
@@ -186,6 +188,7 @@
                     
                     user_identity=dic[@"user_identity"];
                     user_language = dic[@"user_language"];
+                    [self.translatorTableView reloadData];
                     NSLog(@"%@",user_identity);
                 }
                 

@@ -127,7 +127,8 @@
     
     
 //    [self setupRefresh];
-    
+    self.cwViewController = [[CWViewController alloc]init];
+
     [self.view addSubview:self.backgroundImageView];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -162,7 +163,18 @@
     
     self.iFlySpeechRecognizer  = [[IFlySpeechRecognizer alloc]init];
     self.iFlySpeechRecognizer.delegate = self;
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *docDir = [paths objectAtIndex:0];
+//    NSString *needStr=[NSString stringWithFormat:@"%@/",docDir];
     
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+//    NSString *cachePath = [paths objectAtIndex:0];
+    NSString *tmpDir = NSTemporaryDirectory();
+    [IFlySetting setLogFilePath:tmpDir];
+
+//    IFlySpeechConstant.ASR_AUDIO_PATH=docDir;
+    NSLog(@"%@",[IFlySpeechConstant ASR_AUDIO_PATH]);
+//    [_iFlySpeechRecognizer setParameter:@"asr.pcm" forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
     //键盘弹出
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     //键盘收起
@@ -382,7 +394,7 @@
                            @"sendTime":self.cellMessageID,
                            @"chatTextContent":@"",
                            @"senderImgPictureURL":@""};
-    NSLog(@"%@asmdjasdgjkashdjkashkhdask%@",self.cwViewController.secondString,iFlySpeechRecognizerString);
+//    NSLog(@"%@asmdjasdgjkashdjkashkhdask%@",self.cwViewController.secondString,iFlySpeechRecognizerString);
     
     self.inputTextView.text = nil;
     [self.dataArr insertObject:dict atIndex:count];
@@ -630,11 +642,15 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
+    if(self.bottomView){
+        [self.cancelSayView removeFromSuperview];
+        [self.subBottomView addSubview:self.sayView];
+    }
+
     
     countDownNumber=8;
      timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
     
-        self.cwViewController = [[CWViewController alloc]init];
         [self.view addSubview:self.bottomView];
         [self.bottomView addSubview:self.subBottomView];
 //        [self.cancelSayView removeFromSuperview];
@@ -644,10 +660,6 @@
         self.isZero = NO;
         iFlySpeechRecognizerString = @"";
     
-        if(self.bottomView){
-            [self.cancelSayView removeFromSuperview];
-            [self.subBottomView addSubview:self.sayView];
-        }
     
         //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
         UITouch *touch = [[event touchesForView:button] anyObject];
@@ -657,13 +669,14 @@
         NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
         
         NSString *currentDateString = [self getCurerentTimeString];
-        NSString *ID = [NSString stringWithFormat:@"%@.wav",currentDateString];
+        NSString *ID = [NSString stringWithFormat:@"%@.pcm",currentDateString];
         self.cellMessageID = ID;
+        [_iFlySpeechRecognizer setParameter:ID forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
         
-        self.cwViewController.URLNameString = self.cellMessageID;
-        [self.cwViewController getSavePath];
-        [self.cwViewController recordButtonClick];
-        
+//        self.cwViewController.URLNameString = self.cellMessageID;
+//        [self.cwViewController getSavePath];
+//        [self.cwViewController recordButtonClick];
+    
         
         
         
@@ -792,7 +805,7 @@
         
         [self removeRecordPageView];
         
-        [self.cwViewController cancelButtonClick];
+//        [self.cwViewController cancelButtonClick];
         self.isZero = YES;
         [self iFlySpeechRecognizerStop];
         iFlySpeechRecognizerString = @"";
@@ -800,7 +813,7 @@
     }else{
         
         
-        [self.cwViewController recordButtonClick];
+//        [self.cwViewController recordButtonClick];
         
         [self iFlySpeechRecognizerStop];
         
@@ -866,7 +879,7 @@
             
             [self removeRecordPageView];
             
-            [self.cwViewController cancelButtonClick];
+//            [self.cwViewController cancelButtonClick];
             self.isZero = YES;
             [self iFlySpeechRecognizerStop];
             iFlySpeechRecognizerString = @"";
@@ -874,7 +887,7 @@
         }else{
             
             
-            [self.cwViewController recordButtonClick];
+//            [self.cwViewController recordButtonClick];
             
             [self iFlySpeechRecognizerStop];
             
@@ -1350,7 +1363,7 @@
     if (!_reportAudioBtn) {
         _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
         _reportAudioBtn.mdelegate = self;
-        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.085);
+        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.0165, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.095);
         //        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
         //        [_reportAudioBtn setTitle:@"按住说话" forState:UIControlStateNormal];
         [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];

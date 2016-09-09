@@ -289,4 +289,11 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                     success:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure;
 
+
++(void)interpreterStateWithuserId:(NSString *)user_id
+                     andmessionID:(NSString *)messionID
+                          success:(void (^)(id responseObject))success
+                          failure:(void (^)(NSError *error))failure;
+
+
 @end
