@@ -257,6 +257,8 @@
 		A0552ED61D3A2C8C00E04D7A /* SelectedCellFrameInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552EC91D3A2C8C00E04D7A /* SelectedCellFrameInfo.m */; };
 		A0552ED71D3A2C8C00E04D7A /* SelectedMessageInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */; };
 		A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */; };
+		FE1EFE2D1D83A14B00FDD1BE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */; };
+		FE1EFE301D83A1A000FDD1BE /* PCMDataPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */; };
 		FE6C6A131D82AB890021B187 /* SMS_SDKLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE6C6A0E1D82AB890021B187 /* SMS_SDKLocalizable.strings */; };
 		FE6C6A141D82AB890021B187 /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A101D82AB890021B187 /* MOBFoundation.framework */; };
 		FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A111D82AB890021B187 /* SMS_SDK.framework */; };
@@ -742,6 +744,9 @@
 		A0552ECA1D3A2C8C00E04D7A /* SelectedMessageInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedMessageInfoCell.h; sourceTree = "<group>"; };
 		A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedMessageInfoCell.m; sourceTree = "<group>"; };
 		A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectedMessageInfoCell.xib; sourceTree = "<group>"; };
+		FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		FE1EFE2E1D83A1A000FDD1BE /* PCMDataPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCMDataPlayer.h; sourceTree = "<group>"; };
+		FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PCMDataPlayer.mm; sourceTree = "<group>"; };
 		FE6C6A0F1D82AB890021B187 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SMS_SDKLocalizable.strings; sourceTree = "<group>"; };
 		FE6C6A101D82AB890021B187 /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
 		FE6C6A111D82AB890021B187 /* SMS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SMS_SDK.framework; sourceTree = "<group>"; };
@@ -762,6 +767,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A012EDD91D509B2800144BAD /* AudioToolbox.framework in Frameworks */,
+				FE1EFE2D1D83A14B00FDD1BE /* MediaPlayer.framework in Frameworks */,
 				1E7056091D53250A00A000F5 /* AdSupport.framework in Frameworks */,
 				1E7056071D5324F400A000F5 /* Security.framework in Frameworks */,
 				1E7056051D5324C600A000F5 /* CoreFoundation.framework in Frameworks */,
@@ -771,7 +778,6 @@
 				A012EDDD1D509B3A00144BAD /* AVFoundation.framework in Frameworks */,
 				A012EDDB1D509B3200144BAD /* AddressBook.framework in Frameworks */,
 				FE6C6A141D82AB890021B187 /* MOBFoundation.framework in Frameworks */,
-				A012EDD91D509B2800144BAD /* AudioToolbox.framework in Frameworks */,
 				1E7056001D53247700A000F5 /* jpush-ios-2.1.8.a in Frameworks */,
 				A012EDD71D509B1D00144BAD /* SystemConfiguration.framework in Frameworks */,
 				FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */,
@@ -923,6 +929,8 @@
 		1ED862E91D2F39DD00529094 /* ThirdTools */ = {
 			isa = PBXGroup;
 			children = (
+				FE1EFE2E1D83A1A000FDD1BE /* PCMDataPlayer.h */,
+				FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */,
 				FE6C6A0C1D82AB890021B187 /* SMSSDK.2.0.0 */,
 				1ED863C01D3390F000529094 /* MJRefresh */,
 				1ED863611D3347F500529094 /* SYRefreshTable */,
@@ -1389,6 +1397,7 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
+				FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */,
 				7D8427791D6494A3000BFEAD /* MYReward */,
 				7D8427781D649490000BFEAD /* RewardHall */,
 				7D8427451D6349FE000BFEAD /* MyMoney */,
@@ -2230,6 +2239,7 @@
 				7D8427381D634638000BFEAD /* DetailsView.m in Sources */,
 				FEE4921B1D73DE0A00CCED58 /* MBProgressHUD+XMG.m in Sources */,
 				A03ED0E21D2E2AA400BD9C0A /* YBZFindKeyViewController.m in Sources */,
+				FE1EFE301D83A1A000FDD1BE /* PCMDataPlayer.mm in Sources */,
 				1B0513971D3F5DAC00F05C9D /* UIRefreshControl+AFNetworking.m in Sources */,
 				7D3E99851D6D42B500F13F42 /* BottomView.m in Sources */,
 				1ED863E91D38868500529094 /* YBZAreaCodeViewController.m in Sources */,

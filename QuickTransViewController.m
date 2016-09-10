@@ -26,6 +26,8 @@
 #import "MBProgressHUD+XMG.h"
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
+#import "PCMDataPlayer.h"
+
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
 
@@ -99,6 +101,14 @@
     int translatorCount;
     NSTimer *timer;
     int   countDownNumber;
+    
+    
+    
+    PCMDataPlayer* player;
+    FILE* pcmFile;
+    void* pcmDataBuffer; //pcm读数据的缓冲区
+    NSTimer* sendDataTimer;
+
     
 }
 
@@ -693,12 +703,66 @@
 #pragma mark - 观察者方法
 
 -(void)determinePlayARecord:(NSNotification *)info{
-    
+    [sendDataTimer invalidate];
     self.currentCellID = info.userInfo[@"cellID"];
-//    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
+    //    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
     NSLog(@"%@",self.currentCellID);
+    
+    
+    
+    NSString* filepath = [NSTemporaryDirectory() stringByAppendingString:self.currentCellID];
+    NSLog(@"PlayerViewController filepath = %@", filepath);
+    NSFileManager* manager = [NSFileManager defaultManager];
+    NSLog(@"PlayerViewController file exist = %d", [manager fileExistsAtPath:filepath]);
+    NSLog(@"PlayerViewController file size = %lld", [[manager attributesOfItemAtPath:filepath error:nil] fileSize]);
+    
+    pcmFile = fopen([filepath UTF8String], "r");
+    if (pcmFile) {
+        fseek(pcmFile, 0, SEEK_SET);
+        pcmDataBuffer = malloc(640);
+        NSLog(@"PlayerViewController PCM文件打开成功...");
+    }
+    else {
+        NSLog(@"PlayerViewController PCM文件打开错误...");
+        return;
+    }
+    
+    sendDataTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0 / 40.0)target:self selector:@selector(readNextPCMData:) userInfo:nil repeats:YES];
+    
+    
     [self cancelResignFirstResponder];
     
+}
+
+
+- (void)readNextPCMData:(NSTimer*)timer
+{
+    if (pcmFile != NULL && pcmDataBuffer != NULL) {
+        int readLength = fread(pcmDataBuffer, 1, 640, pcmFile); //读取PCM文件
+        if (readLength > 0) {
+            [player play:pcmDataBuffer length:readLength];
+        }
+        else {
+            if (sendDataTimer) {
+                [sendDataTimer invalidate];
+            }
+            sendDataTimer = nil;
+            
+            if (player) {
+                [player stop];
+            }
+            
+            if (pcmFile) {
+                fclose(pcmFile);
+            }
+            pcmFile = NULL;
+            
+            if (pcmDataBuffer) {
+                free(pcmDataBuffer);
+            }
+            pcmDataBuffer = NULL;
+        }
+    }
 }
 
 -(void)dealloc{

@@ -188,6 +188,9 @@
                     
                     user_identity=dic[@"user_identity"];
                     user_language = dic[@"user_language"];
+                    
+                    [self.mainTableView setHidden:YES];
+                    [self.view addSubview:self.translatorTableView];
                     [self.translatorTableView reloadData];
                     NSLog(@"%@",user_identity);
                 }

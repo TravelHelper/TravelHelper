@@ -119,7 +119,7 @@ const NSInteger kStarCount = 5;
         
         if ([self.delegate respondsToSelector:@selector(starsScore:valueChange:)]) {
             self.value = self.yellowView.gt_width / self.gt_width * self.scale;
-            [self.delegate starsScore:self valueChange:round(self.value * 100) / 100.0];
+            [self.delegate starsScore:self valueChange:round(self.value * 100) / 90.0];
             
         }
     }
