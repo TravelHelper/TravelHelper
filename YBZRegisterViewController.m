@@ -60,7 +60,7 @@ static NSString * userStr;
      [self.view addSubview:self.getCodeImageView];
      [self.view addSubview:self.getCodeBtn];
      //   [self.view addSubview:self.putCodeBtn];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toReturn) name:@"needTopop" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toReturn) name:@"needTopop" object:nil];
      self.userShaker = [[AFViewShaker alloc]initWithView:self.phoneTextField];
      self.pswShaker = [[AFViewShaker alloc]initWithView:self.pswTextField];
      self.navigationItem.leftBarButtonItem = [UIBarButtonItem initWithNormalImage:@"return" target:self action:@selector(leftMenuClick) width:ScreenWidth*0.043 height:ScreenHeight*0.024];
@@ -156,13 +156,13 @@ static NSString * userStr;
         [self.getCodeBtn setBackgroundColor:[UIColor clearColor]];
     }
 }
--(void)toReturn{
-
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-    
-}
+//-(void)toReturn{
+//
+//    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+//        
+//    }];
+//    
+//}
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.phoneTextField resignFirstResponder];
@@ -219,11 +219,14 @@ static NSString * userStr;
                                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                                         //                                [self dismissViewControllerAnimated:YES completion:nil];
                                         
-                                        [[NSNotificationCenter defaultCenter]postNotificationName:@"changeLogin" object:nil];
+//                                        [[NSNotificationCenter defaultCenter]postNotificationName:@"changeLogin" object:nil];
                                         
                                         
                                     
-                                        
+                                        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                                            [[NSNotificationCenter defaultCenter]postNotificationName:@"changeLogin" object:nil];
+                                        }];
+
                                         
                                         
                                     }];

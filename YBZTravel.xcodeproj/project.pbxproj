@@ -105,6 +105,8 @@
 		535DCB941D81BA5F00C329CB /* foregroundStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 535DCB8E1D81BA5F00C329CB /* foregroundStar.png */; };
 		535DCB951D81BA5F00C329CB /* foregroundStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 535DCB8F1D81BA5F00C329CB /* foregroundStar@2x.png */; };
 		535DCB961D81BA5F00C329CB /* TQStarRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 535DCB911D81BA5F00C329CB /* TQStarRatingView.m */; };
+		53BFC6E01D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFC6DF1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m */; };
+		53BFC6E41D83EC2E00BBB9E0 /* YBZalertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFC6E31D83EC2E00BBB9E0 /* YBZalertView.m */; };
 		7D0315BB1D6F1E5E00983D23 /* YBZDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */; };
 		7D0315BE1D6F228100983D23 /* AnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BD1D6F228100983D23 /* AnswerCell.m */; };
 		7D0315C11D6F28E700983D23 /* YBZRewardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315C01D6F28E700983D23 /* YBZRewardDetailModel.m */; };
@@ -477,6 +479,10 @@
 		535DCB8F1D81BA5F00C329CB /* foregroundStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "foregroundStar@2x.png"; sourceTree = "<group>"; };
 		535DCB901D81BA5F00C329CB /* TQStarRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TQStarRatingView.h; sourceTree = "<group>"; };
 		535DCB911D81BA5F00C329CB /* TQStarRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TQStarRatingView.m; sourceTree = "<group>"; };
+		53BFC6DE1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZOrderDetailsModel.h; sourceTree = "<group>"; };
+		53BFC6DF1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOrderDetailsModel.m; sourceTree = "<group>"; };
+		53BFC6E21D83EC2E00BBB9E0 /* YBZalertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZalertView.h; sourceTree = "<group>"; };
+		53BFC6E31D83EC2E00BBB9E0 /* YBZalertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZalertView.m; sourceTree = "<group>"; };
 		7D0315B91D6F1E5E00983D23 /* YBZDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZDetailViewController.h; sourceTree = "<group>"; };
 		7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZDetailViewController.m; sourceTree = "<group>"; };
 		7D0315BC1D6F228100983D23 /* AnswerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerCell.h; sourceTree = "<group>"; };
@@ -1065,6 +1071,8 @@
 		5311449D1D7A69C1000B98E8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				53BFC6DE1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.h */,
+				53BFC6DF1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1074,6 +1082,8 @@
 			children = (
 				5352677C1D7EAD2A00302B66 /* YBZOrderDetailsView.h */,
 				5352677D1D7EAD2A00302B66 /* YBZOrderDetailsView.m */,
+				53BFC6E21D83EC2E00BBB9E0 /* YBZalertView.h */,
+				53BFC6E31D83EC2E00BBB9E0 /* YBZalertView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2134,6 +2144,7 @@
 				A012EE011D509CAB00144BAD /* BaseAudioButton.m in Sources */,
 				1ED863101D2F39DD00529094 /* NSArray+MASAdditions.m in Sources */,
 				A0552ECE1D3A2C8C00E04D7A /* LocationViewController.m in Sources */,
+				53BFC6E01D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m in Sources */,
 				A0532CC31D38D03E00FC1AB1 /* GTStarsScore.m in Sources */,
 				A0532C781D38C32200FC1AB1 /* UserSetTableViewCell.m in Sources */,
 				A012EDFF1D509CAB00144BAD /* RecordMethod.m in Sources */,
@@ -2164,6 +2175,7 @@
 				7D3E99B11D6D42D700F13F42 /* YBZRewardMoneyViewController.m in Sources */,
 				7D8427501D634A1E000BFEAD /* MeMoneyViewController.m in Sources */,
 				A03ED0B61D2DE9D200BD9C0A /* YBZTranslationController.m in Sources */,
+				53BFC6E41D83EC2E00BBB9E0 /* YBZalertView.m in Sources */,
 				A03ED0B91D2DEA0C00BD9C0A /* YBZFreeTravelController.m in Sources */,
 				7D3E99B01D6D42D700F13F42 /* YBZChoosePhotoViewController.m in Sources */,
 				7D3E99AB1D6D42D700F13F42 /* YBZMyRewardViewController.m in Sources */,

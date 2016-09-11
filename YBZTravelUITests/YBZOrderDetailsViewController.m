@@ -7,20 +7,21 @@
 //
 
 #import "YBZOrderDetailsViewController.h"
-#import "GTStarsScore.h"
 #import "Masonry.h"
 #import "UIImageView+WebCache.h"
 #import "SDImageCache.h"
 #import "YBZOrderDetailsView.h"
-@interface YBZOrderDetailsViewController ()<GTStarsScoreDelegate>
+#import "YBZOrderDetailsModel.h"
+@interface YBZOrderDetailsViewController ()
 @property (nonatomic,strong) UIImageView *infoImageView;
 @property (nonatomic,strong) UILabel *namelabel;
-@property (nonatomic,strong) GTStarsScore *starsView;
+@property (nonatomic,strong) TQStarRatingView *starsView;
 @property (nonatomic,strong) UILabel *orderlabel;
 @property (nonatomic,strong) UILabel *ordernumberlabel;
 @property (nonatomic,strong) YBZOrderDetailsView *orderview;
 @property (nonatomic,strong) UILabel *thankendlabel;
 @property (nonatomic, strong) TQStarRatingView *starRatingView;
+@property (nonatomic,strong) YBZOrderDetailsModel *orderModel;
 @end
 
 @implementation YBZOrderDetailsViewController
@@ -29,13 +30,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"订单详情";
+    [self loaddatefromweb];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.infoImageView];
     [self.view addSubview:self.namelabel];
-    
     [self.view addSubview:self.starsView];
-    [self.starsView setToValue:0.5];//设置分值
-    [self.starsView toRemoveGesture];
     [self.view addSubview:self.orderlabel];
     [self.view addSubview:self.ordernumberlabel];
     [self.view addSubview:self.orderview];
@@ -47,11 +46,35 @@
     _starRatingView.delegate = self;
     [self.view addSubview:_starRatingView];
 
+    
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"btn" style:UIBarButtonItemStylePlain target:self action:@selector(rightbtnclick)];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+//进行网络调用
+-(void)loaddatefromweb
+{
+//    @property (nonatomic,strong)NSString *picUrlstr;//头像url地址
+//    @property (nonatomic,strong)NSString *nameStr;//用户姓名
+//    @property (nonatomic,strong)NSString *detailsNumberstr;//订单数目
+//    @property (nonatomic,strong)NSString *detailsState;//订单状态
+//    @property (nonatomic,strong)NSString *detailsType;//订单类型
+//    @property (nonatomic,strong)NSString *haidouStr;//嗨豆数目
+//    @property (nonatomic,strong)NSString *haibiStr;//嗨币数目
+    self.orderModel = [[YBZOrderDetailsModel alloc] init];
+    self.orderModel.picUrlstr = @"http://img1.imgtn.bdimg.com/it/u=262236517,3881457924&fm=206&gp=0.jpg";
+    self.orderModel.nameStr = @"天空蔚蓝";
+    self.orderModel.detailsNumberstr = @"75";
+    self.orderModel.detailsState = @"订单状态，已完成";
+    self.orderModel.detailsType = @"交易类型：口语即时";
+    self.orderModel.haidouStr = @"30";
+    self.orderModel.haibiStr = @"20";
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -91,16 +114,6 @@
     
 }
 
-//-(TQStarRatingView *)starRatingView
-//{
-//    if(!_starRatingView)
-//    {
-//        _starRatingView = [[TQStarRatingView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-50, SCREEN_HEIGHT-50, 100, 30)numberOfStar:kNUMBER_OF_STAR];
-//        _starRatingView.delegate = self;
-//        _starRatingView.backgroundColor = [UIColor orangeColor];
-//    }
-//    return _starRatingView;
-//}
 
 -(UIImageView *)infoImageView
 {
@@ -109,7 +122,8 @@
         _infoImageView = [[UIImageView alloc] init];
         _infoImageView.layer.masksToBounds = YES;
         _infoImageView.layer.cornerRadius = SCREEN_WIDTH/16;
-        NSString *str = @"http://img1.imgtn.bdimg.com/it/u=262236517,3881457924&fm=206&gp=0.jpg";
+        NSString *str = self.orderModel.picUrlstr;
+       // NSString *str = @"http://img1.imgtn.bdimg.com/it/u=262236517,3881457924&fm=206&gp=0.jpg";
         NSURL *url = [NSURL URLWithString:str];
         [_infoImageView sd_setImageWithURL:url];
     }
@@ -122,7 +136,8 @@
     {
         _namelabel = [[UILabel alloc] init];
         //_namelabel.backgroundColor = [UIColor redColor];
-        _namelabel.text = @"天空蔚蓝";
+        //_namelabel.text = @"天空蔚蓝";
+        _namelabel.text = self.orderModel.nameStr;
     }
     return _namelabel;
 }
@@ -138,7 +153,8 @@
         _orderlabel.textAlignment = NSTextAlignmentCenter;
         _orderlabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _orderlabel.layer.borderWidth = 1.0;
-        _orderlabel.text = @"订单状态，已完成";
+        //_orderlabel.text = @"订单状态，已完成";
+        _orderlabel.text= self.orderModel.detailsState;
     }
     return _orderlabel;
 }
@@ -150,7 +166,8 @@
         _ordernumberlabel = [[UILabel alloc] init];
         _ordernumberlabel.layer.borderWidth = 1.0;
         //_ordernumberlabel.backgroundColor = [UIColor lightGrayColor];
-        _ordernumberlabel.text = @"75单";
+        //_ordernumberlabel.text = @"75单";
+        _ordernumberlabel.text = self.orderModel.detailsNumberstr;
         _ordernumberlabel.font = [UIFont fontWithName:@"Helvetica" size:12];
         _ordernumberlabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -176,14 +193,17 @@
     {
         _orderview = [[YBZOrderDetailsView alloc] init];
         _orderview.backgroundColor = [UIColor whiteColor];
+        _orderview.OrderViewnamelabel1.text = self.orderModel.haidouStr;
+        _orderview.OrderViewnamelabel2.text = self.orderModel.haibiStr;
+        _orderview.typelabel.text = self.orderModel.detailsType;
     }
     return _orderview;
 }
 
--(GTStarsScore *)starsView{
+-(TQStarRatingView *)starsView{
     if(!_starsView){
-        _starsView=[[GTStarsScore alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2, 108, 40, 14)];
-        _starsView.delegate=self;
+        _starsView=[[TQStarRatingView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2, 108, 60, 14)];
+        //_starsView.delegate=self;
     }
     return _starsView;
 }
@@ -192,11 +212,15 @@
 {
     NSString *str = [NSString stringWithFormat:@"%0.2f",score * 10 ];
     NSLog(@"分数 = %@",str);
+    [self.starsView setScore:score withAnimation:YES];
+    
 }
 
-- (void)starsScore:(GTStarsScore *)starsScore valueChange:(CGFloat)value
+#pragma mark - itemclick
+
+-(void)rightbtnclick
 {
-    NSLog(@"%f",value);
+    NSLog(@"rightbtnclick");
+    
 }
-
 @end
