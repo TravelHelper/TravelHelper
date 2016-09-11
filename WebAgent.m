@@ -503,10 +503,11 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //查询用户口语即时请求状态。（匹配译员用）
 +(void)interpreterStateWithuserId:(NSString *)user_id
+                     andmessionID:(NSString *)messionID
                           success:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure
 {
-    NSDictionary *dict = @{@"user_id":user_id};
+    NSDictionary *dict = @{@"user_id":user_id,@"messionID":messionID};
     [[APIClient sharedClient] POST:@"QuickTrans/interpreterState" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -914,7 +915,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)getFrontImagesuccess:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure{
 
-    [[APIClient sharedClient] POST:@"frontimage/getImage/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"Frontimage/getImage/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);

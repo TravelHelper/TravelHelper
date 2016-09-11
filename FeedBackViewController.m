@@ -107,13 +107,27 @@
     
     starValue=value/2;
     
-    if(starValue>=0.48){
     
+    if(starValue>0.4){
+        
         starValue=0.5;
+        [self.starView setToValue:starValue*2];
+    }else if(starValue>0.3){
+        starValue=0.4;
+        [self.starView setToValue:starValue*2];
+    }else if(starValue>0.2){
+        starValue=0.3;
+        [self.starView setToValue:starValue*2];
     }
-    if(starValue<=0.02){
-    
-        starValue=0.0;
+    else if(starValue>0.1){
+        starValue=0.2;
+        [self.starView setToValue:starValue*2];
+    }else if(starValue>0.05){
+        starValue=0.1;
+        [self.starView setToValue:starValue*2];
+    }else{
+        starValue=0;
+        [self.starView setToValue:0];
     }
     
     NSLog(@"%lf",starValue);
@@ -132,8 +146,8 @@
 {
    
     //左上角的按钮
-    UIButton *boultButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0.05*kScreenWindth, 0.05*kScreenWindth)];
-    [boultButton setImage:[UIImage imageNamed:@"boult"] forState:UIControlStateNormal];
+    UIButton *boultButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0.08*kScreenWindth, 0.08*kScreenWindth)];
+    [boultButton setImage:[UIImage imageNamed:@"toback"] forState:UIControlStateNormal];
     [boultButton addTarget:self action:@selector(interpretClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:boultButton];
 }

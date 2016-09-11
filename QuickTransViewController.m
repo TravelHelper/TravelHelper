@@ -26,6 +26,8 @@
 #import "MBProgressHUD+XMG.h"
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
+#import "PCMDataPlayer.h"
+
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
 
@@ -100,6 +102,14 @@
     NSTimer *timer;
     int   countDownNumber;
     
+    
+    
+    PCMDataPlayer* player;
+    FILE* pcmFile;
+    void* pcmDataBuffer; //pcm读数据的缓冲区
+    NSTimer* sendDataTimer;
+
+    
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
@@ -138,7 +148,7 @@
     self.isZero = NO;
     self.isKeyboardShow = NO;
     //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-    
+    [[RCIMClient sharedRCIMClient]initWithAppKey:@"4z3hlwrv34git"];
     _stringTransVC = [[StringTransViewController alloc]init];
     [_stringTransVC viewDidLoad];
     
@@ -161,7 +171,9 @@
     
     self.iFlySpeechRecognizer  = [[IFlySpeechRecognizer alloc]init];
     self.iFlySpeechRecognizer.delegate = self;
-    
+    NSString *tmpDir = NSTemporaryDirectory();
+    [IFlySetting setLogFilePath:tmpDir];
+
     //设置导航栏返回按钮的点击事件
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"结束聊天" style:UIBarButtonItemStylePlain target:self action:@selector(sendMessageAndPop)];
     
@@ -230,7 +242,7 @@
 
 -(void)connectRongCloudServerWithToken:(NSString *)token{
     //融云
-    [[RCIMClient sharedRCIMClient]initWithAppKey:@"kj7swf8o77j02"];
+//    [[RCIMClient sharedRCIMClient]initWithAppKey:@"kj7swf8o77j02"];
     [[RCIMClient sharedRCIMClient] connectWithToken:token
                                             success:^(NSString *userId) {
                                                 NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
@@ -256,14 +268,14 @@
     
     NSString * timestamp = [[NSString alloc] initWithFormat:@"%ld",(NSInteger)[NSDate timeIntervalSinceReferenceDate]];
     NSString * nonce = [NSString stringWithFormat:@"%d",arc4random()];
-    NSString * appkey = @"kj7swf8o77j02";
+    NSString * appkey = @"4z3hlwrv34git";
     NSString * Signature = [[NSString stringWithFormat:@"%@%@%@",appkey,nonce,timestamp] sha1];//sha1对签名进行加密
     //以下拼接请求内容
     [manager.requestSerializer setValue:appkey forHTTPHeaderField:@"App-Key"];
     [manager.requestSerializer setValue:nonce forHTTPHeaderField:@"Nonce"];
     [manager.requestSerializer setValue:timestamp forHTTPHeaderField:@"Timestamp"];
     [manager.requestSerializer setValue:Signature forHTTPHeaderField:@"Signature"];
-    [manager.requestSerializer setValue:@"dsAcPXZxOq" forHTTPHeaderField:@"appSecret"];
+    [manager.requestSerializer setValue:@"9Rl8AwCiNTNh" forHTTPHeaderField:@"appSecret"];
     [manager.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     //开始请求
     [manager POST:urlstr parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -314,6 +326,43 @@
     
     [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_PRIVATE targetId:self.target_id content:voiceMessage pushContent:nil pushData:nil success:^(long messageId) {
         NSLog(@"发送成功。当前消息ID：%ld", messageId);
+        
+        
+        if([self.userIdentifier isEqualToString:@"TRANSTOR"]){
+            
+            translatorCount++;
+            
+            NSString *strCount=[NSString stringWithFormat:@"%d",translatorCount];
+            
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+            [WebAgent UpdateTranslatorMessageCount:mseeage_id andTranslator_price:strCount success:^(id responseObject) {
+                NSLog(@"议员+1");
+                
+            } failure:^(NSError *error) {
+                
+            }];
+            
+            
+        }else{
+            
+            userCount++;
+            NSString *strCount=[NSString stringWithFormat:@"%d",userCount];
+            
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+            [WebAgent UpdateUserMessageCount:mseeage_id andUser_price:strCount success:^(id responseObject) {
+                NSLog(@"用户+1");
+            } failure:^(NSError *error) {
+                
+            }];
+            
+        }
+
+        
+        
+        
+        
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"发送失败。消息ID：%ld， 错误码：%ld", messageId, (long)nErrorCode);
     }];
@@ -343,6 +392,7 @@
                                                NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
                                                NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
                                                [WebAgent UpdateTranslatorMessageCount:mseeage_id andTranslator_price:strCount success:^(id responseObject) {
+                                                   NSLog(@"议员+1");
                                                    
                                                } failure:^(NSError *error) {
                                                    
@@ -357,7 +407,7 @@
                                                NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
                                                NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
                                                [WebAgent UpdateUserMessageCount:mseeage_id andUser_price:strCount success:^(id responseObject) {
-                                                   
+                                                   NSLog(@"用户+1");
                                                } failure:^(NSError *error) {
                                                    
                                                }];
@@ -653,12 +703,66 @@
 #pragma mark - 观察者方法
 
 -(void)determinePlayARecord:(NSNotification *)info{
-    
+    [sendDataTimer invalidate];
     self.currentCellID = info.userInfo[@"cellID"];
-    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
+    //    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
     NSLog(@"%@",self.currentCellID);
+    
+    
+    
+    NSString* filepath = [NSTemporaryDirectory() stringByAppendingString:self.currentCellID];
+    NSLog(@"PlayerViewController filepath = %@", filepath);
+    NSFileManager* manager = [NSFileManager defaultManager];
+    NSLog(@"PlayerViewController file exist = %d", [manager fileExistsAtPath:filepath]);
+    NSLog(@"PlayerViewController file size = %lld", [[manager attributesOfItemAtPath:filepath error:nil] fileSize]);
+    
+    pcmFile = fopen([filepath UTF8String], "r");
+    if (pcmFile) {
+        fseek(pcmFile, 0, SEEK_SET);
+        pcmDataBuffer = malloc(640);
+        NSLog(@"PlayerViewController PCM文件打开成功...");
+    }
+    else {
+        NSLog(@"PlayerViewController PCM文件打开错误...");
+        return;
+    }
+    
+    sendDataTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0 / 40.0)target:self selector:@selector(readNextPCMData:) userInfo:nil repeats:YES];
+    
+    
     [self cancelResignFirstResponder];
     
+}
+
+
+- (void)readNextPCMData:(NSTimer*)timer
+{
+    if (pcmFile != NULL && pcmDataBuffer != NULL) {
+        int readLength = fread(pcmDataBuffer, 1, 640, pcmFile); //读取PCM文件
+        if (readLength > 0) {
+            [player play:pcmDataBuffer length:readLength];
+        }
+        else {
+            if (sendDataTimer) {
+                [sendDataTimer invalidate];
+            }
+            sendDataTimer = nil;
+            
+            if (player) {
+                [player stop];
+            }
+            
+            if (pcmFile) {
+                fclose(pcmFile);
+            }
+            pcmFile = NULL;
+            
+            if (pcmDataBuffer) {
+                free(pcmDataBuffer);
+            }
+            pcmDataBuffer = NULL;
+        }
+    }
 }
 
 -(void)dealloc{
@@ -1007,7 +1111,7 @@
             
             [self removeRecordPageView];
             
-            [self.cwViewController cancelButtonClick];
+//            [self.cwViewController cancelButtonClick];
             self.isZero = YES;
             [self iFlySpeechRecognizerStop];
             iFlySpeechRecognizerString = @"";
@@ -1015,7 +1119,7 @@
         }else{
             
             
-            [self.cwViewController recordButtonClick];
+//            [self.cwViewController recordButtonClick];
             
             [self iFlySpeechRecognizerStop];
             
@@ -1057,11 +1161,15 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
+    if(self.bottomView){
+        [self.cancelSayView removeFromSuperview];
+        [self.subBottomView addSubview:self.sayView];
+    }
+    
     
     countDownNumber=8;
     timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
     
-    self.cwViewController = [[CWViewController alloc]init];
     [self.view addSubview:self.bottomView];
     [self.bottomView addSubview:self.subBottomView];
     //        [self.cancelSayView removeFromSuperview];
@@ -1071,10 +1179,6 @@
     self.isZero = NO;
     iFlySpeechRecognizerString = @"";
     
-    if(self.bottomView){
-        [self.cancelSayView removeFromSuperview];
-        [self.subBottomView addSubview:self.sayView];
-    }
     
     //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
     UITouch *touch = [[event touchesForView:button] anyObject];
@@ -1084,12 +1188,13 @@
     NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
     
     NSString *currentDateString = [self getCurerentTimeString];
-    NSString *ID = [NSString stringWithFormat:@"%@.wav",currentDateString];
+    NSString *ID = [NSString stringWithFormat:@"%@.pcm",currentDateString];
     self.cellMessageID = ID;
+    [_iFlySpeechRecognizer setParameter:ID forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
     
-    self.cwViewController.URLNameString = self.cellMessageID;
-    [self.cwViewController getSavePath];
-    [self.cwViewController recordButtonClick];
+    //        self.cwViewController.URLNameString = self.cellMessageID;
+    //        [self.cwViewController getSavePath];
+    //        [self.cwViewController recordButtonClick];
     
     
     
@@ -1101,8 +1206,6 @@
     
     NSLog(@"ButtonBegan!");
 }
-
-
 -(void)button:(UIButton *)button BaseTouchesCancel:(NSSet *)touches withEvent:(UIEvent *)event{
     
     
@@ -1219,7 +1322,7 @@
         
         [self removeRecordPageView];
         
-        [self.cwViewController cancelButtonClick];
+//        [self.cwViewController cancelButtonClick];
         self.isZero = YES;
         [self iFlySpeechRecognizerStop];
         iFlySpeechRecognizerString = @"";
@@ -1227,7 +1330,7 @@
     }else{
         
         
-        [self.cwViewController recordButtonClick];
+//        [self.cwViewController recordButtonClick];
         
         [self iFlySpeechRecognizerStop];
         
@@ -1550,12 +1653,12 @@
             
         } failure:^(NSError *error) {
             NSLog(@"失败");
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         }];
     } failure:^(NSError *error) {
         NSLog(@"失败");
         
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
         
     }];
 }
@@ -1758,7 +1861,7 @@
     if (!_reportAudioBtn) {
         _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
         _reportAudioBtn.mdelegate = self;
-        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.085);
+        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.0165, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.095);
         //        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
         //        [_reportAudioBtn setTitle:@"按住说话" forState:UIControlStateNormal];
         [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];

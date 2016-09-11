@@ -28,7 +28,15 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-       
+        [self addSubview:self.picimageView];
+        [self addSubview:self.titleimageView];
+        [self addSubview:self.nicknameLabel];
+        [self addSubview:self.nameLabel];
+        [self addSubview:self.levelnumberLabel];
+        [self addSubview:self.levelLabel];
+        [self addSubview:self.activelLabel];
+        [self addSubview:self.activenumberLabel];
+        [self addSubview:self.languagetypeLabel];
     }
     return self;
 }
@@ -36,6 +44,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+    self.titleimageView.frame = CGRectMake(0, 0, SCREEN_WIDTH/1.5, 40);
     
 }
 
