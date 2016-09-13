@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TQStarRatingView.h"
+@interface YBZOrderDetailsViewController : UIViewController<StarRatingViewDelegate>
 
-@interface YBZOrderDetailsViewController : UIViewController
 
 @end

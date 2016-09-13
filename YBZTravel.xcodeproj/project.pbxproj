@@ -100,6 +100,13 @@
 		5322B81E1D7E6120004B8C87 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5322B80D1D7E6120004B8C87 /* UIImageView+WebCache.m */; };
 		5322B81F1D7E6120004B8C87 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5322B80F1D7E6120004B8C87 /* UIView+WebCacheOperation.m */; };
 		5352677E1D7EAD2A00302B66 /* YBZOrderDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5352677D1D7EAD2A00302B66 /* YBZOrderDetailsView.m */; };
+		535DCB921D81BA5F00C329CB /* backgroundStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 535DCB8C1D81BA5F00C329CB /* backgroundStar.png */; };
+		535DCB931D81BA5F00C329CB /* backgroundStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 535DCB8D1D81BA5F00C329CB /* backgroundStar@2x.png */; };
+		535DCB941D81BA5F00C329CB /* foregroundStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 535DCB8E1D81BA5F00C329CB /* foregroundStar.png */; };
+		535DCB951D81BA5F00C329CB /* foregroundStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 535DCB8F1D81BA5F00C329CB /* foregroundStar@2x.png */; };
+		535DCB961D81BA5F00C329CB /* TQStarRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 535DCB911D81BA5F00C329CB /* TQStarRatingView.m */; };
+		53BFC6E01D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFC6DF1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m */; };
+		53BFC6E41D83EC2E00BBB9E0 /* YBZalertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFC6E31D83EC2E00BBB9E0 /* YBZalertView.m */; };
 		7D0315BB1D6F1E5E00983D23 /* YBZDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */; };
 		7D0315BE1D6F228100983D23 /* AnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315BD1D6F228100983D23 /* AnswerCell.m */; };
 		7D0315C11D6F28E700983D23 /* YBZRewardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315C01D6F28E700983D23 /* YBZRewardDetailModel.m */; };
@@ -473,6 +480,16 @@
 		5322B80F1D7E6120004B8C87 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		5352677C1D7EAD2A00302B66 /* YBZOrderDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZOrderDetailsView.h; sourceTree = "<group>"; };
 		5352677D1D7EAD2A00302B66 /* YBZOrderDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOrderDetailsView.m; sourceTree = "<group>"; };
+		535DCB8C1D81BA5F00C329CB /* backgroundStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundStar.png; sourceTree = "<group>"; };
+		535DCB8D1D81BA5F00C329CB /* backgroundStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundStar@2x.png"; sourceTree = "<group>"; };
+		535DCB8E1D81BA5F00C329CB /* foregroundStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foregroundStar.png; sourceTree = "<group>"; };
+		535DCB8F1D81BA5F00C329CB /* foregroundStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "foregroundStar@2x.png"; sourceTree = "<group>"; };
+		535DCB901D81BA5F00C329CB /* TQStarRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TQStarRatingView.h; sourceTree = "<group>"; };
+		535DCB911D81BA5F00C329CB /* TQStarRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TQStarRatingView.m; sourceTree = "<group>"; };
+		53BFC6DE1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZOrderDetailsModel.h; sourceTree = "<group>"; };
+		53BFC6DF1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOrderDetailsModel.m; sourceTree = "<group>"; };
+		53BFC6E21D83EC2E00BBB9E0 /* YBZalertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZalertView.h; sourceTree = "<group>"; };
+		53BFC6E31D83EC2E00BBB9E0 /* YBZalertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZalertView.m; sourceTree = "<group>"; };
 		7D0315B91D6F1E5E00983D23 /* YBZDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZDetailViewController.h; sourceTree = "<group>"; };
 		7D0315BA1D6F1E5E00983D23 /* YBZDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZDetailViewController.m; sourceTree = "<group>"; };
 		7D0315BC1D6F228100983D23 /* AnswerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerCell.h; sourceTree = "<group>"; };
@@ -1078,6 +1095,8 @@
 		5311449D1D7A69C1000B98E8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				53BFC6DE1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.h */,
+				53BFC6DF1D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1087,6 +1106,8 @@
 			children = (
 				5352677C1D7EAD2A00302B66 /* YBZOrderDetailsView.h */,
 				5352677D1D7EAD2A00302B66 /* YBZOrderDetailsView.m */,
+				53BFC6E21D83EC2E00BBB9E0 /* YBZalertView.h */,
+				53BFC6E31D83EC2E00BBB9E0 /* YBZalertView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1147,6 +1168,27 @@
 				5322B80F1D7E6120004B8C87 /* UIView+WebCacheOperation.m */,
 			);
 			path = SDWebImage;
+			sourceTree = "<group>";
+		};
+		535DCB8A1D81BA5F00C329CB /* TQStarRating */ = {
+			isa = PBXGroup;
+			children = (
+				535DCB8B1D81BA5F00C329CB /* Image */,
+				535DCB901D81BA5F00C329CB /* TQStarRatingView.h */,
+				535DCB911D81BA5F00C329CB /* TQStarRatingView.m */,
+			);
+			path = TQStarRating;
+			sourceTree = "<group>";
+		};
+		535DCB8B1D81BA5F00C329CB /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				535DCB8C1D81BA5F00C329CB /* backgroundStar.png */,
+				535DCB8D1D81BA5F00C329CB /* backgroundStar@2x.png */,
+				535DCB8E1D81BA5F00C329CB /* foregroundStar.png */,
+				535DCB8F1D81BA5F00C329CB /* foregroundStar@2x.png */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		7D3E99601D6D41DB00F13F42 /* Model */ = {
@@ -1403,7 +1445,11 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
+
+				535DCB8A1D81BA5F00C329CB /* TQStarRating */,
+
 				FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */,
+
 				7D8427791D6494A3000BFEAD /* MYReward */,
 				7D8427781D649490000BFEAD /* RewardHall */,
 				7D8427451D6349FE000BFEAD /* MyMoney */,
@@ -2030,10 +2076,12 @@
 				A03ED0651D2DE20800BD9C0A /* LaunchScreen.storyboard in Resources */,
 				7D04F3601D4303A9008BD5EB /* EvaluatePeopleCell.xib in Resources */,
 				A0532C791D38C32200FC1AB1 /* UserSetTableViewCell.xib in Resources */,
+				535DCB921D81BA5F00C329CB /* backgroundStar.png in Resources */,
 				1ED8636D1D3347F500529094 /* SYTableHeaderView.xib in Resources */,
 				FEE4921C1D73DE0A00CCED58 /* MBProgressHUD.bundle in Resources */,
 				A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */,
 				A0532CC51D38D03E00FC1AB1 /* star_yellow.png in Resources */,
+				535DCB941D81BA5F00C329CB /* foregroundStar.png in Resources */,
 				A012EDAE1D5099E000144BAD /* RCConfig.plist in Resources */,
 				A03ED0621D2DE20800BD9C0A /* Assets.xcassets in Resources */,
 				1ED8636B1D3347F500529094 /* SYTableFooterView.xib in Resources */,
@@ -2044,6 +2092,8 @@
 				1C8C5FDB1D6F0E2700763AB9 /* 匹配译员动态图.gif in Resources */,
 				A0532C771D38C32200FC1AB1 /* UserSetoutTableViewCell.xib in Resources */,
 				1ED863D11D3390F000529094 /* MJRefresh.bundle in Resources */,
+				535DCB931D81BA5F00C329CB /* backgroundStar@2x.png in Resources */,
+				535DCB951D81BA5F00C329CB /* foregroundStar@2x.png in Resources */,
 				A012EDAF1D5099E000144BAD /* release_notes_ios.txt in Resources */,
 				A03ED0601D2DE20800BD9C0A /* Main.storyboard in Resources */,
 			);
@@ -2147,6 +2197,7 @@
 				A012EE011D509CAB00144BAD /* BaseAudioButton.m in Sources */,
 				1ED863101D2F39DD00529094 /* NSArray+MASAdditions.m in Sources */,
 				A0552ECE1D3A2C8C00E04D7A /* LocationViewController.m in Sources */,
+				53BFC6E01D83AA6C00BBB9E0 /* YBZOrderDetailsModel.m in Sources */,
 				A0532CC31D38D03E00FC1AB1 /* GTStarsScore.m in Sources */,
 				A0532C781D38C32200FC1AB1 /* UserSetTableViewCell.m in Sources */,
 				A012EDFF1D509CAB00144BAD /* RecordMethod.m in Sources */,
@@ -2177,6 +2228,7 @@
 				7D3E99B11D6D42D700F13F42 /* YBZRewardMoneyViewController.m in Sources */,
 				7D8427501D634A1E000BFEAD /* MeMoneyViewController.m in Sources */,
 				A03ED0B61D2DE9D200BD9C0A /* YBZTranslationController.m in Sources */,
+				53BFC6E41D83EC2E00BBB9E0 /* YBZalertView.m in Sources */,
 				A03ED0B91D2DEA0C00BD9C0A /* YBZFreeTravelController.m in Sources */,
 				7D3E99B01D6D42D700F13F42 /* YBZChoosePhotoViewController.m in Sources */,
 				7D3E99AB1D6D42D700F13F42 /* YBZMyRewardViewController.m in Sources */,
@@ -2244,6 +2296,7 @@
 				1B05138A1D3F5DAC00F05C9D /* AFSecurityPolicy.m in Sources */,
 				A0532C841D38C3F600FC1AB1 /* AccountAndSafeOtherTableViewCell.m in Sources */,
 				1ED863EE1D3887E200529094 /* UITextField+Validator.m in Sources */,
+				535DCB961D81BA5F00C329CB /* TQStarRatingView.m in Sources */,
 				1C09F72C1D5EEC5400B8CE3C /* YBZChangeLanguageViewController.m in Sources */,
 				7D0315BE1D6F228100983D23 /* AnswerCell.m in Sources */,
 				A03ED0E51D2E2B2300BD9C0A /* YBZTranslaterSelectLanguageViewController.m in Sources */,

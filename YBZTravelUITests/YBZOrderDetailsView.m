@@ -101,7 +101,7 @@
         //_typelabel.backgroundColor = [UIColor greenColor];
         _typelabel.textAlignment = NSTextAlignmentCenter;
         _typelabel.font = [UIFont fontWithName:@"Helvetica" size:14];
-        _typelabel.text = @"交易类型：口语即时";
+       // _typelabel.text = @"交易类型：口语即时";
     }
     return _typelabel;
 }
@@ -116,7 +116,7 @@
         _OrderViewnamelabel1.font = [UIFont fontWithName:@"Helvetica" size:30];
         _OrderViewnamelabel1.adjustsFontSizeToFitWidth = YES;
         _OrderViewnamelabel1.textColor = UIColorFromRGB(0xffd703);
-        _OrderViewnamelabel1.text = @"20";
+       // _OrderViewnamelabel1.text = @"20";
     }
     return _OrderViewnamelabel1;
 }
@@ -131,7 +131,7 @@
         _OrderViewnamelabel2.adjustsFontSizeToFitWidth = YES;
         _OrderViewnamelabel2.font = [UIFont fontWithName:@"Helvetica" size:30];
         _OrderViewnamelabel2.textColor = UIColorFromRGB(0xffd703);
-        _OrderViewnamelabel2.text = @"30";
+       // _OrderViewnamelabel2.text = @"30";
     }
     return _OrderViewnamelabel2;
 }
