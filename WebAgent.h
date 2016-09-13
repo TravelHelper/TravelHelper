@@ -117,7 +117,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)interpreterStateWithuserId:(NSString *)user_id
                           success:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure;
-
+ 
 //将译者状态置为require
 +(void)interpreterRequireStateWithuserId:(NSString *)user_id
                                  success:(void (^)(id responseObject))success

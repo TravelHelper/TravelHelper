@@ -26,8 +26,6 @@
 #import "MBProgressHUD+XMG.h"
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
-#import "PCMDataPlayer.h"
-
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
 
@@ -45,7 +43,7 @@
 @property(nonatomic,strong) UIButton    *changeSendContentBtn;
 @property(nonatomic,strong) UIButton    *selectLangueageBtn;
 @property(nonatomic,strong) BaseAudioButton    *reportAudioBtn;
-@property(nonatomic,strong) BaseAudioButton    *reportEnglishBtn;
+//@property(nonatomic,strong) BaseAudioButton    *reportEnglishBtn;
 
 @property(nonatomic,strong) UIButton    *sendMessageBtn;
 @property(nonatomic,strong) UITextView *inputTextView;
@@ -102,14 +100,6 @@
     NSTimer *timer;
     int   countDownNumber;
     
-    
-    
-    PCMDataPlayer* player;
-    FILE* pcmFile;
-    void* pcmDataBuffer; //pcm读数据的缓冲区
-    NSTimer* sendDataTimer;
-
-    
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
@@ -148,10 +138,11 @@
     self.isZero = NO;
     self.isKeyboardShow = NO;
     //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-    [[RCIMClient sharedRCIMClient]initWithAppKey:@"4z3hlwrv34git"];
+    
     _stringTransVC = [[StringTransViewController alloc]init];
     [_stringTransVC viewDidLoad];
-    
+    self.navigationController.interactivePopGestureRecognizer.delaysTouchesBegan=NO;
+
     [self pullHistoryCount];
     self.senderID = self.user_id;
     NSArray *arr = [[NSUserDefaults standardUserDefaults] objectForKey:@"ChatHisTory"];
@@ -171,9 +162,7 @@
     
     self.iFlySpeechRecognizer  = [[IFlySpeechRecognizer alloc]init];
     self.iFlySpeechRecognizer.delegate = self;
-    NSString *tmpDir = NSTemporaryDirectory();
-    [IFlySetting setLogFilePath:tmpDir];
-
+    
     //设置导航栏返回按钮的点击事件
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"结束聊天" style:UIBarButtonItemStylePlain target:self action:@selector(sendMessageAndPop)];
     
@@ -184,7 +173,7 @@
     //键盘收起
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(determinePlayARecord:) name:@"determinePlayARecord" object:nil];
     
     [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
@@ -197,10 +186,10 @@
         //异步函数：具备开启新线程的能力
         dispatch_async(queue, ^{
             // 在另一个线程中启动下载功能，加GCD控制
-//            [WebAgent ]
-        
+            //            [WebAgent ]
+            
         });
-
+        
     }
     
     //    [self performSelector:@selector(sendAwebMessage) withObject:nil afterDelay:10];
@@ -242,7 +231,7 @@
 
 -(void)connectRongCloudServerWithToken:(NSString *)token{
     //融云
-//    [[RCIMClient sharedRCIMClient]initWithAppKey:@"kj7swf8o77j02"];
+    [[RCIMClient sharedRCIMClient]initWithAppKey:@"kj7swf8o77j02"];
     [[RCIMClient sharedRCIMClient] connectWithToken:token
                                             success:^(NSString *userId) {
                                                 NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
@@ -268,14 +257,14 @@
     
     NSString * timestamp = [[NSString alloc] initWithFormat:@"%ld",(NSInteger)[NSDate timeIntervalSinceReferenceDate]];
     NSString * nonce = [NSString stringWithFormat:@"%d",arc4random()];
-    NSString * appkey = @"4z3hlwrv34git";
+    NSString * appkey = @"kj7swf8o77j02";
     NSString * Signature = [[NSString stringWithFormat:@"%@%@%@",appkey,nonce,timestamp] sha1];//sha1对签名进行加密
     //以下拼接请求内容
     [manager.requestSerializer setValue:appkey forHTTPHeaderField:@"App-Key"];
     [manager.requestSerializer setValue:nonce forHTTPHeaderField:@"Nonce"];
     [manager.requestSerializer setValue:timestamp forHTTPHeaderField:@"Timestamp"];
     [manager.requestSerializer setValue:Signature forHTTPHeaderField:@"Signature"];
-    [manager.requestSerializer setValue:@"9Rl8AwCiNTNh" forHTTPHeaderField:@"appSecret"];
+    [manager.requestSerializer setValue:@"dsAcPXZxOq" forHTTPHeaderField:@"appSecret"];
     [manager.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     //开始请求
     [manager POST:urlstr parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -327,7 +316,6 @@
     [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_PRIVATE targetId:self.target_id content:voiceMessage pushContent:nil pushData:nil success:^(long messageId) {
         NSLog(@"发送成功。当前消息ID：%ld", messageId);
         
-        
         if([self.userIdentifier isEqualToString:@"TRANSTOR"]){
             
             translatorCount++;
@@ -337,7 +325,6 @@
             NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
             NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
             [WebAgent UpdateTranslatorMessageCount:mseeage_id andTranslator_price:strCount success:^(id responseObject) {
-                NSLog(@"议员+1");
                 
             } failure:^(NSError *error) {
                 
@@ -352,16 +339,12 @@
             NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
             NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
             [WebAgent UpdateUserMessageCount:mseeage_id andUser_price:strCount success:^(id responseObject) {
-                NSLog(@"用户+1");
+                
             } failure:^(NSError *error) {
                 
             }];
             
         }
-
-        
-        
-        
         
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"发送失败。消息ID：%ld， 错误码：%ld", messageId, (long)nErrorCode);
@@ -392,7 +375,6 @@
                                                NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
                                                NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
                                                [WebAgent UpdateTranslatorMessageCount:mseeage_id andTranslator_price:strCount success:^(id responseObject) {
-                                                   NSLog(@"议员+1");
                                                    
                                                } failure:^(NSError *error) {
                                                    
@@ -407,13 +389,13 @@
                                                NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
                                                NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
                                                [WebAgent UpdateUserMessageCount:mseeage_id andUser_price:strCount success:^(id responseObject) {
-                                                   NSLog(@"用户+1");
+                                                   
                                                } failure:^(NSError *error) {
                                                    
                                                }];
                                                
                                            }
-
+                                           
                                            
                                        } error:^(RCErrorCode nErrorCode, long messageId) {
                                            NSLog(@"发送失败。消息ID：%ld， 错误码：%ld", messageId, (long)nErrorCode);
@@ -434,11 +416,11 @@
         if([self.userIdentifier isEqualToString:@"TRANSTOR"]){
             
             userCount++;
-        
+            
         }else{
-        
+            
             translatorCount++;
-        
+            
         }
         
         
@@ -703,66 +685,12 @@
 #pragma mark - 观察者方法
 
 -(void)determinePlayARecord:(NSNotification *)info{
-    [sendDataTimer invalidate];
+    
     self.currentCellID = info.userInfo[@"cellID"];
-    //    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
+    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
     NSLog(@"%@",self.currentCellID);
-    
-    
-    
-    NSString* filepath = [NSTemporaryDirectory() stringByAppendingString:self.currentCellID];
-    NSLog(@"PlayerViewController filepath = %@", filepath);
-    NSFileManager* manager = [NSFileManager defaultManager];
-    NSLog(@"PlayerViewController file exist = %d", [manager fileExistsAtPath:filepath]);
-    NSLog(@"PlayerViewController file size = %lld", [[manager attributesOfItemAtPath:filepath error:nil] fileSize]);
-    
-    pcmFile = fopen([filepath UTF8String], "r");
-    if (pcmFile) {
-        fseek(pcmFile, 0, SEEK_SET);
-        pcmDataBuffer = malloc(640);
-        NSLog(@"PlayerViewController PCM文件打开成功...");
-    }
-    else {
-        NSLog(@"PlayerViewController PCM文件打开错误...");
-        return;
-    }
-    
-    sendDataTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0 / 40.0)target:self selector:@selector(readNextPCMData:) userInfo:nil repeats:YES];
-    
-    
     [self cancelResignFirstResponder];
     
-}
-
-
-- (void)readNextPCMData:(NSTimer*)timer
-{
-    if (pcmFile != NULL && pcmDataBuffer != NULL) {
-        int readLength = fread(pcmDataBuffer, 1, 640, pcmFile); //读取PCM文件
-        if (readLength > 0) {
-            [player play:pcmDataBuffer length:readLength];
-        }
-        else {
-            if (sendDataTimer) {
-                [sendDataTimer invalidate];
-            }
-            sendDataTimer = nil;
-            
-            if (player) {
-                [player stop];
-            }
-            
-            if (pcmFile) {
-                fclose(pcmFile);
-            }
-            pcmFile = NULL;
-            
-            if (pcmDataBuffer) {
-                free(pcmDataBuffer);
-            }
-            pcmDataBuffer = NULL;
-        }
-    }
 }
 
 -(void)dealloc{
@@ -1046,7 +974,7 @@
     model.AVtoStringContent = object[@"AVtoStringContent"];
     model.audioSecond = object[@"audioSecond"];
     model.chatAudioContent = object[@"chatAudioContent"];
-//    model.senderImgPictureURL = object[@"senderImgPictureURL"];
+    //    model.senderImgPictureURL = object[@"senderImgPictureURL"];
     model.sendTime = object[@"sendTime"];
     
     
@@ -1111,7 +1039,7 @@
             
             [self removeRecordPageView];
             
-//            [self.cwViewController cancelButtonClick];
+            [self.cwViewController cancelButtonClick];
             self.isZero = YES;
             [self iFlySpeechRecognizerStop];
             iFlySpeechRecognizerString = @"";
@@ -1119,7 +1047,7 @@
         }else{
             
             
-//            [self.cwViewController recordButtonClick];
+            [self.cwViewController recordButtonClick];
             
             [self iFlySpeechRecognizerStop];
             
@@ -1161,15 +1089,11 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
-    if(self.bottomView){
-        [self.cancelSayView removeFromSuperview];
-        [self.subBottomView addSubview:self.sayView];
-    }
-    
     
     countDownNumber=8;
     timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
     
+    self.cwViewController = [[CWViewController alloc]init];
     [self.view addSubview:self.bottomView];
     [self.bottomView addSubview:self.subBottomView];
     //        [self.cancelSayView removeFromSuperview];
@@ -1179,6 +1103,10 @@
     self.isZero = NO;
     iFlySpeechRecognizerString = @"";
     
+    if(self.bottomView){
+        [self.cancelSayView removeFromSuperview];
+        [self.subBottomView addSubview:self.sayView];
+    }
     
     //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
     UITouch *touch = [[event touchesForView:button] anyObject];
@@ -1188,13 +1116,12 @@
     NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
     
     NSString *currentDateString = [self getCurerentTimeString];
-    NSString *ID = [NSString stringWithFormat:@"%@.pcm",currentDateString];
+    NSString *ID = [NSString stringWithFormat:@"%@.wav",currentDateString];
     self.cellMessageID = ID;
-    [_iFlySpeechRecognizer setParameter:ID forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
     
-    //        self.cwViewController.URLNameString = self.cellMessageID;
-    //        [self.cwViewController getSavePath];
-    //        [self.cwViewController recordButtonClick];
+    self.cwViewController.URLNameString = self.cellMessageID;
+    [self.cwViewController getSavePath];
+    [self.cwViewController recordButtonClick];
     
     
     
@@ -1206,6 +1133,8 @@
     
     NSLog(@"ButtonBegan!");
 }
+
+
 -(void)button:(UIButton *)button BaseTouchesCancel:(NSSet *)touches withEvent:(UIEvent *)event{
     
     
@@ -1322,7 +1251,7 @@
         
         [self removeRecordPageView];
         
-//        [self.cwViewController cancelButtonClick];
+        [self.cwViewController cancelButtonClick];
         self.isZero = YES;
         [self iFlySpeechRecognizerStop];
         iFlySpeechRecognizerString = @"";
@@ -1330,7 +1259,7 @@
     }else{
         
         
-//        [self.cwViewController recordButtonClick];
+        [self.cwViewController recordButtonClick];
         
         [self iFlySpeechRecognizerStop];
         
@@ -1346,10 +1275,10 @@
         //            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
         //
         //        }else{
-        //        
-        //            
+        //
+        //
         //            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
-        //            
+        //
         //        }
         
         
@@ -1392,20 +1321,20 @@
     }];
 }
 
--(void)tableView:(UITableView *)tableView BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    NSLog(@"Enaded!");
-}
-
--(void)tableView:(UITableView *)tableView BaseTouchesCancel:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    NSLog(@"Cancel!");
-}
-
--(void)tableView:(UITableView *)tableView BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    NSLog(@"Moved!");
-}
+//-(void)tableView:(UITableView *)tableView BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+//    
+//    NSLog(@"Enaded!");
+//}
+//
+//-(void)tableView:(UITableView *)tableView BaseTouchesCancel:(NSSet *)touches withEvent:(UIEvent *)event{
+//    
+//    NSLog(@"Cancel!");
+//}
+//
+//-(void)tableView:(UITableView *)tableView BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+//    
+//    NSLog(@"Moved!");
+//}
 
 
 #pragma mark - 观察者模式
@@ -1599,11 +1528,11 @@
 
 -(void)sendAudioInfoClick{
     
-        NSLog(@"发送语音");
+    NSLog(@"发送语音");
 }
 
 -(void)benginRecordAudio{
-    
+    [MBProgressHUD showMessage:@"声音准备中"];
     NSLog(@"开始录音");
     
 }
@@ -1625,7 +1554,7 @@
 -(void)sendMessageAndPop{
     NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-
+    
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo WithMessionID:mseeage_id success:^(id responseObject) {
         [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
             
@@ -1654,11 +1583,13 @@
         } failure:^(NSError *error) {
             NSLog(@"失败");
             [self.navigationController popToRootViewControllerAnimated:YES];
+//            [self.navigationController popViewControllerAnimated:YES];
         }];
     } failure:^(NSError *error) {
         NSLog(@"失败");
-        
         [self.navigationController popToRootViewControllerAnimated:YES];
+
+//        [self.navigationController popViewControllerAnimated:YES];
         
     }];
 }
@@ -1692,7 +1623,7 @@
 -(void)selectLangueageClick{
     
     [self cancelResignFirstResponder];
-   // NSLog(@"跳转到新的切换语言页面");
+    // NSLog(@"跳转到新的切换语言页面");
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setObject:nil forKey:@"ChatHisTory"];
@@ -1798,7 +1729,7 @@
         _bottomTableView.allowsSelection = YES;
         _bottomTableView.showsVerticalScrollIndicator = YES;
         _bottomTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//        [_bottomTableView addSubview:self.refreshController];
+        //        [_bottomTableView addSubview:self.refreshController];
         
         _bottomTableView.backgroundColor=[UIColor clearColor];
         
@@ -1865,9 +1796,10 @@
         //        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
         //        [_reportAudioBtn setTitle:@"按住说话" forState:UIControlStateNormal];
         [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];
-        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
-        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
-        [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
+//        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
+//        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
+//        
+//        [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
     }
     return _reportAudioBtn;
 }
