@@ -32,7 +32,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
 ///远程推送！！！千万不能动⬇️
     
@@ -216,6 +216,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     }else if ([content isEqualToString:@"退出聊天"]){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"backToRoot" object:@{@"yonghuID":yonghuID}];
     }else if( [str isEqualToString:@"口语即时翻译请求"]){
+        
+        
+        
+        
         UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"接收到新的翻译任务！" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"现在就去" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number,@"messionID":messionID}];

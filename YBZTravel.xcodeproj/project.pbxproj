@@ -266,6 +266,8 @@
 		A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */; };
 		FE1EFE2D1D83A14B00FDD1BE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */; };
 		FE1EFE301D83A1A000FDD1BE /* PCMDataPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */; };
+		FE1EFE331D87AF5800FDD1BE /* YBZcallingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE321D87AF5700FDD1BE /* YBZcallingView.m */; };
+		FE1EFE361D87AF6700FDD1BE /* YBZcalledView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE351D87AF6700FDD1BE /* YBZcalledView.m */; };
 		FE6C6A131D82AB890021B187 /* SMS_SDKLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE6C6A0E1D82AB890021B187 /* SMS_SDKLocalizable.strings */; };
 		FE6C6A141D82AB890021B187 /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A101D82AB890021B187 /* MOBFoundation.framework */; };
 		FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A111D82AB890021B187 /* SMS_SDK.framework */; };
@@ -764,6 +766,10 @@
 		FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		FE1EFE2E1D83A1A000FDD1BE /* PCMDataPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCMDataPlayer.h; sourceTree = "<group>"; };
 		FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PCMDataPlayer.mm; sourceTree = "<group>"; };
+		FE1EFE311D87AF5700FDD1BE /* YBZcallingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZcallingView.h; sourceTree = "<group>"; };
+		FE1EFE321D87AF5700FDD1BE /* YBZcallingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZcallingView.m; sourceTree = "<group>"; };
+		FE1EFE341D87AF6700FDD1BE /* YBZcalledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZcalledView.h; sourceTree = "<group>"; };
+		FE1EFE351D87AF6700FDD1BE /* YBZcalledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZcalledView.m; sourceTree = "<group>"; };
 		FE6C6A0F1D82AB890021B187 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SMS_SDKLocalizable.strings; sourceTree = "<group>"; };
 		FE6C6A101D82AB890021B187 /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
 		FE6C6A111D82AB890021B187 /* SMS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SMS_SDK.framework; sourceTree = "<group>"; };
@@ -1639,6 +1645,10 @@
 		A03ED0921D2DE37000BD9C0A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FE1EFE341D87AF6700FDD1BE /* YBZcalledView.h */,
+				FE1EFE351D87AF6700FDD1BE /* YBZcalledView.m */,
+				FE1EFE311D87AF5700FDD1BE /* YBZcallingView.h */,
+				FE1EFE321D87AF5700FDD1BE /* YBZcallingView.m */,
 				1CF4DADF1D6F03BD00F6BA94 /* GigVIew */,
 				A0532CBB1D38D00C00FC1AB1 /* Star */,
 			);
@@ -2152,6 +2162,7 @@
 				7D84273D1D634638000BFEAD /* FreeWalkerInfoCell.m in Sources */,
 				5311449B1D79DD5B000B98E8 /* YBZMyOrderModel.m in Sources */,
 				1ED8631B1D2F839F00529094 /* YBZPopularViewCell.m in Sources */,
+				FE1EFE331D87AF5800FDD1BE /* YBZcallingView.m in Sources */,
 				A03ED0F61D2E3F1700BD9C0A /* YBZProductDetailInfoViewController.m in Sources */,
 				5322B8181D7E6120004B8C87 /* SDWebImagePrefetcher.m in Sources */,
 				7D3E99AC1D6D42D700F13F42 /* YBZSendRewardViewController.m in Sources */,
@@ -2266,6 +2277,7 @@
 				7D8427521D634A1E000BFEAD /* ExpenseViewController.m in Sources */,
 				5322B8121D7E6120004B8C87 /* SDImageCache.m in Sources */,
 				A0532C971D38C6B400FC1AB1 /* EditViewController.m in Sources */,
+				FE1EFE361D87AF6700FDD1BE /* YBZcalledView.m in Sources */,
 				A03ED0571D2DE20800BD9C0A /* main.m in Sources */,
 				1ED8631F1D2F8DA500529094 /* YBZPopularFrameInfo.m in Sources */,
 				7D84273B1D634638000BFEAD /* CollectionMessageInfoCell.m in Sources */,
