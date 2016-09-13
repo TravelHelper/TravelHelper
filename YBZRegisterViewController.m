@@ -15,6 +15,9 @@
 #import "NSString+SZYKit.h"
 #import "YBZChooseTranslatorViewController.h"
 #import "JPUSHService.h"
+#import "MBProgressHUD+XMG.h"
+#import <SMS_SDK/SMSSDK.h>
+
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
@@ -41,8 +44,13 @@
 
 
 @end
-@implementation YBZRegisterViewController
-int    countDown = 59;
+@implementation YBZRegisterViewController{
+
+    int mark;
+    int countDown;
+//    MBProgressHUD *HUD;
+}
+
 static NSString * userStr;
 
 - (void)viewDidLoad {
@@ -60,7 +68,7 @@ static NSString * userStr;
      [self.view addSubview:self.getCodeImageView];
      [self.view addSubview:self.getCodeBtn];
      //   [self.view addSubview:self.putCodeBtn];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toReturn) name:@"needTopop" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toReturn) name:@"needTopop" object:nil];
      self.userShaker = [[AFViewShaker alloc]initWithView:self.phoneTextField];
      self.pswShaker = [[AFViewShaker alloc]initWithView:self.pswTextField];
      self.navigationItem.leftBarButtonItem = [UIBarButtonItem initWithNormalImage:@"return" target:self action:@selector(leftMenuClick) width:ScreenWidth*0.043 height:ScreenHeight*0.024];
@@ -80,6 +88,12 @@ static NSString * userStr;
         [self.userTextField resignFirstResponder];
     }
     return YES;
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    mark=1;
+    countDown = 59;
+
 }
 
 #pragma mark - 响应事件
@@ -107,26 +121,53 @@ static NSString * userStr;
                     [self.getCodeBtn setEnabled:YES];
                 }else{
                     //获取验证码
-                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-                    NSDictionary *paramDict = @{@"code":self.enderCodeTextField.text,
-                                                @"user_phone":self.phoneTextField.text};
                     
-                    [manager POST:[NSString stringWithFormat:@"%@User/getValidateAndFamilyPhoneInfo",API_HOST]  parameters:paramDict progress:^(NSProgress * _Nonnull uploadProgress) {
-                        //do nothing
-                    }
-                          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                              
-                              NSData *data = [[NSData alloc]initWithData:responseObject];
-                              NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                              userStr = str[@"code"];
-                              NSString *phoneStr = str[@"user_phone"];
-                              phoneStr = self.phoneTextField.text;
-                              NSLog(@"%@",str);
-                          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                              NSLog(@"error----->%@",error);
-                          }];
+                    
+                    
+                    
+                    [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodSMS phoneNumber:self.phoneTextField.text zone:@"86" customIdentifier:nil result:^(NSError *error) {
+                        if (!error) {
+                            NSLog(@"获取验证码成功");
+                            
+                            [MBProgressHUD showSuccess:@"获取成功"];
+                        }else{
+                            NSLog(@"获取验证码失败");
+                            //手机震动
+//                            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+                            [MBProgressHUD showError:@"请确认您输入的手机号"];
+                        }
+                        
+                    }];
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+//                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//                    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+//                    NSDictionary *paramDict = @{@"code":self.enderCodeTextField.text,
+//                                                @"user_phone":self.phoneTextField.text};
+                    
+//                    [manager POST:[NSString stringWithFormat:@"%@User/getValidateAndFamilyPhoneInfo",API_HOST]  parameters:paramDict progress:^(NSProgress * _Nonnull uploadProgress) {
+//                        //do nothing
+//                    }
+//                          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//                              
+//                              NSData *data = [[NSData alloc]initWithData:responseObject];
+//                              NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//                              userStr = str[@"code"];
+//                              NSString *phoneStr = str[@"user_phone"];
+//                              phoneStr = self.phoneTextField.text;
+//                              NSLog(@"%@",str);
+//                          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//                              NSLog(@"error----->%@",error);
+//                          }];
                     _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimer) userInfo:nil repeats:YES];
                 }
             } failure:^(NSError *error) {
@@ -156,13 +197,13 @@ static NSString * userStr;
         [self.getCodeBtn setBackgroundColor:[UIColor clearColor]];
     }
 }
--(void)toReturn{
-
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-    
-}
+//-(void)toReturn{
+//
+//    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+//        
+//    }];
+//    
+//}
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.phoneTextField resignFirstResponder];
@@ -172,6 +213,9 @@ static NSString * userStr;
     [self.enderCodeTextField resignFirstResponder];
 }
 -(void)finishRegBtnClick{
+    
+    if(mark==1){
+    
     if ([self.phoneTextField isNotEmpty]) {
         if ([self.pswTextField isNotEmpty]) {
             if ([self.phoneTextField validatePhoneNumber]) {
@@ -179,30 +223,42 @@ static NSString * userStr;
                     
                     if ([_pswTextField.text isEqualToString: _confirmPswTextField.text]) {
                         NSString *str1 = self.enderCodeTextField.text;
-                        if ([str1 isEqualToString:userStr]) {
-                            //                            //注册
-                            NSString *user_id = [NSString stringOfUUID];
-                              NSString * strid = [user_id stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
-                            [WebAgent userPhone:self.phoneTextField.text userPsw:self.pswTextField.text userName:self.userTextField.text userID:strid  success:^(id responseObject) {
-                                //成功
+                        
+                        
+                        
+                        
+                        
+                        
+                        [SMSSDK commitVerificationCode:str1 phoneNumber:self.phoneTextField.text zone:@"86" result:^(NSError *error) {
+                            if (!error) {
                                 
-                                NSDictionary *useridDic = @{@"user_id":strid};
-                                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                                [userDefaults setObject:useridDic forKey:@"user_id"];
-
-                                [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
-                                [[NSNotificationCenter defaultCenter]postNotificationName:@"Login" object:nil];
+                                [MBProgressHUD showSuccess:@"验证成功"];
                                 
+                                NSString *user_id = [NSString stringOfUUID];
+                                NSString * strid = [user_id stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
                                 
+                                [MBProgressHUD showSuccess:@"正在为您注册中 请等待"];
                                 
-                                
-                                [WebAgent updateUserLoginState:strid success:^(id responseObject) {
-                                    NSData *data = [[NSData alloc]initWithData:responseObject];
-                                    NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                                [WebAgent userPhone:self.phoneTextField.text userPsw:self.pswTextField.text userName:self.userTextField.text userID:strid  success:^(id responseObject) {
+                                    //成功
+                                    mark=0;
+                                    NSDictionary *useridDic = @{@"user_id":strid};
+                                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                                    [userDefaults setObject:useridDic forKey:@"user_id"];
                                     
-                                    NSString *isLogin = str[@"state"];
-                                    NSLog(@"%@",isLogin);
+                                    [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
+                                    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login" object:nil];
                                     
+                                    
+                                    
+                                    
+                                    [WebAgent updateUserLoginState:strid success:^(id responseObject) {
+                                        NSData *data = [[NSData alloc]initWithData:responseObject];
+                                        NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                                        
+                                        NSString *isLogin = str[@"state"];
+                                        NSLog(@"%@",isLogin);
+                                        
                                         
                                         [JPUSHService setTags:nil alias:strid fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias)
                                          {
@@ -212,49 +268,70 @@ static NSString * userStr;
                                         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                                         NSDictionary *dict = @{@"user_loginState":@"1"};
                                         [userinfo setObject:dict forKey:@"user_loginState"];
-                                    
-                                    
-                                    
-                                    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"注册成功" preferredStyle:UIAlertControllerStyleAlert];
-                                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                                        //                                [self dismissViewControllerAnimated:YES completion:nil];
-                                        
-                                        [[NSNotificationCenter defaultCenter]postNotificationName:@"changeLogin" object:nil];
-                                        
-                                        
-                                    
                                         
                                         
                                         
-                                    }];
-                                    [alertVC addAction:okAction];
-                                    [self presentViewController:alertVC animated:YES completion:nil];
-                                }
-                                        failure:^(NSError *error) {
-                                                NSLog(@"原本222222222的错误%@",error);
+                                        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"注册成功" preferredStyle:UIAlertControllerStyleAlert];
+                                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                                            //                                [self dismissViewControllerAnimated:YES completion:nil];
+                                            
+                                            //                                        [[NSNotificationCenter defaultCenter]postNotificationName:@"changeLogin" object:nil];
+                                            [MBProgressHUD showSuccess:@"正在努力为您跳转界面中"];
+                                            
+                                            
+                                            [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                                                [[NSNotificationCenter defaultCenter]postNotificationName:@"changeLogin" object:nil];
+                                            }];
+                                            
+                                            
+                                            
                                         }];
+                                        [alertVC addAction:okAction];
+                                        [self presentViewController:alertVC animated:YES completion:nil];
+                                    }
+                                                           failure:^(NSError *error) {
+                                                               NSLog(@"原本222222222的错误%@",error);
+                                                           }];
+                                    
+                                    
+                                    
+                                    
+                                    
                                 
-                                
-                                
-                                
+                                } failure:^(NSError *error) {
+                                    //失败
+                                    [MBProgressHUD showError:@"注册失败，请检查网络"];
+                                }];
                                 
 
+                                    
                                 
                                 
-                                
-                                
-                            } failure:^(NSError *error) {
-                                //失败
-                            }];
-                            
+                            }else{
+                                NSLog(@"验证失败:%@",error);
+                                //手机震动
+//                                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+                                [MBProgressHUD showError:@"请检查验证码是否正确"];
+                            }
+                        }];
 
-                            
-                            
-                            
-                                                  }else{
-
-                            [self showMssage:@"验证码错误" becomeFirstResponder:nil];
-                        }
+                        
+                        
+                        
+                                    
+                        
+                        
+                        
+//                        if ([str1 isEqualToString:userStr]) {
+//                            //                            //注册
+//
+//                            
+//                            
+//                            
+//                                                  }else{
+//
+//                            [self showMssage:@"验证码错误" becomeFirstResponder:nil];
+//                        }
                         
                     }else{
                         [self showMssage:@"密码和确认密码不一致" becomeFirstResponder:nil];
@@ -272,6 +349,7 @@ static NSString * userStr;
     }else{
         [self.userShaker shake];
         
+    }
     }
     
 }

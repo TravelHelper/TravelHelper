@@ -21,6 +21,7 @@
 #import "MBProgressHUD+XMG.h"
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
+#import "PCMDataPlayer.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -87,6 +88,16 @@
     NSTimer *timer;
     int   countDownNumber;
     
+    
+    
+    
+    PCMDataPlayer* player;
+    FILE* pcmFile;
+    void* pcmDataBuffer; //pcm读数据的缓冲区
+    NSTimer* sendDataTimer;
+    
+    
+    
 }
 
 
@@ -120,6 +131,9 @@
     
     self.isequal = YES;
     
+    
+     player = [[PCMDataPlayer alloc] init];
+    
 //    UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(donghuahuishou)];
 //    TapGestureTecognizer.cancelsTouchesInView=NO;
 //    [self.view addGestureRecognizer:TapGestureTecognizer];
@@ -127,7 +141,8 @@
     
     
 //    [self setupRefresh];
-    
+    self.cwViewController = [[CWViewController alloc]init];
+
     [self.view addSubview:self.backgroundImageView];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -162,7 +177,18 @@
     
     self.iFlySpeechRecognizer  = [[IFlySpeechRecognizer alloc]init];
     self.iFlySpeechRecognizer.delegate = self;
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *docDir = [paths objectAtIndex:0];
+//    NSString *needStr=[NSString stringWithFormat:@"%@/",docDir];
     
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+//    NSString *cachePath = [paths objectAtIndex:0];
+    NSString *tmpDir = NSTemporaryDirectory();
+    [IFlySetting setLogFilePath:tmpDir];
+
+//    IFlySpeechConstant.ASR_AUDIO_PATH=docDir;
+    NSLog(@"%@",[IFlySpeechConstant ASR_AUDIO_PATH]);
+//    [_iFlySpeechRecognizer setParameter:@"asr.pcm" forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
     //键盘弹出
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     //键盘收起
@@ -311,13 +337,68 @@
 #pragma mark - 观察者方法
 
 -(void)determinePlayARecord:(NSNotification *)info{
-    
+    [sendDataTimer invalidate];
     self.currentCellID = info.userInfo[@"cellID"];
-    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
+//    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
     NSLog(@"%@",self.currentCellID);
-    [self cancelResignFirstResponder];
     
+    
+    
+    NSString* filepath = [NSTemporaryDirectory() stringByAppendingString:self.currentCellID];
+    NSLog(@"PlayerViewController filepath = %@", filepath);
+    NSFileManager* manager = [NSFileManager defaultManager];
+    NSLog(@"PlayerViewController file exist = %d", [manager fileExistsAtPath:filepath]);
+    NSLog(@"PlayerViewController file size = %lld", [[manager attributesOfItemAtPath:filepath error:nil] fileSize]);
+    
+    pcmFile = fopen([filepath UTF8String], "r");
+    if (pcmFile) {
+        fseek(pcmFile, 0, SEEK_SET);
+        pcmDataBuffer = malloc(640);
+        NSLog(@"PlayerViewController PCM文件打开成功...");
+    }
+    else {
+        NSLog(@"PlayerViewController PCM文件打开错误...");
+        return;
+    }
+
+    sendDataTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0 / 40.0)target:self selector:@selector(readNextPCMData:) userInfo:nil repeats:YES];
+
+
+    [self cancelResignFirstResponder];
+
 }
+
+
+- (void)readNextPCMData:(NSTimer*)timer
+{
+    if (pcmFile != NULL && pcmDataBuffer != NULL) {
+        int readLength = fread(pcmDataBuffer, 1, 640, pcmFile); //读取PCM文件
+        if (readLength > 0) {
+            [player play:pcmDataBuffer length:readLength];
+        }
+        else {
+            if (sendDataTimer) {
+                [sendDataTimer invalidate];
+            }
+            sendDataTimer = nil;
+            
+            if (player) {
+                [player stop];
+            }
+            
+            if (pcmFile) {
+                fclose(pcmFile);
+            }
+            pcmFile = NULL;
+            
+            if (pcmDataBuffer) {
+                free(pcmDataBuffer);
+            }
+            pcmDataBuffer = NULL;
+        }
+    }
+}
+
 
 -(void)dealloc{
     
@@ -382,7 +463,7 @@
                            @"sendTime":self.cellMessageID,
                            @"chatTextContent":@"",
                            @"senderImgPictureURL":@""};
-    NSLog(@"%@asmdjasdgjkashdjkashkhdask%@",self.cwViewController.secondString,iFlySpeechRecognizerString);
+//    NSLog(@"%@asmdjasdgjkashdjkashkhdask%@",self.cwViewController.secondString,iFlySpeechRecognizerString);
     
     self.inputTextView.text = nil;
     [self.dataArr insertObject:dict atIndex:count];
@@ -630,11 +711,15 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
+    if(self.bottomView){
+        [self.cancelSayView removeFromSuperview];
+        [self.subBottomView addSubview:self.sayView];
+    }
+
     
     countDownNumber=8;
      timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
     
-        self.cwViewController = [[CWViewController alloc]init];
         [self.view addSubview:self.bottomView];
         [self.bottomView addSubview:self.subBottomView];
 //        [self.cancelSayView removeFromSuperview];
@@ -644,10 +729,6 @@
         self.isZero = NO;
         iFlySpeechRecognizerString = @"";
     
-        if(self.bottomView){
-            [self.cancelSayView removeFromSuperview];
-            [self.subBottomView addSubview:self.sayView];
-        }
     
         //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
         UITouch *touch = [[event touchesForView:button] anyObject];
@@ -657,13 +738,14 @@
         NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
         
         NSString *currentDateString = [self getCurerentTimeString];
-        NSString *ID = [NSString stringWithFormat:@"%@.wav",currentDateString];
+        NSString *ID = [NSString stringWithFormat:@"%@.pcm",currentDateString];
         self.cellMessageID = ID;
+        [_iFlySpeechRecognizer setParameter:ID forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
         
-        self.cwViewController.URLNameString = self.cellMessageID;
-        [self.cwViewController getSavePath];
-        [self.cwViewController recordButtonClick];
-        
+//        self.cwViewController.URLNameString = self.cellMessageID;
+//        [self.cwViewController getSavePath];
+//        [self.cwViewController recordButtonClick];
+    
         
         
         
@@ -792,7 +874,7 @@
         
         [self removeRecordPageView];
         
-        [self.cwViewController cancelButtonClick];
+//        [self.cwViewController cancelButtonClick];
         self.isZero = YES;
         [self iFlySpeechRecognizerStop];
         iFlySpeechRecognizerString = @"";
@@ -800,7 +882,7 @@
     }else{
         
         
-        [self.cwViewController recordButtonClick];
+//        [self.cwViewController recordButtonClick];
         
         [self iFlySpeechRecognizerStop];
         
@@ -866,7 +948,7 @@
             
             [self removeRecordPageView];
             
-            [self.cwViewController cancelButtonClick];
+//            [self.cwViewController cancelButtonClick];
             self.isZero = YES;
             [self iFlySpeechRecognizerStop];
             iFlySpeechRecognizerString = @"";
@@ -874,7 +956,7 @@
         }else{
             
             
-            [self.cwViewController recordButtonClick];
+//            [self.cwViewController recordButtonClick];
             
             [self iFlySpeechRecognizerStop];
             
@@ -1350,7 +1432,7 @@
     if (!_reportAudioBtn) {
         _reportAudioBtn = [BaseAudioButton buttonWithType:UIButtonTypeCustom];
         _reportAudioBtn.mdelegate = self;
-        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.02, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.085);
+        _reportAudioBtn.frame = CGRectMake(CGRectGetMaxX(self.changeSendContentBtn.frame) + 8,  kScreenWidth*0.0165, CGRectGetMinX(self.selectLangueageBtn.frame) - 8 - (CGRectGetMaxX(self.changeSendContentBtn.frame) + 8),  kScreenWidth * 0.095);
         //        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
         //        [_reportAudioBtn setTitle:@"按住说话" forState:UIControlStateNormal];
         [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];

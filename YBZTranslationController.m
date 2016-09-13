@@ -118,6 +118,10 @@
     
     [super viewDidLoad];
     self.isUser = YES;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = [paths objectAtIndex:0];
+    
+    NSLog(@"%@",docDir);
     
     self.address_str = [[NSString alloc] init];
     
@@ -196,6 +200,8 @@
             
         } failure:^(NSError *error) {
             
+            [MBProgressHUD showError:@"获取数据失败,请检查网络"];
+            
         }];
         
 
@@ -206,6 +212,8 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"messageId"];
     
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.hidesBackButton = NO;
@@ -272,37 +280,53 @@
             NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSDictionary *dict = @{@"user_loginState":str[@"state"]};
-            [userinfo setObject:dict forKey:@"user_loginState"];
-            if ([dict[@"user_loginState"]isEqualToString:@"1"]) {
-                loginStates = YES;
-            }else{
-                loginStates = NO;
-            }
-            userID = user_id[@"user_id"];
-            [WebAgent getuserTranslateState:userID success:^(id responseObject) {
-                NSData *data = [[NSData alloc]initWithData:responseObject];
-                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                NSString *msg=dic[@"msg"];
-                if([msg isEqualToString:@"SUCCESS"]){
+            if(str){
+                NSDictionary *dict = @{@"user_loginState":str[@"state"]};
+                
+                NSString *needstr=dict[@"user_loginState"];
+                
+                if(![needstr isEqualToString:@"FAIL"]){
+                    [userinfo setObject:dict forKey:@"user_loginState"];
+                    if ([dict[@"user_loginState"]isEqualToString:@"1"]) {
+                        loginStates = YES;
+                    }else{
+                        loginStates = NO;
+                    }
+                    userID = user_id[@"user_id"];
+                    [WebAgent getuserTranslateState:userID success:^(id responseObject) {
+                        NSData *data = [[NSData alloc]initWithData:responseObject];
+                        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                        NSString *msg=dic[@"msg"];
+                        if([msg isEqualToString:@"SUCCESS"]){
+                            
+                            user_identity=dic[@"user_identity"];
+                            user_language = dic[@"user_language"];
+                            NSLog(@"%@",user_identity);
+                        }
+                        
+                        
+                    } failure:^(NSError *error) {
+                        
+                        [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+                        
+                    }];
                     
-                    user_identity=dic[@"user_identity"];
-                    user_language = dic[@"user_language"];
-                    NSLog(@"%@",user_identity);
+                    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                }else{
+                    
+                    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"user_id"];
+                    [MBProgressHUD showError:@"用户信息异常，请重新登录"];
+                    
                 }
-                
-                
-            } failure:^(NSError *error) {
-                
-                [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
-                
-            }];
 
-            [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-
-            } failure:^(NSError *error) {
-                
-            }];
+            }else{
+                [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"user_id"];
+                [MBProgressHUD showError:@"用户信息异常，请重新登录"];
+            }
         }
         failure:^(NSError *error) {
             NSLog(@"22222");
@@ -319,6 +343,9 @@
     
     NSString *yonghuID = noti.object[@"yonghuID"];
     NSString *language = noti.object[@"language_catgory"];
+    
+    NSString *messionID=noti.object[@"messionID"];
+    
 //    NSString *pay_number = noti.userInfo[@"pay_number"];
 
     
@@ -430,7 +457,7 @@
     NSDictionary *userID = [userdefault objectForKey:@"user_id"];
     
     
-    [WebAgent interpreterStateWithuserId:yonghuID success:^(id responseObject) {
+    [WebAgent interpreterStateWithuserId:yonghuID andmessionID:messionID success:^(id responseObject) {
        
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];

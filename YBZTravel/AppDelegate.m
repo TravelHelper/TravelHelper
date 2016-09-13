@@ -9,7 +9,8 @@
 #import "AppDelegate.h"
 #import "YBZRootViewController.h"
 #import "iflyMSC/IFlyMSC.h"
-#import <RongIMLib/RongIMLib.h>
+//#import <RongIMLib/RongIMLib.h>
+#import <SMS_SDK/SMSSDK.h>
 #import "FreeTransViewController.h"
 #import "JPUSHService.h"
 #import "WebAgent.h"
@@ -32,10 +33,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     
-    
+    [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
 ///远程推送！！！千万不能动⬇️
     
-    
+    [[UIApplication sharedApplication ] setApplicationIconBadgeNumber:0];
     
     NSString *advertisingId = nil;
     //Required
@@ -54,7 +55,7 @@
     }
     //Required
     // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
-    [JPUSHService setupWithOption:launchOptions appKey:@"c0797bfbe63d9b86f59b7de6"
+    [JPUSHService setupWithOption:launchOptions appKey:@"4309446657f3a7b64ef168ee"
                           channel:@"Publish channel"
                  apsForProduction:false
             advertisingIdentifier:advertisingId];
@@ -217,7 +218,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     }else if( [str isEqualToString:@"口语即时翻译请求"]){
         UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"接收到新的翻译任务！" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"现在就去" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number,@"messionID":messionID}];
         
         }];
         
