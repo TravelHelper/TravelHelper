@@ -115,7 +115,7 @@
         
         _symbolTitleLabel.backgroundColor = [UIColor clearColor];
         
-        _symbolTitleLabel.text = @"——";
+        _symbolTitleLabel.text = @"—";
         
         _symbolTitleLabel.textAlignment = NSTextAlignmentCenter;
     }
