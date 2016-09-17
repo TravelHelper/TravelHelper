@@ -195,17 +195,18 @@
         
         //设置属性的字典
         self.recordSetting = [[NSMutableDictionary alloc] init];
-        
+        [self.recordSetting setObject:[NSNumber numberWithInt:AVAudioQualityMax] forKey:AVEncoderAudioQualityKey];
+        [self.recordSetting setObject:[NSNumber numberWithInt:12800] forKey:AVEncoderBitRateKey];
         //1.格式
         [self.recordSetting setObject:[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey:AVFormatIDKey];
         //2.采样率
-        [self.recordSetting setObject:[NSNumber numberWithInt:8000.00f] forKey:AVSampleRateKey];
+        [self.recordSetting setObject:[NSNumber numberWithInt:44100] forKey:AVSampleRateKey];
         //3.声道
         [self.recordSetting setObject:[NSNumber numberWithInt:1] forKey:AVNumberOfChannelsKey];
         //4.采样位数
         [self.recordSetting setObject:[NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
         
-        [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsNonInterleaved];
+//        [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsNonInterleaved];
         
         [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsFloatKey];
         

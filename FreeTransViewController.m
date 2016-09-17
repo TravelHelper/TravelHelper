@@ -21,7 +21,6 @@
 #import "MBProgressHUD+XMG.h"
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
-#import "PCMDataPlayer.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -88,16 +87,6 @@
     NSTimer *timer;
     int   countDownNumber;
     
-    
-    
-    
-    PCMDataPlayer* player;
-    FILE* pcmFile;
-    void* pcmDataBuffer; //pcm读数据的缓冲区
-    NSTimer* sendDataTimer;
-    
-    
-    
 }
 
 
@@ -113,9 +102,9 @@
         self.voice_Language = voice_Language;
         self.trans_Language = trans_Language;
         
-//        self.navigationItem.title = (@"%@",self.trans_Language);
+        //        self.navigationItem.title = (@"%@",self.trans_Language);
         self.navigationItem.title = @"免费翻译";
-
+        
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:self.voice_Language forKey:@"VOICE_LANGUAGE"];
         [userDefaults setObject:self.trans_Language forKey:@"TRANS_LANGUAGE"];
@@ -131,18 +120,15 @@
     
     self.isequal = YES;
     
-    
-     player = [[PCMDataPlayer alloc] init];
-    
-//    UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(donghuahuishou)];
-//    TapGestureTecognizer.cancelsTouchesInView=NO;
-//    [self.view addGestureRecognizer:TapGestureTecognizer];
-
+    //    UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(donghuahuishou)];
+    //    TapGestureTecognizer.cancelsTouchesInView=NO;
+    //    [self.view addGestureRecognizer:TapGestureTecognizer];
     
     
-//    [self setupRefresh];
-    self.cwViewController = [[CWViewController alloc]init];
-
+    
+    //    [self setupRefresh];
+    self.navigationController.interactivePopGestureRecognizer.delaysTouchesBegan=NO;
+    
     [self.view addSubview:self.backgroundImageView];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -152,7 +138,7 @@
     self.isZero = NO;
     self.isKeyboardShow = NO;
     //self.view.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgp"]];
-//    self.view.backgroundColor = [UIColor clearColor];
+    //    self.view.backgroundColor = [UIColor clearColor];
     //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     
     _stringTransVC = [[StringTransViewController alloc]init];
@@ -177,18 +163,7 @@
     
     self.iFlySpeechRecognizer  = [[IFlySpeechRecognizer alloc]init];
     self.iFlySpeechRecognizer.delegate = self;
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *docDir = [paths objectAtIndex:0];
-//    NSString *needStr=[NSString stringWithFormat:@"%@/",docDir];
     
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-//    NSString *cachePath = [paths objectAtIndex:0];
-    NSString *tmpDir = NSTemporaryDirectory();
-    [IFlySetting setLogFilePath:tmpDir];
-
-//    IFlySpeechConstant.ASR_AUDIO_PATH=docDir;
-    NSLog(@"%@",[IFlySpeechConstant ASR_AUDIO_PATH]);
-//    [_iFlySpeechRecognizer setParameter:@"asr.pcm" forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
     //键盘弹出
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     //键盘收起
@@ -212,7 +187,7 @@
     if(img){
         [self.backgroundImageView setImage:img];
     }
-
+    
     
     
     
@@ -264,34 +239,34 @@
 - (void) onError:(IFlySpeechError *) errorCode{
     
     if(self.isCancelSendRecord == YES){
-    
+        
     }else{
-    
-    
-//    if ([self.cwViewController.secondString intValue] < 1 ) {
-//        
-//            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
-//            self.shortLabel.text = @"说话时间过短，小于1秒";
-//            self.shortLabel.font = FONT_10;
-//            self.shortLabel.textAlignment = NSTextAlignmentCenter;
-//            self.shortLabel.backgroundColor = [UIColor clearColor];
-//            [self.subBottomView addSubview:self.shortLabel];
-//        
-//            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
-//        
-//        }else{
+        
+        
+        //    if ([self.cwViewController.secondString intValue] < 1 ) {
+        //
+        //            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+        //            self.shortLabel.text = @"说话时间过短，小于1秒";
+        //            self.shortLabel.font = FONT_10;
+        //            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+        //            self.shortLabel.backgroundColor = [UIColor clearColor];
+        //            [self.subBottomView addSubview:self.shortLabel];
+        //
+        //            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+        //
+        //        }else{
         int needNumber=8-countDownNumber;
         if(needNumber>=1){
             [self sendRecordAudioWithRecordURLString:self.cellMessageID];
         }else{
-        
+            
             [MBProgressHUD showError:@"话语长度不能小于1s"];
             
         }
         
-//        }
+        //        }
     }
-
+    
     NSLog(@"错误描述--->%@",errorCode);
     
 }
@@ -337,68 +312,13 @@
 #pragma mark - 观察者方法
 
 -(void)determinePlayARecord:(NSNotification *)info{
-    [sendDataTimer invalidate];
+    
     self.currentCellID = info.userInfo[@"cellID"];
-//    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
+    [self.cwViewController playButtonClickWithURLString:self.currentCellID];
     NSLog(@"%@",self.currentCellID);
-    
-    
-    
-    NSString* filepath = [NSTemporaryDirectory() stringByAppendingString:self.currentCellID];
-    NSLog(@"PlayerViewController filepath = %@", filepath);
-    NSFileManager* manager = [NSFileManager defaultManager];
-    NSLog(@"PlayerViewController file exist = %d", [manager fileExistsAtPath:filepath]);
-    NSLog(@"PlayerViewController file size = %lld", [[manager attributesOfItemAtPath:filepath error:nil] fileSize]);
-    
-    pcmFile = fopen([filepath UTF8String], "r");
-    if (pcmFile) {
-        fseek(pcmFile, 0, SEEK_SET);
-        pcmDataBuffer = malloc(640);
-        NSLog(@"PlayerViewController PCM文件打开成功...");
-    }
-    else {
-        NSLog(@"PlayerViewController PCM文件打开错误...");
-        return;
-    }
-
-    sendDataTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0 / 40.0)target:self selector:@selector(readNextPCMData:) userInfo:nil repeats:YES];
-
-
     [self cancelResignFirstResponder];
-
+    
 }
-
-
-- (void)readNextPCMData:(NSTimer*)timer
-{
-    if (pcmFile != NULL && pcmDataBuffer != NULL) {
-        int readLength = fread(pcmDataBuffer, 1, 640, pcmFile); //读取PCM文件
-        if (readLength > 0) {
-            [player play:pcmDataBuffer length:readLength];
-        }
-        else {
-            if (sendDataTimer) {
-                [sendDataTimer invalidate];
-            }
-            sendDataTimer = nil;
-            
-            if (player) {
-                [player stop];
-            }
-            
-            if (pcmFile) {
-                fclose(pcmFile);
-            }
-            pcmFile = NULL;
-            
-            if (pcmDataBuffer) {
-                free(pcmDataBuffer);
-            }
-            pcmDataBuffer = NULL;
-        }
-    }
-}
-
 
 -(void)dealloc{
     
@@ -463,7 +383,7 @@
                            @"sendTime":self.cellMessageID,
                            @"chatTextContent":@"",
                            @"senderImgPictureURL":@""};
-//    NSLog(@"%@asmdjasdgjkashdjkashkhdask%@",self.cwViewController.secondString,iFlySpeechRecognizerString);
+    NSLog(@"%@asmdjasdgjkashdjkashkhdask%@",self.cwViewController.secondString,iFlySpeechRecognizerString);
     
     self.inputTextView.text = nil;
     [self.dataArr insertObject:dict atIndex:count];
@@ -610,7 +530,7 @@
         
     }
     
-
+    
     
 }
 //加载datasource
@@ -654,7 +574,7 @@
         
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *user = [userDefaults dictionaryForKey:@"user_id"];
-//        userIDinfo = user[@"user_id"];
+        //        userIDinfo = user[@"user_id"];
         model.senderImgPictureURL=user[@"user_id"];;
     }else{
         model.isSender = 0;
@@ -711,48 +631,47 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
+//    [MBProgressHUD showSuccess:@"声音准备中"];
+    countDownNumber=8;
+    timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
+    
+    self.cwViewController = [[CWViewController alloc]init];
+    [self.view addSubview:self.bottomView];
+    [self.bottomView addSubview:self.subBottomView];
+    //        [self.cancelSayView removeFromSuperview];
+    //        [self.subBottomView addSubview:self.sayView];
+    
+    self.isCancelSendRecord = NO;
+    self.isZero = NO;
+    iFlySpeechRecognizerString = @"";
+    
     if(self.bottomView){
         [self.cancelSayView removeFromSuperview];
         [self.subBottomView addSubview:self.sayView];
     }
-
     
-    countDownNumber=8;
-     timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
+    //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
+    UITouch *touch = [[event touchesForView:button] anyObject];
     
-        [self.view addSubview:self.bottomView];
-        [self.bottomView addSubview:self.subBottomView];
-//        [self.cancelSayView removeFromSuperview];
-//        [self.subBottomView addSubview:self.sayView];
+    //将XY轴的座标资讯正规化后输出
+    NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
+    NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
     
-        self.isCancelSendRecord = NO;
-        self.isZero = NO;
-        iFlySpeechRecognizerString = @"";
+    NSString *currentDateString = [self getCurerentTimeString];
+    NSString *ID = [NSString stringWithFormat:@"%@.wav",currentDateString];
+    self.cellMessageID = ID;
+    
+    self.cwViewController.URLNameString = self.cellMessageID;
+    [self.cwViewController getSavePath];
+    [self.cwViewController recordButtonClick];
     
     
-        //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
-        UITouch *touch = [[event touchesForView:button] anyObject];
-        
-        //将XY轴的座标资讯正规化后输出
-        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
-        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
-        
-        NSString *currentDateString = [self getCurerentTimeString];
-        NSString *ID = [NSString stringWithFormat:@"%@.pcm",currentDateString];
-        self.cellMessageID = ID;
-        [_iFlySpeechRecognizer setParameter:ID forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
-        
-//        self.cwViewController.URLNameString = self.cellMessageID;
-//        [self.cwViewController getSavePath];
-//        [self.cwViewController recordButtonClick];
     
-        
-        
-        
-        if (self.isRecognizer == NO) {
-            [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
-        }
-        
+    
+    if (self.isRecognizer == NO) {
+        [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
+    }
+    
     
     NSLog(@"ButtonBegan!");
 }
@@ -781,75 +700,75 @@
 }
 -(void)button:(UIButton *)button BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     
-//        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
-        UITouch *touch = [[event touchesForView:button] anyObject];
-        NSString *xString = [NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x];
-        NSString *yString = [NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y];
-        int x = [xString intValue];
-        int y = [yString intValue];
-        //将XY轴的座标资讯正规化后输出
-        NSLog(@"%d",x) ;
-        NSLog(@"%d",y) ;
+    //        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
+    UITouch *touch = [[event touchesForView:button] anyObject];
+    NSString *xString = [NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x];
+    NSString *yString = [NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y];
+    int x = [xString intValue];
+    int y = [yString intValue];
+    //将XY轴的座标资讯正规化后输出
+    NSLog(@"%d",x) ;
+    NSLog(@"%d",y) ;
+    
+    if (self.bottomView) {
         
-        if (self.bottomView) {
+        //取消发送View热区
+        
+        CGFloat leftBorder = (CGRectGetMinX(self.subBottomView.frame) - CGRectGetMinX(self.reportAudioBtn.frame)-self.subBottomView.frame.origin.x-100);
+        CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportAudioBtn.frame)+CGRectGetMaxX(self.subBottomView.frame)+100);
+        CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportAudioBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))-CGRectGetMinY(self.subBottomView.frame)-100);
+        CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportAudioBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))+150);
+        
+        //            CGFloat leftBorder = (CGRectGetMinX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)-self.subBottomView.frame.origin.x-100);
+        //            CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)+CGRectGetMaxX(self.subBottomView.frame)+100);
+        //            CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))-CGRectGetMinY(self.subBottomView.frame)-100);
+        //            CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))+150);
+        //
+        //1.获得全局的并发队列
+        
+        if (x > leftBorder && x < rightBorder && y > topBorder && y < bottomBorder) {
+            [self.sayView removeFromSuperview];
+            [self.subBottomView addSubview:self.cancelSayView];
+            self.isCancelSendRecord = YES;
             
-            //取消发送View热区
+            NSLog(@"取消发送语音");
+            //                [self.cwViewController pauseRecordBtnClick];
             
-            CGFloat leftBorder = (CGRectGetMinX(self.subBottomView.frame) - CGRectGetMinX(self.reportAudioBtn.frame)-self.subBottomView.frame.origin.x-100);
-            CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportAudioBtn.frame)+CGRectGetMaxX(self.subBottomView.frame)+100);
-            CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportAudioBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))-CGRectGetMinY(self.subBottomView.frame)-100);
-            CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportAudioBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))+150);
+            //2.添加任务到队列中，就可以执行任务
+            //异步函数：具备开启新线程的能力
+            //                dispatch_async(queue, ^{
+            //                    // 在另一个线程中启动下载功能，加GCD控制
+            //                    if (self.isRecognizer == YES) {
+            //                        [self iFlySpeechRecognizerStop];
+            //                    }
             
-//            CGFloat leftBorder = (CGRectGetMinX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)-self.subBottomView.frame.origin.x-100);
-//            CGFloat rightBorder = (CGRectGetMaxX(self.subBottomView.frame) - CGRectGetMinX(self.reportEnglishBtn.frame)+CGRectGetMaxX(self.subBottomView.frame)+100);
-//            CGFloat topBorder =  (CGRectGetMinY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))-CGRectGetMinY(self.subBottomView.frame)-100);
-//            CGFloat bottomBorder =  (CGRectGetMaxY(self.subBottomView.frame) - (CGRectGetMinY(self.reportEnglishBtn.frame) + CGRectGetMinY(self.inputBottomView.frame))+150);
-//
-            //1.获得全局的并发队列
-           
-            if (x > leftBorder && x < rightBorder && y > topBorder && y < bottomBorder) {
-                [self.sayView removeFromSuperview];
-                [self.subBottomView addSubview:self.cancelSayView];
-                self.isCancelSendRecord = YES;
-                
-                NSLog(@"取消发送语音");
-//                [self.cwViewController pauseRecordBtnClick];
-                
-                //2.添加任务到队列中，就可以执行任务
-                //异步函数：具备开启新线程的能力
-//                dispatch_async(queue, ^{
-//                    // 在另一个线程中启动下载功能，加GCD控制
-//                    if (self.isRecognizer == YES) {
-//                        [self iFlySpeechRecognizerStop];
-//                    }
-                
-//                });
-
-                
-               
-                
-            }else{
-                [self.cancelSayView removeFromSuperview];
-                [self.subBottomView addSubview:self.sayView];
-                self.isCancelSendRecord=NO;
-//                dispatch_async(queue, ^{
-//                    [self.cwViewController goOnRecordBtnClick];
-//                    self.isCancelSendRecord = NO;
-//                    
-//                    
-//                    if (self.isRecognizer == NO) {
-//                        [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
-//                    }
-//                    
-//                    NSLog(@"继续录音");
-//                    
-//                });
-
-                
-                
-            }
+            //                });
+            
+            
+            
+            
+        }else{
+            [self.cancelSayView removeFromSuperview];
+            [self.subBottomView addSubview:self.sayView];
+            self.isCancelSendRecord=NO;
+            //                dispatch_async(queue, ^{
+            //                    [self.cwViewController goOnRecordBtnClick];
+            //                    self.isCancelSendRecord = NO;
+            //
+            //
+            //                    if (self.isRecognizer == NO) {
+            //                        [self iFlySpeechRecognizerBegin:LANGUAGE_CHINESE];
+            //                    }
+            //
+            //                    NSLog(@"继续录音");
+            //
+            //                });
+            
+            
+            
         }
+    }
     
     
     
@@ -874,7 +793,7 @@
         
         [self removeRecordPageView];
         
-//        [self.cwViewController cancelButtonClick];
+        [self.cwViewController cancelButtonClick];
         self.isZero = YES;
         [self iFlySpeechRecognizerStop];
         iFlySpeechRecognizerString = @"";
@@ -882,27 +801,27 @@
     }else{
         
         
-//        [self.cwViewController recordButtonClick];
+        [self.cwViewController recordButtonClick];
         
         [self iFlySpeechRecognizerStop];
         
-//        if ([self.cwViewController.secondString intValue] < 1 ) {
-//            
-//            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
-//            self.shortLabel.text = @"说话时间过短，小于1秒";
-//            self.shortLabel.font = FONT_10;
-//            self.shortLabel.textAlignment = NSTextAlignmentCenter;
-//            self.shortLabel.backgroundColor = [UIColor clearColor];
-//            [self.subBottomView addSubview:self.shortLabel];
-//            
-//            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
-//            
-//        }else{
-//        
-//            
-//            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
-//            
-//        }
+        //        if ([self.cwViewController.secondString intValue] < 1 ) {
+        //
+        //            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
+        //            self.shortLabel.text = @"说话时间过短，小于1秒";
+        //            self.shortLabel.font = FONT_10;
+        //            self.shortLabel.textAlignment = NSTextAlignmentCenter;
+        //            self.shortLabel.backgroundColor = [UIColor clearColor];
+        //            [self.subBottomView addSubview:self.shortLabel];
+        //
+        //            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
+        //
+        //        }else{
+        //
+        //
+        //            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
+        //
+        //        }
         
         
         self.isZero = YES;
@@ -922,8 +841,8 @@
 
 
 //- (void)startTimer{
-//    
-//    
+//
+//
 //    self.timer = [NSTimer timerWithTimeInterval:2.0 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
 //    // 添加到运行循环
 //    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
@@ -934,13 +853,13 @@
     
     countDownNumber--;
     if(countDownNumber<=3){
-    
-//        UITouch *touch = [[event touchesForView:button] anyObject];
+        
+        //        UITouch *touch = [[event touchesForView:button] anyObject];
         
         //将XY轴的座标资讯正规化后输出
-//        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
-//        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
-//        NSLog(@"ButtonEnded!");
+        //        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
+        //        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
+        //        NSLog(@"ButtonEnded!");
         [MBProgressHUD showError:@"话语长度不能大于5s"];
         [self removeRecordPageView];
         
@@ -948,7 +867,7 @@
             
             [self removeRecordPageView];
             
-//            [self.cwViewController cancelButtonClick];
+            [self.cwViewController cancelButtonClick];
             self.isZero = YES;
             [self iFlySpeechRecognizerStop];
             iFlySpeechRecognizerString = @"";
@@ -956,7 +875,7 @@
         }else{
             
             
-//            [self.cwViewController recordButtonClick];
+            [self.cwViewController recordButtonClick];
             
             [self iFlySpeechRecognizerStop];
             
@@ -972,10 +891,10 @@
             //            [self performSelector:@selector(removeRecordPageView) withObject:nil afterDelay:1.0f];
             //
             //        }else{
-            //        
-            //            
+            //
+            //
             //            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
-            //            
+            //
             //        }
             
             
@@ -983,14 +902,14 @@
             
             
         }
-
+        
         
         [timer invalidate];
-    
+        
     }
-
+    
     NSLog(@"aa");
-
+    
 }
 
 
@@ -1015,21 +934,21 @@
         
     }];
 }
-
--(void)tableView:(UITableView *)tableView BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    NSLog(@"Enaded!");
-}
-
--(void)tableView:(UITableView *)tableView BaseTouchesCancel:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    NSLog(@"Cancel!");
-}
-
--(void)tableView:(UITableView *)tableView BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    NSLog(@"Moved!");
-}
+//
+//-(void)tableView:(UITableView *)tableView BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+//    
+//    NSLog(@"Enaded!");
+//}
+//
+//-(void)tableView:(UITableView *)tableView BaseTouchesCancel:(NSSet *)touches withEvent:(UIEvent *)event{
+//    
+//    NSLog(@"Cancel!");
+//}
+//
+//-(void)tableView:(UITableView *)tableView BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+//    
+//    NSLog(@"Moved!");
+//}
 
 
 #pragma mark - 观察者模式
@@ -1140,7 +1059,7 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
-   
+    
     //开始输入聊天信息
 }
 
@@ -1211,7 +1130,7 @@
     self.bottomTableView.headerPullToRefreshText = @"下拉可以刷新了";
     self.bottomTableView.headerReleaseToRefreshText = @"松开马上刷新了";
     self.bottomTableView.headerRefreshingText = @"数据刷新中";
-
+    
 }
 
 #pragma mark 开始进入刷新状态
@@ -1265,8 +1184,8 @@
 }
 
 -(void)benginRecordAudio{
-    
-    NSLog(@"开始录音");
+    [MBProgressHUD showSuccess:@"声音准备中"];
+//    NSLog(@"开始录音");
     
 }
 
@@ -1287,11 +1206,12 @@
     }];
     if (self.changeSendContentBtn.tag == 1001) {
         //输入转语音
+//        [self.view addSubview:self.reportAudioBtn];
         [self.inputBottomView addSubview:self.reportAudioBtn];
         [self cancelResignFirstResponder];
         self.changeSendContentBtn.tag = 1002;
         [self.changeSendContentBtn setImage:[UIImage imageNamed:@"keyboard"] forState:UIControlStateNormal];
-
+        
         
     }else{
         //语音转输入
@@ -1326,11 +1246,11 @@
             self.btnview.transform =CGAffineTransformIdentity;
             self.isequal = !self.isequal;
         }completion:^(BOOL finished) {
-         
+            
         }];
-
+        
     }
-   
+    
 }
 
 -(void)sendMessageBtnClick{
@@ -1368,6 +1288,9 @@
         _bottomTableView.allowsSelection = YES;
         _bottomTableView.showsVerticalScrollIndicator = YES;
         _bottomTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        
+        _bottomTableView.delaysContentTouches=NO;
+        _bottomTableView.canCancelContentTouches=NO;
         
         
     }
@@ -1426,6 +1349,9 @@
     }
     return _inputTextView;
 }
+-(void)tapDown{
+    [MBProgressHUD showSuccess:@"声音准备中"];
+}
 
 -(BaseAudioButton *)reportAudioBtn{
     
@@ -1436,8 +1362,14 @@
         //        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
         //        [_reportAudioBtn setTitle:@"按住说话" forState:UIControlStateNormal];
         [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];
-        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
-        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
+//        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
+//        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
+//        
+//        UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapDown)];
+//        [_reportAudioBtn addGestureRecognizer:tap];
+        
+//        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:selfaction:@selector(Actiondo:)];
+        
         
         [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
     }
@@ -1530,7 +1462,7 @@
     [self changeIcon];
     
     NSLog(@"更改背景");
-
+    
 }
 
 
@@ -1659,7 +1591,7 @@
         NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg",user_id[@"user_id"]];
         
         //            NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
-//        NSString *name = user_id[@"user_id"];
+        //        NSString *name = user_id[@"user_id"];
         
         [formData appendPartWithFileData:data name:@"file" fileName:resultName mimeType:@"image/png"];
         
@@ -1694,8 +1626,8 @@
     }];
     
     
-
-
+    
+    
     
 }
 
