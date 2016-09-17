@@ -26,4 +26,5 @@
 
 @property (nonatomic,strong)UIButton *reservationBtn;
 
+@property (nonatomic,strong)UIImageView *languageView;
 @end

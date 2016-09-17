@@ -11,8 +11,6 @@
 
 @interface YBZalertView ()
 
-@property (nonatomic,strong) UITableView *table;
-@property (nonatomic,strong) UICollectionView *collectionImage;
 @end
 
 @implementation YBZalertView
@@ -36,7 +34,6 @@
         [self addSubview:self.reservationBtn];
         
         
-       // [self addSubview:self.table];
     }
     return self;
 }
@@ -60,22 +57,9 @@
     self.languagetypeLabel.frame = CGRectMake(self.frame.size.width/8+20, 150, self.frame.size.width/4, 20);
     
     self.reservationBtn.frame = CGRectMake(self.frame.size.width/2-50, self.frame.size.height-30, 100, 30);
-    self.table.frame = CGRectMake(self.frame.size.width/8, 180, self.frame.size.width-self.frame.size.width/4, self.frame.size.height/3.5);
     
+    [self forlanguageview];
 }
-
-
-
--(UITableView *)table
-{
-    if(!_table)
-    {
-        _table = [[UITableView alloc] init];
-        _table.backgroundColor = [UIColor redColor];
-    }
-    return _table;
-}
-
 
 
 -(UIImageView *)titleimageView
@@ -246,14 +230,26 @@
     return _reservationBtn;
 }
 
-
-
-
-
-
-
-
-
+-(void)forlanguageview
+{
+    for (int j=0; j<2; j++) {
+    for (int i=0; i<3; i++) {
+        self.languageView = [[UIImageView alloc] init];
+        
+        CGFloat x = self.frame.size.width/4;
+        
+        CGFloat x2 = self.frame.size.width/8;
+        
+        self.languageView.frame = CGRectMake(i*x+10+x2, j*x+10+180, 40, 40);
+        
+        self.languageView.backgroundColor = [UIColor redColor];
+        
+        [self addSubview:self.languageView];
+        
+        self.languageView.tag = 3*i+j;
+    }
+}
+}
 
 
 
