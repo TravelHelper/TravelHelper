@@ -17,4 +17,11 @@
 @property (nonatomic,strong)NSString *haidouStr;//嗨豆数目
 @property (nonatomic,strong)NSString *haibiStr;//嗨币数目
 
+
+
+@property (nonatomic,strong)NSString *viewpicurlStr;
+@property (nonatomic,strong)NSString *viewnaneStr;
+@property (nonatomic,strong)NSString *viewlevelnumberStr;//等级数目
+@property (nonatomic,strong)NSString *viewactivenumberStr;//活跃度数目
+
 @end
