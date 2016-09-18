@@ -12,7 +12,11 @@
 #import "SDImageCache.h"
 #import "YBZOrderDetailsView.h"
 #import "YBZOrderDetailsModel.h"
+#import "YBZalertView.h"
 @interface YBZOrderDetailsViewController ()
+{
+    BOOL isequal;
+}
 @property (nonatomic,strong) UIImageView *infoImageView;
 @property (nonatomic,strong) UILabel *namelabel;
 @property (nonatomic,strong) TQStarRatingView *starsView;
@@ -20,8 +24,12 @@
 @property (nonatomic,strong) UILabel *ordernumberlabel;
 @property (nonatomic,strong) YBZOrderDetailsView *orderview;
 @property (nonatomic,strong) UILabel *thankendlabel;
-@property (nonatomic, strong) TQStarRatingView *starRatingView;
+@property (nonatomic,strong) TQStarRatingView *starRatingView;
 @property (nonatomic,strong) YBZOrderDetailsModel *orderModel;
+@property (nonatomic,strong) YBZalertView *alertView;
+@property (nonatomic,strong) UIImageView *verticaView;
+@property (nonatomic,strong) UIButton *deleteBtn;
+
 @end
 
 @implementation YBZOrderDetailsViewController
@@ -29,6 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    isequal = YES;
     self.title = @"订单详情";
     [self loaddatefromweb];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -49,7 +58,9 @@
     
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"btn" style:UIBarButtonItemStylePlain target:self action:@selector(rightbtnclick)];
     
-    
+    [self.view addSubview:self.alertView];
+    [self.view addSubview:self.verticaView];
+    [self.view addSubview:self.deleteBtn];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,13 +71,6 @@
 //进行网络调用
 -(void)loaddatefromweb
 {
-//    @property (nonatomic,strong)NSString *picUrlstr;//头像url地址
-//    @property (nonatomic,strong)NSString *nameStr;//用户姓名
-//    @property (nonatomic,strong)NSString *detailsNumberstr;//订单数目
-//    @property (nonatomic,strong)NSString *detailsState;//订单状态
-//    @property (nonatomic,strong)NSString *detailsType;//订单类型
-//    @property (nonatomic,strong)NSString *haidouStr;//嗨豆数目
-//    @property (nonatomic,strong)NSString *haibiStr;//嗨币数目
     self.orderModel = [[YBZOrderDetailsModel alloc] init];
     self.orderModel.picUrlstr = @"http://img1.imgtn.bdimg.com/it/u=262236517,3881457924&fm=206&gp=0.jpg";
     self.orderModel.nameStr = @"天空蔚蓝";
@@ -75,6 +79,11 @@
     self.orderModel.detailsType = @"交易类型：口语即时";
     self.orderModel.haidouStr = @"30";
     self.orderModel.haibiStr = @"20";
+    
+    self.orderModel.viewpicurlStr = @"http://img1.imgtn.bdimg.com/it/u=262236517,3881457924&fm=206&gp=0.jpg";
+    self.orderModel.viewnaneStr = @"天空蔚蓝";
+    self.orderModel.viewlevelnumberStr = @"30";
+    self.orderModel.viewactivenumberStr = @"122";
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -111,9 +120,40 @@
         make.centerX.equalTo(self.view);
         make.bottom.equalTo(self.view).with.offset(-30);
     }];
+
     
+//    [self.alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).with.offset(130);
+//        make.left.equalTo(self.view).with.offset(60);
+//        make.right.equalTo(self.view).with.offset(-60);
+//        make.bottom.equalTo(self.view).with.offset(-SCREEN_HEIGHT/4);
+//    }];
+    
+    self.alertView.frame = CGRectMake(60, 130+600, UIScreenWidth-120, UIScreenHeight/1.8);
+    self.verticaView.frame = CGRectMake(SCREEN_WIDTH/2, 130+SCREEN_HEIGHT/1.8+600, 1.5, SCREEN_HEIGHT-SCREEN_HEIGHT/1.8-130-30);
+    self.deleteBtn.frame = CGRectMake(SCREEN_WIDTH/2-15, SCREEN_HEIGHT-45+600, 30, 30);
 }
 
+-(YBZalertView *)alertView
+{
+    if(!_alertView)
+    {
+        _alertView = [[YBZalertView alloc] init];
+        _alertView.backgroundColor = [UIColor lightGrayColor];
+        _alertView.layer.masksToBounds = YES;
+        _alertView.layer.cornerRadius = 10;
+        NSString *str = self.orderModel.viewpicurlStr;
+        NSURL *url = [NSURL URLWithString:str];
+        //[_alertView.picimageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"right"]];
+        [_alertView.picimageView sd_setImageWithURL:url];
+        _alertView.nameLabel.text = self.orderModel.viewnaneStr;
+        _alertView.levelnumberLabel.text = self.orderModel.viewlevelnumberStr;
+        _alertView.activenumberLabel.text = self.orderModel.viewactivenumberStr;
+        [_alertView.reservationBtn addTarget:self action:@selector(reservationbtnClick) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    return _alertView;
+}
 
 -(UIImageView *)infoImageView
 {
@@ -123,7 +163,6 @@
         _infoImageView.layer.masksToBounds = YES;
         _infoImageView.layer.cornerRadius = SCREEN_WIDTH/16;
         NSString *str = self.orderModel.picUrlstr;
-       // NSString *str = @"http://img1.imgtn.bdimg.com/it/u=262236517,3881457924&fm=206&gp=0.jpg";
         NSURL *url = [NSURL URLWithString:str];
         [_infoImageView sd_setImageWithURL:url];
     }
@@ -208,6 +247,30 @@
     return _starsView;
 }
 
+
+-(UIImageView *)verticaView
+{
+    if(!_verticaView)
+    {
+        _verticaView = [[UIImageView alloc] init];
+        _verticaView.backgroundColor = [UIColor blackColor];
+    }
+    return _verticaView;
+}
+
+-(UIButton *)deleteBtn
+{
+    if(!_deleteBtn)
+    {
+        _deleteBtn = [[UIButton alloc] init];
+        [_deleteBtn setImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
+        [_deleteBtn addTarget:self action:@selector(deletebtnClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _deleteBtn;
+}
+
+
+
 -(void)starRatingView:(TQStarRatingView *)view score:(float)score
 {
     NSString *str = [NSString stringWithFormat:@"%0.2f",score * 10 ];
@@ -220,7 +283,44 @@
 
 -(void)rightbtnclick
 {
-    NSLog(@"rightbtnclick");
+   
+    if (isequal==YES) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.alertView.transform =CGAffineTransformMakeTranslation(0, -600);
+            self.verticaView.transform = CGAffineTransformMakeTranslation(0, -600);
+            self.deleteBtn.transform = CGAffineTransformMakeTranslation(0, -600);
+            isequal = ! isequal;
+            
+        }completion:^(BOOL finished) {
+            
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.alertView.transform = CGAffineTransformIdentity;
+            self.verticaView.transform = CGAffineTransformIdentity;
+            self.deleteBtn.transform = CGAffineTransformIdentity;
+            isequal = ! isequal;
+            
+        }];
+    }
+  
+}
+
+-(void)reservationbtnClick
+{
+    NSLog(@"定制翻译");
     
+}
+
+-(void)deletebtnClick
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.alertView.transform = CGAffineTransformIdentity;
+        self.verticaView.transform = CGAffineTransformIdentity;
+        self.deleteBtn.transform = CGAffineTransformIdentity;
+        isequal = ! isequal;
+    }];
 }
 @end

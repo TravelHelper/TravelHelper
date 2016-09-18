@@ -316,6 +316,11 @@
                     } failure:^(NSError *error) {
                         
                     }];
+                    [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
                 }else{
                     
                     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"user_id"];
