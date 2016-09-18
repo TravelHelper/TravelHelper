@@ -84,7 +84,7 @@
     [self loadDataFromWeb];
     [self.mainTableView scrollToRowAtIndexPath:scrollIndexPath
                               atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePhotoImage:) name:@"changePhotoImage" object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeNickName:) name:@"changeUserInfoNickName" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSignature:) name:@"changeSignature" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getLocationInfo:) name:@"getLocationInfo" object:nil];
@@ -105,11 +105,6 @@
     cell.receiveInfoLable.text = location;
 }
 
-//-(void)changePhotoImage:(NSNotification *)noti{
-//    UIImage *image = noti.userInfo[@"image"];
-//    self.userIconImageV.image = image;
-//    
-//}
 
 -(void)changeNickName:(NSNotification *)noti{
     NSDictionary *nameDictionary = [noti userInfo];
@@ -402,7 +397,6 @@
 }
 
 @end
-
 
 
 

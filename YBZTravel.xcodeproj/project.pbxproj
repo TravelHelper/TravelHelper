@@ -159,6 +159,11 @@
 		7DF2554F1D742F2F006822AD /* RewardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF2554E1D742F2F006822AD /* RewardCell.m */; };
 		7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */; };
 		7DFD9BF71D714401007BDE4D /* YBZRewardHallDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */; };
+		93DF14BE1D8D0D7800E9E55B /* UesrCustomTranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DF14BD1D8D0D7800E9E55B /* UesrCustomTranslateViewController.m */; };
+		93DF14C41D8D0F1500E9E55B /* CustomTranslateCellFramInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DF14C31D8D0F1500E9E55B /* CustomTranslateCellFramInfo.m */; };
+		93DF14C71D8D0F4400E9E55B /* CustomTranslateInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DF14C61D8D0F4400E9E55B /* CustomTranslateInfoModel.m */; };
+		93DF14CA1D8D124000E9E55B /* CustomTranslateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DF14C91D8D124000E9E55B /* CustomTranslateTableViewCell.m */; };
+		93DF14CD1D8E64F200E9E55B /* InterpretCustomTranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DF14CC1D8E64F200E9E55B /* InterpretCustomTranslateViewController.m */; };
 		A012EDAD1D5099E000144BAD /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDA91D5099E000144BAD /* libopencore-amrnb.a */; };
 		A012EDAE1D5099E000144BAD /* RCConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A012EDAA1D5099E000144BAD /* RCConfig.plist */; };
 		A012EDAF1D5099E000144BAD /* release_notes_ios.txt in Resources */ = {isa = PBXBuildFile; fileRef = A012EDAB1D5099E000144BAD /* release_notes_ios.txt */; };
@@ -590,6 +595,16 @@
 		7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTranslatorDetailViewController.m; sourceTree = "<group>"; };
 		7DFD9BF51D714401007BDE4D /* YBZRewardHallDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRewardHallDetailModel.h; sourceTree = "<group>"; };
 		7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRewardHallDetailModel.m; sourceTree = "<group>"; };
+		93DF14BC1D8D0D7800E9E55B /* UesrCustomTranslateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UesrCustomTranslateViewController.h; sourceTree = "<group>"; };
+		93DF14BD1D8D0D7800E9E55B /* UesrCustomTranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UesrCustomTranslateViewController.m; sourceTree = "<group>"; };
+		93DF14C21D8D0F1500E9E55B /* CustomTranslateCellFramInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTranslateCellFramInfo.h; sourceTree = "<group>"; };
+		93DF14C31D8D0F1500E9E55B /* CustomTranslateCellFramInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTranslateCellFramInfo.m; sourceTree = "<group>"; };
+		93DF14C51D8D0F4400E9E55B /* CustomTranslateInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTranslateInfoModel.h; sourceTree = "<group>"; };
+		93DF14C61D8D0F4400E9E55B /* CustomTranslateInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTranslateInfoModel.m; sourceTree = "<group>"; };
+		93DF14C81D8D124000E9E55B /* CustomTranslateTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTranslateTableViewCell.h; sourceTree = "<group>"; };
+		93DF14C91D8D124000E9E55B /* CustomTranslateTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTranslateTableViewCell.m; sourceTree = "<group>"; };
+		93DF14CB1D8E64F200E9E55B /* InterpretCustomTranslateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterpretCustomTranslateViewController.h; sourceTree = "<group>"; };
+		93DF14CC1D8E64F200E9E55B /* InterpretCustomTranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterpretCustomTranslateViewController.m; sourceTree = "<group>"; };
 		A012EDA91D5099E000144BAD /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
 		A012EDAA1D5099E000144BAD /* RCConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RCConfig.plist; sourceTree = "<group>"; };
 		A012EDAB1D5099E000144BAD /* release_notes_ios.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes_ios.txt; sourceTree = "<group>"; };
@@ -1362,6 +1377,47 @@
 			name = MYReward;
 			sourceTree = "<group>";
 		};
+		93DF14BB1D8D0CB200E9E55B /* CustomTranslate */ = {
+			isa = PBXGroup;
+			children = (
+				93DF14C11D8D0E5E00E9E55B /* Model */,
+				93DF14C01D8D0E5900E9E55B /* View */,
+				93DF14BF1D8D0E3900E9E55B /* Controller */,
+			);
+			name = CustomTranslate;
+			sourceTree = "<group>";
+		};
+		93DF14BF1D8D0E3900E9E55B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				93DF14BC1D8D0D7800E9E55B /* UesrCustomTranslateViewController.h */,
+				93DF14BD1D8D0D7800E9E55B /* UesrCustomTranslateViewController.m */,
+				93DF14CB1D8E64F200E9E55B /* InterpretCustomTranslateViewController.h */,
+				93DF14CC1D8E64F200E9E55B /* InterpretCustomTranslateViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		93DF14C01D8D0E5900E9E55B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				93DF14C81D8D124000E9E55B /* CustomTranslateTableViewCell.h */,
+				93DF14C91D8D124000E9E55B /* CustomTranslateTableViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		93DF14C11D8D0E5E00E9E55B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				93DF14C21D8D0F1500E9E55B /* CustomTranslateCellFramInfo.h */,
+				93DF14C31D8D0F1500E9E55B /* CustomTranslateCellFramInfo.m */,
+				93DF14C51D8D0F4400E9E55B /* CustomTranslateInfoModel.h */,
+				93DF14C61D8D0F4400E9E55B /* CustomTranslateInfoModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		A012EDA81D5099E000144BAD /* Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable */ = {
 			isa = PBXGroup;
 			children = (
@@ -1445,11 +1501,9 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
-
+				93DF14BB1D8D0CB200E9E55B /* CustomTranslate */,
 				535DCB8A1D81BA5F00C329CB /* TQStarRating */,
-
 				FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */,
-
 				7D8427791D6494A3000BFEAD /* MYReward */,
 				7D8427781D649490000BFEAD /* RewardHall */,
 				7D8427451D6349FE000BFEAD /* MyMoney */,
@@ -2127,6 +2181,7 @@
 				1ED863081D2F39DD00529094 /* AFViewShaker.m in Sources */,
 				7D8427531D634A1E000BFEAD /* ExchangeViewController.m in Sources */,
 				A012EE071D509CAB00144BAD /* StringTransViewController.m in Sources */,
+				93DF14C71D8D0F4400E9E55B /* CustomTranslateInfoModel.m in Sources */,
 				A0552ED01D3A2C8C00E04D7A /* LocMessageInfoCell.m in Sources */,
 				7D3E99861D6D42B500F13F42 /* TopView.m in Sources */,
 				7D3E99961D6D42C300F13F42 /* MessageInfoCellData.m in Sources */,
@@ -2137,6 +2192,7 @@
 				1E70550B1D517F3D00A000F5 /* YBZFreeTranslationViewCell.m in Sources */,
 				1B0513901D3F5DAC00F05C9D /* AFAutoPurgingImageCache.m in Sources */,
 				7D28E3591D6DAAB600B51EF7 /* QuickTransViewController.m in Sources */,
+				93DF14BE1D8D0D7800E9E55B /* UesrCustomTranslateViewController.m in Sources */,
 				1B05138B1D3F5DAC00F05C9D /* AFURLRequestSerialization.m in Sources */,
 				5322B81E1D7E6120004B8C87 /* UIImageView+WebCache.m in Sources */,
 				1ED863EA1D38868500529094 /* YBZSingleCodeCell.m in Sources */,
@@ -2144,6 +2200,7 @@
 				1ED863DB1D349ABA00529094 /* YBZChangeLanguageCell.m in Sources */,
 				7D3E99651D6D420200F13F42 /* Model.m in Sources */,
 				5322B81B1D7E6120004B8C87 /* UIImage+MultiFormat.m in Sources */,
+				93DF14CD1D8E64F200E9E55B /* InterpretCustomTranslateViewController.m in Sources */,
 				1B0513891D3F5DAC00F05C9D /* AFNetworkReachabilityManager.m in Sources */,
 				7D8427541D634A1E000BFEAD /* MoneyNavigationController.m in Sources */,
 				1ED863DE1D34D67500529094 /* YBZChangeLanguageInfo.m in Sources */,
@@ -2249,6 +2306,7 @@
 				1ED863D21D3390F000529094 /* MJRefreshBaseView.m in Sources */,
 				A012EE021D509CAB00144BAD /* BaseTableView.m in Sources */,
 				A012EE041D509CAB00144BAD /* ChatModel.m in Sources */,
+				93DF14C41D8D0F1500E9E55B /* CustomTranslateCellFramInfo.m in Sources */,
 				A0532CBA1D38CF8E00FC1AB1 /* PeoPle.m in Sources */,
 				A0552EB31D3A163C00E04D7A /* NIChengViewController.m in Sources */,
 				A012EE031D509CAB00144BAD /* ChatTableViewCell.m in Sources */,
@@ -2287,6 +2345,7 @@
 				1B96DA411D435ADC00FD5BA6 /* NSString+SZYKit.m in Sources */,
 				7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */,
 				1ED8630E1D2F39DD00529094 /* MASViewAttribute.m in Sources */,
+				93DF14CA1D8D124000E9E55B /* CustomTranslateTableViewCell.m in Sources */,
 				7D8427621D634AAB000BFEAD /* CellInformation.m in Sources */,
 				A0532CD11D38D7BA00FC1AB1 /* PersonalSignatureVC.m in Sources */,
 				1ED863D71D3390F000529094 /* UIScrollView+MJRefresh.m in Sources */,
