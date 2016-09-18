@@ -27,8 +27,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import "MBProgressHUD+XMG.h"
 #import "UIImageView+WebCache.h"
-
-
+#import "YBZtoalertView.h"
+#import "YBZtoalertView.h"
 
 
 #define kImageCount 5
@@ -206,6 +206,18 @@
         
 
     });
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    YBZtoAlertModel *model=[[YBZtoAlertModel alloc]init];
+    model.translatorID=user_id[@"user_id"];
+    model.yonghuID=user_id[@"user_id"];
+    model.language_catgory=@"美语";
+    YBZtoalertView *alertView=[[YBZtoalertView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-112, SCREEN_HEIGHT/2-170, 224, 340) andModel:model];
+//    alertView.backgroundColor=[UIColor redColor];
+    [self.view addSubview:alertView];
+    
+    
 }
 
 
@@ -457,7 +469,7 @@
     NSDictionary *userID = [userdefault objectForKey:@"user_id"];
     
     
-    [WebAgent interpreterStateWithuserId:yonghuID andmessionID:messionID success:^(id responseObject) {
+    [WebAgent interpreterStateWithuserId:yonghuID andmessionID:messionID andAnswerID:userID[@"user_id"] success:^(id responseObject) {
        
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -465,6 +477,8 @@
         NSString *msgString = dic[@"msg"];
         if ([msgString isEqualToString:@"查询成功！并且可以成功匹配"]) {
             
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+            [MBProgressHUD showSuccess:@"匹配成功"];
             
             self.hidesBottomBarWhenPushed = YES;
             QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID[@"user_id"] WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
@@ -472,7 +486,7 @@
             //self.hidesBottomBarWhenPushed = NO;
             
 
-            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
+//            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
             NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
             NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
             [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID[@"user_id"] WithMessionID:mseeage_id success:^(id responseObject) {
