@@ -63,8 +63,17 @@
     NSString *yonghuID = noti.object[@"yonghuID"];
     NSString *language = noti.object[@"language_catgory"];
     NSDictionary *dict = [self getLanguageWithString:language];
-    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
-    [self.navigationController pushViewController:quickVC animated:YES];
+    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+        QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+        [self.navigationController pushViewController:quickVC animated:YES];
+    } failure:^(NSError *error) {
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        }];
+        [alertVC addAction:okAction];
+        [self presentViewController:alertVC animated:YES completion:nil];
+    }];
+
 }
 
 -(NSDictionary *)getLanguageWithString:(NSString *)language{
