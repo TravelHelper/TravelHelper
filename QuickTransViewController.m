@@ -1563,7 +1563,7 @@
                 [self.navigationController popToRootViewControllerAnimated:YES];
                 [WebAgent interpreterRequireStateWithuserId:self.user_id success:^(id responseObject) {
                     
-                    
+                
                     NSLog(@"译员成功返回首页");
                     
                     
