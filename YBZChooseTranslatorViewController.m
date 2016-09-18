@@ -199,8 +199,8 @@
 #pragma mark -----onClick-----
 -(void)loginAndBackToRoot{
 
-    [self.navigationController popViewControllerAnimated:YES];
-//    [self.navigationController popToRootViewControllerAnimated:YES];
+//    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)chooseReadOrNot{

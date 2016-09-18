@@ -99,7 +99,7 @@
     int translatorCount;
     NSTimer *timer;
     int   countDownNumber;
-    
+    int   recordMark;
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
@@ -130,7 +130,7 @@
     self.isequal = YES;
     [self setTitle:@"即时翻译"];
     [self.view addSubview:self.backgroundImageView];
-    
+    recordMark=1;
     [self setupRefresh];
     
     self.isCancelSendRecord = NO;
@@ -979,6 +979,7 @@
     
     
     ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
+    cell.playTransTextBtn.hidden=YES;
     return cell;
 }
 
@@ -1025,7 +1026,7 @@
     
     countDownNumber--;
     if(countDownNumber<=3){
-        
+        recordMark=0;
         //        UITouch *touch = [[event touchesForView:button] anyObject];
         
         //将XY轴的座标资讯正规化后输出
@@ -1258,11 +1259,11 @@
         
     }else{
         
-        
+        if(recordMark!=0){
         [self.cwViewController recordButtonClick];
         
         [self iFlySpeechRecognizerStop];
-        
+        }
         //        if ([self.cwViewController.secondString intValue] < 1 ) {
         //
         //            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];

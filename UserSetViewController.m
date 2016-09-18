@@ -53,7 +53,7 @@
         self.dataDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         self.stateDic = @{@"stateinfo":[self.dataDic objectForKey:@"account_state"]};
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:self.stateDic forKey:@"stateinfo"];
+//        [userDefaults setObject:self.stateDic forKey:@"stateinfo"];
         
     } failure:^(NSError *error) {
         NSLog(@"cuole");

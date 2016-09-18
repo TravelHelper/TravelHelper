@@ -305,7 +305,7 @@
         
         [userDefaults setObject:message_id forKey:@"messageId"];
 
-    [WebAgent selectWaitingQueue:language success:^(id responseObject) {
+        [WebAgent selectWaitingQueue:language user_id:user_id success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSArray   *dictionary = dic[@"data"];
@@ -317,13 +317,13 @@
             
             
             
-                [WebAgent UpdateUserListWithID:message_id andAnswerId:dictionary[0][@"user_id"] success:^(id responseObject) {
-                    NSLog(@"SUCCESS");
-                    
-                } failure:^(NSError *error) {
-                    
-                }];
-                
+//                [WebAgent UpdateUserListWithID:message_id andAnswerId:dictionary[0][@"user_id"] success:^(id responseObject) {
+//                    NSLog(@"SUCCESS");
+//                    
+//                } failure:^(NSError *error) {
+//                    
+//                }];
+            
                 [WebAgent sendRemoteNotificationsWithuseId:dictionary[0][@"user_id"] WithsendMessage:@"进入聊天" WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:user_id WithMessionID:message_id success:^(id responseObject) {
                     NSData *data = [[NSData alloc] initWithData:responseObject];
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -397,7 +397,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.row == 0) {
+    if (indexPath.row     == 0) {
         NSLog(@"英文");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];

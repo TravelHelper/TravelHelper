@@ -86,6 +86,7 @@
     MBProgressHUD *HUD;
     NSTimer *timer;
     int   countDownNumber;
+    int   recordMark;
     
 }
 
@@ -119,7 +120,7 @@
     [super viewDidLoad];
     
     self.isequal = YES;
-    
+    recordMark=1;
     //    UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(donghuahuishou)];
     //    TapGestureTecognizer.cancelsTouchesInView=NO;
     //    [self.view addGestureRecognizer:TapGestureTecognizer];
@@ -777,6 +778,7 @@
 
 -(void)button:(UIButton *)button BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     
+    
     [timer invalidate];
     
     //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
@@ -800,6 +802,7 @@
         
     }else{
         
+        if(recordMark!=0){
         
         [self.cwViewController recordButtonClick];
         
@@ -822,7 +825,8 @@
         //            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
         //
         //        }
-        
+        }
+        recordMark=1;
         
         self.isZero = YES;
         
@@ -860,7 +864,9 @@
         //        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
         //        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
         //        NSLog(@"ButtonEnded!");
+        recordMark=0;
         [MBProgressHUD showError:@"话语长度不能大于5s"];
+        
         [self removeRecordPageView];
         
         if (self.isCancelSendRecord == YES) {
