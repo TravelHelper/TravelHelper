@@ -1552,41 +1552,51 @@
     }];
 }
 
+
+
+
+
 -(void)sendMessageAndPop{
     NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
     
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo WithMessionID:mseeage_id success:^(id responseObject) {
-        [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
-            
-            if([self.userIdentifier isEqualToString:@"TRANSTOR"])
-            {
-                [self.navigationController popToRootViewControllerAnimated:YES];
-                [WebAgent interpreterRequireStateWithuserId:self.user_id success:^(id responseObject) {
-                    
-                    
-                    NSLog(@"译员成功返回首页");
-                    
-                    
-                } failure:^(NSError *error) {
-                    NSLog(@"译员未返回首页");
-                    
-                }];
-            }
-            else
-            {
+        [WebAgent stopFindingTranslator:userIDinfo success:^(id responseObject) {
+            [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
                 
-                FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.target_id];
-                [self.navigationController pushViewController:fbvc animated:YES];
-            }
+                if([self.userIdentifier isEqualToString:@"TRANSTOR"])
+                {
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    [WebAgent interpreterRequireStateWithuserId:self.user_id success:^(id responseObject) {
+                        
+                        
+                            NSLog(@"译员成功返回首页");
+                        
+                        
+                        } failure:^(NSError *error) {
+                            NSLog(@"译员未返回首页");
+                        
+                        }];
+                    }
+                    else
+                    {
+                    
+                        FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.    target_id];
+                        [self.navigationController pushViewController:fbvc animated:YES];
+                    }
+                
+                
+                } failure:^(NSError *error) {
+                    NSLog(@"失败");
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    //            [self.navigationController popViewControllerAnimated:YES];
+                }];
             
-            
-        } failure:^(NSError *error) {
-            NSLog(@"失败");
-            [self.navigationController popToRootViewControllerAnimated:YES];
-//            [self.navigationController popViewControllerAnimated:YES];
-        }];
-    } failure:^(NSError *error) {
+            } failure:^(NSError *error) {
+                NSLog(@"取消寻找议员状态失败");
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }];
+          } failure:^(NSError *error) {
         NSLog(@"失败");
         [self.navigationController popToRootViewControllerAnimated:YES];
 

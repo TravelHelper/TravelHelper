@@ -293,10 +293,7 @@
     [dateformatter setDateFormat:@"YYYY-MM-dd HH:mm"];
     NSString *morelocationString = [dateformatter stringFromDate:sendDate];
     
-    
-    
-    
-    
+   //在这里加上修改状态的接口。
     [WebAgent creatUserList:morelocationString andUser_id:user_id WithLanguage:language success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
@@ -351,32 +348,16 @@
                 if (arr.count == 0) {
                     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，当前没有该语种的对应译员" preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                        [self.navigationController popViewControllerAnimated:YES];
+                        [WebAgent stopFindingTranslator:user_id success:^(id responseObject) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        } failure:^(NSError *error) {
+                            
+                        }];
                     }];
                     [alertVC addAction:okAction];
                     [self presentViewController:alertVC animated:YES completion:nil];
                 }else{
-//                    NSDate *sendDate = [NSDate date];
-//                    NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
-//                    [dateformatter setDateFormat:@"YYYY-MM-dd"];
-//                    NSString *morelocationString = [dateformatter stringFromDate:sendDate];
-//                    [WebAgent creatUserList:morelocationString andUser_id:user_id success:^(id responseObject) {
-//                        
-//                        NSData *data = [[NSData alloc] initWithData:responseObject];
-//                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-//                        NSLog(@"%@",dic);
-//                        message_id = dic[@"data"];
-//                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//                        [userDefaults setObject:message_id forKey:@"messageId"];
-//
-//                        
-//                        
-//                        
-//                    } failure:^(NSError *error) {
-//                        
-//                    }];
-                    
-                    
+        
                     for (int i = 0 ; i< arr.count; i++) {
                         NSString *user_ID = arr[i];
                         NSString * strid = [user_ID stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
@@ -410,6 +391,7 @@
     } failure:^(NSError *error) {
         
     }];
+    
     
 }
 

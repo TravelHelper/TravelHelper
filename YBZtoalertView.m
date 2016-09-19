@@ -272,7 +272,7 @@
     if (!_hubView){
         _hubView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
         _hubView.backgroundColor = [UIColor blackColor];
-        _hubView.alpha = 0.3f;
+        _hubView.alpha = 0.6f;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideLoginView)];
         [_hubView addGestureRecognizer:tap];
     }
