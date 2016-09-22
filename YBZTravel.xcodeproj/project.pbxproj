@@ -83,6 +83,7 @@
 		5311449B1D79DD5B000B98E8 /* YBZMyOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5311449A1D79DD5B000B98E8 /* YBZMyOrderModel.m */; };
 		531144A21D7A69E6000B98E8 /* YBZOrderDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144A11D7A69E6000B98E8 /* YBZOrderDetailsViewController.m */; };
 		531144CA1D7AC8EC000B98E8 /* YBZbtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144C91D7AC8EC000B98E8 /* YBZbtnView.m */; };
+		5318059D1D93CD9300820A53 /* YBZadvertisingimageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5318059C1D93CD9300820A53 /* YBZadvertisingimageView.m */; };
 		5322B8101D7E6120004B8C87 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5322B7F01D7E6120004B8C87 /* MKAnnotationView+WebCache.m */; };
 		5322B8111D7E6120004B8C87 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 5322B7F21D7E6120004B8C87 /* NSData+ImageContentType.m */; };
 		5322B8121D7E6120004B8C87 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5322B7F41D7E6120004B8C87 /* SDImageCache.m */; };
@@ -447,6 +448,8 @@
 		531144A11D7A69E6000B98E8 /* YBZOrderDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZOrderDetailsViewController.m; sourceTree = "<group>"; };
 		531144C81D7AC8EC000B98E8 /* YBZbtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZbtnView.h; sourceTree = "<group>"; };
 		531144C91D7AC8EC000B98E8 /* YBZbtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZbtnView.m; sourceTree = "<group>"; };
+		5318059B1D93CD9300820A53 /* YBZadvertisingimageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZadvertisingimageView.h; sourceTree = "<group>"; };
+		5318059C1D93CD9300820A53 /* YBZadvertisingimageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZadvertisingimageView.m; sourceTree = "<group>"; };
 		5322B7EF1D7E6120004B8C87 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		5322B7F01D7E6120004B8C87 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		5322B7F11D7E6120004B8C87 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -1654,6 +1657,8 @@
 		A03ED0921D2DE37000BD9C0A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5318059B1D93CD9300820A53 /* YBZadvertisingimageView.h */,
+				5318059C1D93CD9300820A53 /* YBZadvertisingimageView.m */,
 				FE1EFE341D87AF6700FDD1BE /* YBZcalledView.h */,
 				FE1EFE351D87AF6700FDD1BE /* YBZcalledView.m */,
 				FE1EFE311D87AF5700FDD1BE /* YBZcallingView.h */,
@@ -2264,6 +2269,7 @@
 				A012EE031D509CAB00144BAD /* ChatTableViewCell.m in Sources */,
 				1ED863D51D3390F000529094 /* MJRefreshHeaderView.m in Sources */,
 				7D3E99AE1D6D42D700F13F42 /* YBZRewardChooseLanguageViewController.m in Sources */,
+				5318059D1D93CD9300820A53 /* YBZadvertisingimageView.m in Sources */,
 				7D3E99751D6D421500F13F42 /* YBZRewardHallViewController.m in Sources */,
 				1ED8630B1D2F39DD00529094 /* MASConstraint.m in Sources */,
 				1B0513981D3F5DAC00F05C9D /* UIWebView+AFNetworking.m in Sources */,
