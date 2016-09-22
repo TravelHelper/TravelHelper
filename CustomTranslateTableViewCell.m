@@ -30,7 +30,9 @@
     if (self) {
         self.framInfo = [[CustomTranslateCellFramInfo alloc]initWithInfoModel:infoModel];
         self.backgroundColor = [UIColor clearColor];
-        [self customCellContent:infoModel andCellFram:_framInfo];
+        [self customCellContent:infoModel andCellFram:self.framInfo];
+        self.customID = infoModel.customID;
+        self.user_id = infoModel.user_id;
         
         [self addSubview:self.cellView];
         [self addSubview:self.tagImgView];
@@ -47,14 +49,15 @@
         [self addSubview:self.durationLable];
         [self addSubview:self.drtLable];
         [self addSubview:self.offerMoneyLable];
+        [self addSubview:self.jeLable];
         [self addSubview:self.ofmLable];
         [self addSubview:self.publishTimeLable];
         [self addSubview:self.pbmLable];
         [self addSubview:self.threeWhiteImgView];
         
-       
+        
         [self.tagImgView setImage:[UIImage imageNamed:self.cellKind]];
-
+        
     }
     return self;
 }
@@ -62,10 +65,10 @@
 -(void)customCellContent:(CustomTranslateInfoModel *)infoModel
              andCellFram:(CustomTranslateCellFramInfo *)framInfo
 {
+    self.infoModel = infoModel;
     
     NSString *tagImgName = @"用户翻译-我的定制列表";
     self.cellKind = [tagImgName stringByAppendingString:infoModel.cellKind];
-    self.infoModel = infoModel;
     
     self.threeWhiteImgView.frame = CGRectMake(kScreenWidth*0.27, kScreenWidth*0.067, kScreenWidth*0.067, kScreenWidth*0.023);
     
@@ -75,11 +78,13 @@
     self.lageKLable.textColor = [UIColor colorWithRed:250.0/255.0f green:217.0/255.0f blue:0.0/255.0f alpha:1];
     self.langueKindLable.frame = framInfo.langueKindLableFrame;
     self.langueKindLable.text = infoModel.langueKind;
+    [self.langueKindLable setAdjustsFontSizeToFitWidth:YES];
     self.langueKindLable.font = FONT_12;
     self.langueKindLable.textColor = [UIColor colorWithRed:250.0/255.0f green:217.0/255.0f blue:0.0/255.0f alpha:1];
     
     self.sceneLable.frame = framInfo.sceneLableFrame;
     self.sceneLable.text = infoModel.scene;
+    [self.sceneLable setAdjustsFontSizeToFitWidth:YES];
     self.sceneLable.font = FONT_12;
     self.sceneLable.textColor = [UIColor whiteColor];
     self.scLable.frame = framInfo.scFrame;
@@ -89,6 +94,7 @@
     
     self.contentLable.frame = framInfo.contentLableFrame;
     self.contentLable.text = infoModel.content;
+    [self.contentLable setAdjustsFontSizeToFitWidth:YES];
     self.contentLable.font = FONT_10;
     self.contentLable.textColor = [UIColor whiteColor];
     self.cntLable.frame = framInfo.cntFrame;
@@ -98,6 +104,7 @@
     
     self.interperLable.frame = framInfo.interperLableFrame;
     self.interperLable.text = infoModel.interper;
+    [self.interperLable setAdjustsFontSizeToFitWidth:YES];
     self.interperLable.font = FONT_10;
     self.interperLable.textColor = [UIColor whiteColor];
     self.itpLable.frame = framInfo.itpFrame;
@@ -125,8 +132,13 @@
     
     self.offerMoneyLable.frame = framInfo.offerMoneyLableFrame;
     self.offerMoneyLable.text = infoModel.offerMoney;
+    [self.offerMoneyLable sizeToFit];
     self.offerMoneyLable.font = FONT_10;
     self.offerMoneyLable.textColor = [UIColor colorWithRed:250.0/255.0f green:217.0/255.0f blue:0.0/255.0f alpha:1];
+    self.jeLable.frame = CGRectMake(CGRectGetMaxX(self.offerMoneyLable.frame), CGRectGetMinY(self.offerMoneyLable.frame), self.offerMoneyLable.frame.size.width, self.offerMoneyLable.frame.size.height);
+    self.jeLable.font = FONT_10;
+    self.jeLable.text = @"嗨币";
+    self.jeLable.textColor = [UIColor whiteColor];
     self.ofmLable.frame = framInfo.ofmFrame;
     self.ofmLable.text = @"提供金额:";
     self.ofmLable.font = FONT_10;
@@ -170,7 +182,7 @@
     if (!_threeWhiteImgView){
         _threeWhiteImgView = [[UIImageView alloc]init];
         [_threeWhiteImgView setImage:[UIImage imageNamed:@"threewhite"]];
-
+        
     }
     return _threeWhiteImgView;
 }
@@ -286,6 +298,14 @@
         _pbmLable = [[UILabel alloc]init];
     }
     return _pbmLable;
+}
+
+-(UILabel *)jeLable{
+    
+    if (!_jeLable){
+        _jeLable = [[UILabel alloc]init];
+    }
+    return _jeLable;
 }
 
 @end

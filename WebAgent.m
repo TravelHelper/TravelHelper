@@ -10,15 +10,80 @@
 #import "APIClient.h"
 @implementation WebAgent
 
+//改变cell的状态
++(void)custom_id:(NSString *)custom_id
+       state:(NSString *)state
+         success:(void (^)(id responseObject))success
+         failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"custom_id":custom_id,
+                           @"state":state};
+    [[APIClient sharedClient] POST:@"CustomTranslate/resetcellstate/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+//下拉译员定制翻译信息
++(void)selectLoadDatesuccess:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure
+{
+    [[APIClient sharedClient] POST:@"CustomTranslate/selectload/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
+//判断时间是否在十五分钟内
++(void)custom_id:(NSString *)custom_id
+         success:(void (^)(id responseObject))success
+         failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"custom_id":custom_id};
+    [[APIClient sharedClient] POST:@"CustomTranslate/duration/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+
+//下拉用户定制翻译信息
++(void)customtranslate_userid:(NSString *)user_id
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"CustomTranslate/load/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+
+//删除未接单数据
++(void)delectByCustom_id:(NSString *)custom_id
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"custom_id":custom_id};
+    [[APIClient sharedClient] POST:@"CustomTranslate/delect/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
 //上传个人信息
 +(void)userid:(NSString *)user_id
-   usernickname:(NSString *)user_nickname
-        usersex:(NSString *)user_sex
-      userbirth:(NSString *)user_birth
-   userdistrict:(NSString *)user_district
-  usersignature:(NSString *)user_signature
-        success:(void (^)(id responseObject))success
-        failure:(void (^)(NSError *error))failure
+ usernickname:(NSString *)user_nickname
+      usersex:(NSString *)user_sex
+    userbirth:(NSString *)user_birth
+ userdistrict:(NSString *)user_district
+usersignature:(NSString *)user_signature
+      success:(void (^)(id responseObject))success
+      failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"newuser_id":user_id,
                            @"newuser_nickname":user_nickname,
@@ -44,7 +109,7 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failure(error);
     }];
-
+    
 }
 
 
@@ -105,8 +170,8 @@
 
 //加入等候队列
 +(void)addIntoWaitingQueue:(NSString *)user_id
-                                    success:(void (^)(id responseObject))success
-                                    failure:(void (^)(NSError *error))failure
+                   success:(void (^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure
 {
     
     
@@ -122,8 +187,8 @@
 
 //移除等候队列
 +(void)removeFromWaitingQueue:(NSString *)user_id
-                   success:(void (^)(id responseObject))success
-                   failure:(void (^)(NSError *error))failure
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure
 {
     
     
@@ -139,8 +204,8 @@
 
 //查询等候队列
 +(void)selectWaitingQueue:(NSString *)user_language
-                      success:(void (^)(id responseObject))success
-                      failure:(void (^)(NSError *error))failure
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure
 {
     
     
@@ -158,8 +223,8 @@
 +(void)creatUserList:(NSString *)now_time
           andUser_id:(NSString *)user_id
         WithLanguage:(NSString *)spoken_language
-                  success:(void (^)(id responseObject))success
-                  failure:(void (^)(NSError *error))failure
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure
 {
     
     
@@ -176,9 +241,9 @@
 
 
 +(void)UpdateUserListWithID:(NSString *)ID
-          andAnswerId:(NSString *)answer_id
-             success:(void (^)(id responseObject))success
-             failure:(void (^)(NSError *error))failure
+                andAnswerId:(NSString *)answer_id
+                    success:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure
 {
     
     
@@ -194,10 +259,10 @@
 
 
 +(void)UpdateUserMessageWithID:(NSString *)ID
-          andStar:(NSString *)star
-          andMoney:(NSString *)money
-             success:(void (^)(id responseObject))success
-             failure:(void (^)(NSError *error))failure
+                       andStar:(NSString *)star
+                      andMoney:(NSString *)money
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure
 {
     
     
@@ -259,7 +324,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
          valuator_id:(NSString *)valuator_id
    evaluate_infostar:(NSString *)evaluate_infostar
    evaluate_infotext:(NSString *)evaluate_infotext
-       translation_id:(NSString *)translation_id
+      translation_id:(NSString *)translation_id
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure
 {
@@ -309,8 +374,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 }
 
 +(void)updateUserLoginState:(NSString *)userID
-              success:(void (^)(id responseObject))success
-              failure:(void (^)(NSError *error))failure
+                    success:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure
 {
     
     NSDictionary *dict = @{@"user_id":userID};
@@ -325,8 +390,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 
 +(void)getuserTranslateState:(NSString *)userID
-              success:(void (^)(id responseObject))success
-              failure:(void (^)(NSError *error))failure
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure
 {
     
     NSDictionary *dict = @{@"user_id":userID};
@@ -343,7 +408,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //登录
 +(void)userLogin:(NSString *)userPhone
          userPsw:(NSString *)userPsw
-         
+
          success:(void (^)(id responseObject))success
          failure:(void (^)(NSError *error))failure
 {
@@ -469,7 +534,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failure(error);
     }];
-
+    
 }
 
 //账号保护状态
@@ -488,8 +553,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //查找译员所会语种,匹配译员，返回所有译员ID，（发送推送用）
 +(void)matchTranslatorWithchooseLanguage:(NSString *)choose_language
                                  user_id:(NSString *)user_id
-                         success:(void (^)(id responseObject))success
-                         failure:(void (^)(NSError *error))failure
+                                 success:(void (^)(id responseObject))success
+                                 failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"choose_language":choose_language,
                            @"user_id":user_id};
@@ -498,7 +563,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);
     }];
-
+    
 }
 
 //查询用户口语即时请求状态。（匹配译员用）
@@ -517,8 +582,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //将译者状态置为require
 +(void)interpreterRequireStateWithuserId:(NSString *)user_id
-                          success:(void (^)(id responseObject))success
-                          failure:(void (^)(NSError *error))failure
+                                 success:(void (^)(id responseObject))success
+                                 failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"user_id":user_id};
     [[APIClient sharedClient] POST:@"QuickTrans/interpreterRequireState" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -532,7 +597,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //口语即时，发送远程推送APNS
 +(void)sendRemoteNotificationsWithuseId:(NSString *)user_id
                         WithsendMessage:(NSString *)send_message
-                       WithlanguageCatgory:(NSString *)language_catgory
+                    WithlanguageCatgory:(NSString *)language_catgory
                           WithpayNumber:(NSString *)pay_number
                            WithSenderID:(NSString *)sender_id
                           WithMessionID:(NSString *)ID
@@ -550,7 +615,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);
     }];
-
+    
 }
 //
 +(void)userIdentity:(NSString *)userIdentity
@@ -635,8 +700,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 }
 //悬赏大厅_all
 +(void)getRewardHallInfo:(NSString *)user_id
-             success:(void (^)(id responseObject))success
-             failure:(void (^)(NSError *error))failure
+                 success:(void (^)(id responseObject))success
+                 failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"user_id":user_id};
     [[APIClient sharedClient] POST:@"Reward/get_reward_hall_list/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -647,8 +712,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 }
 //悬赏大厅_money
 +(void)money:(NSString *)money
-             success:(void (^)(id responseObject))success
-             failure:(void (^)(NSError *error))failure
+     success:(void (^)(id responseObject))success
+     failure:(void (^)(NSError *error))failure
 {
     [[APIClient sharedClient] POST:@"Reward/getmoneyrewardhall/" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
@@ -659,8 +724,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //悬赏大厅_language
 +(void)language:(NSString *)language
-             success:(void (^)(id responseObject))success
-             failure:(void (^)(NSError *error))failure
+        success:(void (^)(id responseObject))success
+        failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"language":language};
     [[APIClient sharedClient] POST:@"Reward/getlanguagerewardhall/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -672,8 +737,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //悬赏大厅_time
 +(void)time:(NSString *)time
-             success:(void (^)(id responseObject))success
-             failure:(void (^)(NSError *error))failure
+    success:(void (^)(id responseObject))success
+    failure:(void (^)(NSError *error))failure
 {
     [[APIClient sharedClient] POST:@"Reward/gettimerewardhall/" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
@@ -683,8 +748,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 }
 //悬赏大厅_search
 +(void)searchContent:(NSString *)searchContent
-    success:(void (^)(id responseObject))success
-    failure:(void (^)(NSError *error))failure
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"searchContent":searchContent};
     [[APIClient sharedClient] POST:@"Reward/getsearchContentrewardhall/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -712,13 +777,13 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //上传回答
 +(void)upLoadMyChoose:(NSString *)answer_id
           AndRewardId:(NSString *)reward_id
-                success:(void (^)(id responseObject))success
-                failure:(void (^)(NSError *error))failure
+              success:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure
 {
     
     
     NSDictionary *dict = @{@"answer_id":answer_id ,
-                                            @"reward_id":reward_id};
+                           @"reward_id":reward_id};
     [[APIClient sharedClient] POST:@"Reward/chooseAnswer/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -768,8 +833,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 }
 //identifyuser_id
 +(void)identifyuser_id:(NSString *)user_id
-       success:(void(^)(id responseObject))success
-       failure:(void (^)(NSError *error))failure
+               success:(void(^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"user_id":user_id};
     [[APIClient sharedClient] POST:@"QuickTrans/identify/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -797,7 +862,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                 failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"user_id":user_id};
-
+    
     [[APIClient sharedClient] POST:@"Reward/rest_money/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -812,9 +877,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                    success:(void(^)(id responseObject))success
                    failure:(void (^)(NSError *error))failure
 {
-
+    
     NSDictionary *dict = @{@"user_id":user_id};
-
+    
     [[APIClient sharedClient] POST:@"Reward/returntext/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -836,7 +901,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                            @"user_id":user_id,
                            @"answer_time":answer_time,
                            @"reward_text":reward_text};
-  
+    
     [[APIClient sharedClient] POST:@"Reward/upLoad/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -844,24 +909,24 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);
     }];
-
+    
 }
 
 
 +(void)UpdateUsertipoffWithMseeageId:(NSString *)messageId
                         TranslatorId:(NSString *)translatorId
-               reporterId:(NSString *)reporter_id
-           report_text:(NSString *)report_text
-           report_time:(NSString *)report_time
-               success:(void(^)(id responseObject))success
-               failure:(void (^)(NSError *error))failure
+                          reporterId:(NSString *)reporter_id
+                         report_text:(NSString *)report_text
+                         report_time:(NSString *)report_time
+                             success:(void(^)(id responseObject))success
+                             failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"id":messageId,
                            @"translator_id":translatorId,
                            @"reporter_id":reporter_id,
                            @"report_text":report_text,
                            @"report_time":report_time};
-
+    
     [[APIClient sharedClient] POST:@"Appraisal/UpdateUsertipoff/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -873,15 +938,15 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 
 +(void)UpdateTranslatorMessageCount:(NSString *)ID
-                       andTranslator_price:(NSString *)translator_price
-                       success:(void (^)(id responseObject))success
-                       failure:(void (^)(NSError *error))failure
+                andTranslator_price:(NSString *)translator_price
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure
 {
     
     
     NSDictionary *dict = @{@"ID":ID,@"translator_price":translator_price};
     
-
+    
     [[APIClient sharedClient] POST:@"Appraisal/UpdateTranslatorMessageCount/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -894,14 +959,14 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 +(void)UpdateUserMessageCount:(NSString *)ID
                 andUser_price:(NSString *)user_price
-                            success:(void (^)(id responseObject))success
-                            failure:(void (^)(NSError *error))failure
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure
 {
     
     
     NSDictionary *dict = @{@"ID":ID,@"user_price":user_price};
     
-
+    
     [[APIClient sharedClient] POST:@"Appraisal/UpdateUserMessageCount/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -914,7 +979,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 +(void)getFrontImagesuccess:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure{
-
+    
     [[APIClient sharedClient] POST:@"Frontimage/getImage/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -922,7 +987,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);
     }];
-
+    
 }
 
 @end

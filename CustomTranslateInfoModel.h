@@ -10,6 +10,7 @@
 
 @interface CustomTranslateInfoModel : NSObject
 
+@property(nonatomic ,strong)NSString *customID;
 @property(nonatomic ,strong)NSString *langueKind;
 @property(nonatomic ,strong)NSString *scene;
 @property(nonatomic ,strong)NSString *content;
@@ -19,9 +20,12 @@
 @property(nonatomic ,strong)NSString *offerMoney;
 @property(nonatomic ,strong)NSString *publishTime;
 @property(nonatomic ,strong)NSString *cellKind;
+@property(nonatomic ,strong)NSString *user_id;
 
-- (instancetype)initWithlangueKind:(NSString *)langueKind
-                             scene:(NSString *)scene
+
+- (instancetype)initWithcustomID:(NSString *)customID
+                      langueKind:(NSString *)langueKind
+                           scene:(NSString *)scene
                            content:(NSString *)content
                           interper:(NSString *)interper
                      translateTime:(NSString *)translateTime

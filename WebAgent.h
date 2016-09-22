@@ -10,15 +10,34 @@
 
 @interface WebAgent : NSObject
 
-
-+(void)userid:(NSString *)user_id
-         usernickname:(NSString *)user_nickname
-         usersex:(NSString *)user_sex
-         userbirth:(NSString *)user_birth
-         userdistrict:(NSString *)user_district
-         usersignature:(NSString *)user_signature
++(void)custom_id:(NSString *)custom_id
+           state:(NSString *)state
          success:(void (^)(id responseObject))success
          failure:(void (^)(NSError *error))failure;
+
++(void)selectLoadDatesuccess:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure;
+
++(void)custom_id:(NSString *)custom_id
+         success:(void (^)(id responseObject))success
+         failure:(void (^)(NSError *error))failure;
+
++(void)customtranslate_userid:(NSString *)user_id
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure;
+
++(void)delectByCustom_id:(NSString *)custom_id
+                 success:(void (^)(id responseObject))success
+                 failure:(void (^)(NSError *error))failure;
+
++(void)userid:(NSString *)user_id
+ usernickname:(NSString *)user_nickname
+      usersex:(NSString *)user_sex
+    userbirth:(NSString *)user_birth
+ userdistrict:(NSString *)user_district
+usersignature:(NSString *)user_signature
+      success:(void (^)(id responseObject))success
+      failure:(void (^)(NSError *error))failure;
 
 +(void)userid:(NSString *)user_id
       success:(void (^)(id responseObject))success
@@ -53,7 +72,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
          valuator_id:(NSString *)valuator_id
    evaluate_infostar:(NSString *)evaluate_infostar
    evaluate_infotext:(NSString *)evaluate_infotext
-       translation_id:(NSString *)translation_id
+      translation_id:(NSString *)translation_id
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure;
 
@@ -117,7 +136,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)interpreterStateWithuserId:(NSString *)user_id
                           success:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure;
- 
+
 //将译者状态置为require
 +(void)interpreterRequireStateWithuserId:(NSString *)user_id
                                  success:(void (^)(id responseObject))success
@@ -153,9 +172,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //勿扰模式
 +(void)wuraomoshiWithuseId:(NSString *)user_id
-                        Withtranslatorallow:(NSString *)translator_allow
-                                success:(void (^)(id responseObject))success
-                                failure:(void (^)(NSError *error))failure;
+       Withtranslatorallow:(NSString *)translator_allow
+                   success:(void (^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure;
 //发布悬赏
 +(void)sendRewardRewardID:(NSString *)rewardID
                rewarderID:(NSString *)rewarderID
@@ -183,8 +202,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure;
 +(void)time:(NSString *)time
-     success:(void (^)(id responseObject))success
-     failure:(void (^)(NSError *error))failure;
+    success:(void (^)(id responseObject))success
+    failure:(void (^)(NSError *error))failure;
 +(void)searchContent:(NSString *)searchContent
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure;
@@ -207,8 +226,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 //判断身份，是否进入评论页
 +(void)identifyuser_id:(NSString *)user_id
-       success:(void(^)(id responseObject))success
-       failure:(void (^)(NSError *error))failure;
+               success:(void(^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure;
 
 //翻译人数
 +(void)returnPeopleReward:(NSString *)reward_id

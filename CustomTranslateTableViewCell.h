@@ -37,7 +37,10 @@
 @property (nonatomic , strong)UIImageView *threeWhiteImgView;
 
 @property (nonatomic , strong)NSString *cellKind;
+@property (nonatomic , strong)NSString *customID;
+@property (nonatomic , strong)NSString *user_id;
 
+@property (nonatomic , strong)UILabel *jeLable;
 @property(nonatomic ,strong)UIView *cellView;
 
 
