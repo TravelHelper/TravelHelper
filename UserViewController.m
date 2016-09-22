@@ -35,6 +35,7 @@
     NSString *user_language;
     NSString *loginMark;
     bool loadMark;
+    bool languageMark;
 }
 
 @property(nonatomic,strong)UITableView *mainTableView;
@@ -67,9 +68,8 @@
     self.title = @"我的";
     user_language = self.userLanguage;
     user_identity = self.userIdentify;
-    
+    languageMark=false;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tochangeLogin) name:@"changeLogin" object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
@@ -136,12 +136,37 @@
 -(void)viewDidAppear:(BOOL)animated{
 
     [super viewDidAppear:animated];
-    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    if(languageMark==true){
+        languageMark=false;
+    [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSString *msg=dic[@"msg"];
+        if([msg isEqualToString:@"SUCCESS"]){
+            
+            user_identity=dic[@"user_identity"];
+            user_language = dic[@"user_language"];
+            [MBProgressHUD hideHUD];
+            NSLog(@"%@",user_identity);
+            
+        }
+        
+        
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+        
+    }];
+    }
     if(loadMark==false){
     loadMark=true;
     [self.mainTableView removeFromSuperview];
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+        
+       
+        
     //    [self.view addSubview:self.mainTableView];
     
     
@@ -234,7 +259,16 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = NO;
+    
+    self.tabBarController.tabBar.hidden=YES;
 //    EBEBF1
+    if(languageMark==true){
+        
+         [MBProgressHUD showMessage:@"加载数据中"];
+    
+    }
     if(loadMark==false){
         
     [MBProgressHUD showMessage:@"加载数据中"];
@@ -927,7 +961,7 @@
         if ( section == 1 && row==0){
         
             
-            
+            languageMark=true;
             if([user_identity isEqualToString:@"译员"]){
                 
                 NSString *str = [user_language substringWithRange:NSMakeRange(1, user_language.length-1)];

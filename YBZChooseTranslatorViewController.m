@@ -10,6 +10,8 @@
 #import "YBZOtherViewController.h"
 #import "WebAgent.h"
 #import "UIImage+needkit.h"
+#import "MBProgressHUD+XMG.h"
+
 
 
 @interface YBZChooseTranslatorViewController ()
@@ -199,8 +201,8 @@
 #pragma mark -----onClick-----
 -(void)loginAndBackToRoot{
 
-//    [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)chooseReadOrNot{
@@ -223,7 +225,9 @@
 -(void)agreeToBecomeTranslator{
 
     NSLog(@"1");
+    [MBProgressHUD showMessage:@"上传数据中"];
     userLanguage = [NSString string];
+    
     for (int i=0; i<_chooseLanguageArr.count; i++) {
         NSString *str = _chooseLanguageArr[i];
         if (i==0) {
@@ -234,8 +238,9 @@
     }
     
     [WebAgent userIdentity:@"译员" userLanguage:userLanguage userID:userID success:^(id responseObject) {
-//        [self.navigationController popViewControllerAnimated:YES];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [MBProgressHUD hideHUD];
+        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSError *error) {
         
     }];
