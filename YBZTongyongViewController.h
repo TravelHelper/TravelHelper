@@ -10,4 +10,8 @@
 
 @interface YBZTongyongViewController : UIViewController
 
+@property (nonatomic,strong) NSString *wuraomoshi;
+
+
+
 @end

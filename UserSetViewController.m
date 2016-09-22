@@ -29,7 +29,10 @@
 
 @end
 
-@implementation UserSetViewController
+@implementation UserSetViewController{
+    
+    NSString *wuraoState;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -48,22 +51,34 @@
         [self presentViewController:nav animated:YES completion:nil];
     }
     else{
-    [WebAgent userGetInfo:user_id[@"user_id"] success:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        self.dataDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        self.stateDic = @{@"stateinfo":[self.dataDic objectForKey:@"account_state"]};
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//        [userDefaults setObject:self.stateDic forKey:@"stateinfo"];
-        
-    } failure:^(NSError *error) {
-        NSLog(@"cuole");
-    }];
-    }
+       }
     self.navigationItem.title = @"设置";
 //     [[UINavigationBar appearance] setBarTintColor:[UIColor orangeColor]];
     [self.view addSubview:self.usersetTabView];
     
     
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [WebAgent userGetInfo:user_id[@"user_id"] success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        self.dataDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        self.stateDic = @{@"stateinfo":[self.dataDic objectForKey:@"account_state"]};
+        //        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        //        [userDefaults setObject:self.stateDic forKey:@"stateinfo"];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"cuole");
+    }];
+
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+   
+
 }
 
 #pragma mark - getters
@@ -149,6 +164,7 @@
         if(indexPath.section == 0 && indexPath.row == 1)
         {
             YBZTongyongViewController *tongyongVC = [[YBZTongyongViewController alloc]init];
+            tongyongVC.wuraomoshi = self.dataDic[@"translator_allow"];
             [self.navigationController pushViewController:tongyongVC animated:YES];
         }
         else{

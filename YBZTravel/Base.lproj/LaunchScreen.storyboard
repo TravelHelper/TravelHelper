@@ -18,12 +18,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="引导" translatesAutoresizingMaskIntoConstraints="NO" id="UK0-YC-9Mk">
-                                <frame key="frameInset" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="引导" translatesAutoresizingMaskIntoConstraints="NO" id="UK0-YC-9Mk"/>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="UK0-YC-9Mk" secondAttribute="trailing" id="H2R-CR-PFk"/>
+                            <constraint firstItem="UK0-YC-9Mk" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="OWl-hj-dGX"/>
+                            <constraint firstItem="UK0-YC-9Mk" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="jKd-he-tQc"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="UK0-YC-9Mk" secondAttribute="bottom" id="tpS-fj-uRv"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>

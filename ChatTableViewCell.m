@@ -53,20 +53,36 @@
         
         NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
         
-        NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+        NSString *urlStr=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+        NSURL *url = [NSURL URLWithString:urlStr];
+//        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
         
-        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
         
-        UIImage *headImg=[[UIImage alloc]init];
-        headImg=[UIImage imageWithData:data];
-        if(headImg){
-            [self.headImageView setImage:headImg];
-//            self.headImageView.image=headImg;
-        }else{
-            headImg = [UIImage imageNamed:@"translator"];
-            [self.headImageView setImage:headImg];
-//            self.headImageView.image=headImg;
-        }
+        [self.headImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            NSLog(@"这里可以在图片加载完成之后做些事情");
+            if(!image){
+                UIImage *headImg=[[UIImage alloc]init];
+                headImg = [UIImage imageNamed:@"translator"];
+                [self.headImageView setImage:headImg];
+            }
+            
+            
+        }];
+
+        
+        
+        
+//        UIImage *headImg=[[UIImage alloc]init];
+//        headImg=[UIImage imageWithData:data];
+//        if(headImg){
+//            [self.headImageView setImage:headImg];
+////            self.headImageView.image=headImg;
+//        }else{
+//            headImg = [UIImage imageNamed:@"translator"];
+//            [self.headImageView setImage:headImg];
+////            self.headImageView.image=headImg;
+//        }
         
         
         [self.headView addSubview:self.headImageView];

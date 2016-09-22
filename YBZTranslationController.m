@@ -474,6 +474,7 @@
     NSDictionary *userID = [userdefault objectForKey:@"user_id"];
     
     
+    
     [WebAgent interpreterStateWithuserId:yonghuID andmessionID:messionID andAnswerID:userID[@"user_id"] success:^(id responseObject) {
        
         NSData *data = [[NSData alloc]initWithData:responseObject];
@@ -493,8 +494,11 @@
 
 //            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
             NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID[@"user_id"] WithMessionID:mseeage_id success:^(id responseObject) {
+            
+            [userdefault setObject:messionID forKey:@"messageId"];
+            
+//            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID[@"user_id"] WithMessionID:messionID success:^(id responseObject) {
                 NSLog(@"反馈推送—匹配成功通知成功！");
             } failure:^(NSError *error) {
                 NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);

@@ -191,8 +191,19 @@
 
 -(void)addModel:(YBZtoAlertModel *)model{
 
-    [self.dataSource addObject:model];
-    [self.alertTableView reloadData];
+    int j=0;
+    for(int i=0;i<self.dataSource.count;i++){
+    
+        YBZtoAlertModel *nowModel=self.dataSource[i];
+        if([nowModel.messionID isEqualToString:model.messionID]){
+            j=1;
+        }
+        
+    }
+    if(j==0){
+        [self.dataSource addObject:model];
+        [self.alertTableView reloadData];
+    }
 }
 
 
@@ -261,6 +272,20 @@
     [MBProgressHUD showSuccess:@"匹配中,请等待"];
 //    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
     YBZtoAlertModel *model=self.dataSource[needIndex];
+    
+    
+//    NSString *message=[NSString stringWithFormat:@"ID:%@,language:%@,pay:%@,messionID:%@",model.yonghuID,model.language_catgory,model.pay_number,model.messionID];
+//    
+//    UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 300)];
+//    
+//    label.numberOfLines=0;
+//    
+//    label.text=message;
+//    
+//    [self addSubview:label];
+    
+//    [MBProgressHUD showMessage:message];
+    
     [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":model.yonghuID,@"language_catgory":model.language_catgory,@"pay_number":model.pay_number,@"messionID":model.messionID}];
 }
 -(void)hideLoginView{

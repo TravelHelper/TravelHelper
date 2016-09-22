@@ -11,7 +11,7 @@
 #import <Foundation/Foundation.h>
 #import "ChatModel.h"
 #import "ChatFrameInfo.h"
-
+#import "UIImageView+WebCache.h"
 
 @interface ChatTableViewCell : UITableViewCell
 
