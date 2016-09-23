@@ -10,10 +10,16 @@
 
 @interface WebAgent : NSObject
 
+
 +(void)custom_id:(NSString *)custom_id
            state:(NSString *)state
          success:(void (^)(id responseObject))success
          failure:(void (^)(NSError *error))failure;
+
++(void)userGetInfo:(NSString *)userId
+           success:(void (^)(id responseObject))success
+           failure:(void (^)(NSError *error))failure;
+
 
 +(void)selectLoadDatesuccess:(void (^)(id responseObject))success
                      failure:(void (^)(NSError *error))failure;
@@ -167,6 +173,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                       failure:(void (^)(NSError *error))failure;
 //查询等候队列
 +(void)selectWaitingQueue:(NSString *)user_language
+                  user_id:(NSString *)user_id
                   success:(void (^)(id responseObject))success
                   failure:(void (^)(NSError *error))failure;
 
@@ -311,8 +318,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 +(void)interpreterStateWithuserId:(NSString *)user_id
                      andmessionID:(NSString *)messionID
+                      andAnswerID:(NSString *)answer_id
                           success:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure;
 
++(void)stopFindingTranslator:(NSString *)user_id
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure;
 
 @end

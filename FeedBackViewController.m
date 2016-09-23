@@ -239,19 +239,20 @@
     
     
     
-    NSString *messageContent=[NSString stringWithFormat:@"当前评价分数为:%@颗星星，是否确认？",stringFloat];
-    [UIAlertController showAlertAtViewController:self title:@"提示" message:messageContent cancelTitle:@"确定" confirmTitle:@"取消" cancelHandler:^(UIAlertAction *action) {
-        
+//    NSString *messageContent=[NSString stringWithFormat:@"当前评价分数为:%@颗星星，是否确认？",stringFloat];
+//    [UIAlertController showAlertAtViewController:self title:@"提示" message:messageContent cancelTitle:@"确定" confirmTitle:@"取消" cancelHandler:^(UIAlertAction *action) {
+    [MBProgressHUD showMessage:@"评价中..."];
         [WebAgent UpdateUserMessageWithID:mseeage_id andStar:stringFloat andMoney:@"0" success:^(id responseObject) {
             
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSLog(@"%@",dic);
-            
+            [MBProgressHUD hideHUD];
             [MBProgressHUD showSuccess:@"评价成功！正在为您返回主页"];
             [self.navigationController popToRootViewControllerAnimated:YES];
             
         } failure:^(NSError *error) {
+            [MBProgressHUD hideHUD];
             [MBProgressHUD showError:@"评价失败,请检查网络"];
         }];
         
@@ -259,9 +260,9 @@
         
         
         
-    } confirmHandler:^(UIAlertAction *action) {
-        
-    }];
+//    } confirmHandler:^(UIAlertAction *action) {
+//        
+//    }];
     
     
     

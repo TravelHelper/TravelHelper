@@ -293,10 +293,7 @@
     [dateformatter setDateFormat:@"YYYY-MM-dd HH:mm"];
     NSString *morelocationString = [dateformatter stringFromDate:sendDate];
     
-    
-    
-    
-    
+   //在这里加上修改状态的接口。
     [WebAgent creatUserList:morelocationString andUser_id:user_id WithLanguage:language success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
@@ -308,7 +305,7 @@
         
         [userDefaults setObject:message_id forKey:@"messageId"];
 
-    [WebAgent selectWaitingQueue:language success:^(id responseObject) {
+        [WebAgent selectWaitingQueue:language user_id:user_id success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSArray   *dictionary = dic[@"data"];
@@ -320,13 +317,13 @@
             
             
             
-                [WebAgent UpdateUserListWithID:message_id andAnswerId:dictionary[0][@"user_id"] success:^(id responseObject) {
-                    NSLog(@"SUCCESS");
-                    
-                } failure:^(NSError *error) {
-                    
-                }];
-                
+//                [WebAgent UpdateUserListWithID:message_id andAnswerId:dictionary[0][@"user_id"] success:^(id responseObject) {
+//                    NSLog(@"SUCCESS");
+//                    
+//                } failure:^(NSError *error) {
+//                    
+//                }];
+            
                 [WebAgent sendRemoteNotificationsWithuseId:dictionary[0][@"user_id"] WithsendMessage:@"进入聊天" WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:user_id WithMessionID:message_id success:^(id responseObject) {
                     NSData *data = [[NSData alloc] initWithData:responseObject];
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -351,32 +348,16 @@
                 if (arr.count == 0) {
                     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，当前没有该语种的对应译员" preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                        [self.navigationController popViewControllerAnimated:YES];
+                        [WebAgent stopFindingTranslator:user_id success:^(id responseObject) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        } failure:^(NSError *error) {
+                            
+                        }];
                     }];
                     [alertVC addAction:okAction];
                     [self presentViewController:alertVC animated:YES completion:nil];
                 }else{
-//                    NSDate *sendDate = [NSDate date];
-//                    NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
-//                    [dateformatter setDateFormat:@"YYYY-MM-dd"];
-//                    NSString *morelocationString = [dateformatter stringFromDate:sendDate];
-//                    [WebAgent creatUserList:morelocationString andUser_id:user_id success:^(id responseObject) {
-//                        
-//                        NSData *data = [[NSData alloc] initWithData:responseObject];
-//                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-//                        NSLog(@"%@",dic);
-//                        message_id = dic[@"data"];
-//                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//                        [userDefaults setObject:message_id forKey:@"messageId"];
-//
-//                        
-//                        
-//                        
-//                    } failure:^(NSError *error) {
-//                        
-//                    }];
-                    
-                    
+        
                     for (int i = 0 ; i< arr.count; i++) {
                         NSString *user_ID = arr[i];
                         NSString * strid = [user_ID stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
@@ -411,11 +392,12 @@
         
     }];
     
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.row == 0) {
+    if (indexPath.row     == 0) {
         NSLog(@"英文");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];

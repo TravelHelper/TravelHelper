@@ -14,12 +14,19 @@
 #import "FreeTransViewController.h"
 #import "JPUSHService.h"
 #import "WebAgent.h"
+#import "YBZtoalertView.h"
 
 #define Trans_YingYu    @"en"
 #define Voice_YingYu    @"en-GB"
 
 @interface AppDelegate ()
+
 @property(nonatomic,assign) NSString* isLogin;
+@property(nonatomic,strong) UIAlertController *alertVC;
+//@property(nonatomic,strong) UITableView *
+@property (nonatomic,strong) UIView             *hubView;
+@property (nonatomic, strong)YBZtoalertView  *toalertView;
+
 @end
 
 @implementation AppDelegate
@@ -60,11 +67,11 @@
                  apsForProduction:false
             advertisingIdentifier:advertisingId];
     
-    
+    [JPUSHService resetBadge];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(registerAliasAndTag) name:kJPFNetworkDidLoginNotification object:nil];
     
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textForView) name:@"textForView" object:nil];
     
     
 ///远程推送⬆️！！！！！！
@@ -158,7 +165,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
     // Required,For systems with less than or equal to iOS6
-    application.applicationIconBadgeNumber = (NSInteger)0;
+//    application.applicationIconBadgeNumber = (NSInteger)0;
     [JPUSHService handleRemoteNotification:userInfo];
 }
 
@@ -168,7 +175,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
     
     // IOS 7 Support Required
-    application.applicationIconBadgeNumber = (NSInteger)0;
+//    application.applicationIconBadgeNumber = (NSInteger)0;
     [JPUSHService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
     
@@ -196,12 +203,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
         NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
 
-        [WebAgent UpdateUserListWithID:mseeage_id andAnswerId:yonghuID success:^(id responseObject) {
-            NSLog(@"SUCCESS");
-            
-        } failure:^(NSError *error) {
-            
-        }];
+//        [WebAgent UpdateUserListWithID:mseeage_id andAnswerId:yonghuID success:^(id responseObject) {
+//            NSLog(@"SUCCESS");
+//            
+//        } failure:^(NSError *error) {
+//            
+//        }];
         
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"beginChatWithTranslator" object:@{@"translatorID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
@@ -216,24 +223,45 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     }else if ([content isEqualToString:@"退出聊天"]){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"backToRoot" object:@{@"yonghuID":yonghuID}];
     }else if( [str isEqualToString:@"口语即时翻译请求"]){
+        UIViewController *nowVC=[self currentViewController];
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        YBZtoAlertModel *model=[[YBZtoAlertModel alloc]init];
+        model.translatorID=user_id[@"user_id"];
+        model.yonghuID=yonghuID;
+        model.language_catgory=language_catgory;
+        model.messionID=messionID;
+        model.pay_number=pay_number;
+
+        if(!self.toalertView){
+            
+            self.toalertView=[[YBZtoalertView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH*0.15, SCREEN_HEIGHT*0.2, SCREEN_WIDTH*0.7, SCREEN_HEIGHT*0.6) andModel:model];
+            //    alertView.backgroundColor=[UIColor redColor];
+            [nowVC.view addSubview:self.hubView];
+            [nowVC.view addSubview:self.toalertView];
+        }else{
+            
+            [self.toalertView addModel:model];
+        }
+        
+//        if(self.alertVC){
+//        
+//            self.alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"接收到新的翻译任务！" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"现在就去" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number,@"messionID":messionID}];
+//            }];
+//            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"算了吧" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//                self.alertVC=nil;
+//            }];
+//            [self.alertVC addAction:okAction];
+//            [self.alertVC addAction:cancelAction];
+//        
+//            [self.window.rootViewController presentViewController:self.alertVC animated:YES completion:nil];
+//            
+//        }
         
         
         
-        
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"接收到新的翻译任务！" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"现在就去" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number,@"messionID":messionID}];
-        
-        }];
-        
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"算了吧" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        }];
-        [alertVC addAction:okAction];
-        [alertVC addAction:cancelAction];
-        
-        
-        
-        [self.window.rootViewController presentViewController:alertVC animated:YES completion:nil];
         
       
     }
@@ -276,5 +304,59 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+-(void)hideView{
+
+    
+    
+    
+}
+
+-(void)textForView{
+
+    UIViewController *nowVC=[self currentViewController];
+    NSLog(@"%@",nowVC);
+    [self.toalertView removeFromSuperview];
+    [self.hubView removeFromSuperview];
+    self.toalertView=nil;
+    
+}
+
+-(UIViewController *)currentViewController
+{
+    
+    UIViewController * currVC = nil;
+    UIViewController * Rootvc = self.window.rootViewController ;
+    do {
+        if ([Rootvc isKindOfClass:[UINavigationController class]]) {
+            UINavigationController * nav = (UINavigationController *)Rootvc;
+            UIViewController * v = [nav.viewControllers lastObject];
+            currVC = v;
+            Rootvc = v.presentedViewController;
+            continue;
+        }else if([Rootvc isKindOfClass:[UITabBarController class]]){
+            UITabBarController * tabVC = (UITabBarController *)Rootvc;
+            currVC = tabVC;
+            Rootvc = [tabVC.viewControllers objectAtIndex:tabVC.selectedIndex];
+            continue;
+        }
+    } while (Rootvc!=nil);
+    
+    
+    return currVC;
+}
+
+
+-(UIView *)hubView{
+    if (!_hubView){
+        _hubView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _hubView.backgroundColor = [UIColor blackColor];
+        _hubView.alpha = 0.3f;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideView)];
+        [_hubView addGestureRecognizer:tap];
+    }
+    return _hubView;
+}
+
+
 
 @end

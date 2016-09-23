@@ -26,6 +26,8 @@
 #import "MBProgressHUD+XMG.h"
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
+#import "ChatFrameInfo.h"
+
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
 
@@ -33,7 +35,7 @@
 #define kScreenHight  [UIScreen mainScreen].bounds.size.height
 #define krequL   [UIScreen mainScreen].bounds.size.width*0.44
 
-@interface QuickTransViewController ()<UITextViewDelegate,UIGestureRecognizerDelegate,BaseTableViewDelegate,BaseAudioButtonDelegate,UITableViewDataSource,UITableViewDelegate,IFlySpeechRecognizerDelegate,RCIMClientReceiveMessageDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface QuickTransViewController ()<UITextViewDelegate,UIGestureRecognizerDelegate,BaseTableViewDelegate,BaseAudioButtonDelegate,UITableViewDataSource,UITableViewDelegate,IFlySpeechRecognizerDelegate,RCIMClientReceiveMessageDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIScrollViewDelegate>
 
 
 @property (nonatomic,strong) NSString *selectedCellMessageID;
@@ -99,7 +101,7 @@
     int translatorCount;
     NSTimer *timer;
     int   countDownNumber;
-    
+    int   recordMark;
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
@@ -130,7 +132,7 @@
     self.isequal = YES;
     [self setTitle:@"即时翻译"];
     [self.view addSubview:self.backgroundImageView];
-    
+    recordMark=1;
     [self setupRefresh];
     
     self.isCancelSendRecord = NO;
@@ -157,7 +159,7 @@
     [self.inputBottomView addSubview:self.inputTextView];
     [self.bottomTableView setContentOffset:CGPointMake(0, self.bottomTableView.bounds.size.height)];
     
-    [self AddTapGestureRecognizer];
+//    [self AddTapGestureRecognizer];
     [self reloadDataSourceWithNumber:ascCount];
     
     self.iFlySpeechRecognizer  = [[IFlySpeechRecognizer alloc]init];
@@ -637,7 +639,7 @@
             [self sendRecordAudioWithRecordURLString:self.cellMessageID];
         }else{
             
-            [MBProgressHUD showError:@"话语长度不能小于1s"];
+//            [MBProgressHUD showError:@"话语长度不能小于1s"];
             
         }
         
@@ -689,7 +691,7 @@
     self.currentCellID = info.userInfo[@"cellID"];
     [self.cwViewController playButtonClickWithURLString:self.currentCellID];
     NSLog(@"%@",self.currentCellID);
-    [self cancelResignFirstResponder];
+    [self.inputTextView resignFirstResponder];
     
 }
 
@@ -789,7 +791,6 @@
     [self addHistoryWithDict:dict];
     
     NSString *extra = [self getRCMessageExtraStringWithsenderID:dict[@"senderID"] chatTextContent:dict[@"chatTextContent"] chatContentType:dict[@"chatContentType"] chatPictureURLContent:dict[@"chatPictureURLContent"] messageID:dict[@"messageID"] senderImgPictureURL:dict[@"senderImgPictureURL"] chatAudioContent:dict[@"chatAudioContent"] audioSecond:dict[@"audioSecond"] sendIdentifier:dict[@"sendIdentifier"] AVtoStringContent:dict[@"AVtoStringContent"] sendTime:dict[@"sendTime"]];
-    [self sendAWebVoice:extra];
     
     
     self.inputTextView.text = nil;
@@ -802,7 +803,9 @@
     
     NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
     [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
+    [MBProgressHUD hideHUD];
+    [self sendAWebVoice:extra];
+
     //    [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
 }
 
@@ -835,6 +838,7 @@
     }
 }
 
+
 -(void)sendTextMessageMethodWithString:(NSString *)text{
     
     NSString *currentDateString = [self getCurerentTimeString];
@@ -859,18 +863,29 @@
         [self addHistoryWithDict:dict];
         
         NSString *extra = [self getRCMessageExtraStringWithsenderID:dict[@"senderID"] chatTextContent:dict[@"chatTextContent"] chatContentType:dict[@"chatContentType"] chatPictureURLContent:dict[@"chatPictureURLContent"] messageID:dict[@"messageID"] senderImgPictureURL:dict[@"senderImgPictureURL"] chatAudioContent:dict[@"chatAudioContent"] audioSecond:dict[@"audioSecond"] sendIdentifier:dict[@"sendIdentifier"] AVtoStringContent:dict[@"AVtoStringContent"] sendTime:dict[@"sendTime"]];
-        [self sendAwebMessage:extra];
+        
         
         self.inputTextView.text = nil;
         [self.dataArr insertObject:dict atIndex:count];
         ascCount = ascCount + 1;
         [self reloadDataSourceWithNumber:ascCount];
+        
+        
+        
+        
         [self.bottomTableView reloadData];
         
-        [self.sendMessageBtn removeFromSuperview];
+        
+        
+        
+        [self sendAwebMessage:extra];
         
         NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
         [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        
+        NSLog(@"qwe");
+        
+        
         
         
         if (self.isKeyboardShow == YES) {
@@ -901,6 +916,8 @@
                 self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
             }];
         }
+        
+        
     }
     
 }
@@ -979,21 +996,22 @@
     
     
     ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
+    cell.playTransTextBtn.hidden=YES;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSInteger i = indexPath.row;
-    static NSString *CellIdentifier = @"Cell";
+//    static NSString *CellIdentifier = @"Cell";
     NSDictionary *object = self.dataSource[i];
     ChatModel *model = [[ChatModel alloc]init];
-    NSLog(@"%@",object[@"senderID"]);
-    if ([object[@"user_id"] isEqualToString:self.senderID]) {
-        model.isSender = 1;
-    }else{
-        model.isSender = 0;
-    }
+//    NSLog(@"%@",object[@"senderID"]);
+//    if ([object[@"user_id"] isEqualToString:self.senderID]) {
+//        model.isSender = 1;
+//    }else{
+//        model.isSender = 0;
+//    }
     
     model.senderID = object[@"senderID"];
     model.chatTextContent = object[@"chatTextContent"];
@@ -1007,9 +1025,12 @@
     model.sendTime = object[@"sendTime"];
     model.messageID = object[@"messageID"];
     
-    ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
+    ChatFrameInfo *frameInfo = [[ChatFrameInfo alloc]initWithModel:model];
     
-    return cell.height;
+    
+//    ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
+    
+    return frameInfo.cellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -1025,7 +1046,7 @@
     
     countDownNumber--;
     if(countDownNumber<=3){
-        
+        recordMark=0;
         //        UITouch *touch = [[event touchesForView:button] anyObject];
         
         //将XY轴的座标资讯正规化后输出
@@ -1089,7 +1110,7 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
-    
+    [MBProgressHUD showSuccess:@"音频准备中"];
     countDownNumber=8;
     timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
     
@@ -1258,11 +1279,23 @@
         
     }else{
         
-        
+        if(recordMark!=0){
+            
+            
+            int needNumber=8-countDownNumber;
+            if(needNumber>=1){
+                [MBProgressHUD showMessage:@"信息发送中"];
+            }else{
+                
+                [MBProgressHUD showError:@"话语长度不能小于1s"];
+                
+            }
+
+            
         [self.cwViewController recordButtonClick];
         
         [self iFlySpeechRecognizerStop];
-        
+        }
         //        if ([self.cwViewController.secondString intValue] < 1 ) {
         //
         //            self.shortLabel = [[UILabel alloc]initWithFrame:self.subBottomView.bounds];
@@ -1305,7 +1338,7 @@
 -(void)tableView:(UITableView *)tableView BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
     UITouch *touch = [[event touchesForView:tableView] anyObject];
-    [self cancelResignFirstResponder];
+    [self.inputTextView resignFirstResponder];
     //将XY轴的座标资讯正规化后输出
     NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
     NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
@@ -1408,26 +1441,37 @@
 - (void)textViewDidChange:(UITextView *)textView{
     
     NSLog(@"变了");
-    if ([self.inputTextView.text isEqualToString:@""] || self.inputTextView.text == nil) {
-        
-        [self.sendMessageBtn removeFromSuperview];
-        
-    }else{
-        
-        [self.inputBottomView addSubview:self.sendMessageBtn];
-        
-    }
-    
+//    if ([textView.text isEqualToString:@"\n"]){
+//        if (textView.text != nil && ![textView.text isEqualToString:@""]) {
+//            //发送消息！！！！！！
+//            NSLog(@"bbb");
+//            //            [self sendTextMessageMethodWithString:textView.text];
+////            return NO;
+//        }
+//    }
+
+//    if ([self.inputTextView.text isEqualToString:@""] || self.inputTextView.text == nil) {
+//        
+//        [self.sendMessageBtn removeFromSuperview];
+//        
+//    }else{
+//        
+//        [self.inputBottomView addSubview:self.sendMessageBtn];
+//        
+//    }
+//    
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){
         if (text != nil && ![text isEqualToString:@""]) {
             //发送消息！！！！！！
+            NSLog(@"aaa");
             [self sendTextMessageMethodWithString:textView.text];
             return NO;
         }
     }
+//    NSLog(@"aa");
     
     return YES;
 }
@@ -1438,28 +1482,32 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView{
     //结束输入聊天信息
+//    [self sendTextMessageMethodWithString:textView.text];
 }
 
 #pragma mark - 私有方法
-
-
-- (void)AddTapGestureRecognizer{
-    
-    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(cancelResignFirstResponder)];
-    
-    tapGesture.delegate = self;
-    tapGesture.numberOfTapsRequired=1;
-    tapGesture.numberOfTouchesRequired=1;
-    //    [self.bottomTableView addGestureRecognizer:tapGesture];
-    
-}
-
-- (void)cancelResignFirstResponder{
-    
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.inputTextView resignFirstResponder];
-    
 }
 
+
+//- (void)AddTapGestureRecognizer{
+//    
+//    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(cancelResignFirstResponder)];
+//    
+//    tapGesture.delegate = self;
+//    tapGesture.numberOfTapsRequired=1;
+//    tapGesture.numberOfTouchesRequired=1;
+//    //    [self.bottomTableView addGestureRecognizer:tapGesture];
+//    
+//}
+//
+//- (void)cancelResignFirstResponder{
+//    
+//    [self.inputTextView resignFirstResponder];
+//    
+//}
+//
 
 #pragma mark - 响应事件
 
@@ -1551,41 +1599,51 @@
     }];
 }
 
+
+
+
+
 -(void)sendMessageAndPop{
     NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
     
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo WithMessionID:mseeage_id success:^(id responseObject) {
-        [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
-            
-            if([self.userIdentifier isEqualToString:@"TRANSTOR"])
-            {
-                [self.navigationController popToRootViewControllerAnimated:YES];
-                [WebAgent interpreterRequireStateWithuserId:self.user_id success:^(id responseObject) {
-                    
-                    
-                    NSLog(@"译员成功返回首页");
-                    
-                    
-                } failure:^(NSError *error) {
-                    NSLog(@"译员未返回首页");
-                    
-                }];
-            }
-            else
-            {
+        [WebAgent stopFindingTranslator:userIDinfo success:^(id responseObject) {
+            [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
                 
-                FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.target_id];
-                [self.navigationController pushViewController:fbvc animated:YES];
-            }
+                if([self.userIdentifier isEqualToString:@"TRANSTOR"])
+                {
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    [WebAgent interpreterRequireStateWithuserId:self.user_id success:^(id responseObject) {
+                        
+                        
+                            NSLog(@"译员成功返回首页");
+                        
+                        
+                        } failure:^(NSError *error) {
+                            NSLog(@"译员未返回首页");
+                        
+                        }];
+                    }
+                    else
+                    {
+                    
+                        FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.    target_id];
+                        [self.navigationController pushViewController:fbvc animated:YES];
+                    }
+                
+                
+                } failure:^(NSError *error) {
+                    NSLog(@"失败");
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    //            [self.navigationController popViewControllerAnimated:YES];
+                }];
             
-            
-        } failure:^(NSError *error) {
-            NSLog(@"失败");
-            [self.navigationController popToRootViewControllerAnimated:YES];
-//            [self.navigationController popViewControllerAnimated:YES];
-        }];
-    } failure:^(NSError *error) {
+            } failure:^(NSError *error) {
+                NSLog(@"取消寻找议员状态失败");
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }];
+          } failure:^(NSError *error) {
         NSLog(@"失败");
         [self.navigationController popToRootViewControllerAnimated:YES];
 
@@ -1603,7 +1661,7 @@
         //输入转语音
         [self.inputBottomView addSubview:self.reportAudioBtn];
         //        [self.inputBottomView addSubview:self.reportEnglishBtn];
-        [self cancelResignFirstResponder];
+        [self.inputTextView resignFirstResponder];
         self.changeSendContentBtn.tag = 1002;
         [self.changeSendContentBtn setImage:[UIImage imageNamed:@"keyboard"] forState:UIControlStateNormal];
         
@@ -1622,7 +1680,7 @@
 
 -(void)selectLangueageClick{
     
-    [self cancelResignFirstResponder];
+    [self.inputTextView resignFirstResponder];
     // NSLog(@"跳转到新的切换语言页面");
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];

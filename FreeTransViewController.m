@@ -86,6 +86,7 @@
     MBProgressHUD *HUD;
     NSTimer *timer;
     int   countDownNumber;
+    int   recordMark;
     
 }
 
@@ -119,7 +120,7 @@
     [super viewDidLoad];
     
     self.isequal = YES;
-    
+    recordMark=1;
     //    UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(donghuahuishou)];
     //    TapGestureTecognizer.cancelsTouchesInView=NO;
     //    [self.view addGestureRecognizer:TapGestureTecognizer];
@@ -174,6 +175,14 @@
     [self.view addSubview:self.btnview];
     
     
+   
+    
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     
@@ -189,9 +198,8 @@
     }
     
     
-    
-    
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -776,6 +784,7 @@
 
 -(void)button:(UIButton *)button BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     
+    
     [timer invalidate];
     
     //宣告一个UITouch的指标来存放事件触发时所撷取到的状态
@@ -799,6 +808,7 @@
         
     }else{
         
+        if(recordMark!=0){
         
         [self.cwViewController recordButtonClick];
         
@@ -821,7 +831,8 @@
         //            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
         //
         //        }
-        
+        }
+        recordMark=1;
         
         self.isZero = YES;
         
@@ -859,7 +870,9 @@
         //        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
         //        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
         //        NSLog(@"ButtonEnded!");
+        recordMark=0;
         [MBProgressHUD showError:@"话语长度不能大于5s"];
+        
         [self removeRecordPageView];
         
         if (self.isCancelSendRecord == YES) {
@@ -1068,27 +1081,6 @@
 
 #pragma mark - 私有方法
 
-
--(NSArray *)getData{
-    
-    NSArray *arr= @[
-                    @{@"senderID":@"0001",@"chatTextContent":@"你好韦富钟",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"这段文字要很长很长，因为我要测试他能不能多换几行",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"这段儿短点",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"嗯哼",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"发几个表情符号～～～～～～～～ － 。－",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"你好韦富钟",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"这段文字要很长很长，因为我要测试他能不能多换几行",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"这段儿短点",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"嗯哼",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"发几个表情符号～～～～～～～～ － 。－",@"chatContentType":@"text",@"chatPictureURLContent":@""},      @{@"senderID":@"0001",@"chatTextContent":@"你好韦富钟",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"这段文字要很长很长，因为我要测试他能不能多换几行",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0001",@"chatTextContent":@"这段儿短点",@"chatContentType":@"text",@"chatPictureURLContent":@""},
-                    @{@"senderID":@"0002",@"chatTextContent":@"嗯哼",@"chatContentType":@"text",@"chatPictureURLContent":@"",@"sendIdentifier":@"FREETRANS"},
-                    @{@"senderID":@"0002",@"chatTextContent":@"发几个表情符号～～～～～～～～ － 。－",@"chatContentType":@"audio",@"chatPictureURLContent":@"",@"messageID":@"123",@"AVtoStringContent":@"这段文字要很长很长，因为我要测试他能不能多测试他能不能多测试他能不能多测试他能不能多测试他能不能多换几行",@"audioSecond":@"3fs"}
-                    ];
-    return arr;
-}
 
 
 - (void)AddTapGestureRecognizer{

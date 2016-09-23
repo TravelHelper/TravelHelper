@@ -270,6 +270,8 @@
 		A0552ED61D3A2C8C00E04D7A /* SelectedCellFrameInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552EC91D3A2C8C00E04D7A /* SelectedCellFrameInfo.m */; };
 		A0552ED71D3A2C8C00E04D7A /* SelectedMessageInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */; };
 		A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */; };
+		FE1482671D8925D100804A0A /* YBZtoAlertModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1482641D8925D100804A0A /* YBZtoAlertModel.m */; };
+		FE1482681D8925D100804A0A /* YBZtoalertView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1482661D8925D100804A0A /* YBZtoalertView.m */; };
 		FE1EFE2D1D83A14B00FDD1BE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */; };
 		FE1EFE301D83A1A000FDD1BE /* PCMDataPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */; };
 		FE1EFE331D87AF5800FDD1BE /* YBZcallingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE321D87AF5700FDD1BE /* YBZcallingView.m */; };
@@ -781,6 +783,11 @@
 		A0552ECA1D3A2C8C00E04D7A /* SelectedMessageInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedMessageInfoCell.h; sourceTree = "<group>"; };
 		A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedMessageInfoCell.m; sourceTree = "<group>"; };
 		A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectedMessageInfoCell.xib; sourceTree = "<group>"; };
+		FE1183CF1D8F7D6D007AEF26 /* YBZTravel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YBZTravel.entitlements; sourceTree = "<group>"; };
+		FE1482631D8925D100804A0A /* YBZtoAlertModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZtoAlertModel.h; sourceTree = "<group>"; };
+		FE1482641D8925D100804A0A /* YBZtoAlertModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZtoAlertModel.m; sourceTree = "<group>"; };
+		FE1482651D8925D100804A0A /* YBZtoalertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZtoalertView.h; sourceTree = "<group>"; };
+		FE1482661D8925D100804A0A /* YBZtoalertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZtoalertView.m; sourceTree = "<group>"; };
 		FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		FE1EFE2E1D83A1A000FDD1BE /* PCMDataPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCMDataPlayer.h; sourceTree = "<group>"; };
 		FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PCMDataPlayer.mm; sourceTree = "<group>"; };
@@ -1549,6 +1556,7 @@
 		A03ED0541D2DE20700BD9C0A /* YBZTravel */ = {
 			isa = PBXGroup;
 			children = (
+				FE1183CF1D8F7D6D007AEF26 /* YBZTravel.entitlements */,
 				A03ED0611D2DE20800BD9C0A /* Assets.xcassets */,
 			);
 			path = YBZTravel;
@@ -1588,6 +1596,10 @@
 		A03ED0891D2DE2F600BD9C0A /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				FE1482631D8925D100804A0A /* YBZtoAlertModel.h */,
+				FE1482641D8925D100804A0A /* YBZtoAlertModel.m */,
+				FE1482651D8925D100804A0A /* YBZtoalertView.h */,
+				FE1482661D8925D100804A0A /* YBZtoalertView.m */,
 				FEE4921E1D7564FC00CCED58 /* UIImage+needkit.h */,
 				FEE4921F1D7564FC00CCED58 /* UIImage+needkit.m */,
 				FEE492121D73D9DA00CCED58 /* UIAlertController+SZYKit.h */,
@@ -2077,7 +2089,7 @@
 				TargetAttributes = {
 					A03ED0511D2DE20700BD9C0A = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 3637W6NRU9;
+						DevelopmentTeam = 98S62A3F2K;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2208,6 +2220,7 @@
 				7D8427541D634A1E000BFEAD /* MoneyNavigationController.m in Sources */,
 				1ED863DE1D34D67500529094 /* YBZChangeLanguageInfo.m in Sources */,
 				A0532CD41D38D7D300FC1AB1 /* PickAvatarImage.m in Sources */,
+				FE1482671D8925D100804A0A /* YBZtoAlertModel.m in Sources */,
 				A012EE001D509CAB00144BAD /* CWViewController.m in Sources */,
 				A0552ED51D3A2C8C00E04D7A /* PlaceNameModel.m in Sources */,
 				531144771D794F95000B98E8 /* YBZMyOrderViewController.m in Sources */,
@@ -2346,6 +2359,7 @@
 				7D84273B1D634638000BFEAD /* CollectionMessageInfoCell.m in Sources */,
 				7D8427441D634681000BFEAD /* YBZMyFavoriteViewController.m in Sources */,
 				1ED8636A1D3347F500529094 /* SYTableFooterView.m in Sources */,
+				FE1482681D8925D100804A0A /* YBZtoalertView.m in Sources */,
 				1B0513911D3F5DAC00F05C9D /* AFImageDownloader.m in Sources */,
 				1B96DA411D435ADC00FD5BA6 /* NSString+SZYKit.m in Sources */,
 				7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */,
@@ -2467,8 +2481,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zhong Jin (NJY6ASRL83)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhong Jin (NJY6ASRL83)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2513,8 +2527,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zhong Jin (NJY6ASRL83)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhong Jin (NJY6ASRL83)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2540,9 +2554,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = YBZTravel/YBZTravel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3637W6NRU9;
+				DEVELOPMENT_TEAM = 23GQX4X34D;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2569,6 +2584,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2576,9 +2592,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = YBZTravel/YBZTravel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3637W6NRU9;
+				DEVELOPMENT_TEAM = 23GQX4X34D;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2605,6 +2622,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

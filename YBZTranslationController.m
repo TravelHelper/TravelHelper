@@ -29,6 +29,8 @@
 #import "UIImageView+WebCache.h"
 #import "UesrCustomTranslateViewController.h"
 #import "InterpretCustomTranslateViewController.h"
+#import "YBZtoalertView.h"
+#import "YBZtoalertView.h"
 
 
 
@@ -207,6 +209,18 @@
         
 
     });
+    
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//    YBZtoAlertModel *model=[[YBZtoAlertModel alloc]init];
+//    model.translatorID=user_id[@"user_id"];
+//    model.yonghuID=user_id[@"user_id"];
+//    model.language_catgory=@"美语";
+//    YBZtoalertView *alertView=[[YBZtoalertView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-112, SCREEN_HEIGHT/2-170, 224, 340) andModel:model];
+////    alertView.backgroundColor=[UIColor redColor];
+//    [self.view addSubview:alertView];
+    
+    
 }
 
 
@@ -313,6 +327,11 @@
                     }];
                     
                     [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                    [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
                         
                     } failure:^(NSError *error) {
                         
@@ -458,7 +477,8 @@
     NSDictionary *userID = [userdefault objectForKey:@"user_id"];
     
     
-    [WebAgent interpreterStateWithuserId:yonghuID andmessionID:messionID success:^(id responseObject) {
+    
+    [WebAgent interpreterStateWithuserId:yonghuID andmessionID:messionID andAnswerID:userID[@"user_id"] success:^(id responseObject) {
        
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -466,6 +486,8 @@
         NSString *msgString = dic[@"msg"];
         if ([msgString isEqualToString:@"查询成功！并且可以成功匹配"]) {
             
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+            [MBProgressHUD showSuccess:@"匹配成功"];
             
             self.hidesBottomBarWhenPushed = YES;
             QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID[@"user_id"] WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
@@ -473,10 +495,13 @@
             //self.hidesBottomBarWhenPushed = NO;
             
 
-            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
+//            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
             NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID[@"user_id"] WithMessionID:mseeage_id success:^(id responseObject) {
+            
+            [userdefault setObject:messionID forKey:@"messageId"];
+            
+//            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID[@"user_id"] WithMessionID:messionID success:^(id responseObject) {
                 NSLog(@"反馈推送—匹配成功通知成功！");
             } failure:^(NSError *error) {
                 NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);

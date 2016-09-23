@@ -204,12 +204,13 @@ usersignature:(NSString *)user_signature
 
 //查询等候队列
 +(void)selectWaitingQueue:(NSString *)user_language
-                  success:(void (^)(id responseObject))success
-                  failure:(void (^)(NSError *error))failure
+                  user_id:(NSString *)user_id
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure
 {
     
-    
-    NSDictionary *dict = @{@"user_language":user_language};
+    NSDictionary *dict = @{@"user_language":user_language,
+                           @"user_id":user_id};
     
     [[APIClient sharedClient] POST:@"QuickTrans/selectwaitingqueue/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
@@ -569,10 +570,11 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //查询用户口语即时请求状态。（匹配译员用）
 +(void)interpreterStateWithuserId:(NSString *)user_id
                      andmessionID:(NSString *)messionID
+                      andAnswerID:(NSString *)answer_id
                           success:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure
 {
-    NSDictionary *dict = @{@"user_id":user_id,@"messionID":messionID};
+    NSDictionary *dict = @{@"user_id":user_id,@"messionID":messionID,@"translator_id":answer_id};
     [[APIClient sharedClient] POST:@"QuickTrans/interpreterState" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -990,4 +992,19 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
 }
 
++(void)stopFindingTranslator:(NSString *)user_id
+                    success:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure{
+    
+    
+        NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"QuickTrans/stopFindingTranslator/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
 @end

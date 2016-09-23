@@ -19,13 +19,19 @@
 @property(nonatomic,strong)UILabel *userNameLabel;
 @end
 
-@implementation YBZWaitViewController
+@implementation YBZWaitViewController{
+    
+    NSString *userID;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"口语即时";
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    userID = user_id[@"user_id"];
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"取消等候" style:UIBarButtonItemStylePlain target:self action:@selector(stopFindingTranslator)];
     [self showGifImageMethodThree];
     [self.view addSubview:self.userNameLabel];
 
@@ -40,6 +46,19 @@
     YBZGifView *dataView2 = [[YBZGifView alloc] initWithFrame:CGRectMake(kWidth*0.4, kHeight*0.32, kWidth*0.15, kWidth*0.13) filePath:path];
     [self.view addSubview:dataView2];
 }
+
+
+-(void)stopFindingTranslator{
+
+    //修改状态变为0
+    [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+
 #pragma mark - 观察者方法
 
 -(void)beginChatWithTranslator:(NSNotification *)noti{
@@ -187,6 +206,12 @@
     }
     return _userNameLabel;
 }
+
+
+
+
+
+
 
 @end
 
