@@ -1608,7 +1608,7 @@
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
     
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo WithMessionID:mseeage_id success:^(id responseObject) {
-        [WebAgent stopFindingTranslator:userIDinfo success:^(id responseObject) {
+        [WebAgent stopFindingTranslator:userIDinfo missionID:@"无" success:^(id responseObject) {
             [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
                 
                 if([self.userIdentifier isEqualToString:@"TRANSTOR"])

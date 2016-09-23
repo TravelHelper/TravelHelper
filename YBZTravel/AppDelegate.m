@@ -191,6 +191,9 @@
     
 }
 
+
+
+
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
@@ -340,6 +343,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp" object:nil];
+    
+    
 }
 -(void)hideView{
 

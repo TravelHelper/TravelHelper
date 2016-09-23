@@ -267,27 +267,29 @@
 
 }
 -(void)confirmClick{
-    [self.hubView removeFromSuperview];
-    [self.alertNeedView removeFromSuperview];
-    [MBProgressHUD showSuccess:@"匹配中,请等待"];
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+    
     YBZtoAlertModel *model=self.dataSource[needIndex];
-    
-    
-//    NSString *message=[NSString stringWithFormat:@"ID:%@,language:%@,pay:%@,messionID:%@",model.yonghuID,model.language_catgory,model.pay_number,model.messionID];
-//    
-//    UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 300)];
-//    
-//    label.numberOfLines=0;
-//    
-//    label.text=message;
-//    
-//    [self addSubview:label];
-    
-//    [MBProgressHUD showMessage:message];
-    
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":model.yonghuID,@"language_catgory":model.language_catgory,@"pay_number":model.pay_number,@"messionID":model.messionID}];
+
+    [WebAgent selectCancelState:model.messionID success:^(id responseObject) {
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSString *cancelState = dic[@"data"];
+        if ([cancelState isEqualToString:@"0"]) {
+            [self.hubView removeFromSuperview];
+            [self.alertNeedView removeFromSuperview];
+            [MBProgressHUD showSuccess:@"匹配中,请等待"];
+            //    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":model.yonghuID,@"language_catgory":model.language_catgory,@"pay_number":model.pay_number,@"messionID":model.messionID}];
+        }else if([cancelState isEqualToString:@"1"]){
+            [MBProgressHUD showSuccess:@"该用户已取消订单"];
+        }
+    } failure:^(NSError *error) {
+        [MBProgressHUD showSuccess:@"网络连接不稳定，匹配失败"];
+    }];
+
 }
+
+
 -(void)hideLoginView{
 
 

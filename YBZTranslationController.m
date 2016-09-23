@@ -359,7 +359,7 @@
                     } failure:^(NSError *error) {
                         
                     }];
-                    [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
+                    [WebAgent stopFindingTranslator:userID missionID:@"无" success:^(id responseObject) {
                         
                     } failure:^(NSError *error) {
                         
