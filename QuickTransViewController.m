@@ -1110,7 +1110,7 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
-    [MBProgressHUD showSuccess:@"音频准备中"];
+//    [MBProgressHUD showSuccess:@"音频准备中"];
     countDownNumber=8;
     timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
     
@@ -1608,7 +1608,7 @@
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
     
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo WithMessionID:mseeage_id success:^(id responseObject) {
-        [WebAgent stopFindingTranslator:userIDinfo success:^(id responseObject) {
+        [WebAgent stopFindingTranslator:userIDinfo missionID:@"无" success:^(id responseObject) {
             [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
                 
                 if([self.userIdentifier isEqualToString:@"TRANSTOR"])

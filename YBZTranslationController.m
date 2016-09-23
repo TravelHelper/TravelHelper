@@ -31,7 +31,7 @@
 #import "InterpretCustomTranslateViewController.h"
 #import "YBZtoalertView.h"
 #import "YBZtoalertView.h"
-
+#import "YBZadvertisingimageView.h"
 
 
 #define kImageCount 5
@@ -107,6 +107,9 @@
 
 @property (nonatomic , strong)CLLocationManager *locationManager;
 @property (nonatomic , strong) NSString *address_str;
+
+@property (nonatomic,strong) YBZadvertisingimageView *advertimageview;
+@property (nonatomic,strong) UIButton *clontbtn;
 @end
 
 @implementation YBZTranslationController{
@@ -162,8 +165,8 @@
     
     
     //popularCell
-    [self.bottomView addSubview:self.popularImageView];
-    [self.bottomView addSubview:self.popularImageViewLabel];
+    //[self.bottomView addSubview:self.popularImageView];
+   // [self.bottomView addSubview:self.popularImageViewLabel];
     [self initData];
 
     
@@ -220,7 +223,8 @@
 ////    alertView.backgroundColor=[UIColor redColor];
 //    [self.view addSubview:alertView];
     
-    
+    [self.view addSubview:self.advertimageview];
+    [self.view addSubview:self.clontbtn];
 }
 
 
@@ -236,18 +240,45 @@
      self.tabBarController.tabBar.hidden=YES;
     [self getLoginState];
     [self userIdentifierClick];
+    self.advertimageview.frame = CGRectMake(0, UIScreenHeight-130, UIScreenWidth, 130);
+    self.clontbtn.frame = CGRectMake(UIScreenWidth-30, UIScreenHeight-130, 30, 30);
+}
 
-    
+-(YBZadvertisingimageView *)advertimageview
+{
+    if(!_advertimageview)
+    {
+        _advertimageview = [[YBZadvertisingimageView alloc] init];
+        _advertimageview.image = [UIImage imageNamed:@"ad"];
+        [self.view bringSubviewToFront:self.advertimageview];
+        [_advertimageview.delbtn addTarget:self action:@selector(clonebtnclick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _advertimageview;
+}
 
+-(UIButton *)clontbtn
+{
+    if(!_clontbtn)
+    {
+        _clontbtn = [[UIButton alloc] init];
+        [_clontbtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+        [_clontbtn addTarget:self action:@selector(clonebtnclick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _clontbtn;
+}
 
+-(void)clonebtnclick
+{
+    NSLog(@"1234567890");
+    [self.advertimageview removeFromSuperview];
+    [self.clontbtn removeFromSuperview];
 }
 
 -(void)initLeftButton
 {
-    
     //左上角的按钮
-    UIButton *boultButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0.07*kScreenWindth, 0.07*kScreenWindth)];
-    [boultButton setImage:[UIImage imageNamed:@"userHead"] forState:UIControlStateNormal];
+    UIButton *boultButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0.05*kScreenWindth, 0.05*kScreenWindth)];
+    [boultButton setImage:[UIImage imageNamed:@"mine"] forState:UIControlStateNormal];
     [boultButton addTarget:self action:@selector(turnToUserClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:boultButton];
 }
@@ -331,7 +362,7 @@
                     } failure:^(NSError *error) {
                         
                     }];
-                    [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
+                    [WebAgent stopFindingTranslator:userID missionID:@"无" success:^(id responseObject) {
                         
                     } failure:^(NSError *error) {
                         
@@ -589,17 +620,17 @@
     
     self.cellArr = [[NSMutableArray alloc]init];
     
-    YBZPopularFrameInfo *popularCellView1 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
-    [self.cellArr addObject:popularCellView1];
-    
-    YBZPopularFrameInfo *popularCellView2 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
-    [self.cellArr addObject:popularCellView2];
-    
-    YBZPopularFrameInfo *popularCellView3 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
-    [self.cellArr addObject:popularCellView3];
-    
-    YBZPopularFrameInfo *popularCellView4 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
-    [self.cellArr addObject:popularCellView4];
+//    YBZPopularFrameInfo *popularCellView1 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
+//    [self.cellArr addObject:popularCellView1];
+//    
+//    YBZPopularFrameInfo *popularCellView2 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
+//    [self.cellArr addObject:popularCellView2];
+//    
+//    YBZPopularFrameInfo *popularCellView3 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
+//    [self.cellArr addObject:popularCellView3];
+//    
+//    YBZPopularFrameInfo *popularCellView4 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
+//    [self.cellArr addObject:popularCellView4];
     
 }
 
@@ -641,8 +672,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    
     YBZPopularFrameInfo *model = self.cellArr[indexPath.row];
     
     static NSString *cellID = @"YBZPopularViewCell";
@@ -655,7 +684,6 @@
         cell=[[[NSBundle mainBundle] loadNibNamed:@"YBZPopularViewCell" owner:nil options:nil]lastObject];
     }
     
-    
     cell.titleLabel.text = model.title;
     cell.levelLabel.text = model.level;
     cell.stateLabel.text = model.state;
@@ -666,9 +694,6 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-    
     
     return 90;
 }
@@ -720,13 +745,13 @@
     
     self.userBtn.selected = YES;
     self.userBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
-    [self.userBtnImageView setImage:[UIImage imageNamed:@"用户界面 用户"]];
+    [self.userBtnImageView setImage:[UIImage imageNamed:@"user_highlight2"]];
     
     
     
     self.translaterBtn.selected = NO;
     self.translaterBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
-    [self.translaterBtnImageView setImage:[UIImage imageNamed:@"用户界面 译员"]];
+    [self.translaterBtnImageView setImage:[UIImage imageNamed:@"translator_grey2"]];
     
     
     [self.bottomView addSubview:self.Btn1];
@@ -743,15 +768,15 @@
     //    [self.Btn1 addTarget:self action:@selector(intoFreeTranslationClick) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn1Label setText:@"免费翻译"];
     
-    [self.Btn2 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+    [self.Btn2 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
     //    [self.Btn2 addTarget:self action:@selector(intoChangeLanguageClick) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn2Label setText:@"口语即时"];
     
-    [self.Btn3 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+    [self.Btn3 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
     //    [self.Btn3 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn3Label setText:@"定制翻译"];
     
-    [self.Btn4 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+    [self.Btn4 setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
     //    [self.Btn4 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn4Label setText:@"我的悬赏"];
     
@@ -779,10 +804,10 @@
         if([user_identity isEqualToString:@"译员"]){
             self.userBtn.selected = NO;
             self.userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
-            [_userBtnImageView setImage:[UIImage imageNamed:@"译员界面 用户"]];
+            [_userBtnImageView setImage:[UIImage imageNamed:@"user_grey2"]];
             self.translaterBtn.selected = YES;
             self.translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
-            [_translaterBtnImageView setImage:[UIImage imageNamed:@"译员界面 译员"]];
+            [_translaterBtnImageView setImage:[UIImage imageNamed:@"translator_highlight2"]];
                     
                     
             [self.bottomView addSubview:self.Btn5];
@@ -795,16 +820,16 @@
             [self.bottomView addSubview:self.Btn8Label];
             
             
-            [self.Btn5 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+            [self.Btn5 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
             //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClickforControlEvents:UIControlEventTouchUpInside
             
             [self.Btn5Label setText:@"口语即时"];
                     
-            [self.Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+            [self.Btn6 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
                     //[self.Btn6 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
             [self.Btn6Label setText:@"定制翻译"];
                     
-            [self.Btn7 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+            [self.Btn7 setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
                     //[self.Btn7 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
             [self.Btn7Label setText:@"悬赏大厅"];
                     
@@ -977,10 +1002,10 @@
         }else{
             _userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
         }
-        _userBtn.frame = CGRectMake(-25,CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 15, 32);
+        _userBtn.frame = CGRectMake(-25,CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 15, 42);
         
         [_userBtn addTarget:self action:@selector(userIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
-        _userBtn.layer.cornerRadius = 16;
+        _userBtn.layer.cornerRadius = 21;
     }
     return _userBtn;
 }
@@ -988,8 +1013,8 @@
 - (UIImageView *)userBtnImageView{
     
     if (!_userBtnImageView) {
-        _userBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"用户界面 用户"]];
-        _userBtnImageView.frame = CGRectMake(UIScreenWidth * 0.33, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize, UITranslationBtnSize);
+        _userBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"user_highlight2"]];
+        _userBtnImageView.frame = CGRectMake(UIScreenWidth * 0.33, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize+10, UITranslationBtnSize+10);
         //_userBtnImageView.backgroundColor = [UIColor redColor];
     }
     return _userBtnImageView;
@@ -1007,9 +1032,10 @@
         }else{
             _translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
         }
-        _translaterBtn.frame = CGRectMake(CGRectGetMaxX(self.userBtn.frame) + 20, CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 25, 32);
+        _translaterBtn.frame = CGRectMake(CGRectGetMaxX(self.userBtn.frame) + 20, CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 25, 42);
         [_translaterBtn addTarget:self action:@selector(interpretIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
-        _translaterBtn.layer.cornerRadius = 16;
+        _translaterBtn.layer.cornerRadius = 21;
+        
     }
     return _translaterBtn;
 }
@@ -1017,8 +1043,8 @@
 - (UIImageView *)translaterBtnImageView{
     
     if (!_translaterBtnImageView) {
-        _translaterBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"用户界面 译员"]];
-        _translaterBtnImageView.frame = CGRectMake(CGRectGetMinX(self.translaterBtn.frame) - UIScreenWidth * 0.315 - UITranslationBtnSize, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize, UITranslationBtnSize);
+        _translaterBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"translator_grey2"]];
+        _translaterBtnImageView.frame = CGRectMake(CGRectGetMinX(self.translaterBtn.frame) - UIScreenWidth * 0.315 - UITranslationBtnSize, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize+10, UITranslationBtnSize+10);
         //_userBtnImageView.backgroundColor = [UIColor redColor];
     }
     return _translaterBtnImageView;
@@ -1058,7 +1084,7 @@
     if (!_Btn2) {
         _Btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn2 setTitle:@"口语即时" forState:UIControlStateNormal];
-        [_Btn2 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+        [_Btn2 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
         //_interpretBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn2.frame = CGRectMake(CGRectGetMidX(self.Btn1.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1089,7 +1115,7 @@
     if (!_Btn3) {
         _Btn3 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn3 setTitle:@"Btn3" forState:UIControlStateNormal];
-        [_Btn3 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+        [_Btn3 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn3.frame = CGRectMake(CGRectGetMidX(self.Btn2.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1124,7 +1150,7 @@
     if (!_Btn4) {
         _Btn4 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn4 setTitle:@"Btn4" forState:UIControlStateNormal];
-        [_Btn4 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+        [_Btn4 setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
         //_myOfferBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn4.frame = CGRectMake(CGRectGetMaxX(self.Btn3.frame) + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1188,7 +1214,10 @@
     if (!_Btn6) {
         _Btn6 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn6 setTitle:@"口语即时" forState:UIControlStateNormal];
-        [_Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+
+        [_Btn6 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
+        //_interpretBtn.backgroundColor = [UIColor purpleColor];
+        //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn6.frame = CGRectMake(CGRectGetMidX(self.Btn5.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
         [_Btn6 addTarget:self action:@selector(interpreterCustomTranslate) forControlEvents:UIControlEventTouchUpInside];
         _Btn6.layer.cornerRadius = UITranslationBtnSize / 2;
@@ -1218,7 +1247,7 @@
     if (!_Btn7) {
         _Btn7 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn7 setTitle:@"Btn3" forState:UIControlStateNormal];
-        [_Btn7 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+        [_Btn7 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn7.frame = CGRectMake(CGRectGetMidX(self.Btn6.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1253,7 +1282,7 @@
     if (!_Btn8) {
         _Btn8 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn8 setTitle:@"Btn4" forState:UIControlStateNormal];
-        [_Btn8 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+        [_Btn8 setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
         //_myOfferBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn8.frame = CGRectMake(CGRectGetMaxX(self.Btn7.frame) + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1287,8 +1316,10 @@
 - (UIScrollView *)scrollView{
     
     if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 0.406)];
-        UIImage *img=[UIImage imageNamed:@"img_01"];
+//        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 0.406)];
+         _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 0.7)];
+//        UIImage *img=[UIImage imageNamed:@"img_01"];
+          UIImage *img=[UIImage imageNamed:@"img"];
         UIImage *resultImg=[img imageByScalingToSize:_scrollView.bounds.size];
         _scrollView.backgroundColor = [UIColor colorWithPatternImage:resultImg];
         
@@ -1304,7 +1335,6 @@
         
         // contentSize
         _scrollView.contentSize = CGSizeMake(kImageCount * _scrollView.bounds.size.width, 0);
-        
         // 设置代理
         _scrollView.delegate = self;
         

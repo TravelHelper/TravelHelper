@@ -203,7 +203,7 @@ usersignature:(NSString *)user_signature
 }
 
 //查询等候队列
-+(void)selectWaitingQueue:(NSString *)user_language
++(void)selectTranslator:(NSString *)user_language
                   user_id:(NSString *)user_id
                       success:(void (^)(id responseObject))success
                       failure:(void (^)(NSError *error))failure
@@ -212,7 +212,7 @@ usersignature:(NSString *)user_signature
     NSDictionary *dict = @{@"user_language":user_language,
                            @"user_id":user_id};
     
-    [[APIClient sharedClient] POST:@"QuickTrans/selectwaitingqueue/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[APIClient sharedClient] POST:@"QuickTrans/matchTranslatorAndPost/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failure(error);
@@ -992,12 +992,14 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
 }
 
-+(void)stopFindingTranslator:(NSString *)user_id
++(void)stopFindingTranslator:(NSString *)user_id    
+                   missionID:(NSString *)mission_id
                     success:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure{
     
     
-        NSDictionary *dict = @{@"user_id":user_id};
+        NSDictionary *dict = @{@"user_id":user_id,
+                                                @"mission_id":mission_id};
     [[APIClient sharedClient] POST:@"QuickTrans/stopFindingTranslator/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1007,4 +1009,24 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
     
 }
+
++(void)selectCancelState:(NSString *)mission_id
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure{
+    
+    
+    NSDictionary *dict = @{@"mession_id":mission_id};
+    [[APIClient sharedClient] POST:@"QuickTrans/getCanelState/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
+
+
+
+
 @end

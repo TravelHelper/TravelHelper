@@ -39,6 +39,43 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        
+        
+        AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
+        
+        switch (permissionStatus) {
+            case AVAudioSessionRecordPermissionUndetermined:{
+                NSLog(@"第一次调用，是否允许麦克风弹框");
+                [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+                    // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
+                    if (granted) {
+                        // Microphone enabled code
+                    }
+                    else {
+                        // Microphone disabled code
+                    }
+                }];
+                break;
+            }
+            case AVAudioSessionRecordPermissionDenied:
+                // direct to settings...
+                NSLog(@"已经拒绝麦克风弹框");
+                
+                break;
+            case AVAudioSessionRecordPermissionGranted:
+                NSLog(@"已经允许麦克风弹框");
+                // mic access ok...
+                break;
+            default:
+                // this should not happen.. maybe throw an exception.
+                break;
+        }
+        if(permissionStatus == AVAudioSessionRecordPermissionUndetermined) ;
+    }
+    
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
 ///远程推送！！！千万不能动⬇️
@@ -153,6 +190,9 @@
     }
     
 }
+
+
+
 
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -303,6 +343,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp" object:nil];
+    
+    
 }
 -(void)hideView{
 
