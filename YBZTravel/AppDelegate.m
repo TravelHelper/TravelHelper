@@ -67,7 +67,7 @@
                  apsForProduction:false
             advertisingIdentifier:advertisingId];
     
-    
+    [JPUSHService resetBadge];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(registerAliasAndTag) name:kJPFNetworkDidLoginNotification object:nil];
     
@@ -165,7 +165,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
     // Required,For systems with less than or equal to iOS6
-    application.applicationIconBadgeNumber = (NSInteger)0;
+//    application.applicationIconBadgeNumber = (NSInteger)0;
     [JPUSHService handleRemoteNotification:userInfo];
 }
 
@@ -175,7 +175,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
     
     // IOS 7 Support Required
-    application.applicationIconBadgeNumber = (NSInteger)0;
+//    application.applicationIconBadgeNumber = (NSInteger)0;
     [JPUSHService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
     
@@ -234,7 +234,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         model.pay_number=pay_number;
 
         if(!self.toalertView){
-        
+            
             self.toalertView=[[YBZtoalertView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH*0.15, SCREEN_HEIGHT*0.2, SCREEN_WIDTH*0.7, SCREEN_HEIGHT*0.6) andModel:model];
             //    alertView.backgroundColor=[UIColor redColor];
             [nowVC.view addSubview:self.hubView];

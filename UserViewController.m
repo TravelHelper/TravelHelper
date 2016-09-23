@@ -24,7 +24,7 @@
 #import "YBZMyOrderViewController.h"
 #import "MBProgressHUD+XMG.h"
 #import "YBZChooseTranslatorViewController.h"
-
+#import "UIImageView+WebCache.h"
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource,GTStarsScoreDelegate>
 {
@@ -34,7 +34,8 @@
     NSString *user_identity;
     NSString *user_language;
     NSString *loginMark;
-    
+    bool loadMark;
+    bool languageMark;
 }
 
 @property(nonatomic,strong)UITableView *mainTableView;
@@ -57,6 +58,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    loadMark=false;
     loginMark=@"0";
     user_identity=[[NSString alloc]init];
     user_language=[[NSString alloc]init];
@@ -66,9 +68,8 @@
     self.title = @"我的";
     user_language = self.userLanguage;
     user_identity = self.userIdentify;
-    
+    languageMark=false;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tochangeLogin) name:@"changeLogin" object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextALabel:) name:@"setTextALabel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadcell:) name:@"reloadcell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadoutcell:) name:@"reloadoutcell" object:nil];
@@ -124,62 +125,89 @@
 
     YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
     [self.navigationController pushViewController:ChooseVC animated:YES];
+    
 //    loginMark=@"1";
 //    [[NSNotificationCenter defaultCenter]postNotificationName:@"needTopop" object:nil];
 
 }
 
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-    self.navigationController.navigationBarHidden = NO;
-    self.navigationItem.hidesBackButton = NO;
-    
-    self.tabBarController.tabBar.hidden=YES;
+
+-(void)viewDidAppear:(BOOL)animated{
+
+    [super viewDidAppear:animated];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-//    [self.view addSubview:self.mainTableView];
-
+    if(languageMark==true){
+        languageMark=false;
+    [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSString *msg=dic[@"msg"];
+        if([msg isEqualToString:@"SUCCESS"]){
+            
+            user_identity=dic[@"user_identity"];
+            user_language = dic[@"user_language"];
+            [MBProgressHUD hideHUD];
+            NSLog(@"%@",user_identity);
+            
+        }
+        
+        
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+        
+    }];
+    }
+    if(loadMark==false){
+    loadMark=true;
+    [self.mainTableView removeFromSuperview];
     
-//    if([loginMark isEqualToString:@"1"]){
-//    
-//        YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
-//        [self.navigationController pushViewController:ChooseVC animated:YES];
-//        loginMark=@"0";
-//        
-//    }
+        
+       
+        
+    //    [self.view addSubview:self.mainTableView];
+    
+    
+    //    if([loginMark isEqualToString:@"1"]){
+    //
+    //        YBZChooseTranslatorViewController *ChooseVC = [[YBZChooseTranslatorViewController alloc]init];
+    //        [self.navigationController pushViewController:ChooseVC animated:YES];
+    //        loginMark=@"0";
+    //
+    //    }
     
     
     if(user_id[@"user_id"] != NULL)
     {
-//        [self.view addSubview:self.mainTableView];
+        //        [self.view addSubview:self.mainTableView];
         
         if(user_identity != NULL){
-                    if([user_identity isEqualToString:@"译员"]){
-                        //                    [self.translatorTableView removeFromSuperview];
-                        [self.view addSubview:self.translatorTableView];
-//                        [self.view addSubview:self.mainTableView];
-//                        [self.mainTableView setHidden:YES];
-//                        [self.translatorTableView setHidden:NO];
-//                        [self.translatorTableView reloadData];
-                        //                    [self.view addSubview:self.translatorTableView];
-                        [self.translatorTableView reloadData];
-                        
-                    }else{
-                        [self.view addSubview:self.translatorTableView];
-//                        [self.view addSubview:self.mainTableView];
-//                        [self.mainTableView setHidden:YES];
-//                        [self.translatorTableView setHidden:NO];
-                        //                    [self.view addSubview:self.mainTableView];
-//                        [self.translatorTableView reloadData];
-                        [self.translatorTableView reloadData];
-                    }
-                    
-                    
-        
+            if([user_identity isEqualToString:@"译员"]){
+                //                    [self.translatorTableView removeFromSuperview];
+                [self.view addSubview:self.translatorTableView];
+                //                        [self.view addSubview:self.mainTableView];
+                //                        [self.mainTableView setHidden:YES];
+                //                        [self.translatorTableView setHidden:NO];
+                //                        [self.translatorTableView reloadData];
+                //                    [self.view addSubview:self.translatorTableView];
+                [self.translatorTableView reloadData];
+                
+            }else{
+                [self.view addSubview:self.translatorTableView];
+                //                        [self.view addSubview:self.mainTableView];
+                //                        [self.mainTableView setHidden:YES];
+                //                        [self.translatorTableView setHidden:NO];
+                //                    [self.view addSubview:self.mainTableView];
+                //                        [self.translatorTableView reloadData];
+                [self.translatorTableView reloadData];
+            }
+            
+            [MBProgressHUD hideHUD];
+            
         }else{
-        
+            
             [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
                 NSData *data = [[NSData alloc]initWithData:responseObject];
                 NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -192,37 +220,66 @@
                     [self.mainTableView setHidden:YES];
                     [self.view addSubview:self.translatorTableView];
                     [self.translatorTableView reloadData];
+                    [MBProgressHUD hideHUD];
                     NSLog(@"%@",user_identity);
                 }
                 
                 
             } failure:^(NSError *error) {
-                
+                [MBProgressHUD hideHUD];
                 [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
                 
             }];
-
+            
             
         }
         
-
-            
-            
-
         
         
-     
+        
+        
+        
+        
+        
         
     }else{
-//        [self.view addSubview:self.translatorTableView];
+        //        [self.view addSubview:self.translatorTableView];
+        self.mainTableView.allowsSelection=YES;
         [self.view addSubview:self.mainTableView];
-//        [self.mainTableView setHidden:NO];
-//        [self.translatorTableView setHidden:YES];
-
-//        [self.view addSubview:self.mainTableView];
-    
+        //        [self.mainTableView setHidden:NO];
+        //        [self.translatorTableView setHidden:YES];
+        
+        //        [self.view addSubview:self.mainTableView];
+        
+    }
     }
 
+}
+
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = NO;
+    
+    self.tabBarController.tabBar.hidden=YES;
+//    EBEBF1
+    if(languageMark==true){
+        
+         [MBProgressHUD showMessage:@"加载数据中"];
+    
+    }
+    if(loadMark==false){
+        
+    [MBProgressHUD showMessage:@"加载数据中"];
+    self.mainTableView.allowsSelection=NO;
+    [self.view addSubview:self.mainTableView];
+    self.view.backgroundColor=UIColorFromRGB(0xEBEBF1);
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = NO;
+    
+    self.tabBarController.tabBar.hidden=YES;
+    }
 
 }
 
@@ -369,17 +426,30 @@
             
             NSString *name = user_id[@"user_id"];
             NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
-            NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
-            NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-            _photoImg=[UIImage imageWithData:data];
-            if(_photoImg){
-                _avatarImag.image = _photoImg;
-                [cell addSubview:_avatarImag];
-                it=false;
-            }else{
-                _avatarImag.image = [UIImage imageNamed:@"translator"];
-                [cell addSubview:_avatarImag];
-            }
+            NSString *urlStr=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            [_avatarImag sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
+                NSLog(@"这里可以在图片加载完成之后做些事情");
+                if(!image){
+                    _avatarImag.image = [UIImage imageNamed:@"translator"];
+                }else{
+                    it=false;
+                }
+                
+                
+            }];
+//            NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+//            _photoImg=[UIImage imageWithData:data];
+            [cell addSubview:_avatarImag];
+//            if(_photoImg){
+//                _avatarImag.image = _photoImg;
+//                [cell addSubview:_avatarImag];
+//                it=false;
+//            }else{
+//                _avatarImag.image = [UIImage imageNamed:@"translator"];
+//                [cell addSubview:_avatarImag];
+//            }
             cell.nameLable.frame=CGRectMake(70, 7, 150, 40);
 //            [cell addSubview:self.starView];
             [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {
@@ -591,7 +661,7 @@
             _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.06/2.0f;
             NSLog(@"----------------------------------------------");
             NSLog(@"%hhu %@",is,user_loginState[@"user_loginState"]);
-            if (is || [user_loginState[@"user_loginState"] isEqual:@"1"])    {
+           
                 
                 NSString *name = user_id[@"user_id"];
                 NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
@@ -621,20 +691,9 @@
                     
                 }failure:^(NSError *error) {
                     NSLog(@"%@",error);
-                }];}
+                }];
 
-            else{
-                
-                _avatarImag.image = [UIImage imageNamed:@"translator"];
-                [cell.contentView addSubview:_avatarImag];
-                cell.nameLable.text = @"登录／注册";
-            }
-            if (it) {
-                _avatarImag.image = [UIImage imageNamed:@"translator"];
-                [cell.contentView addSubview:_avatarImag];
-                cell.nameLable.text = @"登录／注册";
-            }
-            return cell;
+                return cell;
         }
         else
         {
@@ -895,14 +954,14 @@
         NSInteger section = indexPath.section;
         NSUInteger row = indexPath.row;
         if ( section == 0 && row == 0) {
-            
+            loadMark=false;
             [self intoUserDetailInfoClick];
             
         }
         if ( section == 1 && row==0){
         
             
-            
+            languageMark=true;
             if([user_identity isEqualToString:@"译员"]){
                 
                 NSString *str = [user_language substringWithRange:NSMakeRange(1, user_language.length-1)];

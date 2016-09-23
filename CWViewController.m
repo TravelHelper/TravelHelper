@@ -191,11 +191,17 @@
         [self.playButton setEnabled:NO];
         [self.playButton.titleLabel setAlpha:0.5];
         //初始化录音
-        
+        NSDictionary *settings = @{AVFormatIDKey: @(kAudioFormatLinearPCM),
+                                   AVSampleRateKey: @8000.00f,
+                                   AVNumberOfChannelsKey: @1,
+                                   AVLinearPCMBitDepthKey: @16,
+                                   AVLinearPCMIsNonInterleaved: @NO,
+                                   AVLinearPCMIsFloatKey: @NO,
+                                   AVLinearPCMIsBigEndianKey: @NO};
         
         //设置属性的字典
         self.recordSetting = [[NSMutableDictionary alloc] init];
-         [self.recordSetting setObject:[NSNumber numberWithInt:AVAudioQualityMax] forKey:AVEncoderAudioQualityKey];
+//         [self.recordSetting setObject:[NSNumber numberWithInt:AVAudioQualityMax] forKey:AVEncoderAudioQualityKey];
         //1.格式
         [self.recordSetting setObject:[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey:AVFormatIDKey];
         //2.采样率
@@ -211,7 +217,7 @@
         
         [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsBigEndianKey];
         
-        recorder = [[AVAudioRecorder alloc] initWithURL:recordedFile settings:self.recordSetting error:nil];
+        recorder = [[AVAudioRecorder alloc] initWithURL:recordedFile settings:settings error:nil];
         
         NSLog(@"录音路径::::%@",recordedFile);
         //准备录音

@@ -13,7 +13,6 @@
 
 
 @property (nonatomic,strong) UITableView *tongyongTabView;
-@property (nonatomic,strong) NSString *wuraomoshi;
 @end
 
 @implementation YBZTongyongViewController
@@ -81,7 +80,11 @@
         tuisongcell.textLabel.text = @"勿扰模式";
         UISwitch *tuisongswitch = [[UISwitch alloc]initWithFrame:CGRectMake(self.view.bounds.size.width*0.8, tuisongcell.bounds.size.height*0.1, self.view.bounds.size.width*0.15, self.view.bounds.size.height*0.8)];
         [tuisongswitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-
+        if ([self.wuraomoshi isEqualToString:@"0"]) {
+            tuisongswitch.on = YES;
+        }else{
+            tuisongswitch.on = NO;
+        }
         [tuisongcell addSubview:tuisongswitch];
     
         tuisongcell.selectionStyle = UITableViewCellSelectionStyleNone;
