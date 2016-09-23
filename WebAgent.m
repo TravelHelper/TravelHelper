@@ -928,12 +928,14 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 }
 
-+(void)stopFindingTranslator:(NSString *)user_id
++(void)stopFindingTranslator:(NSString *)user_id    
+                   missionID:(NSString *)mission_id
                     success:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure{
     
     
-        NSDictionary *dict = @{@"user_id":user_id};
+        NSDictionary *dict = @{@"user_id":user_id,
+                                                @"mission_id":mission_id};
     [[APIClient sharedClient] POST:@"QuickTrans/stopFindingTranslator/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -943,4 +945,24 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
     
 }
+
++(void)selectCancelState:(NSString *)mission_id
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure{
+    
+    
+    NSDictionary *dict = @{@"mession_id":mission_id};
+    [[APIClient sharedClient] POST:@"QuickTrans/getCanelState/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
+
+
+
+
 @end

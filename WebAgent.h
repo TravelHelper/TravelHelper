@@ -301,7 +301,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                           failure:(void (^)(NSError *error))failure;
 
 +(void)stopFindingTranslator:(NSString *)user_id
+                   missionID:(NSString *)mission_id
                      success:(void (^)(id responseObject))success
                      failure:(void (^)(NSError *error))failure;
 
+
++(void)selectCancelState:(NSString *)mission_id
+                 success:(void (^)(id responseObject))success
+                 failure:(void (^)(NSError *error))failure;
 @end

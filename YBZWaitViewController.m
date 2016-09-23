@@ -59,15 +59,19 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"取消等候" style:UIBarButtonItemStylePlain target:self action:@selector(stopFindingTranslator)];
     [self showGifImageMethodThree];
     [self.view addSubview:self.userNameLabel];
-
+    
+    [self matchTranslatorWithsenderID:sender_ID WithsendMessage:send_Message WithlanguageCatgory:user_language WithpayNumber:pay_Number];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(quitApp) name:@"quitApp" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithTranslator:) name:@"beginChatWithTranslator" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopFindingTranslator) name:@"stopFindingTranslator" object:nil];
     
 }
 
 
--(void)viewWillAppear:(BOOL)animated{
 
-    [self matchTranslatorWithsenderID:sender_ID WithsendMessage:send_Message WithlanguageCatgory:user_language WithpayNumber:pay_Number];
+-(void)quitApp{
+
+    [timer invalidate];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -119,7 +123,7 @@
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 //注销
                 [timer invalidate];
-                [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
+                [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
                     //                    [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(NSError *error) {
                     
@@ -184,7 +188,8 @@
 
     //修改状态变为0
     [timer invalidate];
-    [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
+    
+    [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSError *error) {
         
