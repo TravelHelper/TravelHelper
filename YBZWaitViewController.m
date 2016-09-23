@@ -22,7 +22,32 @@
 @implementation YBZWaitViewController{
     
     NSString *userID;
+    NSString *sender_ID;
+    NSString *send_Message;
+    NSString *user_language;
+    NSString *pay_Number;
+    NSTimer *timer;
+    NSString *message_id;
+
+
 }
+
+
+- (instancetype)initWithsenderID:(NSString *)senderID WithsendMessage:(NSString *)sendMessage WithlanguageCatgory:(NSString *)language WithpayNumber:(NSString *)payNumber
+{
+    self = [super init];
+    if (self) {
+        
+        sender_ID = senderID;
+        send_Message = sendMessage;
+        user_language = language;
+        pay_Number = payNumber;
+        
+    }
+    return self;
+}
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,6 +63,113 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithTranslator:) name:@"beginChatWithTranslator" object:nil];
     
 }
+
+
+-(void)viewWillAppear:(BOOL)animated{
+
+    [self matchTranslatorWithsenderID:sender_ID WithsendMessage:send_Message WithlanguageCatgory:user_language WithpayNumber:pay_Number];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+
+    [timer invalidate];
+}
+
+
+-(void)matchTranslatorWithsenderID:(NSString *)senderID WithsendMessage:(NSString *)sendMessage WithlanguageCatgory:(NSString *)language WithpayNumber:(NSString *)payNumber{
+    NSDate *sendDate = [NSDate date];
+    NSDateFormatter  *dateformatter = [[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"YYYY-MM-dd HH:mm"];
+    NSString *morelocationString = [dateformatter stringFromDate:sendDate];
+    
+    //在这里加上修改状态的接口。
+    [WebAgent creatUserList:morelocationString andUser_id:userID WithLanguage:language success:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",dic);
+        message_id = dic[@"data"];
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        
+        [userDefaults setObject:message_id forKey:@"messageId"];
+        timer = [NSTimer scheduledTimerWithTimeInterval:20 repeats:YES block:^(NSTimer * _Nonnull timer) {
+            [self selectTranslatorsenderID:senderID WithsendMessage:sendMessage WithlanguageCatgory:language WithpayNumber:payNumber];
+        }];
+        [timer fire];
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    
+}
+
+
+-(void)selectTranslatorsenderID:(NSString *)senderID WithsendMessage:(NSString *)sendMessage WithlanguageCatgory:(NSString *)language WithpayNumber:(NSString *)payNumber{
+    
+    [WebAgent selectTranslator:language user_id:userID success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSArray *resultData = dic[@"data"];
+        NSString *code = dic[@"code"];
+        if (resultData.count == 0) {
+            NSLog(@"%@", code);
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，当前没有该语种的对应译员" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                //注销
+                [timer invalidate];
+                [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
+                    //                    [self.navigationController popViewControllerAnimated:YES];
+                } failure:^(NSError *error) {
+                    
+                }];
+            }];
+            [alertVC addAction:okAction];
+            [self presentViewController:alertVC animated:YES completion:nil];
+        }else{
+            if ([code isEqualToString:@"0000"]) {
+                //通知进入聊天页面
+                NSLog(@"开始聊天");
+                NSDictionary *dict = [self getLanguageWithString:language];
+                [WebAgent sendRemoteNotificationsWithuseId:resultData[0][@"user_id"] WithsendMessage:@"进入聊天" WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:userID WithMessionID:message_id success:^(id responseObject) {
+//                    NSData *data = [[NSData alloc] initWithData:responseObject];
+//                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                    NSLog(@"反馈推送—进入聊天通知成功！");
+                    //注销
+                    [timer invalidate];
+                    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:resultData[0][@"user_id"] WithUserIdentifier:@"USER" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+                    [self.navigationController pushViewController:quickVC animated:YES];
+                } failure:^(NSError *error) {
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"进入聊天页面失败" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
+                    [alert show];
+                }];
+            }else{
+                //发送推送
+                for (int i = 0 ; i< resultData.count; i++) {
+                    NSString *user_ID = resultData[i];
+                    NSString * strid = [user_ID stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+                    [WebAgent sendRemoteNotificationsWithuseId:strid WithsendMessage:sendMessage WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:senderID WithMessionID:message_id success:^(id responseObject) {
+                        NSData *data = [[NSData alloc]initWithData:responseObject];
+                        NSString *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                        NSLog(@"%@",str);
+                        NSLog(@"发送远程推送成功!");
+                    } failure:^(NSError *error) {
+                        NSLog(@"发送远程推送失败－－－>%@",error);
+                    }];
+                }
+                
+            }
+        }
+            
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+
+
+
 #pragma mark 播放动态图片方式 第三方显示本地动态图片
 -(void)showGifImageMethodThree
 {
@@ -51,6 +183,7 @@
 -(void)stopFindingTranslator{
 
     //修改状态变为0
+    [timer invalidate];
     [WebAgent stopFindingTranslator:userID success:^(id responseObject) {
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSError *error) {
@@ -175,6 +308,8 @@
     NSDictionary *userIDDictionary = [userdefault objectForKey:@"user_id"];
     NSString *userID=userIDDictionary[@"user_id"];
     
+    [timer invalidate];
+    
     QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:translatorId WithUserIdentifier:@"USER" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
     
     
@@ -211,7 +346,116 @@
 
 
 
-
+-(NSDictionary *)getLanguageWithString:(NSString *)language{
+    
+    NSString *VoiceLanguage;
+    NSString *TransLanguage;
+    if ([language isEqualToString:@"英语"]) {
+        
+        VoiceLanguage = Voice_YingYu;
+        TransLanguage = Trans_YingYu;
+    }
+    if ([language isEqualToString:@"美式英语"]) {
+        
+        VoiceLanguage = Voice_MeiYu;
+        TransLanguage = Trans_MeiYu;
+    }
+    if ([language isEqualToString:@"韩语"]) {
+        
+        VoiceLanguage = Voice_HanYu;
+        TransLanguage = Trans_HanYu;
+    }
+    if ([language isEqualToString:@"西班牙语"]) {
+        
+        VoiceLanguage = Voice_XiBanYa;
+        TransLanguage = Trans_XiBanYa;
+    }
+    if ([language isEqualToString:@"泰语"]) {
+        
+        VoiceLanguage = Voice_TaiYu;
+        TransLanguage = Trans_TaiYu;
+    }
+    if ([language isEqualToString:@"阿拉伯语"]) {
+        
+        VoiceLanguage = Voice_ALaBoYu;
+        TransLanguage = Trans_ALaBoYu;
+    }
+    if ([language isEqualToString:@"俄语"]) {
+        
+        VoiceLanguage = Voice_EYu;
+        TransLanguage = Trans_EYu;
+    }
+    if ([language isEqualToString:@"葡萄牙语"]) {
+        
+        VoiceLanguage = Voice_PuTaoYaYu;
+        TransLanguage = Trans_PuTaoYaYu;
+    }
+    if ([language isEqualToString:@"希腊语"]) {
+        
+        VoiceLanguage = Voice_XiLaYu;
+        TransLanguage = Trans_XiLaYu;
+    }
+    if ([language isEqualToString:@"荷兰语"]) {
+        
+        VoiceLanguage = Voice_HeLanYu;
+        TransLanguage = Trans_HeLanYu;
+    }
+    if ([language isEqualToString:@"波兰语"]) {
+        
+        VoiceLanguage = Voice_BoLanYu;
+        TransLanguage = Trans_BoLanYu;
+    }
+    if ([language isEqualToString:@"丹麦语"]) {
+        
+        VoiceLanguage = Voice_DanMaiYu;
+        TransLanguage = Trans_DanMaiYu;
+    }
+    if ([language isEqualToString:@"芬兰语"]) {
+        
+        VoiceLanguage = Voice_FenLanYu;
+        TransLanguage = Trans_FenLanYu;
+    }
+    if ([language isEqualToString:@"捷克语"]) {
+        
+        VoiceLanguage = Voice_JieKeYu;
+        TransLanguage = Trans_JieKeYu;
+    }
+    if ([language isEqualToString:@"瑞典语"]) {
+        
+        VoiceLanguage = Voice_RuiDianYu;
+        TransLanguage = Trans_RuiDianYu;
+    }
+    if ([language isEqualToString:@"匈牙利语"]) {
+        
+        VoiceLanguage = Voice_XiongYaLiYu;
+        TransLanguage = Trans_XiongYaLiYu;
+    }
+    if ([language isEqualToString:@"日语"]) {
+        
+        VoiceLanguage = Voice_RiYu;
+        TransLanguage = Trans_RiYu;
+    }
+    if ([language isEqualToString:@"法语"]) {
+        
+        VoiceLanguage = Voice_FaYa;
+        TransLanguage = Trans_FaYu;
+    }
+    if ([language isEqualToString:@"德语"]) {
+        
+        VoiceLanguage = Voice_DeYu;
+        TransLanguage = Trans_DeYu;
+    }
+    if ([language isEqualToString:@"意大利语"]) {
+        
+        VoiceLanguage = Voice_YiDaLiYu;
+        TransLanguage = Trans_YiDaLiYu;
+    }
+    
+    NSDictionary *dict = @{@"voice":VoiceLanguage,
+                           @"trans":TransLanguage
+                           };
+    return dict;
+}
 
 @end
 

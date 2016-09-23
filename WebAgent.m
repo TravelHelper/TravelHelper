@@ -138,7 +138,7 @@
 }
 
 //查询等候队列
-+(void)selectWaitingQueue:(NSString *)user_language
++(void)selectTranslator:(NSString *)user_language
                   user_id:(NSString *)user_id
                       success:(void (^)(id responseObject))success
                       failure:(void (^)(NSError *error))failure
@@ -148,7 +148,7 @@
     NSDictionary *dict = @{@"user_language":user_language,
                            @"user_id":user_id};
     
-    [[APIClient sharedClient] POST:@"QuickTrans/selectwaitingqueue/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[APIClient sharedClient] POST:@"QuickTrans/matchTranslatorAndPost/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failure(error);
