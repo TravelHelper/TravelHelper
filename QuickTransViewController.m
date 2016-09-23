@@ -1110,7 +1110,7 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
-    [MBProgressHUD showSuccess:@"音频准备中"];
+//    [MBProgressHUD showSuccess:@"音频准备中"];
     countDownNumber=8;
     timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
     

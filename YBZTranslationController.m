@@ -274,8 +274,8 @@
 -(void)initLeftButton
 {
     //左上角的按钮
-    UIButton *boultButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0.07*kScreenWindth, 0.07*kScreenWindth)];
-    [boultButton setImage:[UIImage imageNamed:@"userHead"] forState:UIControlStateNormal];
+    UIButton *boultButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0.05*kScreenWindth, 0.05*kScreenWindth)];
+    [boultButton setImage:[UIImage imageNamed:@"mine"] forState:UIControlStateNormal];
     [boultButton addTarget:self action:@selector(turnToUserClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:boultButton];
 }
@@ -742,13 +742,13 @@
     
     self.userBtn.selected = YES;
     self.userBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
-    [self.userBtnImageView setImage:[UIImage imageNamed:@"用户界面 用户"]];
+    [self.userBtnImageView setImage:[UIImage imageNamed:@"user_highlight2"]];
     
     
     
     self.translaterBtn.selected = NO;
     self.translaterBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
-    [self.translaterBtnImageView setImage:[UIImage imageNamed:@"用户界面 译员"]];
+    [self.translaterBtnImageView setImage:[UIImage imageNamed:@"translator_grey2"]];
     
     
     [self.bottomView addSubview:self.Btn1];
@@ -765,15 +765,15 @@
     //    [self.Btn1 addTarget:self action:@selector(intoFreeTranslationClick) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn1Label setText:@"免费翻译"];
     
-    [self.Btn2 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+    [self.Btn2 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
     //    [self.Btn2 addTarget:self action:@selector(intoChangeLanguageClick) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn2Label setText:@"口语即时"];
     
-    [self.Btn3 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+    [self.Btn3 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
     //    [self.Btn3 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn3Label setText:@"定制翻译"];
     
-    [self.Btn4 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+    [self.Btn4 setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
     //    [self.Btn4 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn4Label setText:@"我的悬赏"];
     
@@ -801,10 +801,10 @@
         if([user_identity isEqualToString:@"译员"]){
             self.userBtn.selected = NO;
             self.userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
-            [_userBtnImageView setImage:[UIImage imageNamed:@"译员界面 用户"]];
+            [_userBtnImageView setImage:[UIImage imageNamed:@"user_grey2"]];
             self.translaterBtn.selected = YES;
             self.translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
-            [_translaterBtnImageView setImage:[UIImage imageNamed:@"译员界面 译员"]];
+            [_translaterBtnImageView setImage:[UIImage imageNamed:@"translator_highlight2"]];
                     
                     
             [self.bottomView addSubview:self.Btn5];
@@ -817,16 +817,16 @@
             [self.bottomView addSubview:self.Btn8Label];
             
             
-            [self.Btn5 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+            [self.Btn5 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
             //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClickforControlEvents:UIControlEventTouchUpInside
             
             [self.Btn5Label setText:@"口语即时"];
                     
-            [self.Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+            [self.Btn6 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
                     //[self.Btn6 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
             [self.Btn6Label setText:@"定制翻译"];
                     
-            [self.Btn7 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+            [self.Btn7 setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
                     //[self.Btn7 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
             [self.Btn7Label setText:@"悬赏大厅"];
                     
@@ -986,7 +986,7 @@
 - (UIImageView *)userBtnImageView{
     
     if (!_userBtnImageView) {
-        _userBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"用户界面 用户"]];
+        _userBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"user_highlight2"]];
         _userBtnImageView.frame = CGRectMake(UIScreenWidth * 0.33, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize+10, UITranslationBtnSize+10);
         //_userBtnImageView.backgroundColor = [UIColor redColor];
     }
@@ -1016,7 +1016,7 @@
 - (UIImageView *)translaterBtnImageView{
     
     if (!_translaterBtnImageView) {
-        _translaterBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"用户界面 译员"]];
+        _translaterBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"translator_grey2"]];
         _translaterBtnImageView.frame = CGRectMake(CGRectGetMinX(self.translaterBtn.frame) - UIScreenWidth * 0.315 - UITranslationBtnSize, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize+10, UITranslationBtnSize+10);
         //_userBtnImageView.backgroundColor = [UIColor redColor];
     }
@@ -1057,7 +1057,7 @@
     if (!_Btn2) {
         _Btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn2 setTitle:@"口语即时" forState:UIControlStateNormal];
-        [_Btn2 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+        [_Btn2 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
         //_interpretBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn2.frame = CGRectMake(CGRectGetMidX(self.Btn1.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1088,7 +1088,7 @@
     if (!_Btn3) {
         _Btn3 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn3 setTitle:@"Btn3" forState:UIControlStateNormal];
-        [_Btn3 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+        [_Btn3 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn3.frame = CGRectMake(CGRectGetMidX(self.Btn2.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1123,7 +1123,7 @@
     if (!_Btn4) {
         _Btn4 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn4 setTitle:@"Btn4" forState:UIControlStateNormal];
-        [_Btn4 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+        [_Btn4 setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
         //_myOfferBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn4.frame = CGRectMake(CGRectGetMaxX(self.Btn3.frame) + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1187,7 +1187,7 @@
     if (!_Btn6) {
         _Btn6 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn6 setTitle:@"口语即时" forState:UIControlStateNormal];
-        [_Btn6 setImage:[UIImage imageNamed:@"译员首页8"] forState:UIControlStateNormal];
+        [_Btn6 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
         //_interpretBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn6.frame = CGRectMake(CGRectGetMidX(self.Btn5.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1219,7 +1219,7 @@
     if (!_Btn7) {
         _Btn7 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn7 setTitle:@"Btn3" forState:UIControlStateNormal];
-        [_Btn7 setImage:[UIImage imageNamed:@"译员首页9"] forState:UIControlStateNormal];
+        [_Btn7 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn7.frame = CGRectMake(CGRectGetMidX(self.Btn6.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
@@ -1254,7 +1254,7 @@
     if (!_Btn8) {
         _Btn8 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn8 setTitle:@"Btn4" forState:UIControlStateNormal];
-        [_Btn8 setImage:[UIImage imageNamed:@"译员首页10"] forState:UIControlStateNormal];
+        [_Btn8 setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
         //_myOfferBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn8.frame = CGRectMake(CGRectGetMaxX(self.Btn7.frame) + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
