@@ -150,7 +150,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                       success:(void (^)(id responseObject))success
                       failure:(void (^)(NSError *error))failure;
 //查询等候队列
-+(void)selectWaitingQueue:(NSString *)user_language
++(void)selectTranslator:(NSString *)user_language
                   user_id:(NSString *)user_id
                   success:(void (^)(id responseObject))success
                   failure:(void (^)(NSError *error))failure;

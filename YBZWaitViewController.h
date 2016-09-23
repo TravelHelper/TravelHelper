@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface YBZWaitViewController : UIViewController
+- (instancetype)initWithsenderID:(NSString *)senderID WithsendMessage:(NSString *)sendMessage WithlanguageCatgory:(NSString *)language WithpayNumber:(NSString *)payNumber;
 
 @end
