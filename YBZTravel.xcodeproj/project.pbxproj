@@ -160,6 +160,12 @@
 		7DF2554F1D742F2F006822AD /* RewardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF2554E1D742F2F006822AD /* RewardCell.m */; };
 		7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */; };
 		7DFD9BF71D714401007BDE4D /* YBZRewardHallDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */; };
+		936BFC0F1D92ACF80017897F /* WaitInterpreterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 936BFC0E1D92ACF80017897F /* WaitInterpreterViewController.m */; };
+		93ABF85B1D8EE33B0027506F /* CustomTranslateCellFramInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 93ABF85A1D8EE33B0027506F /* CustomTranslateCellFramInfo.m */; };
+		93ABF85E1D8EE37F0027506F /* CustomTranslateInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 93ABF85D1D8EE37F0027506F /* CustomTranslateInfoModel.m */; };
+		93ABF8611D8EE4870027506F /* CustomTranslateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 93ABF8601D8EE4870027506F /* CustomTranslateTableViewCell.m */; };
+		93ABF8641D8EE4E80027506F /* InterpretCustomTranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93ABF8631D8EE4E80027506F /* InterpretCustomTranslateViewController.m */; };
+		93ABF8671D8EE50E0027506F /* UesrCustomTranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93ABF8661D8EE50E0027506F /* UesrCustomTranslateViewController.m */; };
 		A012EDAD1D5099E000144BAD /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDA91D5099E000144BAD /* libopencore-amrnb.a */; };
 		A012EDAE1D5099E000144BAD /* RCConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A012EDAA1D5099E000144BAD /* RCConfig.plist */; };
 		A012EDAF1D5099E000144BAD /* release_notes_ios.txt in Resources */ = {isa = PBXBuildFile; fileRef = A012EDAB1D5099E000144BAD /* release_notes_ios.txt */; };
@@ -595,6 +601,18 @@
 		7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTranslatorDetailViewController.m; sourceTree = "<group>"; };
 		7DFD9BF51D714401007BDE4D /* YBZRewardHallDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRewardHallDetailModel.h; sourceTree = "<group>"; };
 		7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRewardHallDetailModel.m; sourceTree = "<group>"; };
+		936BFC0D1D92ACF80017897F /* WaitInterpreterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitInterpreterViewController.h; sourceTree = "<group>"; };
+		936BFC0E1D92ACF80017897F /* WaitInterpreterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaitInterpreterViewController.m; sourceTree = "<group>"; };
+		93ABF8591D8EE33B0027506F /* CustomTranslateCellFramInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTranslateCellFramInfo.h; sourceTree = "<group>"; };
+		93ABF85A1D8EE33B0027506F /* CustomTranslateCellFramInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTranslateCellFramInfo.m; sourceTree = "<group>"; };
+		93ABF85C1D8EE37F0027506F /* CustomTranslateInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTranslateInfoModel.h; sourceTree = "<group>"; };
+		93ABF85D1D8EE37F0027506F /* CustomTranslateInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTranslateInfoModel.m; sourceTree = "<group>"; };
+		93ABF85F1D8EE4870027506F /* CustomTranslateTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTranslateTableViewCell.h; sourceTree = "<group>"; };
+		93ABF8601D8EE4870027506F /* CustomTranslateTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTranslateTableViewCell.m; sourceTree = "<group>"; };
+		93ABF8621D8EE4E80027506F /* InterpretCustomTranslateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterpretCustomTranslateViewController.h; sourceTree = "<group>"; };
+		93ABF8631D8EE4E80027506F /* InterpretCustomTranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterpretCustomTranslateViewController.m; sourceTree = "<group>"; };
+		93ABF8651D8EE50E0027506F /* UesrCustomTranslateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UesrCustomTranslateViewController.h; sourceTree = "<group>"; };
+		93ABF8661D8EE50E0027506F /* UesrCustomTranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UesrCustomTranslateViewController.m; sourceTree = "<group>"; };
 		A012EDA91D5099E000144BAD /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
 		A012EDAA1D5099E000144BAD /* RCConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RCConfig.plist; sourceTree = "<group>"; };
 		A012EDAB1D5099E000144BAD /* release_notes_ios.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes_ios.txt; sourceTree = "<group>"; };
@@ -1372,6 +1390,49 @@
 			name = MYReward;
 			sourceTree = "<group>";
 		};
+		934D1A5F1D8ED9B800BD1006 /* CustomTranslate */ = {
+			isa = PBXGroup;
+			children = (
+				93ABF8581D8EE3050027506F /* Model */,
+				93ABF8571D8EE2FC0027506F /* View */,
+				93ABF8561D8EE2ED0027506F /* Controller */,
+			);
+			name = CustomTranslate;
+			sourceTree = "<group>";
+		};
+		93ABF8561D8EE2ED0027506F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				93ABF8621D8EE4E80027506F /* InterpretCustomTranslateViewController.h */,
+				93ABF8631D8EE4E80027506F /* InterpretCustomTranslateViewController.m */,
+				93ABF8651D8EE50E0027506F /* UesrCustomTranslateViewController.h */,
+				93ABF8661D8EE50E0027506F /* UesrCustomTranslateViewController.m */,
+				936BFC0D1D92ACF80017897F /* WaitInterpreterViewController.h */,
+				936BFC0E1D92ACF80017897F /* WaitInterpreterViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		93ABF8571D8EE2FC0027506F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				93ABF85F1D8EE4870027506F /* CustomTranslateTableViewCell.h */,
+				93ABF8601D8EE4870027506F /* CustomTranslateTableViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		93ABF8581D8EE3050027506F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				93ABF8591D8EE33B0027506F /* CustomTranslateCellFramInfo.h */,
+				93ABF85A1D8EE33B0027506F /* CustomTranslateCellFramInfo.m */,
+				93ABF85C1D8EE37F0027506F /* CustomTranslateInfoModel.h */,
+				93ABF85D1D8EE37F0027506F /* CustomTranslateInfoModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		A012EDA81D5099E000144BAD /* Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable */ = {
 			isa = PBXGroup;
 			children = (
@@ -1455,6 +1516,7 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
+				934D1A5F1D8ED9B800BD1006 /* CustomTranslate */,
 				535DCB8A1D81BA5F00C329CB /* TQStarRating */,
 				FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */,
 				7D8427791D6494A3000BFEAD /* MYReward */,
@@ -2032,7 +2094,7 @@
 				TargetAttributes = {
 					A03ED0511D2DE20700BD9C0A = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 23GQX4X34D;
+						DevelopmentTeam = 98S62A3F2K;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2149,6 +2211,7 @@
 				7D3E99951D6D42C300F13F42 /* UnfoldModel.m in Sources */,
 				A0552EB41D3A163C00E04D7A /* ASBirthSelectSheet.m in Sources */,
 				1E70550B1D517F3D00A000F5 /* YBZFreeTranslationViewCell.m in Sources */,
+				93ABF8641D8EE4E80027506F /* InterpretCustomTranslateViewController.m in Sources */,
 				1B0513901D3F5DAC00F05C9D /* AFAutoPurgingImageCache.m in Sources */,
 				7D28E3591D6DAAB600B51EF7 /* QuickTransViewController.m in Sources */,
 				1B05138B1D3F5DAC00F05C9D /* AFURLRequestSerialization.m in Sources */,
@@ -2260,6 +2323,7 @@
 				A03ED0D21D2E089C00BD9C0A /* YBZUserOrderViewController.m in Sources */,
 				7D0315BB1D6F1E5E00983D23 /* YBZDetailViewController.m in Sources */,
 				5352677E1D7EAD2A00302B66 /* YBZOrderDetailsView.m in Sources */,
+				93ABF8611D8EE4870027506F /* CustomTranslateTableViewCell.m in Sources */,
 				A03ED0CF1D2E088300BD9C0A /* YBZUserInfoViewController.m in Sources */,
 				1ED863D21D3390F000529094 /* MJRefreshBaseView.m in Sources */,
 				A012EE021D509CAB00144BAD /* BaseTableView.m in Sources */,
@@ -2275,7 +2339,9 @@
 				1B0513981D3F5DAC00F05C9D /* UIWebView+AFNetworking.m in Sources */,
 				A0532CB61D38CF8E00FC1AB1 /* CellFrameInfo.m in Sources */,
 				7D84275F1D634AAB000BFEAD /* Information.m in Sources */,
+				93ABF85B1D8EE33B0027506F /* CustomTranslateCellFramInfo.m in Sources */,
 				1E70550A1D517F3D00A000F5 /* YBZFreeTranslationInfo.m in Sources */,
+				93ABF8671D8EE50E0027506F /* UesrCustomTranslateViewController.m in Sources */,
 				7D3E999A1D6D42C300F13F42 /* CellInfor.m in Sources */,
 				7D6674BF1D49951100043937 /* complaintViewController.m in Sources */,
 				A03ED0D51D2E08AD00BD9C0A /* YBZUserFavoriteViewController.m in Sources */,
@@ -2324,7 +2390,9 @@
 				FE1EFE301D83A1A000FDD1BE /* PCMDataPlayer.mm in Sources */,
 				1B0513971D3F5DAC00F05C9D /* UIRefreshControl+AFNetworking.m in Sources */,
 				7D3E99851D6D42B500F13F42 /* BottomView.m in Sources */,
+				936BFC0F1D92ACF80017897F /* WaitInterpreterViewController.m in Sources */,
 				1ED863E91D38868500529094 /* YBZAreaCodeViewController.m in Sources */,
+				93ABF85E1D8EE37F0027506F /* CustomTranslateInfoModel.m in Sources */,
 				5322B81C1D7E6120004B8C87 /* UIImage+WebP.m in Sources */,
 				A049242D1D55A4A900BE1DCF /* YBZWaitViewController.m in Sources */,
 				5322B8191D7E6120004B8C87 /* UIButton+WebCache.m in Sources */,

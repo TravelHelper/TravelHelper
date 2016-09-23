@@ -436,8 +436,7 @@
         [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
         
         if (self.isKeyboardShow == YES) {
-            ///////
-            ///////////
+            
             NSInteger cccount = self.dataSource.count;
             NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
             CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];

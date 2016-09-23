@@ -148,11 +148,11 @@
             
             user_identity=dic[@"user_identity"];
             user_language = dic[@"user_language"];
-            [MBProgressHUD hideHUD];
+            
             NSLog(@"%@",user_identity);
             
         }
-        
+        [MBProgressHUD hideHUD];
         
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
@@ -220,11 +220,11 @@
                     [self.mainTableView setHidden:YES];
                     [self.view addSubview:self.translatorTableView];
                     [self.translatorTableView reloadData];
-                    [MBProgressHUD hideHUD];
+                    
                     NSLog(@"%@",user_identity);
                 }
                 
-                
+                [MBProgressHUD hideHUD];
             } failure:^(NSError *error) {
                 [MBProgressHUD hideHUD];
                 [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
@@ -244,6 +244,7 @@
         
     }else{
         //        [self.view addSubview:self.translatorTableView];
+        [MBProgressHUD hideHUD];
         self.mainTableView.allowsSelection=YES;
         [self.view addSubview:self.mainTableView];
         //        [self.mainTableView setHidden:NO];
