@@ -962,6 +962,21 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
 }
 
++(void)getMissionInfo:(NSString *)mission_id
+                 success:(void (^)(id responseObject))success
+                 failure:(void (^)(NSError *error))failure{
+    
+    
+    NSDictionary *dict = @{@"mession_id":mission_id};
+    [[APIClient sharedClient] POST:@"QuickTrans/getMissionInfo/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
 
 
 

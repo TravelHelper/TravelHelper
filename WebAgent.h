@@ -305,6 +305,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                      success:(void (^)(id responseObject))success
                      failure:(void (^)(NSError *error))failure;
 
++(void)getMissionInfo:(NSString *)mission_id
+              success:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure;
 
 +(void)selectCancelState:(NSString *)mission_id
                  success:(void (^)(id responseObject))success

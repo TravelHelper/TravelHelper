@@ -188,12 +188,43 @@
 
     //修改状态变为0
     [timer invalidate];
-    
-    [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
-        [self.navigationController popViewControllerAnimated:YES];
+    [WebAgent getMissionInfo:message_id success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSDictionary *missionInfo = dic[@"data"][0];
+        if ([missionInfo[@"answer_id"] isEqualToString:@""]) {
+            [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
+                [self.navigationController popViewControllerAnimated:YES];
+            } failure:^(NSError *error) {
+                
+            }];
+        }else{
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"您的即时翻译已被接单，请耐心等待！" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"再等一会" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                
+            }];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"我要取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
+                        [WebAgent sendRemoteNotificationsWithuseId:missionInfo[@"answer_id"] WithsendMessage:@"退出聊天" WithlanguageCatgory:missionInfo[@"language"] WithpayNumber:@"0" WithSenderID:userID WithMessionID:message_id success:^(id responseObject) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        } failure:^(NSError *error) {
+                            [self.navigationController popViewControllerAnimated:YES];
+
+                        }];
+                } failure:^(NSError *error) {
+                    
+                }];
+            }];
+
+            [alertVC addAction:okAction];
+            [alertVC addAction:cancelAction];
+
+            [self presentViewController:alertVC animated:YES completion:nil];
+        }
     } failure:^(NSError *error) {
         
     }];
+
 }
 
 
