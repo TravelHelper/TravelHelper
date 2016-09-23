@@ -11,12 +11,12 @@
 #import "WebAgent.h"
 #import "YBZGifView.h"
 
-
 @interface YBZWaitingViewController ()
 #define kWidth  [UIScreen mainScreen].bounds.size.width
 #define kHeight  [UIScreen mainScreen].bounds.size.height
 
 @property(nonatomic,strong)UILabel *userNameLabel;
+
 @end
 
 @implementation YBZWaitingViewController{
@@ -35,6 +35,7 @@
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     userID = user_id[@"user_id"];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithUser:) name:@"pushIntoTransView" object:nil];
+
 }
 
 -(void)showGifImageMethodThree
@@ -45,8 +46,8 @@
     [self.view addSubview:dataView2];
 }
 -(void)viewWillAppear:(BOOL)animated{
-
-    
+    [super viewWillAppear:animated];
+   
 }
 
 -(void)popToRoot{
@@ -209,4 +210,6 @@
     }
     return _userNameLabel;
 }
+
+
 @end

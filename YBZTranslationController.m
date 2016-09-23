@@ -29,7 +29,7 @@
 #import "UIImageView+WebCache.h"
 #import "YBZtoalertView.h"
 #import "YBZtoalertView.h"
-
+#import "YBZadvertisingimageView.h"
 
 #define kImageCount 5
 #define kScreenWindth    [UIScreen mainScreen].bounds.size.width
@@ -104,6 +104,9 @@
 
 @property (nonatomic , strong)CLLocationManager *locationManager;
 @property (nonatomic , strong) NSString *address_str;
+
+@property (nonatomic,strong) YBZadvertisingimageView *advertimageview;
+@property (nonatomic,strong) UIButton *clontbtn;
 @end
 
 @implementation YBZTranslationController{
@@ -159,8 +162,8 @@
     
     
     //popularCell
-    [self.bottomView addSubview:self.popularImageView];
-    [self.bottomView addSubview:self.popularImageViewLabel];
+    //[self.bottomView addSubview:self.popularImageView];
+   // [self.bottomView addSubview:self.popularImageViewLabel];
     [self initData];
 
     
@@ -217,7 +220,8 @@
 ////    alertView.backgroundColor=[UIColor redColor];
 //    [self.view addSubview:alertView];
     
-    
+    [self.view addSubview:self.advertimageview];
+    [self.view addSubview:self.clontbtn];
 }
 
 
@@ -233,15 +237,42 @@
      self.tabBarController.tabBar.hidden=YES;
     [self getLoginState];
     [self userIdentifierClick];
+    self.advertimageview.frame = CGRectMake(0, UIScreenHeight-130, UIScreenWidth, 130);
+    self.clontbtn.frame = CGRectMake(UIScreenWidth-30, UIScreenHeight-130, 30, 30);
+}
 
-    
+-(YBZadvertisingimageView *)advertimageview
+{
+    if(!_advertimageview)
+    {
+        _advertimageview = [[YBZadvertisingimageView alloc] init];
+        _advertimageview.image = [UIImage imageNamed:@"ad"];
+        [self.view bringSubviewToFront:self.advertimageview];
+        [_advertimageview.delbtn addTarget:self action:@selector(clonebtnclick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _advertimageview;
+}
 
+-(UIButton *)clontbtn
+{
+    if(!_clontbtn)
+    {
+        _clontbtn = [[UIButton alloc] init];
+        [_clontbtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+        [_clontbtn addTarget:self action:@selector(clonebtnclick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _clontbtn;
+}
 
+-(void)clonebtnclick
+{
+    NSLog(@"1234567890");
+    [self.advertimageview removeFromSuperview];
+    [self.clontbtn removeFromSuperview];
 }
 
 -(void)initLeftButton
 {
-    
     //左上角的按钮
     UIButton *boultButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0.07*kScreenWindth, 0.07*kScreenWindth)];
     [boultButton setImage:[UIImage imageNamed:@"userHead"] forState:UIControlStateNormal];
@@ -586,17 +617,17 @@
     
     self.cellArr = [[NSMutableArray alloc]init];
     
-    YBZPopularFrameInfo *popularCellView1 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
-    [self.cellArr addObject:popularCellView1];
-    
-    YBZPopularFrameInfo *popularCellView2 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
-    [self.cellArr addObject:popularCellView2];
-    
-    YBZPopularFrameInfo *popularCellView3 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
-    [self.cellArr addObject:popularCellView3];
-    
-    YBZPopularFrameInfo *popularCellView4 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
-    [self.cellArr addObject:popularCellView4];
+//    YBZPopularFrameInfo *popularCellView1 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
+//    [self.cellArr addObject:popularCellView1];
+//    
+//    YBZPopularFrameInfo *popularCellView2 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
+//    [self.cellArr addObject:popularCellView2];
+//    
+//    YBZPopularFrameInfo *popularCellView3 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
+//    [self.cellArr addObject:popularCellView3];
+//    
+//    YBZPopularFrameInfo *popularCellView4 = [[YBZPopularFrameInfo alloc]initWithTitle:@"TITLE" AndLevel:@"lv 5" AndState:@"finish" AndContent:@"content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,content,"];
+//    [self.cellArr addObject:popularCellView4];
     
 }
 
@@ -638,8 +669,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    
     YBZPopularFrameInfo *model = self.cellArr[indexPath.row];
     
     static NSString *cellID = @"YBZPopularViewCell";
@@ -652,7 +681,6 @@
         cell=[[[NSBundle mainBundle] loadNibNamed:@"YBZPopularViewCell" owner:nil options:nil]lastObject];
     }
     
-    
     cell.titleLabel.text = model.title;
     cell.levelLabel.text = model.level;
     cell.stateLabel.text = model.state;
@@ -663,9 +691,6 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-    
     
     return 90;
 }
@@ -950,10 +975,10 @@
         }else{
             _userBtn.backgroundColor = [UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
         }
-        _userBtn.frame = CGRectMake(-25,CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 15, 32);
+        _userBtn.frame = CGRectMake(-25,CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 15, 42);
         
         [_userBtn addTarget:self action:@selector(userIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
-        _userBtn.layer.cornerRadius = 16;
+        _userBtn.layer.cornerRadius = 21;
     }
     return _userBtn;
 }
@@ -962,7 +987,7 @@
     
     if (!_userBtnImageView) {
         _userBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"用户界面 用户"]];
-        _userBtnImageView.frame = CGRectMake(UIScreenWidth * 0.33, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize, UITranslationBtnSize);
+        _userBtnImageView.frame = CGRectMake(UIScreenWidth * 0.33, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize+10, UITranslationBtnSize+10);
         //_userBtnImageView.backgroundColor = [UIColor redColor];
     }
     return _userBtnImageView;
@@ -980,9 +1005,10 @@
         }else{
             _translaterBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:243/255.0 blue:202/255.0 alpha:1];
         }
-        _translaterBtn.frame = CGRectMake(CGRectGetMaxX(self.userBtn.frame) + 20, CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 25, 32);
+        _translaterBtn.frame = CGRectMake(CGRectGetMaxX(self.userBtn.frame) + 20, CGRectGetMaxY(self.scrollView.frame) + 20, UIScreenWidth / 2 + 25, 42);
         [_translaterBtn addTarget:self action:@selector(interpretIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
-        _translaterBtn.layer.cornerRadius = 16;
+        _translaterBtn.layer.cornerRadius = 21;
+        
     }
     return _translaterBtn;
 }
@@ -991,7 +1017,7 @@
     
     if (!_translaterBtnImageView) {
         _translaterBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"用户界面 译员"]];
-        _translaterBtnImageView.frame = CGRectMake(CGRectGetMinX(self.translaterBtn.frame) - UIScreenWidth * 0.315 - UITranslationBtnSize, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize, UITranslationBtnSize);
+        _translaterBtnImageView.frame = CGRectMake(CGRectGetMinX(self.translaterBtn.frame) - UIScreenWidth * 0.315 - UITranslationBtnSize, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize+10, UITranslationBtnSize+10);
         //_userBtnImageView.backgroundColor = [UIColor redColor];
     }
     return _translaterBtnImageView;
@@ -1262,8 +1288,10 @@
 - (UIScrollView *)scrollView{
     
     if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 0.406)];
-        UIImage *img=[UIImage imageNamed:@"img_01"];
+//        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 0.406)];
+         _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 0.7)];
+//        UIImage *img=[UIImage imageNamed:@"img_01"];
+          UIImage *img=[UIImage imageNamed:@"img"];
         UIImage *resultImg=[img imageByScalingToSize:_scrollView.bounds.size];
         _scrollView.backgroundColor = [UIColor colorWithPatternImage:resultImg];
         
@@ -1279,7 +1307,6 @@
         
         // contentSize
         _scrollView.contentSize = CGSizeMake(kImageCount * _scrollView.bounds.size.width, 0);
-        
         // 设置代理
         _scrollView.delegate = self;
         
