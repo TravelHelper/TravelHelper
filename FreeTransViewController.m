@@ -21,6 +21,8 @@
 #import "MBProgressHUD+XMG.h"
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
+#import "UIImageView+WebCache.h"
+
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -191,11 +193,24 @@
     NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,resultName];
     
     NSURL *url = [NSURL URLWithString:url2];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *img = [UIImage imageWithData:data];
-    if(img){
-        [self.backgroundImageView setImage:img];
-    }
+    
+    
+    [self.backgroundImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        NSLog(@"这里可以在图片加载完成之后做些事情");
+        [MBProgressHUD hideHUD];
+        //        if(!image){
+        //            UIImage *headImg=[[UIImage alloc]init];
+        //            headImg = [UIImage imageNamed:@"translator"];
+        //            [self.backgroundImageView setImage:headImg];
+        //        }
+        
+        
+    }];
+    
+
+    
+   
     
     
 }
@@ -203,9 +218,16 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [MBProgressHUD showMessage:@"图片资源加载中"];
     self.btnview.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 200);
     
 }
+
+-(void)viewWillDisappear:(BOOL)animated{
+    self.cwViewController = nil;
+
+}
+
 
 #pragma mark - 语音听写私有方法 & IFlySpeechRecognizerDelegate
 
@@ -1356,7 +1378,7 @@
         [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];
 //        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
 //        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
-//        
+//
 //        UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapDown)];
 //        [_reportAudioBtn addGestureRecognizer:tap];
         

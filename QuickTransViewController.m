@@ -27,6 +27,7 @@
 #import "AFNetworking.h"
 #import "AFHTTPSessionManager.h"
 #import "ChatFrameInfo.h"
+#import "UIImageView+WebCache.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -203,12 +204,24 @@
     
     NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,resultName];
     
+    
     NSURL *url = [NSURL URLWithString:url2];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *img = [UIImage imageWithData:data];
-    if(img){
-        [self.backgroundImageView setImage:img];
-    }
+    
+    
+    [self.backgroundImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"这里可以在图片加载完成之后做些事情");
+//        if(!image){
+//            UIImage *headImg=[[UIImage alloc]init];
+//            headImg = [UIImage imageNamed:@"translator"];
+//            [self.backgroundImageView setImage:headImg];
+//        }
+        
+        
+    }];
+    
+    
+
     
     [self.view addSubview:self.btnview];
     
@@ -216,12 +229,15 @@
     
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    self.cwViewController = nil;
+}
 
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    [MBProgressHUD showMessage:@"图片资源加载中"];
     userCount=0;
     translatorCount=0;
     self.tabBarController.tabBar.hidden=YES;

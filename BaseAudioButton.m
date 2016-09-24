@@ -7,6 +7,7 @@
 //
 
 #import "BaseAudioButton.h"
+#import "MBProgressHUD+XMG.h"
 
 @implementation BaseAudioButton
 
@@ -17,6 +18,7 @@
     
     [super touchesBegan:touches withEvent:event];
     
+    NSLog(@"touch");
     
     
     if ([self.mdelegate conformsToProtocol:@protocol(BaseAudioButtonDelegate)] &&
