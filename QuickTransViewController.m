@@ -1608,7 +1608,7 @@
 }
 
 -(void)backToRoot{
-    
+    [MBProgressHUD showSuccess:@"用户已退出聊天"];
     [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSError *error) {
@@ -1622,7 +1622,6 @@
 -(void)sendMessageAndPop{
     NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-    
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo WithMessionID:mseeage_id success:^(id responseObject) {
         [WebAgent stopFindingTranslator:userIDinfo missionID:@"无" success:^(id responseObject) {
             [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
