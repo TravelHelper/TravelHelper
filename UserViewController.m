@@ -36,6 +36,7 @@
     NSString *loginMark;
     bool loadMark;
     bool languageMark;
+    bool channameMark;
 }
 
 @property(nonatomic,strong)UITableView *mainTableView;
@@ -58,6 +59,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    channameMark=false;
     loadMark=false;
     loginMark=@"0";
     user_identity=[[NSString alloc]init];
@@ -312,12 +314,111 @@
 
 //观察者方法
 -(void)setTextALabel:(NSNotification *)noti{
-    NSDictionary *textDic = [noti userInfo];
-    NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
-    UserTableViewCell *cell = [self.mainTableView cellForRowAtIndexPath:index];
-    cell.nameLable.text = [textDic objectForKey:@"文本"];
-    [self.mainTableView reloadData];
-    [self.mainTableView layoutIfNeeded];
+    
+    [MBProgressHUD showMessage:@"加载数据中"];
+    [self.mainTableView removeFromSuperview];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    if(user_id[@"user_id"] != NULL)
+    {
+        //        [self.view addSubview:self.mainTableView];
+        [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSString *msg=dic[@"msg"];
+            if([msg isEqualToString:@"SUCCESS"]){
+                
+                user_identity=dic[@"user_identity"];
+                user_language = dic[@"user_language"];
+                if(user_identity != NULL){
+                    if([user_identity isEqualToString:@"译员"]){
+                        //                    [self.translatorTableView removeFromSuperview];
+                        [self.view addSubview:self.translatorTableView];
+                        //                        [self.view addSubview:self.mainTableView];
+                        //                        [self.mainTableView setHidden:YES];
+                        //                        [self.translatorTableView setHidden:NO];
+                        //                        [self.translatorTableView reloadData];
+                        //                    [self.view addSubview:self.translatorTableView];
+                        [self.translatorTableView reloadData];
+                        
+                    }else{
+                        [self.view addSubview:self.translatorTableView];
+                        //                        [self.view addSubview:self.mainTableView];
+                        //                        [self.mainTableView setHidden:YES];
+                        //                        [self.translatorTableView setHidden:NO];
+                        //                    [self.view addSubview:self.mainTableView];
+                        //                        [self.translatorTableView reloadData];
+                        [self.translatorTableView reloadData];
+                    }
+                    
+                    [MBProgressHUD hideHUD];
+                    
+                }else{
+                    
+                    [WebAgent getuserTranslateState:user_id[@"user_id"] success:^(id responseObject) {
+                        NSData *data = [[NSData alloc]initWithData:responseObject];
+                        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                        NSString *msg=dic[@"msg"];
+                        if([msg isEqualToString:@"SUCCESS"]){
+                            
+                            user_identity=dic[@"user_identity"];
+                            user_language = dic[@"user_language"];
+                            
+                            [self.mainTableView setHidden:YES];
+                            [self.view addSubview:self.translatorTableView];
+                            [self.translatorTableView reloadData];
+                            
+                            NSLog(@"%@",user_identity);
+                        }
+                        
+                        [MBProgressHUD hideHUD];
+                    } failure:^(NSError *error) {
+                        [MBProgressHUD hideHUD];
+                        [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+                        
+                    }];
+                    
+                    
+                }
+
+                
+                NSLog(@"%@",user_identity);
+                
+            }
+            [MBProgressHUD hideHUD];
+            
+        } failure:^(NSError *error) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showError:@"获取用户数据失败,请检查网络"];
+            
+        }];
+        
+
+    }else{
+        //        [self.view addSubview:self.translatorTableView];
+        [MBProgressHUD hideHUD];
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        [userinfo setObject:@"0" forKey:@"user_loginState"];
+        is=false;
+        channameMark=true;
+//        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//        NSDictionary *user_loginState = [userinfo dictionaryForKey:@"user_loginState"];
+        self.mainTableView.allowsSelection=YES;
+        [self.view addSubview:self.mainTableView];
+//        channameMark=false;
+        //        [self.mainTableView setHidden:NO];
+        //        [self.translatorTableView setHidden:YES];
+        
+        //        [self.view addSubview:self.mainTableView];
+        
+    }
+
+//    NSDictionary *textDic = [noti userInfo];
+//    NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
+//    UserTableViewCell *cell = [self.mainTableView cellForRowAtIndexPath:index];
+//    cell.nameLable.text = [textDic objectForKey:@"文本"];
+//    [self.mainTableView reloadData];
+//    [self.mainTableView layoutIfNeeded];
 }
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"setTextALabel" object:nil];
@@ -457,9 +558,10 @@
                     NSLog(@"%@",user_id[@"user_id"]);
                     NSData *data = [[NSData alloc]initWithData:responseObject];
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                if(channameMark==false){
                     NSDictionary *userInfo = dic[@"user_info"];
                     cell.nameLable.text = userInfo[@"user_nickname"];
-                
+                }
                 
                 
                 
@@ -765,12 +867,12 @@
             {
                 if ( section == 2 && row == 0)
                 {
-                    _avatarImag = [[UIImageView alloc]init];
-                    _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
-                    _avatarImag.layer.masksToBounds=YES;
-                    _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
-                    _avatarImag.image= [UIImage imageNamed:@"order"];
-                    [cell addSubview:_avatarImag];
+                    UIImageView *imageView = [[UIImageView alloc]init];
+                    imageView.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
+                    imageView.layer.masksToBounds=YES;
+                    imageView.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
+                    imageView.image= [UIImage imageNamed:@"order"];
+                    [cell addSubview:imageView];
                     cell.nameLable.text = @"我的订单";
                     return cell;                }
                 else
@@ -778,12 +880,12 @@
                     if ( section == 2 && row == 1)
                     {
                         
-                        _avatarImag = [[UIImageView alloc]init];
-                        _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
-                        _avatarImag.layer.masksToBounds=YES;
-                        _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
-                        _avatarImag.image= [UIImage imageNamed:@"collect"];
-                        [cell addSubview:_avatarImag];
+                        UIImageView *imageView = [[UIImageView alloc]init];
+                        imageView.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
+                        imageView.layer.masksToBounds=YES;
+                        imageView.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
+                        imageView.image= [UIImage imageNamed:@"collect"];
+                        [cell addSubview:imageView];
                         
                         cell.nameLable.text = @"我的收藏";
                         return cell;
@@ -793,13 +895,12 @@
                         if ( section == 2 && row == 2)
                         {
                             
-                            _avatarImag = [[UIImageView alloc]init];
-                            _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
-                            _avatarImag.layer.masksToBounds=YES;
-                            _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
-                            _avatarImag.image= [UIImage imageNamed:@"money"];
-                            [cell addSubview:_avatarImag];
-                            
+                            UIImageView *imageView = [[UIImageView alloc]init];
+                            imageView.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
+                            imageView.layer.masksToBounds=YES;
+                            imageView.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
+                            imageView.image= [UIImage imageNamed:@"money"];
+                            [cell addSubview:imageView];
                             
                             
                             cell.nameLable.text = @"我的悬赏";
@@ -809,13 +910,14 @@
                         {
                             if ( section == 3 && row == 0)
                             {
-                                
-                                _avatarImag = [[UIImageView alloc]init];
-                                _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
-                                _avatarImag.layer.masksToBounds=YES;
-                                _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
-                                _avatarImag.image= [UIImage imageNamed:@"push"];
-                                [cell addSubview:_avatarImag];
+                                UIImageView *imageView = [[UIImageView alloc]init];
+                                imageView.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
+                                imageView.layer.masksToBounds=YES;
+                                imageView.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
+                                imageView.image= [UIImage imageNamed:@"push"];
+                                [cell addSubview:imageView];
+
+                            
                                 
                                 
                                 
@@ -827,12 +929,13 @@
                             {
                                 
                                 
-                                _avatarImag = [[UIImageView alloc]init];
-                                _avatarImag.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
-                                _avatarImag.layer.masksToBounds=YES;
-                                _avatarImag.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
-                                _avatarImag.image= [UIImage imageNamed:@"set"];
-                                [cell addSubview:_avatarImag];
+                                UIImageView *imageView = [[UIImageView alloc]init];
+                                imageView.frame = CGRectMake(12, self.view.bounds.size.height * 0.02, self.view.bounds.size.height * 0.05, self.view.bounds.size.height * 0.05);
+                                imageView.layer.masksToBounds=YES;
+                                imageView.layer.cornerRadius=self.view.bounds.size.height * 0.05/2.0f;
+                                imageView.image= [UIImage imageNamed:@"set"];
+                                [cell addSubview:imageView];
+
                                 
                                 
                                 

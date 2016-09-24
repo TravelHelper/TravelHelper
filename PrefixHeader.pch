@@ -122,8 +122,8 @@
 #define UIScreenWidth [UIScreen mainScreen].bounds.size.width
 #define UIScreenHeight [UIScreen mainScreen].bounds.size.height
 #define UINavigationBarBottom 64
-#define UITranslationBtnMargin UIScreenWidth * 22 / 320
-#define UITranslationBtnSize UIScreenWidth * 42 / 320
+#define UITranslationBtnMargin UIScreenWidth * 25 / 320
+#define UITranslationBtnSize UIScreenWidth * 43 / 320
 //#define UICountryBtnWidth
 
 
@@ -135,6 +135,8 @@
 #define API_HOST @"http://10.2.208.163/TravelHelper/index.php/Home/"
 #define positionImg    @"http://10.2.208.163/TravelHelper/upload.php"
 #define serviseId @"10.2.208.163"
+
+
 
 
 

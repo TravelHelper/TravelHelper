@@ -199,24 +199,24 @@
                                    AVLinearPCMIsFloatKey: @NO,
                                    AVLinearPCMIsBigEndianKey: @NO};
         
-        //设置属性的字典
-        self.recordSetting = [[NSMutableDictionary alloc] init];
-//         [self.recordSetting setObject:[NSNumber numberWithInt:AVAudioQualityMax] forKey:AVEncoderAudioQualityKey];
-        //1.格式
-        [self.recordSetting setObject:[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey:AVFormatIDKey];
-        //2.采样率
-        [self.recordSetting setObject:[NSNumber numberWithInt:8000.00f] forKey:AVSampleRateKey];
-        //3.声道
-        [self.recordSetting setObject:[NSNumber numberWithInt:1] forKey:AVNumberOfChannelsKey];
-        //4.采样位数
-        [self.recordSetting setObject:[NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
-        
-        [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsNonInterleaved];
-        
-        [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsFloatKey];
-        
-        [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsBigEndianKey];
-        
+//        //设置属性的字典
+//        self.recordSetting = [[NSMutableDictionary alloc] init];
+////         [self.recordSetting setObject:[NSNumber numberWithInt:AVAudioQualityMax] forKey:AVEncoderAudioQualityKey];
+//        //1.格式
+//        [self.recordSetting setObject:[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey:AVFormatIDKey];
+//        //2.采样率
+//        [self.recordSetting setObject:[NSNumber numberWithInt:8000.00f] forKey:AVSampleRateKey];
+//        //3.声道
+//        [self.recordSetting setObject:[NSNumber numberWithInt:1] forKey:AVNumberOfChannelsKey];
+//        //4.采样位数
+//        [self.recordSetting setObject:[NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
+//        
+//        [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsNonInterleaved];
+//        
+//        [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsFloatKey];
+//        
+//        [self.recordSetting setObject:[NSNumber numberWithBool:NO] forKeyedSubscript:AVLinearPCMIsBigEndianKey];
+//        
         recorder = [[AVAudioRecorder alloc] initWithURL:recordedFile settings:settings error:nil];
         
         NSLog(@"录音路径::::%@",recordedFile);

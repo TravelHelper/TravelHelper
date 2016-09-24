@@ -146,14 +146,15 @@
                                 
                                
                                 //登陆成功
-                                [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
-                                [[NSNotificationCenter defaultCenter]postNotificationName:@"Login" object:nil];
+                               
                                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                                 //------------------
                                 [userDefaults setObject:useridDic forKey:@"user_id"];
 
                                 NSDictionary *userID = [userDefaults objectForKey:@"user_id"];
 
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"Login" object:nil];
                                 [WebAgent userLoginState:userID[@"user_id"] success:^(id responseObject) {
                                     NSData *data = [[NSData alloc]initWithData:responseObject];
                                     NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];

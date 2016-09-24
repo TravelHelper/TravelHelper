@@ -764,7 +764,7 @@
     [self.bottomView addSubview:self.Btn4Label];
     
     
-    [self.Btn1 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
+    [self.Btn1 setImage:[UIImage imageNamed:@"free"] forState:UIControlStateNormal];
     //    [self.Btn1 addTarget:self action:@selector(intoFreeTranslationClick) forControlEvents:UIControlEventTouchUpInside];
     [self.Btn1Label setText:@"免费翻译"];
     
@@ -820,12 +820,12 @@
             [self.bottomView addSubview:self.Btn8Label];
             
             
-            [self.Btn5 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
+            [self.Btn5 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
             //[self.Btn5 addTarget:self action:@selector(intoChangeLanguageClickforControlEvents:UIControlEventTouchUpInside
             
             [self.Btn5Label setText:@"口语即时"];
                     
-            [self.Btn6 setImage:[UIImage imageNamed:@"immediately"] forState:UIControlStateNormal];
+            [self.Btn6 setImage:[UIImage imageNamed:@"customization"] forState:UIControlStateNormal];
                     //[self.Btn6 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
             [self.Btn6Label setText:@"定制翻译"];
                     
@@ -833,7 +833,7 @@
                     //[self.Btn7 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
             [self.Btn7Label setText:@"悬赏大厅"];
                     
-            [self.Btn8 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
+            [self.Btn8 setImage:[UIImage imageNamed:@"free"] forState:UIControlStateNormal];
                     //[self.Btn8 addTarget:self action:@selector(aa) forControlEvents:UIControlEventTouchUpInside];
             [self.Btn8Label setText:@"每日签到"];
                     
@@ -1044,7 +1044,7 @@
     
     if (!_translaterBtnImageView) {
         _translaterBtnImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"translator_grey2"]];
-        _translaterBtnImageView.frame = CGRectMake(CGRectGetMinX(self.translaterBtn.frame) - UIScreenWidth * 0.315 - UITranslationBtnSize, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize+10, UITranslationBtnSize+10);
+        _translaterBtnImageView.frame = CGRectMake(CGRectGetMinX(self.translaterBtn.frame) - UIScreenWidth * 0.34 - UITranslationBtnSize, - (UITranslationBtnSize - 32) / 2, UITranslationBtnSize+10, UITranslationBtnSize+10);
         //_userBtnImageView.backgroundColor = [UIColor redColor];
     }
     return _translaterBtnImageView;
@@ -1055,7 +1055,7 @@
     if (!_Btn1) {
         _Btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn1 setTitle:@"免费翻译" forState:UIControlStateNormal];
-        [_Btn1 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
+        [_Btn1 setImage:[UIImage imageNamed:@"free"] forState:UIControlStateNormal];
         //_freeTransBtn.backgroundColor = [UIColor purpleColor];
         _Btn1.frame = CGRectMake(UIScreenWidth / 2 - UITranslationBtnMargin * 1.5 - UITranslationBtnSize * 2, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize , UITranslationBtnSize);
         [_Btn1 addTarget:self action:@selector(intoFreeTranslationClick) forControlEvents:UIControlEventTouchUpInside];
@@ -1185,7 +1185,7 @@
     if (!_Btn5) {
         _Btn5 = [UIButton buttonWithType:UIButtonTypeCustom];
         [_Btn5 setTitle:@"免费翻译" forState:UIControlStateNormal];
-        [_Btn5 setImage:[UIImage imageNamed:@"译员首页7"] forState:UIControlStateNormal];
+        [_Btn5 setImage:[UIImage imageNamed:@"free"] forState:UIControlStateNormal];
         //_freeTransBtn.backgroundColor = [UIColor purpleColor];
         _Btn5.frame = CGRectMake(UIScreenWidth / 2 - UITranslationBtnMargin * 1.5 - UITranslationBtnSize * 2, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize , UITranslationBtnSize);
         [_Btn5 addTarget:self action:@selector(pushNewChatController) forControlEvents:UIControlEventTouchUpInside];
