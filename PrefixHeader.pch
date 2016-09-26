@@ -133,9 +133,9 @@
 
 
 
-#define API_HOST @"http://10.2.208.171/TravelHelper/index.php/Home/"
-#define positionImg    @"http://10.2.208.171/TravelHelper/upload.php"
-#define serviseId @"10.2.208.171"
+#define API_HOST @"http://10.2.208.149/TravelHelper/index.php/Home/"
+#define positionImg    @"http://10.2.208.149/TravelHelper/upload.php"
+#define serviseId @"10.2.208.149"
 
 
 
