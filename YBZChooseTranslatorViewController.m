@@ -227,7 +227,7 @@
     NSLog(@"1");
     [MBProgressHUD showMessage:@"上传数据中"];
     userLanguage = [NSString string];
-    
+
     for (int i=0; i<_chooseLanguageArr.count; i++) {
         NSString *str = _chooseLanguageArr[i];
         if (i==0) {
@@ -238,8 +238,19 @@
     }
     
     [WebAgent userIdentity:@"译员" userLanguage:userLanguage userID:userID success:^(id responseObject) {
-        [MBProgressHUD hideHUD];
-        [self.navigationController popViewControllerAnimated:YES];
+        if (isTranslator == NO) {
+            [WebAgent addTranslatorInfo:userID success:^(id responseObject) {
+                [MBProgressHUD hideHUD];
+                [self.navigationController popViewControllerAnimated:YES];
+
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"网络连接失败,请重试"];
+            }];
+        }else{
+            [MBProgressHUD hideHUD];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
 //        [self.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSError *error) {
         
