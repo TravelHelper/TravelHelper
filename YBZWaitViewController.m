@@ -11,6 +11,7 @@
 #import "YBZGifView.h"
 #import "AFNetworking.h"
 #import "WebAgent.h"
+#import <Foundation/Foundation.h>
 
 @interface YBZWaitViewController ()
 #define kWidth  [UIScreen mainScreen].bounds.size.width
@@ -28,6 +29,7 @@
     NSString *pay_Number;
     NSTimer *timer;
     NSString *message_id;
+    float intervalTime;
 
 
 }
@@ -74,10 +76,7 @@
     [timer invalidate];
 }
 
--(void)viewWillDisappear:(BOOL)animated{
 
-    [timer invalidate];
-}
 
 
 -(void)matchTranslatorWithsenderID:(NSString *)senderID WithsendMessage:(NSString *)sendMessage WithlanguageCatgory:(NSString *)language WithpayNumber:(NSString *)payNumber{
@@ -93,13 +92,15 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSLog(@"%@",dic);
         message_id = dic[@"data"];
+        intervalTime = [dic[@"time"] floatValue];;
         
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         
         [userDefaults setObject:message_id forKey:@"messageId"];
-        timer = [NSTimer scheduledTimerWithTimeInterval:20 repeats:YES block:^(NSTimer * _Nonnull timer) {
-            [self selectTranslatorsenderID:senderID WithsendMessage:sendMessage WithlanguageCatgory:language WithpayNumber:payNumber];
-        }];
+        NSDictionary *dict = @{@"senderID":senderID,@"sendMessage":sendMessage,@"languageCatgory":language,@"payNumber":payNumber};
+        timer=[NSTimer scheduledTimerWithTimeInterval:intervalTime target:self selector:@selector(selectTranslatorWithDict:) userInfo:dict repeats:YES];
+
+        
         [timer fire];
         
     } failure:^(NSError *error) {
@@ -110,8 +111,12 @@
 }
 
 
--(void)selectTranslatorsenderID:(NSString *)senderID WithsendMessage:(NSString *)sendMessage WithlanguageCatgory:(NSString *)language WithpayNumber:(NSString *)payNumber{
-    
+-(void)selectTranslatorWithDict:(NSTimer *)timer{
+    NSDictionary *dict = [timer userInfo];
+    NSString *senderID = dict[@"senderID" ];
+    NSString *sendMessage = dict[@"sendMessage"];
+    NSString *language = dict[@"languageCatgory"];
+    NSString *payNumber = dict[@"payNumber"];
     [WebAgent selectTranslator:language user_id:userID success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];

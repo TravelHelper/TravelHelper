@@ -207,8 +207,10 @@
     
     NSURL *url = [NSURL URLWithString:url2];
     
-    
+    [MBProgressHUD showMessage:@"图片资源加载中"];
+
     [self.backgroundImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [self.backgroundImageView setImage:image];
         [MBProgressHUD hideHUD];
         NSLog(@"这里可以在图片加载完成之后做些事情");
 //        if(!image){
@@ -232,12 +234,14 @@
 -(void)viewWillDisappear:(BOOL)animated{
     self.cwViewController = nil;
 }
+-(void)viewDidAppear:(BOOL)animated{
 
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [MBProgressHUD showMessage:@"图片资源加载中"];
+//    [MBProgressHUD showMessage:@"图片资源加载中"];
     userCount=0;
     translatorCount=0;
     self.tabBarController.tabBar.hidden=YES;

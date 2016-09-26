@@ -28,6 +28,7 @@
 @implementation YBZtoalertView{
 
     int needIndex;
+    NSString *userID;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame andModel:(YBZtoAlertModel *)model
@@ -43,6 +44,10 @@
         [self addSubview:self.refuseBtn];
         [self addSubview:self.alertLabel];
         [self addSubview:self.alertTableView];
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        userID = user_id[@"user_id"];
+        
     }
     return self;
 }
@@ -178,7 +183,11 @@
 
     NSLog(@"返回");
     [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
-
+    [WebAgent exchangePushCount:userID AndState:@"拒绝" success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 //    [self removeFromSuperview];
 //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
 //    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];

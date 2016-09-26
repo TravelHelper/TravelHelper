@@ -188,17 +188,33 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     
+    
+    
+    if(user_id==NULL){
+        UIImage *image=[UIImage imageNamed:@"backgroundImage"];
+        [self.backgroundImageView setImage:image];
+        [MBProgressHUD hideHUD];
+
+    }else{
     NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg.jpg",user_id[@"user_id"]];
     
     NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,resultName];
     
     NSURL *url = [NSURL URLWithString:url2];
     
-    
+//        self.backgroundImageView.image=nil;
     [self.backgroundImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        if(image){
+            [self.backgroundImageView setImage:image];
+        }else{
         
+            image=[UIImage imageNamed:@"backgroundImage"];
+            [self.backgroundImageView setImage:image];
+        
+        }
         NSLog(@"这里可以在图片加载完成之后做些事情");
         [MBProgressHUD hideHUD];
+            
         //        if(!image){
         //            UIImage *headImg=[[UIImage alloc]init];
         //            headImg = [UIImage imageNamed:@"translator"];
@@ -208,7 +224,7 @@
         
     }];
     
-
+    }
     
    
     
@@ -1464,15 +1480,31 @@
 
 -(void)btn02click
 {
-    self.isequal=YES;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.backgroundImageView.transform =CGAffineTransformIdentity;
-        self.inputBottomView.transform = CGAffineTransformIdentity;
-        self.btnview.transform =CGAffineTransformIdentity;
-    }completion:^(BOOL finished) {
+    
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+
+    if(user_id[@"user_id"]==NULL){
         
-    }];
-    [self changeIcon];
+        [MBProgressHUD showError:@"登陆之后才可使用"];
+        
+    }else{
+    
+        
+        self.isequal=YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundImageView.transform =CGAffineTransformIdentity;
+            self.inputBottomView.transform = CGAffineTransformIdentity;
+            self.btnview.transform =CGAffineTransformIdentity;
+        }completion:^(BOOL finished) {
+            
+        }];
+        [self changeIcon];
+    
+    }
+    
+    
     
     NSLog(@"更改背景");
     
