@@ -343,5 +343,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                 AndState:(NSString *)state
                  success:(void (^)(id responseObject))success
                  failure:(void (^)(NSError *error))failure;
-
++(void)getSwitchState:(NSString *)user_id
+              success:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure;
 @end
