@@ -123,7 +123,7 @@
         }
     }else{
         if ([model.chatContentType isEqualToString:@"audio"]) {
-            self.secondLableFrame = CGRectMake(kScreenWith*0.746-20,kTouXiangL*0.25, 20, kTouXiangL);
+            self.secondLableFrame = CGRectMake(kScreenWith*0.746-20,kTouXiangL*0.25, 25, kTouXiangL);
         }
     }
     

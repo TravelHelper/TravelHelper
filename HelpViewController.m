@@ -68,6 +68,9 @@
         NSUserDefaults *useriinfo = [NSUserDefaults standardUserDefaults];
         
         NSDictionary *user_id = [useriinfo dictionaryForKey:@"user_id"];
+        
+        
+        //谁给你编的account_state 做梦呢
         NSDictionary *otherDic = [useriinfo dictionaryForKey:@"account_state"];
         
         
@@ -76,7 +79,7 @@
             [alertView show];
         }
         else{
-            [WebAgent user_id:user_id[@"user_id"] user_feedbackinfo:self.submitTF.text feedbackinfo_time:morelocationString user_phone:otherDic[@"user_phone"] user_email:otherDic[@"user_email"] success:^(id responseObject) {
+            [WebAgent user_id:user_id[@"user_id"] user_feedbackinfo:self.submitTF.text feedbackinfo_time:morelocationString user_phone:@"" user_email:@"" success:^(id responseObject) {
                 NSData *data = [[NSData alloc]initWithData:responseObject];
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSLog(@"%@",dic);

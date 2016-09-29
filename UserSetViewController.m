@@ -200,6 +200,8 @@
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"myDictionary"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"stateinfo"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userBackground"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userHead"];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *dict = @{@"user_loginState":@"0"};
         [userinfo setObject:dict forKey:@"user_loginState"];

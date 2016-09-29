@@ -49,30 +49,75 @@
         
 //        self.headImageView.backgroundColor=[UIColor grayColor];
         
-        NSString *name = model.senderImgPictureURL;
         
-        NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
         
-        NSString *urlStr=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
-        NSURL *url = [NSURL URLWithString:urlStr];
+//        NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
+//        
+//        NSString *userHeadMark=(NSString *)[userDfault objectForKey:@"userHead"];
+//        
+//        NSString *name = model.senderImgPictureURL;
+//        
+//        NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
+//        
+//        NSString *urlStr=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+//        NSURL *url = [NSURL URLWithString:urlStr];
+//        
+//        if([userHeadMark isEqualToString:@"1"]){
+//            
+//           
+//            
+//            [self.headImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"translator"] options:SDWebImageAvoidAutoSetImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//                if(!image){
+//                    UIImage *headImg=[[UIImage alloc]init];
+//                    headImg = [UIImage imageNamed:@"translator"];
+//                    [self.headImageView setImage:headImg];
+//                }else{
+//                    [self.headImageView setImage:image];
+//                }
+//            }];
+//            [userDfault setObject:@"2" forKey:@"userHead"];
+//        }else if([userHeadMark isEqualToString:@"2"]){
+//        
+//            [self.headImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"translator"] options:SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//                if(!image){
+//                    UIImage *headImg=[[UIImage alloc]init];
+//                    headImg = [UIImage imageNamed:@"translator"];
+//                    [self.headImageView setImage:headImg];
+//                }else{
+//                    
+//                    [self.headImageView setImage:image];
+//                
+//                }
+//                NSLog(@"这里可以在图片加载完成之后做些事情");
+//                
+//            }];
+//            
+//        }else{
+//            UIImage *headImg=[[UIImage alloc]init];
+//            headImg = [UIImage imageNamed:@"translator"];
+//            [self.headImageView setImage:headImg];
+//        
+//        }
+        
+        
+       
 //        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
         
         
-        [self.headImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-            NSLog(@"这里可以在图片加载完成之后做些事情");
-            if(!image){
-                UIImage *headImg=[[UIImage alloc]init];
-                headImg = [UIImage imageNamed:@"translator"];
-                [self.headImageView setImage:headImg];
-            }
-            
-            
-        }];
-
+//        [self.headImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//            
+//            NSLog(@"这里可以在图片加载完成之后做些事情");
+//            if(!image){
+//                UIImage *headImg=[[UIImage alloc]init];
+//                headImg = [UIImage imageNamed:@"translator"];
+//                [self.headImageView setImage:headImg];
+//            }
+//            
+//            
+//        }];
+//
         
-        
-        
+       
 //        UIImage *headImg=[[UIImage alloc]init];
 //        headImg=[UIImage imageWithData:data];
 //        if(headImg){
@@ -155,9 +200,9 @@
 -(void)getHeadViewImageWithID:(NSString *)userID{
 
     
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-    NSString *name = user_id[@"user_id"];
+    
+
+    NSString *name = userID;
     
     NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
     
@@ -170,7 +215,12 @@
 //    if ([userID isEqualToString:@"001"]) {
         self.headImageView.layer.masksToBounds=YES;
         self.headImageView.layer.cornerRadius=44/2.0f;
+    if(img){
         [self.headImageView setImage:img];
+    }else{
+        img=[UIImage imageNamed:@"translator"];
+        [self.headImageView setImage:img];
+    }
 //    }
     
     
