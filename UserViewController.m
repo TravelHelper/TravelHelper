@@ -530,28 +530,30 @@
             NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
             NSString *urlStr=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
             NSURL *url = [NSURL URLWithString:urlStr];
-            [_avatarImag sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                
-                NSLog(@"这里可以在图片加载完成之后做些事情");
-                if(!image){
-                    _avatarImag.image = [UIImage imageNamed:@"translator"];
-                }else{
-                    it=false;
-                }
-                
-                
-            }];
-//            NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-//            _photoImg=[UIImage imageWithData:data];
+            
+//            UIImage *needImg=[UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+//            [_avatarImag sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//                
+//                NSLog(@"这里可以在图片加载完成之后做些事情");
+//                if(!image){
+//                    _avatarImag.image = [UIImage imageNamed:@"translator"];
+//                }else{
+//                    it=false;
+//                }
+//                
+//                
+//            }];
+            NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:urlStr]];
+            _photoImg=[UIImage imageWithData:data];
             [cell addSubview:_avatarImag];
-//            if(_photoImg){
-//                _avatarImag.image = _photoImg;
-//                [cell addSubview:_avatarImag];
-//                it=false;
-//            }else{
-//                _avatarImag.image = [UIImage imageNamed:@"translator"];
-//                [cell addSubview:_avatarImag];
-//            }
+            if(_photoImg){
+                _avatarImag.image = _photoImg;
+                [cell addSubview:_avatarImag];
+                it=false;
+            }else{
+                _avatarImag.image = [UIImage imageNamed:@"translator"];
+                [cell addSubview:_avatarImag];
+            }
             cell.nameLable.frame=CGRectMake(70, 7, 150, 40);
 //            [cell addSubview:self.starView];
             [WebAgent userid:user_id[@"user_id"] success:^(id responseObject) {

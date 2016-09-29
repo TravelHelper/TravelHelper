@@ -21,7 +21,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.delbtn.frame = CGRectMake(self.frame.size.width-30, 0, 30, 30);
+//    self.delbtn.frame = CGRectMake(self.frame.size.width-50, 0, 40, 40);
     
 }
 
@@ -29,7 +29,7 @@
 {
     if(!_delbtn)
     {
-        _delbtn = [[UIButton alloc] init];
+        _delbtn = [[UIButton alloc] initWithFrame: CGRectMake(self.frame.size.width-50, 0, 40, 40)];
         [_delbtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
     }
     return _delbtn;

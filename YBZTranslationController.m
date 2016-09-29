@@ -41,7 +41,7 @@
 //#define MJRandomData [NSString stringWithFormat:@"随机数据---%d", arc4random_uniform(1000000)]
 
 
-@interface YBZTranslationController () <UIScrollViewDelegate , UIGestureRecognizerDelegate , UITableViewDelegate , UITableViewDataSource>
+@interface YBZTranslationController () <UIScrollViewDelegate , UIGestureRecognizerDelegate , UITableViewDelegate , UITableViewDataSource,CLLocationManagerDelegate>
 
 @property (nonatomic, strong, null_resettable) UITableView *tableView;
 
@@ -240,8 +240,8 @@
      self.tabBarController.tabBar.hidden=YES;
     [self getLoginState];
     [self userIdentifierClick];
-    self.advertimageview.frame = CGRectMake(0, UIScreenHeight-130, UIScreenWidth, 130);
-    self.clontbtn.frame = CGRectMake(UIScreenWidth-30, UIScreenHeight-130, 30, 30);
+    self.advertimageview.frame = CGRectMake(0, UIScreenHeight-UIScreenWidth*0.3625, UIScreenWidth, UIScreenWidth*0.3625);
+    self.clontbtn.frame = CGRectMake(UIScreenWidth-45, UIScreenHeight-UIScreenWidth*0.3625, 40, 40);
 }
 
 -(YBZadvertisingimageView *)advertimageview
@@ -251,6 +251,8 @@
         _advertimageview = [[YBZadvertisingimageView alloc] init];
         _advertimageview.image = [UIImage imageNamed:@"ad"];
         [self.view bringSubviewToFront:self.advertimageview];
+        _advertimageview.delbtn.frame=CGRectMake(UIScreenWidth-50, -10, 40, 40);
+        
         [_advertimageview.delbtn addTarget:self action:@selector(clonebtnclick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _advertimageview;
@@ -541,6 +543,12 @@
             
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，该用户请求已经被别人抢先接单了！" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                NSString *user_id = (NSString *)userID[@"user_id"];
+                [WebAgent exchangePushCount: user_id AndState:@"抢单失败" success:^(id responseObject) {
+                    
+                } failure:^(NSError *error) {
+                    
+                }];
             }];
             [alertVC addAction:okAction];
             [self presentViewController:alertVC animated:YES completion:nil];
@@ -1602,7 +1610,7 @@
 
 -(void)nextpus
 {
-    
+    NSLog(@"定位点击事件");
 }
 
 -(void)positioning
@@ -1637,6 +1645,7 @@
 }
 
 #pragma mark - CoreLocation Delegate
+
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {

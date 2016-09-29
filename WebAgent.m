@@ -290,7 +290,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
        failure:(void (^)(NSError *error))failure
 {
     
-    
+
     NSDictionary *dict = @{@"user_id":user_id,
                            @"user_feedbackinfo":user_feedbackinfo,
                            @"feedbackinfo_time":feedbackinfo_time,
@@ -1058,5 +1058,22 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
 }
 
-
++(void)exchangePushCount:(NSString *)user_id
+                AndState:(NSString *)state
+                 success:(void (^)(id responseObject))success
+                 failure:(void (^)(NSError *error))failure{
+    
+    
+    NSDictionary *dict = @{@"user_id":user_id,
+                                            @"state" :state
+                                        };
+    [[APIClient sharedClient] POST:@"QuickTrans/exchangePushCount/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
 @end

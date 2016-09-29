@@ -28,6 +28,7 @@
 @implementation YBZtoalertView{
 
     int needIndex;
+    NSString *userID;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame andModel:(YBZtoAlertModel *)model
@@ -43,6 +44,10 @@
         [self addSubview:self.refuseBtn];
         [self addSubview:self.alertLabel];
         [self addSubview:self.alertTableView];
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        userID = user_id[@"user_id"];
+        
     }
     return self;
 }
@@ -165,7 +170,7 @@
     if(!_refuseBtn){
         _refuseBtn=[[UIButton alloc]init];
         [_refuseBtn addTarget:self action:@selector(backBtnClick) forControlEvents:UIControlEventTouchUpInside];
-        [_refuseBtn setTitle:@"拒 绝" forState:UIControlStateNormal];
+        [_refuseBtn setTitle:@"放 弃" forState:UIControlStateNormal];
 //        _refuseBtn.titleLabel.font=[UIFont systemFontOfSize:20];
         _refuseBtn.backgroundColor=[UIColor redColor];
         _refuseBtn.layer.masksToBounds=YES;
@@ -178,7 +183,11 @@
 
     NSLog(@"返回");
     [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
-
+    [WebAgent exchangePushCount:userID AndState:@"拒绝" success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 //    [self removeFromSuperview];
 //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
 //    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
@@ -192,16 +201,26 @@
 -(void)addModel:(YBZtoAlertModel *)model{
 
     int j=0;
+    int count=0;
     for(int i=0;i<self.dataSource.count;i++){
     
         YBZtoAlertModel *nowModel=self.dataSource[i];
         if([nowModel.messionID isEqualToString:model.messionID]){
             j=1;
         }
-        
+        count++;
     }
     if(j==0){
-        [self.dataSource addObject:model];
+//        [self.dataSource addObject:model];
+        
+        for(int k=count;k>=0;k--){
+            if(k!=0){
+                self.dataSource[k]=self.dataSource[k-1];
+            }else{
+                self.dataSource[k]=model;
+            }
+        }
+        
         [self.alertTableView reloadData];
     }
 }

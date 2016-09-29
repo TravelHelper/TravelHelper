@@ -180,6 +180,17 @@
             NSLog(@"%@",responseObject);
           
             
+            NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
+            
+            NSString *userHeadMark=(NSString *)[userDfault objectForKey:@"userHead"];
+            if([userHeadMark isEqualToString:@"1"]){
+                [userDfault setObject:@"2" forKey:@"userHead"];
+            }else{
+                [userDfault setObject:@"1" forKey:@"userHead"];
+               
+            }
+
+            
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"%@",error);
             
