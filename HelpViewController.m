@@ -10,6 +10,7 @@
 #import "AFNetworking.h"
 #import "WebAgent.h"
 #import "APIClient.h"
+#import "MBProgressHUD+XMG.h"
 #define kScreenWith  [UIScreen mainScreen].bounds.size.width
 
 @interface HelpViewController ()
@@ -83,6 +84,8 @@
                 NSData *data = [[NSData alloc]initWithData:responseObject];
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSLog(@"%@",dic);
+                [MBProgressHUD showSuccess:@"提交成功!"];
+                [self.navigationController popViewControllerAnimated:YES];
             } failure:^(NSError *error) {
                 NSLog(@"%@",error);
             }

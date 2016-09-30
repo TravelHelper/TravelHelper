@@ -23,9 +23,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.title = @"关于游帮主";
+    self.title = @"关于嗨番";
     
-    UIImage* image = [UIImage imageNamed:@"Logo"];
+    UIImage* image = [UIImage imageNamed:@"translator"];
     UIImageView *logoYBZ   = [[UIImageView alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, 130)];
     [logoYBZ setImage:image];
     logoYBZ.contentMode =  UIViewContentModeCenter;
