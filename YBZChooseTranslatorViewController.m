@@ -225,37 +225,45 @@
 -(void)agreeToBecomeTranslator{
 
     NSLog(@"1");
-    [MBProgressHUD showMessage:@"上传数据中"];
-    userLanguage = [NSString string];
+    if (_chooseLanguageArr.count == 0) {
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"警告" message:@"请至少选择一种语言" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [alertVC addAction:cancelAction];
+        [self presentViewController:alertVC animated:YES completion:nil];
 
-    for (int i=0; i<_chooseLanguageArr.count; i++) {
-        NSString *str = _chooseLanguageArr[i];
-        if (i==0) {
-            userLanguage = str;
-        }else{
-            userLanguage = [userLanguage stringByAppendingString:[NSString stringWithFormat:@",%@",str]];
+    }else{
+        [MBProgressHUD showMessage:@"上传数据中"];
+        userLanguage = [NSString string];
+
+        for (int i=0; i<_chooseLanguageArr.count; i++) {
+            NSString *str = _chooseLanguageArr[i];
+            if (i==0) {
+                userLanguage = str;
+            }else{
+                userLanguage = [userLanguage stringByAppendingString:[NSString stringWithFormat:@",%@",str]];
+            }
         }
-    }
-    
-    [WebAgent userIdentity:@"译员" userLanguage:userLanguage userID:userID success:^(id responseObject) {
-        if (isTranslator == NO) {
-            [WebAgent addTranslatorInfo:userID success:^(id responseObject) {
+        
+        [WebAgent userIdentity:@"译员" userLanguage:userLanguage userID:userID success:^(id responseObject) {
+            if (isTranslator == NO) {
+                [WebAgent addTranslatorInfo:userID success:^(id responseObject) {
+                    [MBProgressHUD hideHUD];
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                } failure:^(NSError *error) {
+                    [MBProgressHUD hideHUD];
+                    [MBProgressHUD showError:@"网络连接失败,请重试"];
+                }];
+            }else{
                 [MBProgressHUD hideHUD];
                 [self.navigationController popViewControllerAnimated:YES];
-
-            } failure:^(NSError *error) {
-                [MBProgressHUD hideHUD];
-                [MBProgressHUD showError:@"网络连接失败,请重试"];
-            }];
-        }else{
-            [MBProgressHUD hideHUD];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-//        [self.navigationController popToRootViewControllerAnimated:YES];
-    } failure:^(NSError *error) {
-        
-    }];
-    
+            }
+            //        [self.navigationController popToRootViewControllerAnimated:YES];
+        } failure:^(NSError *error) {
+            
+        }];
+    }
     
 }
 
@@ -277,23 +285,42 @@
 
 -(void)changeLanguage:(UIButton *)sender{
 
-    NSString *language = _chooseLanguageArr[sender.tag];
-    for (NSString *str in _chooseLanguageArr) {
-        if (language == str) {
-            [_chooseLanguageArr removeObject:str];
-            break;
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否放弃该语种译员" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"放弃" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSString *language = _chooseLanguageArr[sender.tag];
+        for (NSString *str in _chooseLanguageArr) {
+            if (language == str) {
+                [_chooseLanguageArr removeObject:str];
+                break;
+            }
         }
-    }
-    [self clearAllViews];
-    
-    NSLog(@"%@",language);
-    YBZOtherViewController *vc = [[YBZOtherViewController alloc]init];
-    vc.chooseLanguageArr = [NSMutableArray array];
-    [vc.chooseLanguageArr addObjectsFromArray:_chooseLanguageArr];
-    [vc setAddLanguageBlock:^(NSString *string) {
-        [_chooseLanguageArr addObject:string];
+        [self clearAllViews];
+        [self createLanguageImageWithData];
     }];
-    [self.navigationController pushViewController:vc animated:YES];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:okAction];
+    [alertVC addAction:cancelAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
+
+//    NSString *language = _chooseLanguageArr[sender.tag];
+//    for (NSString *str in _chooseLanguageArr) {
+//        if (language == str) {
+//            [_chooseLanguageArr removeObject:str];
+//            break;
+//        }
+//    }
+//    [self clearAllViews];
+//    
+//    NSLog(@"%@",language);
+//    YBZOtherViewController *vc = [[YBZOtherViewController alloc]init];
+//    vc.chooseLanguageArr = [NSMutableArray array];
+//    [vc.chooseLanguageArr addObjectsFromArray:_chooseLanguageArr];
+//    [vc setAddLanguageBlock:^(NSString *string) {
+//        [_chooseLanguageArr addObject:string];
+//    }];
+//    [self.navigationController pushViewController:vc animated:YES];
 
 }
 
