@@ -213,15 +213,15 @@
 
     });
     
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-    YBZtoAlertModel *model=[[YBZtoAlertModel alloc]init];
-    model.translatorID=user_id[@"user_id"];
-    model.yonghuID=user_id[@"user_id"];
-    model.language_catgory=@"美语";
-    YBZtoalertView *alertView=[[YBZtoalertView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-112, SCREEN_HEIGHT/2-170, 224, 340) andModel:model];
-//    alertView.backgroundColor=[UIColor redColor];
-    [self.view addSubview:alertView];
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//    YBZtoAlertModel *model=[[YBZtoAlertModel alloc]init];
+//    model.translatorID=user_id[@"user_id"];
+//    model.yonghuID=user_id[@"user_id"];
+//    model.language_catgory=@"美语";
+//    YBZtoalertView *alertView=[[YBZtoalertView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-112, SCREEN_HEIGHT/2-170, 224, 340) andModel:model];
+////    alertView.backgroundColor=[UIColor redColor];
+//    [self.view addSubview:alertView];
     
     [self.view addSubview:self.advertimageview];
     [self.view addSubview:self.clontbtn];
