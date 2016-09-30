@@ -370,6 +370,16 @@
                     } failure:^(NSError *error) {
                         
                     }];
+                    [WebAgent changeTranslatorBusy:userID state:@"0" success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                        }];
+                        [alertVC addAction:okAction];
+                        [self presentViewController:alertVC animated:YES completion:nil];
+                    }];
+
                     [WebAgent stopFindingTranslator:userID missionID:@"无" success:^(id responseObject) {
                         
                     } failure:^(NSError *error) {
