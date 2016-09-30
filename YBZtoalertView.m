@@ -374,7 +374,7 @@
             if(i==self.dataSource.count-1){
                 
                 if(self.dataSource.count==0){
-                
+                  [MBProgressHUD hideHUD];
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
                     [WebAgent exchangePushCount:userID AndState:@"拒绝" success:^(id responseObject) {
                         
