@@ -32,6 +32,8 @@
     NSString *userID;
     NSIndexPath *needIndexPatch;
     NSInteger numberIndex;
+    NSInteger allNumerCount;
+    NSInteger nowIndex;
     
 }
 
@@ -310,6 +312,9 @@
             [MBProgressHUD showSuccess:@"该用户已取消订单"];
             dispatch_async(dispatch_get_main_queue(), ^{
                 
+                [self.alertNeedView removeFromSuperview];
+                [self.hubView removeFromSuperview];
+                
                 NSInteger resultCount=self.dataSource.count;
                 
                 if(resultCount>1){
@@ -364,66 +369,86 @@
     
     [MBProgressHUD showMessage:@"刷新数据中"];
     
-    NSInteger resultCount=self.dataSource.count;
+    allNumerCount=self.dataSource.count;
+    numberIndex=-1;
+    nowIndex=0;
+    [self textforState];
+}
+
+
+-(void)textforState{
     
-    numberIndex=0;
-    for(int i=0;i<resultCount;i++){
+        numberIndex++;
     
-       
-        
-        YBZtoAlertModel *model=self.dataSource[i];
+        YBZtoAlertModel *model=self.dataSource[numberIndex];
         
         [WebAgent selectCancelState:model.messionID success:^(id responseObject) {
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSString *cancelState = dic[@"data"];
             if ([cancelState isEqualToString:@"0"]) {
-//                [self.hubView removeFromSuperview];
-//                [self.alertNeedView removeFromSuperview];
-//                [MBProgressHUD showSuccess:@"匹配中,请等待"];
-//                //    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
-//                [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":model.yonghuID,@"language_catgory":model.language_catgory,@"pay_number":model.pay_number,@"messionID":model.messionID}];
-                numberIndex++;
-                if( numberIndex==resultCount){
+                //                [self.hubView removeFromSuperview];
+                //                [self.alertNeedView removeFromSuperview];
+                //                [MBProgressHUD showSuccess:@"匹配中,请等待"];
+                //                //    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+                //                [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":model.yonghuID,@"language_catgory":model.language_catgory,@"pay_number":model.pay_number,@"messionID":model.messionID}];
+//                numberIndex++;
+                
+                nowIndex++;
+                
+                if(numberIndex==allNumerCount-1){
                     [MBProgressHUD hideHUD];
+                    [self.alertTableView reloadData];
                     [MBProgressHUD showSuccess:@"刷新成功"];
                     
+                }else{
+                    [self textforState];
                 }
                 
             }else if([cancelState isEqualToString:@"1"]){
-//                [MBProgressHUD showSuccess:@"该用户已取消订单"];
-                 NSInteger nowCount=self.dataSource.count;
+                //                [MBProgressHUD showSuccess:@"该用户已取消订单"];
+//                NSInteger nowCount=self.dataSource.count;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
+                    NSInteger realCount=self.dataSource.count;
                     
-//                    if(i==resultCount-1){
+                    if(realCount==1){
                     
-                        if(nowCount==1){
+                        [MBProgressHUD hideHUD];
+                        [MBProgressHUD showError:@"暂无在线订单"];
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+                        
+                        
+                        [WebAgent exchangePushCount: userID AndState:@"抢单失败" success:^(id responseObject) {
                             
+                        } failure:^(NSError *error) {
+                            
+                        }];
+                    }else{
+                        [WebAgent exchangePushCount: userID AndState:@"抢单失败" success:^(id responseObject) {
+                            
+                        } failure:^(NSError *error) {
+                            
+                        }];
+                        [self.dataSource removeObjectAtIndex:numberIndex];
+                        numberIndex--;
+                        allNumerCount--;
+                        if(numberIndex==allNumerCount-1){
                             [MBProgressHUD hideHUD];
-                            [MBProgressHUD showError:@"暂无在线订单"];
-                            [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
-                            [WebAgent exchangePushCount:userID AndState:@"拒绝" success:^(id responseObject) {
-                                
-                            } failure:^(NSError *error) {
-                                
-                            }];
+                            [self.alertTableView reloadData];
+                            [MBProgressHUD showSuccess:@"刷新成功"];
                             
                         }else{
-                            [self.dataSource removeObjectAtIndex:i];
-                            [self.alertTableView reloadData];
-                            [MBProgressHUD hideHUD];
-                            
+                            [self textforState];
                         }
-//                    }
+                    
+                    }
+                    
+                    
 
-                    
-                    
-                    
-//                    [self.alertTableView deleteRowsAtIndexPaths:@[needIndexPatch] withRowAnimation:UITableViewRowAnimationAutomatic];
                 });
                 
-              
+                
                 
             }
             
@@ -431,11 +456,12 @@
         } failure:^(NSError *error) {
             [MBProgressHUD showSuccess:@"网络连接不稳定,请重试"];
         }];
-
+        
+        
         
         
     
-    }
+
 
 }
 

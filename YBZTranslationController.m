@@ -554,6 +554,7 @@
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，该用户请求已经被别人抢先接单了！" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 NSString *user_id = (NSString *)userID;
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
                 [WebAgent exchangePushCount: user_id AndState:@"抢单失败" success:^(id responseObject) {
                     
                 } failure:^(NSError *error) {
