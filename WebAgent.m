@@ -1094,7 +1094,21 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 }
 
-
++(void)changeTranslatorBusy:(NSString *)user_id
+                      state:(NSString *)state
+              success:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure{
+    
+    NSDictionary *dict = @{@"user_id":user_id
+                                            ,@"state":state};
+    [[APIClient sharedClient] POST:@"QuickTrans/changeTranslatorBusy/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
 
 
 @end

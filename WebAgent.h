@@ -346,4 +346,10 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)getSwitchState:(NSString *)user_id
               success:(void (^)(id responseObject))success
               failure:(void (^)(NSError *error))failure;
+
++(void)changeTranslatorBusy:(NSString *)user_id
+                      state:(NSString *)state
+                    success:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure;
+
 @end

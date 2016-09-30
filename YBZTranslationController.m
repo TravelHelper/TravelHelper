@@ -506,12 +506,11 @@
     }
     
     
-    NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-    NSDictionary *userID = [userdefault objectForKey:@"user_id"];
+
     
     
     
-    [WebAgent interpreterStateWithuserId:yonghuID andmessionID:messionID andAnswerID:userID[@"user_id"] success:^(id responseObject) {
+    [WebAgent interpreterStateWithuserId:yonghuID andmessionID:messionID andAnswerID:userID success:^(id responseObject) {
        
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -523,9 +522,20 @@
             [MBProgressHUD showSuccess:@"匹配成功"];
             
             self.hidesBottomBarWhenPushed = YES;
-            QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID[@"user_id"] WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
-            [self.navigationController pushViewController:quickVC animated:YES];
-            //self.hidesBottomBarWhenPushed = NO;
+            [WebAgent changeTranslatorBusy:userID state:@"1" success:^(id responseObject) {
+                QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
+                [self.navigationController pushViewController:quickVC animated:YES];
+                
+            } failure:^(NSError *error) {
+                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                }];
+                [alertVC addAction:okAction];
+                [self presentViewController:alertVC animated:YES completion:nil];
+            }];
+
+            
+
             
 
 //            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
@@ -534,7 +544,7 @@
             [userdefault setObject:messionID forKey:@"messageId"];
             
 //            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID[@"user_id"] WithMessionID:messionID success:^(id responseObject) {
+            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID WithMessionID:messionID success:^(id responseObject) {
                 NSLog(@"反馈推送—匹配成功通知成功！");
             } failure:^(NSError *error) {
                 NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);
@@ -543,7 +553,7 @@
             
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，该用户请求已经被别人抢先接单了！" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                NSString *user_id = (NSString *)userID[@"user_id"];
+                NSString *user_id = (NSString *)userID;
                 [WebAgent exchangePushCount: user_id AndState:@"抢单失败" success:^(id responseObject) {
                     
                 } failure:^(NSError *error) {

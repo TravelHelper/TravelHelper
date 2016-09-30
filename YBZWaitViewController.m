@@ -11,6 +11,7 @@
 #import "YBZGifView.h"
 #import "AFNetworking.h"
 #import "WebAgent.h"
+#import "MBProgressHUD+XMG.h"
 #import <Foundation/Foundation.h>
 
 @interface YBZWaitViewController ()
@@ -147,8 +148,17 @@
                     NSLog(@"反馈推送—进入聊天通知成功！");
                     //注销
                     [timer invalidate];
-                    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:resultData[0][@"user_id"] WithUserIdentifier:@"USER" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
-                    [self.navigationController pushViewController:quickVC animated:YES];
+                    [WebAgent changeTranslatorBusy:userID state:@"1" success:^(id responseObject) {
+                        QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:resultData[0][@"user_id"] WithUserIdentifier:@"USER" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+                        [self.navigationController pushViewController:quickVC animated:YES];
+                        
+                    } failure:^(NSError *error) {
+                        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                        }];
+                        [alertVC addAction:okAction];
+                        [self presentViewController:alertVC animated:YES completion:nil];        }];
+
                 } failure:^(NSError *error) {
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"进入聊天页面失败" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
                     [alert show];
@@ -344,18 +354,19 @@
         TransLanguage = Trans_YiDaLiYu;
     }
 
-    
-    NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-    NSDictionary *userIDDictionary = [userdefault objectForKey:@"user_id"];
-    NSString *userID=userIDDictionary[@"user_id"];
-    
+
     [timer invalidate];
+    [WebAgent changeTranslatorBusy:userID state:@"1" success:^(id responseObject) {
+            QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:translatorId WithUserIdentifier:@"USER" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
+        [self.navigationController pushViewController:quickVC animated:YES];
+
+    } failure:^(NSError *error) {
+        [MBProgressHUD showError:@"网络连接错误"];
+    }];
+
     
-    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:translatorId WithUserIdentifier:@"USER" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
     
     
-    
-    [self.navigationController pushViewController:quickVC animated:YES];
   
 }
 

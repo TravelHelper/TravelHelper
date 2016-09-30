@@ -1761,9 +1761,19 @@
 }
 
 -(void)backToRoot{
-    [MBProgressHUD showSuccess:@"用户已退出聊天"];
+    [MBProgressHUD showSuccess:@"对方已退出聊天"];
     [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [WebAgent changeTranslatorBusy:userIDinfo state:@"0" success:^(id responseObject) {
+        
+            [self.navigationController popToRootViewControllerAnimated:YES];
+
+        } failure:^(NSError *error) {
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            }];
+            [alertVC addAction:okAction];
+            [self presentViewController:alertVC animated:YES completion:nil];
+        }];
     } failure:^(NSError *error) {
     }];
 }
@@ -1781,24 +1791,35 @@
                 
                 if([self.userIdentifier isEqualToString:@"TRANSTOR"])
                 {
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                    [WebAgent interpreterRequireStateWithuserId:self.user_id success:^(id responseObject) {
+                    [WebAgent changeTranslatorBusy:userIDinfo state:@"0" success:^(id responseObject) {
                         
+                        [self.navigationController popToRootViewControllerAnimated:YES];
                         
-                            NSLog(@"译员成功返回首页");
-                        
-                        
-                        } failure:^(NSError *error) {
-                            NSLog(@"译员未返回首页");
-                        
+                    } failure:^(NSError *error) {
+                        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                         }];
+                        [alertVC addAction:okAction];
+                        [self presentViewController:alertVC animated:YES completion:nil];
+                    }];
+
                     }
                     else
                     {
-                    
-                        FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.    target_id];
-                        [self.navigationController pushViewController:fbvc animated:YES];
-                    }
+                        [WebAgent changeTranslatorBusy:userIDinfo state:@"0" success:^(id responseObject) {
+                            
+                            FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.    target_id];
+                            [self.navigationController pushViewController:fbvc animated:YES];
+                            
+                        } failure:^(NSError *error) {
+                            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                            }];
+                            [alertVC addAction:okAction];
+                            [self presentViewController:alertVC animated:YES completion:nil];
+                        }];
+
+                                         }
                 
                 
                 } failure:^(NSError *error) {
