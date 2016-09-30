@@ -923,7 +923,7 @@
                 int needNumber=18-countDownNumber;
                 
                 if(needNumber>=6){
-                    [MBProgressHUD showMessage:@"翻译中，暂识只别五秒内文字"];
+                    [MBProgressHUD showMessage:@"翻译中，长句只能识别部分文字"];
                 }else{
                     [MBProgressHUD showMessage:@"翻译中"];
                 }
