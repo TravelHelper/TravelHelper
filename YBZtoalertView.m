@@ -19,7 +19,8 @@
 @property (nonatomic, strong) UILabel        *alertLabel;
 @property (nonatomic, strong) UIButton       *refuseBtn;
 @property (nonatomic, strong) UIView         *alertNeedView;
-@property (nonatomic,strong) UIView             *hubView;
+@property (nonatomic, strong) UIView             *hubView;
+@property (nonatomic, strong) UIButton       *refreshBtn;
 
 
 @end
@@ -29,6 +30,7 @@
 
     int needIndex;
     NSString *userID;
+    NSIndexPath *needIndexPatch;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame andModel:(YBZtoAlertModel *)model
@@ -41,9 +43,11 @@
         [self.dataSource addObject:model];
         self.alertTableView.frame=CGRectMake(0, 50, self.bounds.size.width, self.bounds.size.height-120);
         self.refuseBtn.frame=CGRectMake(self.bounds.size.width/2-50,self.bounds.size.height-50 , 100, 35);
+        self.refreshBtn.frame=CGRectMake(self.bounds.size.width-50,5,50, 35);
         [self addSubview:self.refuseBtn];
         [self addSubview:self.alertLabel];
         [self addSubview:self.alertTableView];
+        [self addSubview:self.refreshBtn];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
         userID = user_id[@"user_id"];
@@ -127,6 +131,7 @@
     YBZtoAlertModel *model=self.dataSource[indexPath.row];
     NSLog(@"%@",model.yonghuID);
     needIndex=(int)indexPath.row;
+    needIndexPatch=indexPath;
     [self addSubview:self.hubView];
     [self addSubview:self.alertNeedView];
 
@@ -159,7 +164,7 @@
     
         _alertLabel=[[UILabel alloc]initWithFrame:CGRectMake(self.bounds.size.width/2-100,0, 200, 50)];
         _alertLabel.textAlignment=NSTextAlignmentCenter;
-        _alertLabel.text=@"收到翻译请求列表";
+        _alertLabel.text=@"请求列表";
     }
 
     return _alertLabel;
@@ -301,6 +306,14 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":model.yonghuID,@"language_catgory":model.language_catgory,@"pay_number":model.pay_number,@"messionID":model.messionID}];
         }else if([cancelState isEqualToString:@"1"]){
             [MBProgressHUD showSuccess:@"该用户已取消订单"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.dataSource removeObjectAtIndex:needIndex];
+                [self.alertTableView deleteRowsAtIndexPaths:@[needIndexPatch] withRowAnimation:UITableViewRowAnimationAutomatic];
+            });
+
+            
+         
+           
         }
     } failure:^(NSError *error) {
         [MBProgressHUD showSuccess:@"网络连接不稳定，匹配失败"];
@@ -323,6 +336,83 @@
         [_hubView addGestureRecognizer:tap];
     }
     return _hubView;
+}
+-(void)refreshBtnClick{
+
+    NSLog(@"refresh");
+    
+    [MBProgressHUD showMessage:@"刷新数据中"];
+    
+    for(int i=0;i<self.dataSource.count;i++){
+    
+        
+        
+        YBZtoAlertModel *model=self.dataSource[i];
+        
+        [WebAgent selectCancelState:model.messionID success:^(id responseObject) {
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSString *cancelState = dic[@"data"];
+            if ([cancelState isEqualToString:@"0"]) {
+//                [self.hubView removeFromSuperview];
+//                [self.alertNeedView removeFromSuperview];
+//                [MBProgressHUD showSuccess:@"匹配中,请等待"];
+//                //    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+//                [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":model.yonghuID,@"language_catgory":model.language_catgory,@"pay_number":model.pay_number,@"messionID":model.messionID}];
+            }else if([cancelState isEqualToString:@"1"]){
+//                [MBProgressHUD showSuccess:@"该用户已取消订单"];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.dataSource removeObjectAtIndex:i];
+//                    [self.alertTableView deleteRowsAtIndexPaths:@[needIndexPatch] withRowAnimation:UITableViewRowAnimationAutomatic];
+                });
+                
+              
+                
+            }
+            
+            if(i==self.dataSource.count-1){
+                
+                if(self.dataSource.count==0){
+                
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+                    [WebAgent exchangePushCount:userID AndState:@"拒绝" success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                    
+                }else{
+                    [self.alertTableView reloadData];
+                    [MBProgressHUD hideHUD];
+                }
+            }
+            
+        } failure:^(NSError *error) {
+            [MBProgressHUD showSuccess:@"网络连接不稳定，匹配失败"];
+        }];
+
+        
+        
+    
+    }
+
+}
+
+
+-(UIButton *)refreshBtn{
+
+    if(!_refreshBtn){
+        _refreshBtn=[[UIButton alloc]init];
+        [_refreshBtn addTarget:self action:@selector(refreshBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [_refreshBtn setTitle:@"刷新" forState:UIControlStateNormal];
+        _refreshBtn.titleLabel.font=[UIFont systemFontOfSize:0.04*SCREEN_WIDTH];
+        _refreshBtn.backgroundColor=[UIColor clearColor];
+//        _refreshBtn.layer.masksToBounds=YES;
+//        _refreshBtn.layer.cornerRadius=0.03*SCREEN_WIDTH;
+        [_refreshBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    }
+    return _refreshBtn;
 }
 
 

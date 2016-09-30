@@ -1171,6 +1171,7 @@
 -(void)countDown{
     
     countDownNumber--;
+    
     if(countDownNumber<=3){
         recordMark=0;
         //        UITouch *touch = [[event touchesForView:button] anyObject];
@@ -1179,7 +1180,7 @@
         //        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].x]) ;
         //        NSLog(@"%@",[NSString stringWithFormat:@"%0.0f", [touch locationInView:touch.view].y]) ;
         //        NSLog(@"ButtonEnded!");
-        [MBProgressHUD showError:@"话语长度不能大于5s"];
+        [MBProgressHUD showError:@"话语长度不能大于15s"];
         [self removeRecordPageView];
         
         if (self.isCancelSendRecord == YES) {
@@ -1188,7 +1189,7 @@
             
             [self.cwViewController cancelButtonClick];
             self.isZero = YES;
-            [self iFlySpeechRecognizerStop];
+            //            [MBProgressHUD hideHUD];
             iFlySpeechRecognizerString = @"";
             
         }else{
@@ -1197,6 +1198,8 @@
             [self.cwViewController recordButtonClick];
             
             [self iFlySpeechRecognizerStop];
+            //            [self iFlySpeechRecognizerStop];
+            [self sendRecordAudioWithRecordURLString:self.cellMessageID];
             
             //        if ([self.cwViewController.secondString intValue] < 1 ) {
             //
@@ -1226,6 +1229,7 @@
         [timer invalidate];
         
     }
+    
     
     NSLog(@"aa");
     
@@ -1418,7 +1422,7 @@
                     int needNumber=18-countDownNumber;
                     
                     if(needNumber>=6){
-                        [MBProgressHUD showMessage:@"发送中，暂只识别五秒内文字"];
+                        [MBProgressHUD showMessage:@"发送中，长句只能识别部分文字"];
                     }else{
                         [MBProgressHUD showMessage:@"发送中"];
                     }
