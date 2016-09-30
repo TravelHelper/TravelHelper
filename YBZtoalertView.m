@@ -308,7 +308,20 @@
             [MBProgressHUD showSuccess:@"该用户已取消订单"];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.dataSource removeObjectAtIndex:needIndex];
+                
+                if(self.dataSource.count==0){
+                
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
+                    [WebAgent exchangePushCount:userID AndState:@"拒绝" success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                    
+                }else{
+                
                 [self.alertTableView deleteRowsAtIndexPaths:@[needIndexPatch] withRowAnimation:UITableViewRowAnimationAutomatic];
+                }
             });
 
             
@@ -375,6 +388,7 @@
                 
                 if(self.dataSource.count==0){
                 
+                     [MBProgressHUD hideHUD];
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
                     [WebAgent exchangePushCount:userID AndState:@"拒绝" success:^(id responseObject) {
                         
