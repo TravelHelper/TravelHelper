@@ -15,10 +15,17 @@
 @property (nonatomic,strong) UITableView *tongyongTabView;
 @end
 
-@implementation YBZTongyongViewController
+@implementation YBZTongyongViewController{
+
+    NSString *userID;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    userID = user_id[@"user_id"];
+    [self getSwitchState];
     self.tongyongTabView.delegate = self;
     self.tongyongTabView.dataSource = self;
     self.title = @"通用";
@@ -30,6 +37,13 @@
     // Dispose of any resources that can be recreated.
     
 }
+
+-(void)getSwitchState{
+
+
+}
+
+
 -(UITableView *)tongyongTabView
 {
     if(!_tongyongTabView){
@@ -80,15 +94,22 @@
         tuisongcell.textLabel.text = @"勿扰模式";
         UISwitch *tuisongswitch = [[UISwitch alloc]initWithFrame:CGRectMake(self.view.bounds.size.width*0.8, tuisongcell.bounds.size.height*0.1, self.view.bounds.size.width*0.15, self.view.bounds.size.height*0.8)];
         [tuisongswitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+    [WebAgent getSwitchState:userID success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        self.wuraomoshi = dic[@"allow"];
         if ([self.wuraomoshi isEqualToString:@"0"]) {
             tuisongswitch.on = YES;
         }else{
             tuisongswitch.on = NO;
         }
-        [tuisongcell addSubview:tuisongswitch];
-    
         tuisongcell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [tuisongcell addSubview:tuisongswitch];
 
+    } failure:^(NSError *error) {
+        
+    }];
+    
         return tuisongcell;
     
 

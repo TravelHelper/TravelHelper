@@ -1010,6 +1010,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
 }
 
+
+
 +(void)selectCancelState:(NSString *)mission_id
                      success:(void (^)(id responseObject))success
                      failure:(void (^)(NSError *error))failure{
@@ -1076,4 +1078,23 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
     
 }
+
+
++(void)getSwitchState:(NSString *)user_id
+                 success:(void (^)(id responseObject))success
+                 failure:(void (^)(NSError *error))failure{
+
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"QuickTrans/getSwitchState/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
+
+
+
 @end
