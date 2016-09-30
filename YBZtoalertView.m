@@ -31,6 +31,8 @@
     int needIndex;
     NSString *userID;
     NSIndexPath *needIndexPatch;
+    NSInteger numberIndex;
+    
 }
 
 - (instancetype)initWithFrame:(CGRect)frame andModel:(YBZtoAlertModel *)model
@@ -310,7 +312,10 @@
                 
                 NSInteger resultCount=self.dataSource.count;
                 
+                if(resultCount>1){
+                
                 [self.dataSource removeObjectAtIndex:needIndex];
+                }
                 
                 if(resultCount==1){
                 
@@ -361,6 +366,7 @@
     
     NSInteger resultCount=self.dataSource.count;
     
+    numberIndex=0;
     for(int i=0;i<resultCount;i++){
     
        
@@ -377,11 +383,17 @@
 //                [MBProgressHUD showSuccess:@"匹配中,请等待"];
 //                //    [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
 //                [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":model.yonghuID,@"language_catgory":model.language_catgory,@"pay_number":model.pay_number,@"messionID":model.messionID}];
+                numberIndex++;
+                if( numberIndex==resultCount){
+                    [MBProgressHUD hideHUD];
+                    [MBProgressHUD showSuccess:@"刷新成功"];
+                    
+                }
+                
             }else if([cancelState isEqualToString:@"1"]){
 //                [MBProgressHUD showSuccess:@"该用户已取消订单"];
                  NSInteger nowCount=self.dataSource.count;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.dataSource removeObjectAtIndex:i];
                     
                     
 //                    if(i==resultCount-1){
@@ -398,8 +410,10 @@
                             }];
                             
                         }else{
+                            [self.dataSource removeObjectAtIndex:i];
                             [self.alertTableView reloadData];
                             [MBProgressHUD hideHUD];
+                            
                         }
 //                    }
 

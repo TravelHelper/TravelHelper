@@ -130,7 +130,7 @@
                 //注销
                 [timer invalidate];
                 [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
-                    //                    [self.navigationController popViewControllerAnimated:YES];
+                        [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(NSError *error) {
                     
                 }];
