@@ -8,6 +8,7 @@
 
 #import "complaintViewController.h"
 #import "WebAgent.h"
+#import "MBProgressHUD+XMG.h"
 
 #define kScreenWith  [UIScreen mainScreen].bounds.size.width
 
@@ -113,6 +114,8 @@
 //        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
         NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
         [WebAgent UpdateUsertipoffWithMseeageId:mseeage_id TranslatorId:self.targetId reporterId:userID report_text:self.complaintText.text report_time:locationString success:^(id responseObject) {
+            
+            [self.complaintText resignFirstResponder];
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             
@@ -126,7 +129,7 @@
             [alertView show];
 
         } failure:^(NSError *error) {
-            
+            [MBProgressHUD showError:@"提交失败，请重试"];
         }];
 //        [WebAgent UpdateUsertipoffWithTranslatorId:self.targetId reporterId:userID report_text:self.complaintText.text report_time:locationString success:^(id responseObject) {
 //            NSData *data = [[NSData alloc] initWithData:responseObject];

@@ -248,7 +248,7 @@
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSLog(@"%@",dic);
             [MBProgressHUD hideHUD];
-            [MBProgressHUD showSuccess:@"评价成功！正在为您返回主页"];
+            [MBProgressHUD showSuccess:@"评价成功！返回主页"];
             [self.navigationController popToRootViewControllerAnimated:YES];
             
         } failure:^(NSError *error) {
