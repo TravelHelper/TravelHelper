@@ -32,6 +32,8 @@
 #import "YBZtoalertView.h"
 #import "YBZtoalertView.h"
 #import "YBZadvertisingimageView.h"
+#import "JPUSHService.h"
+
 
 
 #define kImageCount 5
@@ -226,7 +228,11 @@
     [self.view addSubview:self.advertimageview];
     [self.view addSubview:self.clontbtn];
 }
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [JPUSHService resetBadge];
 
+}
 
 
 -(void)viewWillAppear:(BOOL)animated{

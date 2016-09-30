@@ -80,8 +80,8 @@
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
 ///远程推送！！！千万不能动⬇️
 //    [JPUSHService resetBadge];
-    [JPUSHService setBadge:0];
-    [[UIApplication sharedApplication ] setApplicationIconBadgeNumber:0];
+//    [JPUSHService setBadge:0];
+    
     
     NSString *advertisingId = nil;
     //Required
@@ -106,7 +106,7 @@
             advertisingIdentifier:advertisingId];
     
     [JPUSHService resetBadge];
-    
+    [[UIApplication sharedApplication ] setApplicationIconBadgeNumber:0];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(registerAliasAndTag) name:kJPFNetworkDidLoginNotification object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textForView) name:@"textForView" object:nil];
