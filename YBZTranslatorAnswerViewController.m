@@ -184,7 +184,7 @@
             NSDictionary *answerChange = @{@"answer_change":self.reward_id};
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setObject:answerChange forKey:@"1"];
-
+            
         } failure:^(NSError *error) {
             NSLog(@"------------------> %@",error);
         }];

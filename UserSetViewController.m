@@ -125,7 +125,7 @@
     }
     if(indexPath.row == 1 && indexPath.section == 1){
         UserSetTableViewCell *setCell = [[UserSetTableViewCell alloc]init];
-        setCell.textLabel.text = @"关于游帮主";
+        setCell.textLabel.text = @"关于嗨番";
         return setCell;
     }
     else{
