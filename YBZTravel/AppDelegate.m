@@ -79,7 +79,8 @@
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
 ///远程推送！！！千万不能动⬇️
-    
+//    [JPUSHService resetBadge];
+    [JPUSHService setBadge:0];
     [[UIApplication sharedApplication ] setApplicationIconBadgeNumber:0];
     
     NSString *advertisingId = nil;
