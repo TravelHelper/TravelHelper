@@ -7,6 +7,7 @@
 //
 
 #import "YBZBaseViewController.h"
+#import "JPUSHService.h"
 
 @interface YBZBaseViewController ()
 
@@ -33,5 +34,11 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+    
+
+
+}
 
 @end

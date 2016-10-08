@@ -343,6 +343,47 @@
 {
     [super viewWillAppear:animated];
 //    [MBProgressHUD showMessage:@"图片资源加载中"];
+    
+    
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        
+        
+        AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
+        
+        switch (permissionStatus) {
+            case AVAudioSessionRecordPermissionUndetermined:{
+                NSLog(@"第一次调用，是否允许麦克风弹框");
+                [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+                    // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
+                    if (granted) {
+                        // Microphone enabled code
+                    }
+                    else {
+                        // Microphone disabled code
+                    }
+                }];
+                break;
+            }
+            case AVAudioSessionRecordPermissionDenied:
+                // direct to settings...
+                NSLog(@"已经拒绝麦克风弹框");
+                
+                break;
+            case AVAudioSessionRecordPermissionGranted:
+                NSLog(@"已经允许麦克风弹框");
+                // mic access ok...
+                break;
+            default:
+                // this should not happen.. maybe throw an exception.
+                break;
+        }
+        if(permissionStatus == AVAudioSessionRecordPermissionUndetermined) ;
+    }
+    
+
+    
+    
     userCount=0;
     translatorCount=0;
     self.tabBarController.tabBar.hidden=YES;
@@ -1422,7 +1463,7 @@
                     int needNumber=18-countDownNumber;
                     
                     if(needNumber>=6){
-                        [MBProgressHUD showMessage:@"发送中，长句只能识别部分文字"];
+                        [MBProgressHUD showMessage:@"发送中"];
                     }else{
                         [MBProgressHUD showMessage:@"发送中"];
                     }

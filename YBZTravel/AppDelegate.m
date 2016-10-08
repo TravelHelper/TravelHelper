@@ -40,42 +40,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     
-    
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-        
-        
-        AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
-        
-        switch (permissionStatus) {
-            case AVAudioSessionRecordPermissionUndetermined:{
-                NSLog(@"第一次调用，是否允许麦克风弹框");
-                [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-                    // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
-                    if (granted) {
-                        // Microphone enabled code
-                    }
-                    else {
-                        // Microphone disabled code
-                    }
-                }];
-                break;
-            }
-            case AVAudioSessionRecordPermissionDenied:
-                // direct to settings...
-                NSLog(@"已经拒绝麦克风弹框");
-                
-                break;
-            case AVAudioSessionRecordPermissionGranted:
-                NSLog(@"已经允许麦克风弹框");
-                // mic access ok...
-                break;
-            default:
-                // this should not happen.. maybe throw an exception.
-                break;
-        }
-        if(permissionStatus == AVAudioSessionRecordPermissionUndetermined) ;
-    }
-    
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
 ///远程推送！！！千万不能动⬇️
@@ -104,12 +68,16 @@
                           channel:@"Publish channel"
                  apsForProduction:false
             advertisingIdentifier:advertisingId];
-    
+    [JPUSHService setBadge:0];
     [JPUSHService resetBadge];
-    [[UIApplication sharedApplication ] setApplicationIconBadgeNumber:0];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+//    [[UIApplication sharedApplication ] setApplicationIconBadgeNumber:0];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(registerAliasAndTag) name:kJPFNetworkDidLoginNotification object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textForView) name:@"textForView" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getAlart:) name:@"beginToAlert" object:nil];
     
     
 ///远程推送⬆️！！！！！！
@@ -138,6 +106,22 @@
         [userDfault synchronize];
         
     }
+    
+    
+    
+    
+    if (launchOptions != nil) {
+        NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (dictionary != nil) {
+            // 这个字典就是推送消息的userInfo
+            
+            self.userDic=dictionary;
+            
+            
+            
+        }
+    }
+    
     
     
     return YES;
@@ -340,10 +324,17 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    [JPUSHService setBadge:0];
+    [JPUSHService resetBadge];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
     [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp" object:nil];
     
     
@@ -402,5 +393,89 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 }
 
 
+-(void)getAlart:(NSNotification *)notification{
+
+//    UIColor *receiveColor=(UIColor *)[notification object];
+    NSDictionary *dic=(NSDictionary *)[notification object];
+    
+    
+    NSString *yonghuID = [dic valueForKey:@"sender_id"];
+    NSLog(@"--------------9 8--");
+    NSLog(@"%@",dic);
+    NSLog(@"----------heiheihei------");
+    NSString *language_catgory = [dic valueForKey:@"language_catgory"];
+    NSString *pay_number = [dic valueForKey:@"pay_number"];
+    
+    NSDictionary *aps = [dic valueForKey:@"aps"];
+    NSString *content = [aps valueForKey:@"alert"]; //推送显示的内容
+    
+    NSString *messionID = [dic valueForKey:@"ID"];
+    
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    [userDefaults setObject:messionID forKey:@"messageId"];
+    
+    NSString *str = [content substringWithRange:NSMakeRange(content.length-8, 8)];
+    
+//    if ([content isEqualToString:@"匹配成功"]) {
+//        
+//        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+////        NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+//        
+//        //        [WebAgent UpdateUserListWithID:mseeage_id andAnswerId:yonghuID success:^(id responseObject) {
+//        //            NSLog(@"SUCCESS");
+//        //
+//        //        } failure:^(NSError *error) {
+//        //
+//        //        }];
+//        
+//        
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"beginChatWithTranslator" object:@{@"translatorID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+//        
+//        
+//        
+//    }else if ([content isEqualToString:@"进入聊天"]){
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+//        
+//        
+//        
+//    }else if ([content isEqualToString:@"退出聊天"]){
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"backToRoot" object:@{@"yonghuID":yonghuID}];
+//    }else
+//        
+        
+        if( [str isEqualToString:@"口语即时翻译请求"]){
+        UIViewController *nowVC=[self currentViewController];
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        YBZtoAlertModel *model=[[YBZtoAlertModel alloc]init];
+        model.translatorID=user_id[@"user_id"];
+        model.yonghuID=yonghuID;
+        model.language_catgory=language_catgory;
+        model.messionID=messionID;
+        model.pay_number=pay_number;
+        
+        if(!self.toalertView){
+            
+            self.toalertView=[[YBZtoalertView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH*0.15, SCREEN_HEIGHT*0.2, SCREEN_WIDTH*0.7, SCREEN_HEIGHT*0.6) andModel:model];
+            //    alertView.backgroundColor=[UIColor redColor];
+            [nowVC.view addSubview:self.hubView];
+            [nowVC.view addSubview:self.toalertView];
+        }else{
+            
+            [self.toalertView addModel:model];
+        }
+
+        
+        
+    }
+    
+    
+    self.userDic=nil;
+    
+
+    
+}
 
 @end
