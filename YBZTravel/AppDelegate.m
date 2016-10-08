@@ -42,9 +42,9 @@
     
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
-///远程推送！！！千万不能动⬇️
-//    [JPUSHService resetBadge];
-//    [JPUSHService setBadge:0];
+    ///远程推送！！！千万不能动⬇️
+    //    [JPUSHService resetBadge];
+    //    [JPUSHService setBadge:0];
     
     
     NSString *advertisingId = nil;
@@ -72,7 +72,7 @@
     [JPUSHService resetBadge];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-//    [[UIApplication sharedApplication ] setApplicationIconBadgeNumber:0];
+    //    [[UIApplication sharedApplication ] setApplicationIconBadgeNumber:0];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(registerAliasAndTag) name:kJPFNetworkDidLoginNotification object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textForView) name:@"textForView" object:nil];
@@ -80,8 +80,8 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getAlart:) name:@"beginToAlert" object:nil];
     
     
-///远程推送⬆️！！！！！！
-//    FreeTransViewController  *freeVC = [[FreeTransViewController alloc]initWithUserID:@"001" WithTargetID:@"001" WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:Voice_YingYu WithTransLanguage:Trans_YingYu];
+    ///远程推送⬆️！！！！！！
+    //    FreeTransViewController  *freeVC = [[FreeTransViewController alloc]initWithUserID:@"001" WithTargetID:@"001" WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:Voice_YingYu WithTransLanguage:Trans_YingYu];
     
     //
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
@@ -134,13 +134,13 @@
 -(void)registerAliasAndTag{
     
     //可变
-//    NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-//    NSString *userID = [userdefault objectForKey:@"user_id"];
-//    if (userID != nil && ![userID isEqualToString:@""]) {
-//        [JPUSHService setTags:nil alias:userID fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
-//            NSLog(@"isrescode----%d, itags------%@,ialias--------%@",iResCode,iTags,iAlias);
-//        }];
-//    }
+    //    NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+    //    NSString *userID = [userdefault objectForKey:@"user_id"];
+    //    if (userID != nil && ![userID isEqualToString:@""]) {
+    //        [JPUSHService setTags:nil alias:userID fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
+    //            NSLog(@"isrescode----%d, itags------%@,ialias--------%@",iResCode,iTags,iAlias);
+    //        }];
+    //    }
     
     
     
@@ -150,28 +150,28 @@
     if(userID == NULL){}
     else
     {
-    [WebAgent userLoginState:userID[@"user_id"] success:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        
-        self.isLogin = str[@"state"];
-        NSLog(@"%@",self.isLogin);
-        if ([self.isLogin  isEqual: @"1"])
-        {
-             NSString * strid = [userID[@"user_id"] stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
-            [JPUSHService setTags:nil alias:strid fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias)
-             {
-                 
-                 NSLog(@"isrescode----%d, itags------%@,ialias--------%@",iResCode,iTags,iAlias);
-             }];
+        [WebAgent userLoginState:userID[@"user_id"] success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             
+            self.isLogin = str[@"state"];
+            NSLog(@"%@",self.isLogin);
+            if ([self.isLogin  isEqual: @"1"])
+            {
+                NSString * strid = [userID[@"user_id"] stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+                [JPUSHService setTags:nil alias:strid fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias)
+                 {
+                     
+                     NSLog(@"isrescode----%d, itags------%@,ialias--------%@",iResCode,iTags,iAlias);
+                 }];
+                
+                
+            }
             
         }
-        
-    }
-            failure:^(NSError *error) {
-                NSLog(@"this is 2222222 failure%@",error);
-            }];
+                         failure:^(NSError *error) {
+                             NSLog(@"this is 2222222 failure%@",error);
+                         }];
     }
     
 }
@@ -190,17 +190,17 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
     // Required,For systems with less than or equal to iOS6
-//    application.applicationIconBadgeNumber = (NSInteger)0;
+    //    application.applicationIconBadgeNumber = (NSInteger)0;
     [JPUSHService handleRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
     
-
+    
     
     // IOS 7 Support Required
-//    application.applicationIconBadgeNumber = (NSInteger)0;
+    //    application.applicationIconBadgeNumber = (NSInteger)0;
     [JPUSHService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
     
@@ -227,13 +227,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
         NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-
-//        [WebAgent UpdateUserListWithID:mseeage_id andAnswerId:yonghuID success:^(id responseObject) {
-//            NSLog(@"SUCCESS");
-//            
-//        } failure:^(NSError *error) {
-//            
-//        }];
+        
+        //        [WebAgent UpdateUserListWithID:mseeage_id andAnswerId:yonghuID success:^(id responseObject) {
+        //            NSLog(@"SUCCESS");
+        //
+        //        } failure:^(NSError *error) {
+        //
+        //        }];
         
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"beginChatWithTranslator" object:@{@"translatorID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
@@ -241,7 +241,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         
     }else if ([content isEqualToString:@"进入聊天"]){
-           [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
         
         
         
@@ -257,7 +257,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         model.language_catgory=language_catgory;
         model.messionID=messionID;
         model.pay_number=pay_number;
-
+        
         if(!self.toalertView){
             
             self.toalertView=[[YBZtoalertView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH*0.15, SCREEN_HEIGHT*0.2, SCREEN_WIDTH*0.7, SCREEN_HEIGHT*0.6) andModel:model];
@@ -269,31 +269,31 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             [self.toalertView addModel:model];
         }
         
-//        if(self.alertVC){
-//        
-//            self.alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"接收到新的翻译任务！" preferredStyle:UIAlertControllerStyleAlert];
-//            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"现在就去" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//                [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number,@"messionID":messionID}];
-//            }];
-//            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"算了吧" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-//                self.alertVC=nil;
-//            }];
-//            [self.alertVC addAction:okAction];
-//            [self.alertVC addAction:cancelAction];
-//        
-//            [self.window.rootViewController presentViewController:self.alertVC animated:YES completion:nil];
-//            
-//        }
+        //        if(self.alertVC){
+        //
+        //            self.alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"接收到新的翻译任务！" preferredStyle:UIAlertControllerStyleAlert];
+        //            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"现在就去" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        //                [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number,@"messionID":messionID}];
+        //            }];
+        //            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"算了吧" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        //                self.alertVC=nil;
+        //            }];
+        //            [self.alertVC addAction:okAction];
+        //            [self.alertVC addAction:cancelAction];
+        //
+        //            [self.window.rootViewController presentViewController:self.alertVC animated:YES completion:nil];
+        //
+        //        }
         
         
         
         
-      
+        
     }
     
     
-
-
+    
+    
     
     
 }
@@ -340,14 +340,14 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 -(void)hideView{
-
+    
     
     
     
 }
 
 -(void)textForView{
-
+    
     UIViewController *nowVC=[self currentViewController];
     NSLog(@"%@",nowVC);
     [self.toalertView removeFromSuperview];
@@ -394,8 +394,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 
 -(void)getAlart:(NSNotification *)notification{
-
-//    UIColor *receiveColor=(UIColor *)[notification object];
+    
+    //    UIColor *receiveColor=(UIColor *)[notification object];
     NSDictionary *dic=(NSDictionary *)[notification object];
     
     
@@ -418,34 +418,34 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     NSString *str = [content substringWithRange:NSMakeRange(content.length-8, 8)];
     
-//    if ([content isEqualToString:@"匹配成功"]) {
-//        
-//        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-////        NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-//        
-//        //        [WebAgent UpdateUserListWithID:mseeage_id andAnswerId:yonghuID success:^(id responseObject) {
-//        //            NSLog(@"SUCCESS");
-//        //
-//        //        } failure:^(NSError *error) {
-//        //
-//        //        }];
-//        
-//        
-//        [[NSNotificationCenter defaultCenter]postNotificationName:@"beginChatWithTranslator" object:@{@"translatorID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
-//        
-//        
-//        
-//    }else if ([content isEqualToString:@"进入聊天"]){
-//        [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
-//        
-//        
-//        
-//    }else if ([content isEqualToString:@"退出聊天"]){
-//        [[NSNotificationCenter defaultCenter]postNotificationName:@"backToRoot" object:@{@"yonghuID":yonghuID}];
-//    }else
-//        
-        
-        if( [str isEqualToString:@"口语即时翻译请求"]){
+    //    if ([content isEqualToString:@"匹配成功"]) {
+    //
+    //        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+    ////        NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+    //
+    //        //        [WebAgent UpdateUserListWithID:mseeage_id andAnswerId:yonghuID success:^(id responseObject) {
+    //        //            NSLog(@"SUCCESS");
+    //        //
+    //        //        } failure:^(NSError *error) {
+    //        //
+    //        //        }];
+    //
+    //
+    //        [[NSNotificationCenter defaultCenter]postNotificationName:@"beginChatWithTranslator" object:@{@"translatorID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+    //
+    //
+    //
+    //    }else if ([content isEqualToString:@"进入聊天"]){
+    //        [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+    //
+    //
+    //
+    //    }else if ([content isEqualToString:@"退出聊天"]){
+    //        [[NSNotificationCenter defaultCenter]postNotificationName:@"backToRoot" object:@{@"yonghuID":yonghuID}];
+    //    }else
+    //
+    
+    if( [str isEqualToString:@"口语即时翻译请求"]){
         UIViewController *nowVC=[self currentViewController];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
@@ -466,7 +466,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             
             [self.toalertView addModel:model];
         }
-
+        
         
         
     }
@@ -474,7 +474,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     self.userDic=nil;
     
-
+    
     
 }
 

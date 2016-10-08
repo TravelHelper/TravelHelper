@@ -106,6 +106,9 @@
     int   recordMark;
     bool translateMark;
     bool changeImgMark;
+    
+    NSTimer *getLoginStateTimer;
+    
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
@@ -117,7 +120,8 @@
         [self getTokenWithUserID:self.user_id];        //获取token并且登录融云服务器
         
         self.userIdentifier = userIdentifier;
-        
+        NSDictionary *dict = @{@"user_id":self.target_id};
+        getLoginStateTimer=[NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getTargetLoginState:) userInfo:dict repeats:YES];
         self.voice_Language = voice_Language;
         self.trans_Language = trans_Language;
         
@@ -129,6 +133,31 @@
         //欠缺单利处理 （头像获取）
     }
     return self;
+}
+
+
+-(void)getTargetLoginState:(NSTimer *)timer{
+    NSDictionary *dict = [timer userInfo];
+    NSString *userID = dict[@"user_id" ];
+    [WebAgent getTargetLoginState:userID success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSString *state = dic[@"result"];
+        if ([state isEqualToString:@"0"]) {
+            [getLoginStateTimer invalidate];
+            [MBProgressHUD showError:@"系统检测到对方可能已经离线，已自动为您退出聊天。"];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+            
+        }else if([state isEqualToString:@"1"]){
+            NSLog(@"1");
+        }
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    
+    
 }
 
 - (void)viewDidLoad {
@@ -1826,7 +1855,9 @@
 -(void)sendMessageAndPop{
     NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-    [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:userIDinfo WithMessionID:mseeage_id success:^(id responseObject) {
+    NSDictionary *user_id = [userdefault objectForKey:@"user_id"];
+    NSString *user__ID = user_id[@"user_id"];
+    [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:user__ID WithMessionID:mseeage_id success:^(id responseObject) {
         [WebAgent stopFindingTranslator:userIDinfo missionID:@"无" success:^(id responseObject) {
             [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
                 

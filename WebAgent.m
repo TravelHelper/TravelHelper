@@ -982,7 +982,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)getFrontImagesuccess:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure{
     
-    [[APIClient sharedClient] POST:@"Frontimage/getImage/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"FrontImage/getImage/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
@@ -1109,6 +1109,38 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
         failure(error);
     }];
 }
+
+
++(void)updateUserLastTime:(NSString *)user_id
+                    success:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure{
+    
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"User/updateUserLastTime/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
++(void)getTargetLoginState:(NSString *)user_id
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure{
+    
+    NSDictionary *dict = @{@"user_id":user_id};
+    [[APIClient sharedClient] POST:@"User/getTargetLoginState/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
+
+
 
 
 @end

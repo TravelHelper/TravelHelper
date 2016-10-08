@@ -352,4 +352,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                     success:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure;
 
++(void)updateUserLastTime:(NSString *)user_id
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
+
++(void)getTargetLoginState:(NSString *)user_id
+                   success:(void (^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure;
+
 @end

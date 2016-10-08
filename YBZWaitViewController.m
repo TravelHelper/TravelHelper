@@ -75,6 +75,7 @@
 -(void)quitApp{
 
     [timer invalidate];
+    
 }
 
 
