@@ -207,7 +207,7 @@
         [userinfo setObject:dict forKey:@"user_loginState"];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
         [WebAgent userLogout:user_id[@"user_id"] success:^(id responseObject) {
-            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"Logout" object:nil];
         } failure:^(NSError *error) {
             
         }];

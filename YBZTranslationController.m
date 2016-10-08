@@ -120,12 +120,14 @@
     BOOL loginStates;
     NSString *user_identity;
     NSString *user_language;
+    NSTimer  *loginStateTimer;
 }
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
     self.isUser = YES;
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
     
@@ -141,10 +143,16 @@
     
     [self initLeftButton];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(quitApp) name:@"quitApp" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeState) name:@"changeLoginState" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Login) name:@"Login" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Logout) name:@"Logout" object:nil];
     [self getLoginState];
- 
+
+    
+
+    
+
     [self.view addSubview:self.backgroundImageView];
     [self.view addSubview:self.popularCellView];
 
@@ -235,6 +243,24 @@
 }
 
 
+//计时器，修改用户登入状态
+-(void)updateLoginState:(NSTimer *)timer{
+    
+    NSDictionary *dict = [timer userInfo];
+    NSString *user_ID = dict[@"user_id" ];
+    NSLog(@"%@",user_ID);
+    
+    [WebAgent updateUserLastTime:user_ID success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
+
+    
+}
+
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
@@ -306,8 +332,19 @@
 
 -(void)Login{
     loginStates = YES;
+    [self getLoginState];
 }
 
+-(void)Logout{
+
+    loginStates = NO;
+    [loginStateTimer invalidate];
+}
+
+-(void)quitApp{
+
+    [loginStateTimer invalidate];
+}
 
 -(void)changeState{
 
@@ -347,6 +384,13 @@
                         loginStates = NO;
                     }
                     userID = user_id[@"user_id"];
+                    if (userID != nil && ![userID isEqualToString:@""]) {
+                        NSDictionary *dict = @{@"user_id" : userID};
+                        loginStateTimer=[NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(updateLoginState:) userInfo:dict repeats:YES];
+                        
+                        [loginStateTimer fire];
+                        
+                    }
                     [WebAgent getuserTranslateState:userID success:^(id responseObject) {
                         NSData *data = [[NSData alloc]initWithData:responseObject];
                         NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -1708,6 +1752,116 @@
      }];
 }
 
+-(NSDictionary *)getLanguageWithString:(NSString *)language{
+    
+    NSString *VoiceLanguage;
+    NSString *TransLanguage;
+    if ([language isEqualToString:@"英语"]) {
+        
+        VoiceLanguage = Voice_YingYu;
+        TransLanguage = Trans_YingYu;
+    }
+    if ([language isEqualToString:@"美式英语"]) {
+        
+        VoiceLanguage = Voice_MeiYu;
+        TransLanguage = Trans_MeiYu;
+    }
+    if ([language isEqualToString:@"韩语"]) {
+        
+        VoiceLanguage = Voice_HanYu;
+        TransLanguage = Trans_HanYu;
+    }
+    if ([language isEqualToString:@"西班牙语"]) {
+        
+        VoiceLanguage = Voice_XiBanYa;
+        TransLanguage = Trans_XiBanYa;
+    }
+    if ([language isEqualToString:@"泰语"]) {
+        
+        VoiceLanguage = Voice_TaiYu;
+        TransLanguage = Trans_TaiYu;
+    }
+    if ([language isEqualToString:@"阿拉伯语"]) {
+        
+        VoiceLanguage = Voice_ALaBoYu;
+        TransLanguage = Trans_ALaBoYu;
+    }
+    if ([language isEqualToString:@"俄语"]) {
+        
+        VoiceLanguage = Voice_EYu;
+        TransLanguage = Trans_EYu;
+    }
+    if ([language isEqualToString:@"葡萄牙语"]) {
+        
+        VoiceLanguage = Voice_PuTaoYaYu;
+        TransLanguage = Trans_PuTaoYaYu;
+    }
+    if ([language isEqualToString:@"希腊语"]) {
+        
+        VoiceLanguage = Voice_XiLaYu;
+        TransLanguage = Trans_XiLaYu;
+    }
+    if ([language isEqualToString:@"荷兰语"]) {
+        
+        VoiceLanguage = Voice_HeLanYu;
+        TransLanguage = Trans_HeLanYu;
+    }
+    if ([language isEqualToString:@"波兰语"]) {
+        
+        VoiceLanguage = Voice_BoLanYu;
+        TransLanguage = Trans_BoLanYu;
+    }
+    if ([language isEqualToString:@"丹麦语"]) {
+        
+        VoiceLanguage = Voice_DanMaiYu;
+        TransLanguage = Trans_DanMaiYu;
+    }
+    if ([language isEqualToString:@"芬兰语"]) {
+        
+        VoiceLanguage = Voice_FenLanYu;
+        TransLanguage = Trans_FenLanYu;
+    }
+    if ([language isEqualToString:@"捷克语"]) {
+        
+        VoiceLanguage = Voice_JieKeYu;
+        TransLanguage = Trans_JieKeYu;
+    }
+    if ([language isEqualToString:@"瑞典语"]) {
+        
+        VoiceLanguage = Voice_RuiDianYu;
+        TransLanguage = Trans_RuiDianYu;
+    }
+    if ([language isEqualToString:@"匈牙利语"]) {
+        
+        VoiceLanguage = Voice_XiongYaLiYu;
+        TransLanguage = Trans_XiongYaLiYu;
+    }
+    if ([language isEqualToString:@"日语"]) {
+        
+        VoiceLanguage = Voice_RiYu;
+        TransLanguage = Trans_RiYu;
+    }
+    if ([language isEqualToString:@"法语"]) {
+        
+        VoiceLanguage = Voice_FaYa;
+        TransLanguage = Trans_FaYu;
+    }
+    if ([language isEqualToString:@"德语"]) {
+        
+        VoiceLanguage = Voice_DeYu;
+        TransLanguage = Trans_DeYu;
+    }
+    if ([language isEqualToString:@"意大利语"]) {
+        
+        VoiceLanguage = Voice_YiDaLiYu;
+        TransLanguage = Trans_YiDaLiYu;
+    }
+    
+    NSDictionary *dict = @{@"voice":VoiceLanguage,
+                           @"trans":TransLanguage
+                           };
+    return dict;
+}
 
 @end
 
