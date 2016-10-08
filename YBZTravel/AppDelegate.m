@@ -475,7 +475,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     self.userDic=nil;
     
     
-    
 }
 
 @end

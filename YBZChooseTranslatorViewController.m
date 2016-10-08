@@ -11,10 +11,10 @@
 #import "WebAgent.h"
 #import "UIImage+needkit.h"
 #import "MBProgressHUD+XMG.h"
+#import "ZLCWebView.h"
 
 
-
-@interface YBZChooseTranslatorViewController ()
+@interface YBZChooseTranslatorViewController ()<ZLCWebViewDelegate>
 
 
 @property (nonatomic, strong) UIView *topView;
@@ -23,6 +23,10 @@
 @property (nonatomic, strong) UIButton *protocolChooseBtn;
 @property (nonatomic, strong) UIButton *agreeBtn;
 @property (nonatomic, strong) UIButton *cancelBtn;
+@property (nonatomic, strong) UIView   *hubView;
+@property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) ZLCWebView *my;
+@property (nonatomic, strong) UIView *loadWebView;
 
 @end
 
@@ -355,12 +359,71 @@
 
     if (!_userProtocol) {
         _userProtocol = [[UILabel alloc]init];
-        _userProtocol.text = @"我已阅读《译员用户协议》";
-        _userProtocol.textColor = [UIColor blackColor];
+        
+        NSString *string = [NSString stringWithFormat:@"我已阅读《译员用户协议》"];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:string];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(5,6)];
+        
+        _userProtocol.attributedText = str;
+//        _userProtocol.textColor = [UIColor blackColor];
         _userProtocol.font = [UIFont systemFontOfSize:0.039*SCREEN_WIDTH];
         _userProtocol.textAlignment = NSTextAlignmentLeft;
+        _userProtocol.userInteractionEnabled=YES;
+        UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(UIlabelClick)];
+        
+        [_userProtocol addGestureRecognizer:labelTapGestureRecognizer];
     }
     return _userProtocol;
+}
+
+
+
+-(void)UIlabelClick{
+
+    NSLog(@"aa");
+    [self.view addSubview:self.hubView];
+    
+    float Width=SCREEN_WIDTH*2/3;
+    float height=SCREEN_HEIGHT/2;
+    
+    self.loadWebView=[[UIView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, SCREEN_HEIGHT/4, Width, height)];
+    
+    self.my = [[ZLCWebView alloc]initWithFrame:CGRectMake(0, 0, Width, height)];
+    [self.my setProgressFrame:0];
+    [self.my loadURLString:@"http://www.baidu.com"];
+    self.my.delegate = self;
+    [self.loadWebView addSubview:self.my];
+    [self.view addSubview:self.loadWebView];
+
+    
+    
+}
+- (void)zlcwebViewDidStartLoad:(ZLCWebView *)webview
+{
+    
+    NSLog(@"页面开始加载");
+}
+
+- (void)zlcwebView:(ZLCWebView *)webview shouldStartLoadWithURL:(NSURL *)URL
+{
+    NSLog(@"截取到URL：%@",URL);
+}
+- (void)zlcwebView:(ZLCWebView *)webview didFinishLoadingURL:(NSURL *)URL
+{
+    NSLog(@"页面加载完成");
+    //    [MBProgressHUD hideHUD];
+}
+
+- (void)zlcwebView:(ZLCWebView *)webview didFailToLoadURL:(NSURL *)URL error:(NSError *)error
+{
+    NSLog(@"加载出现错误");
+    //    [MBProgressHUD hideHUD];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 -(UIButton *)protocolChooseBtn {
@@ -418,5 +481,25 @@
     label.textColor = [UIColor blackColor];
     return label;
 }
+
+
+-(UIView *)hubView{
+    if (!_hubView){
+        _hubView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _hubView.backgroundColor = [UIColor blackColor];
+        _hubView.alpha = 0.3f;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideView)];
+        [_hubView addGestureRecognizer:tap];
+    }
+    return _hubView;
+}
+-(void)hideView{
+    
+    [self.loadWebView removeFromSuperview];
+    [self.hubView removeFromSuperview];
+
+}
+
+
 
 @end
