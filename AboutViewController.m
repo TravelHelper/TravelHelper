@@ -29,7 +29,7 @@
     self.title = @"关于嗨番";
     
     ZLCWebView *my = [[ZLCWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    [my loadURLString:@"http://www.baidu.com"];
+    [my loadURLString:@"http://139.224.44.36/HaveFun.html"];
     my.delegate = self;
     [self.view addSubview:my];
     

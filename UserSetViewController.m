@@ -214,7 +214,7 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"setTextALabel" object:nil];
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 //第二步：发送通知

@@ -253,6 +253,9 @@
             if (isTranslator == NO) {
                 [WebAgent addTranslatorInfo:userID success:^(id responseObject) {
                     [MBProgressHUD hideHUD];
+                    
+                    
+                    
                     [self.navigationController popViewControllerAnimated:YES];
                     
                 } failure:^(NSError *error) {
@@ -390,7 +393,7 @@
     
     self.my = [[ZLCWebView alloc]initWithFrame:CGRectMake(0, 0, Width, height)];
     [self.my setProgressFrame:0];
-    [self.my loadURLString:@"http://www.baidu.com"];
+    [self.my loadURLString:@"http://139.224.44.36/UserTranslatorAgreement.html"];
     self.my.delegate = self;
     [self.loadWebView addSubview:self.my];
     [self.view addSubview:self.loadWebView];

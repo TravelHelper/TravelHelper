@@ -18,12 +18,14 @@
 #import "MBProgressHUD+XMG.h"
 #import <SMS_SDK/SMSSDK.h>
 
+#import "ZLCWebView.h"
+
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 //注册页111
-@interface YBZRegisterViewController ()<UITextFieldDelegate>
+@interface YBZRegisterViewController ()<UITextFieldDelegate,ZLCWebViewDelegate>
 @property(nonatomic,strong) NSTimer         *timer;
 @property(nonatomic,strong) UIImageView     *phoneImageView;
 @property(nonatomic,strong)UIImageView      *pswImageView;
@@ -42,6 +44,10 @@
 @property(nonatomic,strong) AFViewShaker    *userShaker;
 @property(nonatomic,strong) AFViewShaker    *pswShaker;
 
+@property (nonatomic, strong) ZLCWebView *needWeb;
+@property (nonatomic, strong) UIView *loadWebView;
+@property (nonatomic, strong) UILabel *userProtocol;
+@property (nonatomic, strong) UIView   *hubView;
 
 @end
 @implementation YBZRegisterViewController{
@@ -67,6 +73,7 @@ static NSString * userStr;
      [self.view addSubview:self.phoneTextField];
      [self.view addSubview:self.getCodeImageView];
      [self.view addSubview:self.getCodeBtn];
+     [self.view addSubview:self.userProtocol];
      //   [self.view addSubview:self.putCodeBtn];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toReturn) name:@"needTopop" object:nil];
      self.userShaker = [[AFViewShaker alloc]initWithView:self.phoneTextField];
@@ -497,12 +504,108 @@ static NSString * userStr;
         _finishRegBtn.backgroundColor = UIColorFromRGB(0xffd703);
         [_finishRegBtn setTitle:@"完成注册" forState:UIControlStateNormal];
         [_finishRegBtn setTitleColor:[UIColor blackColor]forState:UIControlStateNormal];
-        _finishRegBtn.frame = CGRectMake(0, CGRectGetMaxY(self.confirmPswTextField.frame)+ScreenHeight*0.023, [UIScreen mainScreen].bounds.size.width, ScreenHeight*0.081);
+        _finishRegBtn.frame = CGRectMake(0, CGRectGetMaxY(self.confirmPswTextField.frame)+ScreenHeight*0.123, [UIScreen mainScreen].bounds.size.width, ScreenHeight*0.081);
         [_finishRegBtn addTarget:self action:@selector(finishRegBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return _finishRegBtn;
 }
+
+
+-(UILabel *)userProtocol{
+    
+    if (!_userProtocol) {
+        _userProtocol = [[UILabel alloc]init];
+//        _userProtocol.textAlignment=UITextAlignmentCenter;
+        _userProtocol.frame=CGRectMake(0, CGRectGetMaxY(self.confirmPswTextField.frame)+ScreenHeight*0.023, [UIScreen mainScreen].bounds.size.width, ScreenHeight*0.081);
+        NSString *string = [NSString stringWithFormat:@"我已阅读《用户保密协议》"];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:string];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(5,6)];
+        
+        _userProtocol.attributedText = str;
+        //        _userProtocol.textColor = [UIColor blackColor];
+        _userProtocol.font = [UIFont systemFontOfSize:0.039*SCREEN_WIDTH];
+        _userProtocol.textAlignment = NSTextAlignmentCenter;
+        _userProtocol.userInteractionEnabled=YES;
+        UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(UIlabelClick)];
+        
+        [_userProtocol addGestureRecognizer:labelTapGestureRecognizer];
+    }
+    return _userProtocol;
+}
+
+
+
+-(void)UIlabelClick{
+    
+    NSLog(@"aa");
+    [self.view addSubview:self.hubView];
+    
+    float Width=SCREEN_WIDTH*2/3;
+    float height=SCREEN_HEIGHT/2;
+    
+    self.loadWebView=[[UIView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, SCREEN_HEIGHT/4, Width, height)];
+    
+    
+    self.needWeb = [[ZLCWebView alloc]initWithFrame:CGRectMake(0, 0, Width, height)];
+    [self.needWeb setProgressFrame:0];
+    [self.needWeb loadURLString:@"http://139.224.44.36/ConfidentialityAgreement.html"];
+    self.needWeb.delegate = self;
+    [self.loadWebView addSubview:self.needWeb];
+    [self.view addSubview:self.loadWebView];
+    
+    
+    
+}
+
+- (void)zlcwebViewDidStartLoad:(ZLCWebView *)webview
+{
+    
+    NSLog(@"页面开始加载");
+}
+
+- (void)zlcwebView:(ZLCWebView *)webview shouldStartLoadWithURL:(NSURL *)URL
+{
+    NSLog(@"截取到URL：%@",URL);
+}
+- (void)zlcwebView:(ZLCWebView *)webview didFinishLoadingURL:(NSURL *)URL
+{
+    NSLog(@"页面加载完成");
+    //    [MBProgressHUD hideHUD];
+}
+
+- (void)zlcwebView:(ZLCWebView *)webview didFailToLoadURL:(NSURL *)URL error:(NSError *)error
+{
+    NSLog(@"加载出现错误");
+    //    [MBProgressHUD hideHUD];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+-(UIView *)hubView{
+    if (!_hubView){
+        _hubView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _hubView.backgroundColor = [UIColor blackColor];
+        _hubView.alpha = 0.3f;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideView)];
+        [_hubView addGestureRecognizer:tap];
+    }
+    return _hubView;
+}
+-(void)hideView{
+    
+    [self.loadWebView removeFromSuperview];
+    [self.hubView removeFromSuperview];
+    
+}
+
+
+
 
 @end
 
