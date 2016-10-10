@@ -1021,22 +1021,26 @@
     if ( section == 1 && row == 0)
     {
         NSLog(@"点击进入我的订单");
-        YBZMyOrderViewController *myorderVC = [[YBZMyOrderViewController alloc] init];
-        [self.navigationController pushViewController:myorderVC animated:YES];
+        [self intoInfoSettingClick];
+//        YBZMyOrderViewController *myorderVC = [[YBZMyOrderViewController alloc] init];
+//        [self.navigationController pushViewController:myorderVC animated:YES];
         
     }
     if ( section == 1 && row==1) {
-        
-        YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
-        myVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:myVC animated:YES];
+        [self intoInfoSettingClick];
+//        YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
+//        myVC.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:myVC animated:YES];
         
     }
+    if(section==1&&row==2){
+        [self intoInfoSettingClick];
+    }
     if ( section == 2 && row == 0) {
-        
-        YBZMoneyBagViewController *bagVC = [[YBZMoneyBagViewController alloc]init];
-        bagVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:bagVC animated:YES];
+        [self intoInfoSettingClick];
+//        YBZMoneyBagViewController *bagVC = [[YBZMoneyBagViewController alloc]init];
+//        bagVC.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:bagVC animated:YES];
         
     }
     
