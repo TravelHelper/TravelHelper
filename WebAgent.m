@@ -1140,7 +1140,17 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 }
 
 
-
++(void)getHaveFunInfo:(void (^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure{
+    
+    [[APIClient sharedClient] POST:@"User/getHaveFunInfo/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
 
 
 @end
