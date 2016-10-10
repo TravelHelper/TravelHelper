@@ -203,6 +203,7 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userBackground"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userHead"];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        [userinfo setObject:@"0" forKey:@"userBackgroundChange"];
         NSDictionary *dict = @{@"user_loginState":@"0"};
         [userinfo setObject:dict forKey:@"user_loginState"];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];

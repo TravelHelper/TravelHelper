@@ -180,7 +180,7 @@
     
     
    
-    
+    changeImgMark=false;
     
     
 }
@@ -189,9 +189,77 @@
     [super viewDidAppear:animated];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-    NSString *backgroundMark=(NSString *)[userinfo objectForKey:@"userBackground"];
+    NSString *userBackgroundChange=(NSString *)[userinfo objectForKey:@"userBackgroundChange"];
     
     
+    if([userBackgroundChange isEqualToString:@"0"]){
+    
+        if(changeImgMark==true){
+            [MBProgressHUD hideHUD];
+        }else{
+            if(user_id==NULL){
+                UIImage *image=[UIImage imageNamed:@"backgroundImage"];
+                [self.backgroundImageView setImage:image];
+                [MBProgressHUD hideHUD];
+                
+            }else{
+                
+                //        if([backgroundMark isEqualToString:@"1"]){
+                
+                NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg.jpg",user_id[@"user_id"]];
+                
+                NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,resultName];
+                
+                NSURL *url = [NSURL URLWithString:url2];
+                
+                self.backgroundImageView.image=nil;
+                
+                
+                UIImage *img=[UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                
+                if(img==nil){
+                    UIImage *image=[UIImage imageNamed:@"backgroundImage"];
+                    [self.backgroundImageView setImage:image];
+                    [MBProgressHUD hideHUD];
+                    
+                }else{
+                    //            UIImage *image=[UIImage imageNamed:@"backgroundImage"];
+                    [self.backgroundImageView setImage:img];
+                    [MBProgressHUD hideHUD];
+                    
+                }
+                
+                
+                UIImage *needSaveImg=self.backgroundImageView.image;
+                [self saveImage:needSaveImg withName:user_id[@"user_id"]];
+                
+                
+                [userinfo setObject:@"1" forKey:@"userBackgroundChange"];
+                
+                
+            }
+        }
+       
+    }else{
+        
+        
+    
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = [paths objectAtIndex:0];
+    
+    NSString *fullPath=[NSString stringWithFormat:@"%@/%@.jpg",docDir,user_id[@"user_id"]];
+    
+    UIImage *needimg=[UIImage imageWithData:[NSData dataWithContentsOfFile:fullPath]];
+    
+    if(needimg){
+        [self.backgroundImageView setImage:needimg];
+        [MBProgressHUD hideHUD];
+    }else{
+    
+    if(changeImgMark==true){
+        [MBProgressHUD hideHUD];
+    }else{
     if(user_id==NULL){
         UIImage *image=[UIImage imageNamed:@"backgroundImage"];
         [self.backgroundImageView setImage:image];
@@ -199,7 +267,7 @@
 
     }else{
         
-        if([backgroundMark isEqualToString:@"1"]){
+//        if([backgroundMark isEqualToString:@"1"]){
         
     NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg.jpg",user_id[@"user_id"]];
     
@@ -208,79 +276,32 @@
     NSURL *url = [NSURL URLWithString:url2];
     
         self.backgroundImageView.image=nil;
-//        [self.backgroundImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"backgroundImage"] options:SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//            
-//            if(image){
-//                [self.backgroundImageView setImage:image];
-//            }else{
-//                
-//                image=[UIImage imageNamed:@"backgroundImage"];
-//                [self.backgroundImageView setImage:image];
-//                
-//            }
-//            [MBProgressHUD hideHUD];
-//            
-//        }];
-        if(changeImgMark==false){
-            [self.backgroundImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"backgroundImage"] options:SDWebImageAvoidAutoSetImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                if(image){
-                    [self.backgroundImageView setImage:image];
-                }else{
-                    
-                    image=[UIImage imageNamed:@"backgroundImage"];
-                    [self.backgroundImageView setImage:image];
-                    
-                }
-                NSLog(@"这里可以在图片加载完成之后做些事情");
-                [MBProgressHUD hideHUD];
-            }];
-        }else{
-            
-            [self.backgroundImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"backgroundImage"] options:SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                if(image){
-                    [self.backgroundImageView setImage:image];
-                }else{
-                    
-                    image=[UIImage imageNamed:@"backgroundImage"];
-                    [self.backgroundImageView setImage:image];
-                    
-                }
-                NSLog(@"这里可以在图片加载完成之后做些事情");
-                changeImgMark=false;
-                [MBProgressHUD hideHUD];
-            }];
-
-        }
-//    [self.backgroundImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//        if(image){
-//            [self.backgroundImageView setImage:image];
-//        }else{
-//        
-//            image=[UIImage imageNamed:@"backgroundImage"];
-//            [self.backgroundImageView setImage:image];
-//        
-//        }
-//        NSLog(@"这里可以在图片加载完成之后做些事情");
-//        [MBProgressHUD hideHUD];
-//            
-//        //        if(!image){
-//        //            UIImage *headImg=[[UIImage alloc]init];
-//        //            headImg = [UIImage imageNamed:@"translator"];
-//        //            [self.backgroundImageView setImage:headImg];
-//        //        }
-//        
-//        
-//    }];
-//    
-        }else{
         
+        
+        UIImage *img=[UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+        
+        if(img==nil){
             UIImage *image=[UIImage imageNamed:@"backgroundImage"];
             [self.backgroundImageView setImage:image];
             [MBProgressHUD hideHUD];
 
+        }else{
+//            UIImage *image=[UIImage imageNamed:@"backgroundImage"];
+            [self.backgroundImageView setImage:img];
+            [MBProgressHUD hideHUD];
+
         }
-    
+        
+        
+        UIImage *needSaveImg=self.backgroundImageView.image;
+        [self saveImage:needSaveImg withName:user_id[@"user_id"]];
+        
+        
+        [userinfo setObject:@"1" forKey:@"userBackgroundChange"];
    
+    }
+    }
+    }
     }
     
 }
@@ -1780,8 +1801,9 @@
     
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
-//    [self.backgroundImageView setImage:image];
+    [self.backgroundImageView setImage:image];
     
+    changeImgMark=true;
     NSLog(@"aa");
     
     NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
@@ -1800,9 +1822,13 @@
         
         NSData *data = UIImageJPEGRepresentation(image, 0.1);
         
+        
+        
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         //            NSDictionary *myDictionary = [userinfo dictionaryForKey:@"myDictionary"];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        
+        
         
         NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg",user_id[@"user_id"]];
         
@@ -1834,15 +1860,15 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"%@",responseObject);
-        NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
-        
-        NSString *backgroundMark=(NSString *)[userDfault objectForKey:@"userBackground"];
-        if([backgroundMark isEqualToString:@"1"]){
-            
-        }else{
-            [userDfault setObject:@"1" forKey:@"userBackground"];
-            changeImgMark=false;
-        }
+//        NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
+//        
+//        NSString *backgroundMark=(NSString *)[userDfault objectForKey:@"userBackground"];
+//        if([backgroundMark isEqualToString:@"1"]){
+//            
+//        }else{
+//            [userDfault setObject:@"1" forKey:@"userBackground"];
+//            changeImgMark=false;
+//        }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@",error);
@@ -1852,6 +1878,22 @@
     
     
     
+    
+}
+
+
+-(void)saveImage:(UIImage *)currentImage withName:(NSString *)imageName{
+
+
+    NSData *imageData=UIImageJPEGRepresentation(currentImage, 0.5);
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = [paths objectAtIndex:0];
+    
+    NSString *fullPath=[NSString stringWithFormat:@"%@/%@.jpg",docDir,imageName];
+    
+//    NSString *fullPath=[NSHomeDirectory() stringByAppendingPathComponent:imageName];
+    [imageData writeToFile:fullPath atomically:NO];
     
 }
 

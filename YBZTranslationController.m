@@ -132,7 +132,8 @@
     [super viewDidLoad];
     self.isUser = YES;
 
-    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    [userinfo setObject:@"0" forKey:@"userBackgroundChange"];
     [NSThread sleepForTimeInterval:2];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
