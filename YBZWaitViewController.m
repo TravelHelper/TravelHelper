@@ -209,7 +209,7 @@
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSDictionary *missionInfo = dic[@"data"][0];
-        if ([missionInfo[@"answer_id"] isEqualToString:@""]) {
+        if ([missionInfo[@"answer_id"] isEqualToString:@"0"]) {
             [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
                 [self.navigationController popViewControllerAnimated:YES];
             } failure:^(NSError *error) {
