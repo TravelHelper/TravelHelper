@@ -93,6 +93,10 @@
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
 
+@property (nonatomic, strong)YBZtoalertView  *toalertView;
+@property (nonatomic,strong) UIView             *hubView;
+
+
 //@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 //@property (strong, nonatomic) IBOutlet UILabel *levelLabel;
 //@property (strong, nonatomic) IBOutlet UILabel *stateLabel;
@@ -128,6 +132,9 @@
     [super viewDidLoad];
     self.isUser = YES;
 
+    
+    [NSThread sleepForTimeInterval:2];
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
     
@@ -238,7 +245,34 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [JPUSHService resetBadge];
+    
+    NSDictionary *dic = ApplicationDelegate.userDic;
+    
+    if(dic){
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"beginToAlert" object:dic];
+        
+    }
+    
+
+//    [JPUSHService resetBadge];
+
+}
+
+-(UIView *)hubView{
+    if (!_hubView){
+        _hubView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _hubView.backgroundColor = [UIColor blackColor];
+        _hubView.alpha = 0.3f;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideView)];
+        [_hubView addGestureRecognizer:tap];
+    }
+    return _hubView;
+}
+
+-(void)hideView{
+
+    
 
 }
 
@@ -319,7 +353,12 @@
 
 -(void)turnToUserClick{
 
-    
+//    NSDictionary *dic = ApplicationDelegate.userDic;
+//    
+//    NSDictionary *aps = [dic valueForKey:@"aps"];
+//    NSString *content = [aps valueForKey:@"alert"];
+//    
+//    [MBProgressHUD showMessage:content];
     NSString *userIdentify = user_identity;
     NSString *userLanguage = user_language;
     NSLog(@"%@,%@",userLanguage,userIdentify);

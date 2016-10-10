@@ -273,6 +273,8 @@
 		A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */; };
 		FE1482671D8925D100804A0A /* YBZtoAlertModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1482641D8925D100804A0A /* YBZtoAlertModel.m */; };
 		FE1482681D8925D100804A0A /* YBZtoalertView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1482661D8925D100804A0A /* YBZtoalertView.m */; };
+		FE19429C1DA8DDE9004DC96B /* ZLCWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE19429B1DA8DDE9004DC96B /* ZLCWebView.m */; };
+		FE19429F1DA8E043004DC96B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE19429E1DA8E043004DC96B /* WebKit.framework */; };
 		FE1EFE2D1D83A14B00FDD1BE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */; };
 		FE1EFE301D83A1A000FDD1BE /* PCMDataPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */; };
 		FE1EFE331D87AF5800FDD1BE /* YBZcallingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE321D87AF5700FDD1BE /* YBZcallingView.m */; };
@@ -791,6 +793,9 @@
 		FE1482641D8925D100804A0A /* YBZtoAlertModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZtoAlertModel.m; sourceTree = "<group>"; };
 		FE1482651D8925D100804A0A /* YBZtoalertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZtoalertView.h; sourceTree = "<group>"; };
 		FE1482661D8925D100804A0A /* YBZtoalertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZtoalertView.m; sourceTree = "<group>"; };
+		FE19429A1DA8DDE9004DC96B /* ZLCWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCWebView.h; sourceTree = "<group>"; };
+		FE19429B1DA8DDE9004DC96B /* ZLCWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCWebView.m; sourceTree = "<group>"; };
+		FE19429E1DA8E043004DC96B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		FE1EFE2C1D83A14B00FDD1BE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		FE1EFE2E1D83A1A000FDD1BE /* PCMDataPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCMDataPlayer.h; sourceTree = "<group>"; };
 		FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PCMDataPlayer.mm; sourceTree = "<group>"; };
@@ -818,6 +823,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE19429F1DA8E043004DC96B /* WebKit.framework in Frameworks */,
 				A012EDD91D509B2800144BAD /* AudioToolbox.framework in Frameworks */,
 				FE1EFE2D1D83A14B00FDD1BE /* MediaPlayer.framework in Frameworks */,
 				1E7056091D53250A00A000F5 /* AdSupport.framework in Frameworks */,
@@ -1447,6 +1453,8 @@
 		A012EDB31D509A1C00144BAD /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				FE19429A1DA8DDE9004DC96B /* ZLCWebView.h */,
+				FE19429B1DA8DDE9004DC96B /* ZLCWebView.m */,
 				5322B7EE1D7E6120004B8C87 /* SDWebImage */,
 				FEE492151D73DE0A00CCED58 /* MBProgressHUD */,
 				1E7056081D53250A00A000F5 /* AdSupport.framework */,
@@ -1543,6 +1551,7 @@
 				5311449C1D7A6992000B98E8 /* OrderDetails */,
 				A03ED0791D2DE20800BD9C0A /* YBZTravelUITests */,
 				A03ED0531D2DE20700BD9C0A /* Products */,
+				FE19429D1DA8E043004DC96B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1996,6 +2005,14 @@
 			name = Location;
 			sourceTree = "<group>";
 		};
+		FE19429D1DA8E043004DC96B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FE19429E1DA8E043004DC96B /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FE6C6A0C1D82AB890021B187 /* SMSSDK.2.0.0 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2095,6 +2112,7 @@
 					A03ED0511D2DE20700BD9C0A = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 23GQX4X34D;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2362,6 +2380,7 @@
 				FE1EFE361D87AF6700FDD1BE /* YBZcalledView.m in Sources */,
 				A03ED0571D2DE20800BD9C0A /* main.m in Sources */,
 				1ED8631F1D2F8DA500529094 /* YBZPopularFrameInfo.m in Sources */,
+				FE19429C1DA8DDE9004DC96B /* ZLCWebView.m in Sources */,
 				7D84273B1D634638000BFEAD /* CollectionMessageInfoCell.m in Sources */,
 				7D8427441D634681000BFEAD /* YBZMyFavoriteViewController.m in Sources */,
 				1ED8636A1D3347F500529094 /* SYTableFooterView.m in Sources */,
@@ -2487,8 +2506,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhipeng Huo (23GQX4X34D)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhipeng Huo (23GQX4X34D)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2533,8 +2552,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhipeng Huo (23GQX4X34D)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhipeng Huo (23GQX4X34D)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2560,8 +2579,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = YBZTravel/YBZTravel.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhipeng Huo (23GQX4X34D)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 23GQX4X34D;
 				ENABLE_BITCODE = NO;
@@ -2590,6 +2609,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -2598,8 +2618,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = YBZTravel/YBZTravel.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhipeng Huo (23GQX4X34D)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 23GQX4X34D;
 				ENABLE_BITCODE = NO;
@@ -2628,6 +2648,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

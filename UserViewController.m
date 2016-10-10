@@ -122,6 +122,32 @@
 //        
 //    }
 
+    
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = NO;
+    
+    self.tabBarController.tabBar.hidden=YES;
+    //    EBEBF1
+    if(languageMark==true){
+        
+        [MBProgressHUD showMessage:@"加载数据中"];
+        
+    }
+    if(loadMark==false){
+        
+        [MBProgressHUD showMessage:@"加载数据中"];
+        self.mainTableView.allowsSelection=NO;
+        
+        [self.view addSubview:self.mainTableView];
+        self.view.backgroundColor=UIColorFromRGB(0xEBEBF1);
+        self.navigationController.navigationBarHidden = NO;
+        self.navigationItem.hidesBackButton = NO;
+        
+        self.tabBarController.tabBar.hidden=YES;
+    }
+    
+    
+    
 }
 -(void)tochangeLogin{
 
@@ -150,7 +176,7 @@
             
             user_identity=dic[@"user_identity"];
             user_language = dic[@"user_language"];
-            
+            [self.translatorTableView reloadData];
             NSLog(@"%@",user_identity);
             
         }
@@ -266,23 +292,7 @@
     self.navigationItem.hidesBackButton = NO;
     
     self.tabBarController.tabBar.hidden=YES;
-//    EBEBF1
-    if(languageMark==true){
-        
-         [MBProgressHUD showMessage:@"加载数据中"];
-    
-    }
-    if(loadMark==false){
-        
-    [MBProgressHUD showMessage:@"加载数据中"];
-    self.mainTableView.allowsSelection=NO;
-    [self.view addSubview:self.mainTableView];
-    self.view.backgroundColor=UIColorFromRGB(0xEBEBF1);
-    self.navigationController.navigationBarHidden = NO;
-    self.navigationItem.hidesBackButton = NO;
-    
-    self.tabBarController.tabBar.hidden=YES;
-    }
+
 
 }
 
