@@ -125,8 +125,12 @@
             
             NSLog(@"%@",need);
             
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"举报成功" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alertView show];
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"举报成功！" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            [alertVC addAction:okAction];
+            [self presentViewController:alertVC animated:YES completion:nil];
 
         } failure:^(NSError *error) {
             [MBProgressHUD showError:@"提交失败，请重试"];
