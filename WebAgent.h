@@ -283,6 +283,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 
 
++(void)getHaveFunInfo:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure;
 
 +(void)UpdateTranslatorMessageCount:(NSString *)ID
                 andTranslator_price:(NSString *)translator_price

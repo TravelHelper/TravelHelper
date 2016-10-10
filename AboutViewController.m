@@ -15,8 +15,7 @@
 
 @interface AboutViewController ()<ZLCWebViewDelegate>
 
-@property (nonatomic ,strong) UITextView *textView;
-//@property (nonatomic ,strong) UIWebView *webView;
+
 
 @end
 
@@ -24,88 +23,88 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setBackgroundStyle];
+    [self getThreeLabelWithData];
+    [self getImageView];
+
+}
+
+-(void)setBackgroundStyle{
+
     self.view.backgroundColor = [UIColor whiteColor];
-    
     self.title = @"关于嗨番";
+}
+
+-(void)getImageView{
+
+    UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"head"]];
+    imageView.frame = CGRectMake(0.339*SCREEN_WIDTH, 0.245*SCREEN_HEIGHT, 0.322*SCREEN_WIDTH, 0.322*SCREEN_WIDTH);
+    [self.view addSubview:imageView];
+}
+
+-(void)getThreeLabelWithData{
     
-    ZLCWebView *my = [[ZLCWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    [my loadURLString:@"http://139.224.44.36/HaveFun.html"];
-    my.delegate = self;
-    [self.view addSubview:my];
-    
-   //
-//    UIImage* image = [UIImage imageNamed:@"translator"];
-//    UIImageView *logoYBZ   = [[UIImageView alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, 130)];
-//    [logoYBZ setImage:image];
-//    logoYBZ.contentMode =  UIViewContentModeCenter;
-//    [self.view addSubview:logoYBZ];
-//    
-//    
-//    self.textView = [[UITextView alloc]initWithFrame:CGRectMake(0, 194,self.view.bounds.size.width, self.view.bounds.size.height)];
-//    self.textView.font = [UIFont boldSystemFontOfSize:20];
-//    [self.view addSubview:self.textView];
-//    
-//    
-//    
-//    [WebAgent version_numAbout:@"1.0" success:^(id responseObject) {
-//        NSData *data = [[NSData alloc]initWithData:responseObject];
-//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-//        NSLog(@"%@",dic);
-//        
-//        NSDictionary *offsend = dic[@"official_send"];
-//        NSString *aString = offsend[@"about-text"];
-//        
-//        NSLog(@"%@",aString);
-//        self.textView.text = aString;
-//        
-//    } failure:^(NSError *error) {
-//        NSLog(@"%@",error);
-//        
-//    }];
-//    
-    
-    
-    
-}
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-//     [MBProgressHUD showMessage:@"界面加载中"];
-  
+    UILabel *nameLabel = [self getLabelWithType:1 AndData:@"正在获取……"];
+    UILabel *editionLabel = [self getLabelWithType:2 AndData:@"正在获取……"];
+    UILabel *ownerLabel = [self getLabelWithType:3 AndData:@"正在获取……"];
+    [self.view addSubview:nameLabel];
+    [self.view addSubview:editionLabel];
+    [self.view addSubview:ownerLabel];
+    [WebAgent getHaveFunInfo:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        
+        
+        nameLabel.text =  [NSString stringWithFormat: @"应用名称：%@",dict[@"name"]];
+        editionLabel.text = [NSString stringWithFormat: @"应用名称：%@",dict[@"edition"]];
+        ownerLabel.text =  [NSString stringWithFormat: @"应用名称：%@",dict[@"owner"]];
+
+    } failure:^(NSError *error) {
+        
+    }];
+
 }
 
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-//    self.webView = [[UIWebView alloc]initWitrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height)];
-    
+-(UILabel *)getLabelWithType:(int)type AndData:(NSString *)data{
 
-}
-- (void)zlcwebViewDidStartLoad:(ZLCWebView *)webview
-{
-
-    NSLog(@"页面开始加载");
-}
-
-- (void)zlcwebView:(ZLCWebView *)webview shouldStartLoadWithURL:(NSURL *)URL
-{
-    NSLog(@"截取到URL：%@",URL);
-}
-- (void)zlcwebView:(ZLCWebView *)webview didFinishLoadingURL:(NSURL *)URL
-{
-    NSLog(@"页面加载完成");
-//    [MBProgressHUD hideHUD];
-}
-
-- (void)zlcwebView:(ZLCWebView *)webview didFailToLoadURL:(NSURL *)URL error:(NSError *)error
-{
-    NSLog(@"加载出现错误");
-//    [MBProgressHUD hideHUD];
-}
+    UILabel *label = [[UILabel alloc]init];
+    label.textAlignment = NSTextAlignmentLeft;
+    label.font = [UIFont systemFontOfSize:0.0371*SCREEN_WIDTH];
+    label.textColor = [UIColor grayColor];
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    switch (type) {
+        case 1:
+            NSLog(@"1");
+            label.text = [NSString stringWithFormat: @"应用名称：%@",data];
+            label.frame = CGRectMake(0.203*SCREEN_WIDTH, 0.5824*SCREEN_HEIGHT, 0.794*SCREEN_WIDTH, 0.062*SCREEN_WIDTH);
+            break;
+        case 2:
+            NSLog(@"2");
+            label.text = [NSString stringWithFormat: @"版本号：%@",data];
+            label.frame = CGRectMake(0.203*SCREEN_WIDTH, 0.6324*SCREEN_HEIGHT, 0.794*SCREEN_WIDTH, 0.062*SCREEN_WIDTH);
+            break;
+        case 3:
+            NSLog(@"3");
+            label.text = [NSString stringWithFormat: @"公司名称：%@",data];
+            label.frame = CGRectMake(0.203*SCREEN_WIDTH, 0.6824*SCREEN_HEIGHT, 0.794*SCREEN_WIDTH, 0.062*SCREEN_WIDTH);
+            break;
+
+        default:
+            break;
+    }
+    return label;
 }
+
+
+
+
+
+
+
+
 
 @end
