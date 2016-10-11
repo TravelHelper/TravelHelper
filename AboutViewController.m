@@ -55,11 +55,9 @@
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         
-        
-        
         nameLabel.text =  [NSString stringWithFormat: @"应用名称：%@",dict[@"name"]];
-        editionLabel.text = [NSString stringWithFormat: @"应用名称：%@",dict[@"edition"]];
-        ownerLabel.text =  [NSString stringWithFormat: @"应用名称：%@",dict[@"owner"]];
+        editionLabel.text = [NSString stringWithFormat: @"版本号：%@",dict[@"edition"]];
+        ownerLabel.text =  [NSString stringWithFormat: @"公司名称：%@",dict[@"owner"]];
 
     } failure:^(NSError *error) {
         
