@@ -644,6 +644,9 @@
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
         NSString *name = user_id[@"user_id"];
+        if (name == nil) {
+            name = @"000";
+        }
         NSDictionary *dict = @{@"senderID":name,
                                @"chatTextContent":text,
                                @"chatContentType":@"text",
@@ -741,7 +744,11 @@
     ChatModel *model = [[ChatModel alloc]init];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *user = [userDefaults dictionaryForKey:@"user_id"];
-    if ([object[@"senderID"] isEqualToString:user[@"user_id"]]) {
+    NSString *name =user[@"user_id"];
+    if (name == nil) {
+        name = @"000";
+    }
+    if ([object[@"senderID"] isEqualToString:name]) {
         model.isSender = 1;
         
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
