@@ -1084,8 +1084,7 @@
             languageMark=true;
             if([user_identity isEqualToString:@"译员"]){
                 
-                NSString *str = [user_language substringWithRange:NSMakeRange(1, user_language.length-1)];
-                NSArray *arr=[str componentsSeparatedByString:@","];
+                NSArray *arr=[user_language componentsSeparatedByString:@","];
                 
                 
                 YBZChooseTranslatorViewController *vc = [[YBZChooseTranslatorViewController alloc]initWithIdentify:@"译员" AndLanguageArr:arr];
