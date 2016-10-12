@@ -37,7 +37,7 @@
 
 -(void)getImageView{
 
-    UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"head"]];
+    UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"HaveFun"]];
     imageView.frame = CGRectMake(0.339*SCREEN_WIDTH, 0.245*SCREEN_HEIGHT, 0.322*SCREEN_WIDTH, 0.322*SCREEN_WIDTH);
     [self.view addSubview:imageView];
 }
