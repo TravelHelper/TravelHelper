@@ -1051,6 +1051,8 @@
 
 -(void)uesrCustomTranslate{
     
+    NSLog(@"用户定制");
+    
     if (loginStates == NO) {
         YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
         YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
@@ -1063,6 +1065,8 @@
     }
 }
 -(void)interpreterCustomTranslate{
+    
+    NSLog(@"译员定制翻译");
     if (loginStates == NO) {
         YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
         YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
@@ -1076,6 +1080,7 @@
 }
 -(void)showRewardHall{
 
+    NSLog(@"悬赏大厅");
     if (loginStates == NO) {
         YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
         YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
@@ -1238,7 +1243,7 @@
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn3.frame = CGRectMake(CGRectGetMidX(self.Btn2.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-//        [_Btn3 addTarget:self action:@selector(uesrCustomTranslate) forControlEvents:UIControlEventTouchUpInside];
+        [_Btn3 addTarget:self action:@selector(uesrCustomTranslate) forControlEvents:UIControlEventTouchUpInside];
         _Btn3.layer.masksToBounds = YES;
         _Btn3.layer.cornerRadius = UITranslationBtnSize / 2;
         
@@ -1338,7 +1343,7 @@
         //_interpretBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn6.frame = CGRectMake(CGRectGetMidX(self.Btn5.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-//        [_Btn6 addTarget:self action:@selector(interpreterCustomTranslate) forControlEvents:UIControlEventTouchUpInside];
+        [_Btn6 addTarget:self action:@selector(interpreterCustomTranslate) forControlEvents:UIControlEventTouchUpInside];
         _Btn6.layer.cornerRadius = UITranslationBtnSize / 2;
         
     }
