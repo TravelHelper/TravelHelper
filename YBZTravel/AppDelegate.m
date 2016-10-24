@@ -29,7 +29,10 @@
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate{
+
+    NSTimer *timer;
+}
 
 
 -(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
@@ -39,7 +42,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    
+   timer =  [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(quitApp3) userInfo:nil repeats:NO];
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
     ///远程推送！！！千万不能动⬇️
@@ -334,8 +337,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    
+    [timer fire];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp2" object:nil];
+
     
     
 }
@@ -476,5 +481,21 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     
 }
+
+
+
+-(void)quitApp3{
+
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [WebAgent userLogout:user_id[@"user_id"] success:^(id responseObject) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"Logout" object:nil];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+
 
 @end

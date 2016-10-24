@@ -151,7 +151,7 @@
     
     [self initLeftButton];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(quitApp) name:@"quitApp" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(quitApp2) name:@"quitApp2" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeState) name:@"changeLoginState" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Login) name:@"Login" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Logout) name:@"Logout" object:nil];
@@ -381,7 +381,7 @@
     [loginStateTimer invalidate];
 }
 
--(void)quitApp{
+-(void)quitApp2{
 
     [loginStateTimer invalidate];
 }
@@ -1273,7 +1273,7 @@
         //_myOfferBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn4.frame = CGRectMake(CGRectGetMaxX(self.Btn3.frame) + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-//        [_Btn4 addTarget:self action:@selector(showMyReward) forControlEvents:UIControlEventTouchUpInside];
+        [_Btn4 addTarget:self action:@selector(showMyReward) forControlEvents:UIControlEventTouchUpInside];
         _Btn4.layer.cornerRadius = UITranslationBtnSize / 2;
         
     }
@@ -1370,7 +1370,7 @@
         //_customMadeBtn.backgroundColor = [UIColor purpleColor];
         //_interpretBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 100, CGRectGetMaxY(self.translaterBtn.frame) + 20, 100, 50);
         _Btn7.frame = CGRectMake(CGRectGetMidX(self.Btn6.frame) + UITranslationBtnSize / 2 + UITranslationBtnMargin, CGRectGetMaxY(self.userBtn.frame) + 20, UITranslationBtnSize, UITranslationBtnSize);
-//        [_Btn7 addTarget:self action:@selector(showRewardHall) forControlEvents:UIControlEventTouchUpInside];
+        [_Btn7 addTarget:self action:@selector(showRewardHall) forControlEvents:UIControlEventTouchUpInside];
         _Btn7.layer.masksToBounds = YES;
         _Btn7.layer.cornerRadius = UITranslationBtnSize / 2;
         
