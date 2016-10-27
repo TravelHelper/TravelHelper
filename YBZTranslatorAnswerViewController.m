@@ -230,12 +230,9 @@
     CGRect keyboardRect = [[[notification userInfo]objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
     NSTimeInterval animationDuration = [[[notification userInfo]objectForKey:UIKeyboardAnimationDurationUserInfoKey]
                                         doubleValue];
-    CGRect frame = self.pictureView.frame;
-    frame.origin.y -= keyboardRect.size.height;
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    self.pictureView.frame = frame;
-    [UIView commitAnimations];
+    [UIView animateWithDuration:0.5 animations:^{
+        self.pictureView.transform = CGAffineTransformMakeTranslation(0, -keyboardRect.size.height);
+    }];
     
 }
 //键盘消失时
@@ -243,13 +240,9 @@
 {
     CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
     NSTimeInterval animationDuration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    CGRect frame = self.pictureView.frame;
-    frame.origin.y += keyboardRect.size.height;
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    self.pictureView.frame = frame;
-    [UIView commitAnimations];
-    
+   [UIView animateWithDuration:0.5 animations:^{
+       self.pictureView.transform = CGAffineTransformIdentity;
+   }];
 }
 //点击空白 keyboard消失
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event

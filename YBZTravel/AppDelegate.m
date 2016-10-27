@@ -82,6 +82,7 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getAlart:) name:@"beginToAlert" object:nil];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getTargetID) name:@"getTargetID" object:nil];
     
     ///远程推送⬆️！！！！！！
     //    FreeTransViewController  *freeVC = [[FreeTransViewController alloc]initWithUserID:@"001" WithTargetID:@"001" WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:Voice_YingYu WithTransLanguage:Trans_YingYu];
@@ -482,18 +483,19 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 
+-(void)getTargetID{
+
+
+}
+
+
+
 
 
 -(void)quitApp3{
 
     
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-    [WebAgent userLogout:user_id[@"user_id"] success:^(id responseObject) {
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"Logout" object:nil];
-    } failure:^(NSError *error) {
-        
-    }];
+    [timer invalidate];
 }
 
 

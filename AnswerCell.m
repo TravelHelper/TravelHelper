@@ -44,7 +44,6 @@
             acceptID = data[@"accept_id"];
         }
         [self setAllControlsFrame];
-        
         [self addAllControls];
         
     }
@@ -56,6 +55,9 @@
 -(void)setAllControlsFrame{
 
     self.headImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.034*SCREEN_WIDTH, 0.111*SCREEN_WIDTH, 0.111*SCREEN_WIDTH);
+    self.headImageView.layer.masksToBounds = YES;
+    self.headImageView.layer.cornerRadius = 0.111*SCREEN_WIDTH/2;
+
     self.nameLabel.frame = CGRectMake(0.157*SCREEN_WIDTH, 0.034*SCREEN_HEIGHT, SCREEN_WIDTH-0.151*SCREEN_WIDTH, 0.021*SCREEN_HEIGHT);
     CGSize textLabelSize;
     NSString *info = self.answerContentLabel.text;
@@ -106,12 +108,16 @@
 -(UIImageView *)headImageView{
 
     if (!_headImageView) {
-        if (![data[@"user_photo"]isEqualToString:@""] && data[@"user_photo"] != nil) {
-            _headImageView = [[UIImageView alloc]initWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:data[@"user_photo"]]]];
+        NSString *userID = data[@"user_id"];
+        NSString *str = [NSString stringWithFormat:@"http://139.224.44.36/TravelHelper/uploadimg/%@.jpg",userID];
+        NSURL *headImgUrl = [NSURL URLWithString:str];
+        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:headImgUrl]];
+        if (img != nil) {
+            _headImageView = [[UIImageView alloc]initWithImage:img];
         }else{
-            _headImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Logo"]];
+            _headImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"HaveFun"]];
         }
-    }
+           }
     return _headImageView;
 }
 

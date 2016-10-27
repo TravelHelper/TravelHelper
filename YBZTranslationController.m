@@ -616,7 +616,7 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
     
         NSString *msgString = dic[@"msg"];
-        if ([msgString isEqualToString:@"查询成功！并且可以成功匹配"]) {
+        if ([msgString isEqualToString:@"0000"]) {
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
             [MBProgressHUD showSuccess:@"匹配成功"];
@@ -1257,8 +1257,8 @@
         _Btn3Label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.Btn3.frame) - 35, CGRectGetMaxY(self.Btn3.frame) + 2, 70, 15)];
         //_customMadeLabel.backgroundColor = [UIColor greenColor];
         [_Btn3Label setText:@"定制翻译"];
-//        [_Btn3Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-        [_Btn3Label setTextColor:[UIColor grayColor]];
+        [_Btn3Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
+//        [_Btn3Label setTextColor:[UIColor grayColor]];
         
         _Btn3Label.textAlignment = NSTextAlignmentCenter;
         
@@ -1291,8 +1291,8 @@
         _Btn4Label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.Btn4.frame) - 35, CGRectGetMaxY(self.Btn4.frame) + 2, 70, 15)];
         //_myOfferLabel.backgroundColor = [UIColor greenColor];
         [_Btn4Label setText:@"我的悬赏"];
-        [_Btn4Label setTextColor:[UIColor grayColor]];
-//        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
+//        [_Btn4Label setTextColor:[UIColor grayColor]];
+        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
 //        [_Btn4Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
         
         _Btn4Label.textAlignment = NSTextAlignmentCenter;
@@ -1355,8 +1355,8 @@
     if (!_Btn6Label) {
         _Btn6Label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.Btn6.frame) - 35, CGRectGetMaxY(self.Btn6.frame) + 2, 70, 15)];
         [_Btn6Label setText:@"口语即时"];
-        //[_Btn6Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-        [_Btn6Label setTextColor:[UIColor grayColor]];
+        [_Btn6Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
+//        [_Btn6Label setTextColor:[UIColor grayColor]];
         _Btn6Label.textAlignment = NSTextAlignmentCenter;
         
         _Btn6Label.font = [UIFont systemFontOfSize:14];
@@ -1390,7 +1390,7 @@
         //_customMadeLabel.backgroundColor = [UIColor greenColor];
         [_Btn7Label setText:@"定制翻译"];
         [_Btn7Label setTextColor:[UIColor colorWithRed:19 / 255.0 green:137 / 255.0 blue:143/255.0 alpha:1]];
-        [_Btn7Label setTextColor:[UIColor grayColor]];
+//        [_Btn7Label setTextColor:[UIColor grayColor]];
         
         _Btn7Label.textAlignment = NSTextAlignmentCenter;
         

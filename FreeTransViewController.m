@@ -541,7 +541,9 @@
 
     
     NSString *needStr=[NSString stringWithFormat:@"%d\"",needNumber];
-    
+    if (name == nil ) {
+        name = @"";
+    }
     NSDictionary *dict = @{@"senderID":name,
                            @"chatAudioContent":urlString,
                            @"chatContentType":@"audio",

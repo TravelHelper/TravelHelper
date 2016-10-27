@@ -51,7 +51,6 @@
     self.view.backgroundColor = UIColorFromRGB(0xEFEFEF);
     //设置标题
     self.title = @"悬赏详情";
-    [self loadDataFromWeb];
 
     
 }
@@ -253,7 +252,8 @@
     
     if (!_rewardImageView) {
         _rewardImageView = [[UIImageView alloc]init];
-        NSURL *url = [NSURL URLWithString:_rewardDetailModel.rewardImageName];
+        NSString *str = [NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,_rewardDetailModel.rewardImageName];
+        NSURL *url = [NSURL URLWithString:str];
         NSData *data = [NSData dataWithContentsOfURL:url];
         UIImage *img = [UIImage imageWithData:data];
         if (img != nil) {
