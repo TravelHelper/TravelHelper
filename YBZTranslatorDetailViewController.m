@@ -273,6 +273,7 @@
     
     if (!_rewardImageView) {
         _rewardImageView = [[UIImageView alloc]init];
+
         
         NSString *str = [NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,_rewardDetailModel.rewardImageName];
         NSURL *url = [NSURL URLWithString:str];
@@ -299,6 +300,7 @@
 //        NSData *data = [NSData dataWithContentsOfURL:url];
 //        UIImage *img = [UIImage imageWithData:data];
         
+
         _rewardImageView.backgroundColor = [UIColor blackColor];
     }
     return _rewardImageView;
