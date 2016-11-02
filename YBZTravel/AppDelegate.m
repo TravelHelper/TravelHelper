@@ -15,6 +15,7 @@
 #import "JPUSHService.h"
 #import "WebAgent.h"
 #import "YBZtoalertView.h"
+#import "EMSDKFull.h"
 
 #define Trans_YingYu    @"en"
 #define Voice_YingYu    @"en-GB"
@@ -29,7 +30,10 @@
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate{
+
+    NSTimer *timer;
+}
 
 
 -(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
@@ -39,7 +43,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    
+   timer =  [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(quitApp3) userInfo:nil repeats:NO];
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
     ///远程推送！！！千万不能动⬇️
@@ -66,7 +70,7 @@
     // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
     [JPUSHService setupWithOption:launchOptions appKey:@"4309446657f3a7b64ef168ee"
                           channel:@"Publish channel"
-                 apsForProduction:false
+                 apsForProduction:NO
             advertisingIdentifier:advertisingId];
     [JPUSHService setBadge:0];
     [JPUSHService resetBadge];
@@ -79,6 +83,7 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getAlart:) name:@"beginToAlert" object:nil];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getTargetID) name:@"getTargetID" object:nil];
     
     ///远程推送⬆️！！！！！！
     //    FreeTransViewController  *freeVC = [[FreeTransViewController alloc]initWithUserID:@"001" WithTargetID:@"001" WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:Voice_YingYu WithTransLanguage:Trans_YingYu];
@@ -122,7 +127,11 @@
         }
     }
     
-    
+    //AppKey:注册的AppKey，详细见下面注释。
+    //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
+    EMOptions *options = [EMOptions optionsWithAppkey:@"1146161023178105#travelhelper"];
+    options.apnsCertName = @"push";
+    [[EMClient sharedClient] initializeSDKWithOptions:options];
     
     return YES;
 }
@@ -181,7 +190,7 @@
 
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    
+     NSLog(@"My token is: %@", deviceToken);
     /// Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
     
@@ -314,11 +323,15 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    
+    [[EMClient sharedClient] applicationDidEnterBackground:application];
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    
+    [[EMClient sharedClient] applicationWillEnterForeground:application];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
@@ -334,8 +347,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    
+    [timer fire];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp2" object:nil];
+
     
     
 }
@@ -476,5 +491,23 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     
 }
+
+
+-(void)getTargetID{
+
+
+}
+
+
+
+
+
+-(void)quitApp3{
+
+    
+    [timer invalidate];
+}
+
+
 
 @end

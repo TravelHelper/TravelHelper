@@ -8,7 +8,7 @@
 
 #import "AnswerCell.h"
 #import "WebAgent.h"
-
+#import "UIImageView+WebCache.h"
 @interface AnswerCell()
 
 @property (nonatomic, strong) UIImageView *headImageView;
@@ -44,7 +44,6 @@
             acceptID = data[@"accept_id"];
         }
         [self setAllControlsFrame];
-        
         [self addAllControls];
         
     }
@@ -55,6 +54,9 @@
 
 -(void)setAllControlsFrame{
 
+    
+    self.headImageView.layer.masksToBounds = YES;
+    self.headImageView.layer.cornerRadius = 0.111*SCREEN_WIDTH/2;
     self.headImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.034*SCREEN_WIDTH, 0.111*SCREEN_WIDTH, 0.111*SCREEN_WIDTH);
     self.nameLabel.frame = CGRectMake(0.157*SCREEN_WIDTH, 0.034*SCREEN_HEIGHT, SCREEN_WIDTH-0.151*SCREEN_WIDTH, 0.021*SCREEN_HEIGHT);
     CGSize textLabelSize;
@@ -106,12 +108,27 @@
 -(UIImageView *)headImageView{
 
     if (!_headImageView) {
-        if (![data[@"user_photo"]isEqualToString:@""] && data[@"user_photo"] != nil) {
-            _headImageView = [[UIImageView alloc]initWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:data[@"user_photo"]]]];
-        }else{
-            _headImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Logo"]];
-        }
-    }
+        
+        NSString *userID = data[@"user_id"];
+        NSString *str = [NSString stringWithFormat:@"http://139.224.44.36/TravelHelper/uploadimg/%@.jpg",userID];
+        NSURL *headImgUrl = [NSURL URLWithString:str];
+        _headImageView=[[UIImageView alloc]init];
+        [_headImageView sd_setImageWithURL:headImgUrl completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            NSLog(@"这里可以在图片加载完成之后做些事情");
+            
+            if (image != nil) {
+                _headImageView.image=image;
+            }else{
+                _headImageView.image=[UIImage imageNamed:@"HaveFun"];
+            }
+         
+            
+        }];
+        
+//        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:headImgUrl]];
+        
+           }
     return _headImageView;
 }
 

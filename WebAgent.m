@@ -675,7 +675,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                            @"rewarder_id":rewarderID,
                            @"reward_title":rewardTitle,
                            @"reward_text":rewardText,
-                           @"reward_url":rewardUrl,
+                           @"reward_pic_url":rewardUrl,
                            @"reward_money":rewardMoney,
                            @"language":language,
                            @"reward_tag":rewardtag};
@@ -702,10 +702,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 }
 //悬赏大厅_all
 +(void)getRewardHallInfo:(NSString *)user_id
+             AndLanguage:(NSString *)language
                  success:(void (^)(id responseObject))success
                  failure:(void (^)(NSError *error))failure
 {
-    NSDictionary *dict = @{@"user_id":user_id};
+    NSDictionary *dict = @{@"user_id":user_id,
+                                            @"language":language};
     [[APIClient sharedClient] POST:@"Reward/get_reward_hall_list/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -762,12 +764,14 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 }
 //我的悬赏
 +(void)myRewardrewardID:(NSString *)user_id
+            AndLanguage:(NSString *)language
                 success:(void (^)(id responseObject))success
                 failure:(void (^)(NSError *error))failure
 {
     
     
-    NSDictionary *dict = @{@"rewarder_id":user_id};
+    NSDictionary *dict = @{@"rewarder_id":user_id,
+                                            @"language":language};
     [[APIClient sharedClient] POST:@"Reward/myReward/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1143,7 +1147,23 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)getHaveFunInfo:(void (^)(id responseObject))success
                    failure:(void (^)(NSError *error))failure{
     
-    [[APIClient sharedClient] POST:@"User/getHaveFunInfo/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"Reward/uploadRewardImg/" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
+
++(void)uploadRewardImageWithRewardID:(NSString *)rewardID
+              success:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure{
+    
+    NSDictionary *dict = @{@"reward_id":rewardID};
+
+    [[APIClient sharedClient] POST:@"User/getHaveFunInfo/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);

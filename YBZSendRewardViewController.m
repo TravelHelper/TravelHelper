@@ -25,7 +25,7 @@
 #define kScreenHeight  [[UIScreen mainScreen] bounds].size.height
 #define kMargin        kScreenWidth*0.03
 #define kL             kScreenWidth*0.06
-#define positionImg    @"http://127.0.0.1/TravelHelper/upload.php"
+
 @interface YBZSendRewardViewController ()<UITextViewDelegate,UITextFieldDelegate>
 {
     CGFloat keyBoardEndY;
@@ -389,8 +389,12 @@
 
     if (self.userIconImageV.image) {
         
+        
+//        UIImage *image = self.userIconImageV.image;
+        
+        
         UIImage *image=self.userIconImageV.image;
-        NSString *urlc = [NSString stringWithFormat:@"%@",positionImg];
+           NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
         NSURL *URL = [NSURL URLWithString:urlc];
         AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc]init];
         [securityPolicy setAllowInvalidCertificates:YES];

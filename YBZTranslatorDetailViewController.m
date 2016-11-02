@@ -11,6 +11,7 @@
 #import "WebAgent.h"
 #import "YBZRewardHallDetailModel.h"
 #import "YBZTranslatorAnswerViewController.h"
+#import "UIImageView+WebCache.h"
 @interface YBZTranslatorDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     UIView *splitView;
@@ -51,13 +52,12 @@
     self.view.backgroundColor = UIColorFromRGB(0xEFEFEF);
     //设置标题
     self.title = @"悬赏详情";
-    [self loadDataFromWeb];
 
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-
+    [super viewWillAppear:animated];
     [self loadDataFromWeb];
 }
 
@@ -66,6 +66,7 @@
 -(void)loadDataFromWeb{
     
     [WebAgent rewardDetial:self.reward_id success:^(id responseObject) {
+        NSLog(@"aaaaa");
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSDictionary *dict = dic[@"data"][0];
@@ -86,7 +87,7 @@
         NSLog(@"1");
         [self setAllControlsFrame];
         [self addAllControls];
-        [self.answerTableView reloadData];
+//        [self.answerTableView reloadData];
 
         
     } failure:^(NSError *error) {
@@ -107,7 +108,7 @@
     NSString *info = self.contentLabel.text;
     textLabelSize = [info boundingRectWithSize:CGSizeMake(0.932*SCREEN_WIDTH, 0.077*SCREEN_HEIGHT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.034*SCREEN_WIDTH]} context:nil].size;
     self.contentLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.058*SCREEN_HEIGHT, 0.932*SCREEN_WIDTH, textLabelSize.height);
-    self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
+//    self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
     self.timeLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/2, 0.017*SCREEN_HEIGHT);
     self.answerNumLabel.frame = CGRectMake(2*SCREEN_WIDTH/3, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3-0.034*SCREEN_WIDTH, 0.017*SCREEN_HEIGHT);
     self.rewardMoneyLabel.frame = CGRectMake(0.677*SCREEN_WIDTH, 0.350*SCREEN_HEIGHT, 0.308*SCREEN_WIDTH, 0.055*SCREEN_HEIGHT);
@@ -134,7 +135,10 @@
 
 #pragma mark -----TableViewDelegate-----
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 
+    return 1;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     return _rewardDetailModel.answerArr.count;
@@ -143,8 +147,24 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSDictionary *dict = _rewardDetailModel.answerArr[indexPath.row];
-    AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
-    return cell.height;
+    
+    CGFloat height=[self returnCellHeightWithDictionaryModel:dict];
+    
+//    AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
+    return height;
+}
+
+-(CGFloat)returnCellHeightWithDictionaryModel:(NSDictionary *)dict{
+
+    CGFloat height;
+    
+    CGSize textLabelSize;
+    NSString *info = dict[@"answer_text"];
+    textLabelSize = [info boundingRectWithSize:CGSizeMake(SCREEN_WIDTH-0.167*SCREEN_WIDTH,MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.02*SCREEN_HEIGHT]} context:nil].size;
+    height= 0.08*SCREEN_HEIGHT+textLabelSize.height + 0.009*SCREEN_HEIGHT+0.038*SCREEN_HEIGHT+ 0.017*SCREEN_HEIGHT;
+    
+    return height;
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -253,17 +273,32 @@
     
     if (!_rewardImageView) {
         _rewardImageView = [[UIImageView alloc]init];
-        NSURL *url = [NSURL URLWithString:_rewardDetailModel.rewardImageName];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *img = [UIImage imageWithData:data];
-        if (img != nil) {
-            _rewardImageView.image = img;
-            sizeOfPic = img.size;
-        }else{
-            UIImage *image = [UIImage imageNamed:@"img"];
-            _rewardImageView.image = image;
-            sizeOfPic = image.size;
-        }
+        
+        NSString *str = [NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,_rewardDetailModel.rewardImageName];
+        NSURL *url = [NSURL URLWithString:str];
+        [_rewardImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            NSLog(@"这里可以在图片加载完成之后做些事情");
+            if (image != nil) {
+                _rewardImageView.image = image;
+                sizeOfPic = image.size;
+            }else{
+                UIImage *image = [UIImage imageNamed:@"img"];
+                _rewardImageView.image = image;
+                sizeOfPic = image.size;
+            }
+            _rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
+//            dispatch_async(dispatch_get_main_queue(), ^{
+////                [self.contentView addSubview:self.rewardImageView];
+//            });
+            
+            
+        }];
+
+        
+//        NSData *data = [NSData dataWithContentsOfURL:url];
+//        UIImage *img = [UIImage imageWithData:data];
+        
         _rewardImageView.backgroundColor = [UIColor blackColor];
     }
     return _rewardImageView;

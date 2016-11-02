@@ -200,6 +200,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
             failure:(void (^)(NSError *error))failure;
 //悬赏大厅
 +(void)getRewardHallInfo:(NSString *)user_id
+             AndLanguage:(NSString *)language
                  success:(void (^)(id responseObject))success
                  failure:(void (^)(NSError *error))failure;
 +(void)language:(NSString *)language
@@ -221,6 +222,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
             failure:(void (^)(NSError *error))failure;
 //我的悬赏
 +(void)myRewardrewardID:(NSString *)user_id
+            AndLanguage:(NSString *)language
                 success:(void (^)(id responseObject))success
                 failure:(void (^)(NSError *error))failure;
 //提交回答

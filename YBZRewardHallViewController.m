@@ -73,6 +73,7 @@
 
 @implementation YBZRewardHallViewController{
     NSString *user_ID;
+    NSMutableArray *languageArr;
 }
 
 - (void)viewDidLoad {
@@ -81,7 +82,7 @@
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     user_ID = user_id[@"user_id"];
     self.dataArr = [NSMutableArray array];
-    [self loadDataFromWeb];
+    [self loadDataFromWeb:@"all"];
 //    [self.navigationController.navigationBar addSubview:self.navView];
 //    self.navigationController.navigationBar.clipsToBounds = YES;
     self.title = @"悬赏大厅";
@@ -89,8 +90,7 @@
     [self.view addSubview:self.backgroundImageView];
     [self.view addSubview:self.mainTableView];
     [self.view addSubview:self.navView];
-    [self addNameAndJiantou];
-   
+    [self getThreeOrderButton];
     [self.searchTextField addTarget:self action:@selector(textFieldOnFouce:) forControlEvents:UIControlEventTouchDown];
     [self.searchTextField addTarget:self action:@selector(textFieldDidBeginEditing:) forControlEvents:UIControlEventEditingChanged];
 
@@ -101,7 +101,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 
-    [self loadDataFromWeb];
+    [self loadDataFromWeb:@"all"];
 }
 
 
@@ -110,108 +110,266 @@
     [self.view endEditing:YES];
 }
 
--(void)addNameAndJiantou{
-    self.m_btn_tableView1 = [[Btn_TableView alloc] initWithFrame:CGRectMake(0, 64+kScreenWith*0.11, kScreenWith*0.333, kScreenWith*0.1)];
-    self.m_btn_tableView2 = [[Btn_TableView alloc] initWithFrame:CGRectMake(kScreenWith*0.333, 64+kScreenWith*0.11, kScreenWith*0.333, kScreenWith*0.1)];
-    self.m_btn_tableView3 = [[Btn_TableView alloc] initWithFrame:CGRectMake(kScreenWith*0.666, 64+kScreenWith*0.11, kScreenWith*0.333, kScreenWith*0.1)];
+//生成三个排序按钮
+-(void)getThreeOrderButton{
     
-    self.m_btn_tableView1.delegate_Btn_TableView = self;
-    self.m_btn_tableView2.delegate_Btn_TableView = self;
-    self.m_btn_tableView3.delegate_Btn_TableView = self;
-    _stateLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWith*0.3333, kScreenWith*0.088)];
-    _stateLabel.text = @"金额排序";
-    _stateLabel.backgroundColor = [UIColor whiteColor];
-    _stateLabel.font = [UIFont systemFontOfSize:kSelectFontSize];
-    _stateLabel.textAlignment = NSTextAlignmentCenter;
-    _languageLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWith*0.3333, kScreenWith*0.088)];
-    _languageLabel.text = @"语言筛选";
-    _languageLabel.backgroundColor = [UIColor whiteColor];
-    _languageLabel.font = [UIFont systemFontOfSize:kSelectFontSize];
-    _languageLabel.textAlignment = NSTextAlignmentCenter;
-    _timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWith*0.3333, kScreenWith*0.088)];
-    _timeLabel.text = @"时间排序";
-    _timeLabel.backgroundColor = [UIColor whiteColor];
+    NSArray *titleArr = @[@"金额排序",@"语言筛选",@"时间排序"];
+    for (int i=0 ; i<3; i++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(SCREEN_WIDTH/3*i, 128, SCREEN_WIDTH/3, 0.05*SCREEN_HEIGHT);
+        btn.backgroundColor = [UIColor whiteColor];
+        [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btn setTitleColor:UIColorFromRGB(0x1D8FD2) forState:UIControlStateSelected];
+        [btn setTitle:titleArr[i] forState:UIControlStateNormal];
+        btn.tag = i+100;
+        [btn addTarget:self action:@selector(searchBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btn];
+    }
+}
 
-    _timeLabel.font = [UIFont systemFontOfSize:kSelectFontSize];
-    _timeLabel.textAlignment = NSTextAlignmentCenter;
-    _stateJiantouView = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWith*0.25, kScreenWith*0.024, kScreenWith*0.03, kScreenWith*0.03)];
-    _languageJiantouView = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWith*0.25, kScreenWith*0.022, kScreenWith*0.03, kScreenWith*0.03)];
-    _timeJiantouView = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWith*0.25, kScreenWith*0.022, kScreenWith*0.03, kScreenWith*0.03)];
-    [_stateJiantouView setImage:[UIImage imageNamed:@"下_黑_箭头"]];
-    _stateLabel.textColor = [UIColor blackColor];
-    [_languageJiantouView setImage:[UIImage imageNamed:@"下_黑_箭头"]];
-    _languageLabel.textColor = [UIColor blackColor];
-    [_timeJiantouView setImage:[UIImage imageNamed:@"下_黑_箭头"]];
-    _timeLabel.textColor = [UIColor blackColor];
-    [self.m_btn_tableView1 addSubview:_stateLabel];
-    [self.m_btn_tableView1 addSubview:_stateJiantouView];
-    [self.m_btn_tableView2 addSubview:_languageLabel];
-    [self.m_btn_tableView2 addSubview:_languageJiantouView];
-    [self.m_btn_tableView3 addSubview:_timeLabel];
-    [self.m_btn_tableView3 addSubview:_timeJiantouView];
-    self.m_btn_tableView1.m_TableViewData = @[@"由高到低",@"由低到高"];
-    self.m_btn_tableView2.m_TableViewData = @[@"英文",@"中文",@"韩文",@"日文",@"泰文",@"法文",@"俄文"];
-    self.m_btn_tableView3.m_TableViewData = @[@"由早到晚",@"由晚到早"];
-    [self.m_btn_tableView1 addViewData];
-    [self.m_btn_tableView2 addViewData];
-    [self.m_btn_tableView3 addViewData];
-    [self.view addSubview:self.m_btn_tableView1];
-    [self.view addSubview:self.m_btn_tableView2];
-    [self.view addSubview:self.m_btn_tableView3];
-}
-//第三步：处理通知
--(void)setTextALabel:(NSNotification *)noti{
-    NSDictionary *textDic = [noti userInfo];
-    self.select = [textDic objectForKey:@"条件"];
-    if ([self.select isEqualToString:@"由高到低"] || [self.select isEqualToString:@"由低到高"] ) {
-        [self loadMoneyDataFromWeb];
-        [self.mainTableView reloadData];
-    }
-    else if ([self.select isEqualToString:@"由早到晚"] || [self.select isEqualToString:@"由晚到早"] ) {
-        [self loadTimeDataFromWeb];
-        [self.mainTableView reloadData];
-    }
-    else{
-        [self loadLanguageDataFromWeb];
-        [self.mainTableView reloadData];
-    }
-}
--(void)setTextALabel2:(NSNotification *)noti{
-    NSDictionary *textDic = [noti userInfo];
-    self.select2 = [textDic objectForKey:@"文本"];
-    NSLog(@"%@",self.select2);
+-(void)searchBtnClick:(UIButton *)sender{
     
-    if (!self.m_btn_tableView1.m_btnpanduan&!self.m_btn_tableView2.m_btnpanduan&!self.m_btn_tableView3.m_btnpanduan) {
-        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:YES];
-        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:YES];
-        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:YES];
-        [_stateJiantouView setImage:[UIImage imageNamed:@"下_黑_箭头"]];
-        _stateLabel.textColor = [UIColor blackColor];
-        [_languageJiantouView setImage:[UIImage imageNamed:@"下_黑_箭头"]];
-        _languageLabel.textColor = [UIColor blackColor];
-        [_timeJiantouView setImage:[UIImage imageNamed:@"下_黑_箭头"]];
-        _timeLabel.textColor = [UIColor blackColor];
-        
-    }
-    if (self.m_btn_tableView1.m_btnpanduan) {
-        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:NO];
-        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:NO];
-        [_stateJiantouView setImage:[UIImage imageNamed:@"下_灰_箭头"]];
-        _stateLabel.textColor = [UIColor colorWithRed:0.0/255.0f green:129.0/255.0f blue:204.0/255.0f alpha:0.9];
-    }
-    if (self.m_btn_tableView2.m_btnpanduan) {
-        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:NO];
-        [self.m_btn_tableView3.m_btn setUserInteractionEnabled:NO];
-        [_languageJiantouView setImage:[UIImage imageNamed:@"下_灰_箭头"]];
-        _languageLabel.textColor = [UIColor colorWithRed:0.0/255.0f green:129.0/255.0f blue:204.0/255.0f alpha:0.9];
-    }
-    if (self.m_btn_tableView3.m_btnpanduan) {
-        [self.m_btn_tableView1.m_btn setUserInteractionEnabled:NO];
-        [self.m_btn_tableView2.m_btn setUserInteractionEnabled:NO];
-        [_timeJiantouView setImage:[UIImage imageNamed:@"下_灰_箭头"]];
-        _timeLabel.textColor = [UIColor colorWithRed:0.0/255.0f green:129.0/255.0f blue:204.0/255.0f alpha:0.9];
+    switch (sender.tag) {
+        case 100:
+            NSLog(@"100");
+            [self changeSelectedAndShowViewWithTag:100 AndSender:sender];
+            break;
+        case 101:
+            NSLog(@"101");
+            [self changeSelectedAndShowViewWithTag:101 AndSender:sender];
+            break;
+        case 102:
+            NSLog(@"102");
+            [self changeSelectedAndShowViewWithTag:102 AndSender:sender];
+            break;
+        default:
+            break;
     }
 }
+
+
+-(void)changeSelectedAndShowViewWithTag:(int)tag AndSender:(UIButton *)sender{
+    
+    if (sender.selected == YES) {
+        [self clearOtherBtn];
+    }else{
+        [self clearOtherBtn];
+        sender.selected = YES;
+        [self addChooseViewWithTag:tag];
+    }
+    
+}
+
+-(void)addChooseViewWithTag:(int)tag{
+    
+    UIView *view = [[UIView alloc]init];
+    view.backgroundColor = [UIColor whiteColor];
+    switch (tag) {
+        case 100:
+            view.frame = CGRectMake(0, 128+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
+            view.tag = 1000;
+            [self getBtnWithTag:1000 AndView:view];
+            break;
+        case 101:
+            view.frame = CGRectMake(SCREEN_WIDTH/3, 128+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, languageArr.count*0.05*SCREEN_HEIGHT);
+            view.tag = 1001;
+            [self getBtnWithTag:1001 AndView:view];
+            
+            break;
+        case 102:
+            view.frame = CGRectMake(SCREEN_WIDTH/3*2, 128+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
+            view.tag = 1002;
+            [self getBtnWithTag:1002 AndView:view];
+            
+            break;
+        default:
+            break;
+    }
+    [self.view addSubview:view];
+    
+}
+
+-(void)getBtnWithTag:(int)tag AndView:(UIView *)view{
+    
+    if (tag == 1000) {
+        NSArray *titleArr = @[@"从高到低",@"从低到高"];
+        for (int i=0; i<2; i++) {
+            UIButton *moneyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            moneyBtn.frame = CGRectMake(0, view.bounds.size.height/2*i, view.bounds.size.width, view.bounds.size.height/2);
+            [moneyBtn setTitle:titleArr[i] forState:UIControlStateNormal];
+            moneyBtn.titleLabel.font = FONT_13;
+            moneyBtn.backgroundColor = [UIColor whiteColor];
+            [moneyBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            moneyBtn.tag = i+200;
+            [moneyBtn addTarget:self action:@selector(orderDataWithMoney:) forControlEvents:UIControlEventTouchUpInside];
+            [view addSubview:moneyBtn];
+        }
+    }
+    if (tag == 1001) {
+        
+        for (int i=0; i<languageArr.count; i++) {
+            UIButton *languageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            languageBtn.frame = CGRectMake(0, view.bounds.size.height/languageArr.count*i, view.bounds.size.width, view.bounds.size.height/languageArr.count);
+            [languageBtn setTitle:languageArr[i] forState:UIControlStateNormal];
+            languageBtn.titleLabel.font = FONT_13;
+            languageBtn.backgroundColor = [UIColor whiteColor];
+            [languageBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [languageBtn addTarget:self action:@selector(chooseDataWithLanguage:) forControlEvents:UIControlEventTouchUpInside];
+            [view addSubview:languageBtn];
+        }
+    }
+    
+    if (tag == 1002) {
+        NSArray *titleArr = @[@"从早到晚",@"从晚到早"];
+        for (int i=0; i<2; i++) {
+            UIButton *timeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            timeBtn.frame = CGRectMake(0, view.bounds.size.height/2*i, view.bounds.size.width, view.bounds.size.height/2);
+            [timeBtn setTitle:titleArr[i] forState:UIControlStateNormal];
+            timeBtn.titleLabel.font = FONT_13;
+            timeBtn.backgroundColor = [UIColor whiteColor];
+            [timeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            timeBtn.tag = i+300;
+            [timeBtn addTarget:self action:@selector(orderDataWithTime:) forControlEvents:UIControlEventTouchUpInside];
+            [view addSubview:timeBtn];
+        }
+    }
+    
+}
+
+-(void)clearOtherBtn{
+    
+    for (UIButton *btn in self.view.subviews) {
+        switch (btn.tag) {
+            case 100:
+                btn.selected = NO;
+                break;
+            case 101:
+                btn.selected = NO;
+                
+                break;
+            case 102:
+                btn.selected = NO;
+                
+                break;
+            default:
+                break;
+        }
+    }
+    for (UIView *view in self.view.subviews) {
+        switch (view.tag) {
+            case 1000:
+                [view removeFromSuperview];
+                break;
+            case 1001:
+                [view removeFromSuperview];
+                
+                break;
+            case 1002:
+                [view removeFromSuperview];
+                
+                break;
+            default:
+                break;
+        }
+    }
+    
+}
+
+
+-(void)orderDataWithMoney:(UIButton *)sender{
+    
+    [sender.superview removeFromSuperview];
+    [self clearOtherBtn];
+    if (sender.tag == 200) {
+        for (int i=0; i<self.dataArr.count; i++) {
+            for (int j=0; j<self.dataArr.count-1; j++) {
+                if (self.dataArr[j][@"reward_money"]<self.dataArr[j+1][@"reward_money"]) {
+                    NSDictionary *dict = self.dataArr[j];
+                    self.dataArr[j] = self.dataArr[j+1];
+                    self.dataArr[j+1] = dict;
+                }
+            }
+        }
+    }else if (sender.tag == 201){
+        for (int i=0; i<self.dataArr.count; i++) {
+            for (int j=0; j<self.dataArr.count-1; j++) {
+                if (self.dataArr[j][@"reward_money"]>self.dataArr[j+1][@"reward_money"]) {
+                    NSDictionary *dict = self.dataArr[j];
+                    self.dataArr[j] = self.dataArr[j+1];
+                    self.dataArr[j+1] = dict;
+                }
+            }
+        }
+    }
+    [self.mainTableView reloadData];
+}
+
+-(void)chooseDataWithLanguage:(UIButton *)sender{
+    
+    [sender.superview removeFromSuperview];
+    [self clearOtherBtn];
+    [self loadDataFromWeb:sender.titleLabel.text];
+    [self.mainTableView reloadData];
+}
+
+-(void)orderDataWithTime:(UIButton *)sender{
+    
+    [sender.superview removeFromSuperview];
+    [self clearOtherBtn];
+    if (sender.tag == 300) {
+        for (int i=0; i<self.dataArr.count; i++) {
+            for (int j=0; j<self.dataArr.count-1; j++) {
+                NSTimeZone* destinationTimeZone = [NSTimeZone localTimeZone];
+                NSDateFormatter *format = [[NSDateFormatter alloc]init];
+                [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                [format setTimeZone:destinationTimeZone];
+                NSDate *firstDate = [[NSDate alloc]init];
+                firstDate = [format dateFromString:self.dataArr[j][@"release_time"]];
+                NSDate *secondDate = [[NSDate alloc]init];
+                secondDate = [format dateFromString:self.dataArr[j+1][@"release_time"]];
+                NSTimeInterval first = [firstDate timeIntervalSince1970]*1;
+                NSTimeInterval second = [secondDate timeIntervalSince1970]*1;
+                
+                
+                
+                if (first>second) {
+                    NSDictionary *dict = self.dataArr[j];
+                    self.dataArr[j] = self.dataArr[j+1];
+                    self.dataArr[j+1] = dict;
+                }
+            }
+        }
+    }else if (sender.tag == 301){
+        for (int i=0; i<self.dataArr.count; i++) {
+            for (int j=0; j<self.dataArr.count-1; j++) {
+                NSTimeZone* destinationTimeZone = [NSTimeZone localTimeZone];
+                NSDateFormatter *format = [[NSDateFormatter alloc]init];
+                [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                [format setTimeZone:destinationTimeZone];
+                NSDate *firstDate = [[NSDate alloc]init];
+                firstDate = [format dateFromString:self.dataArr[j][@"release_time"]];
+                NSDate *secondDate = [[NSDate alloc]init];
+                secondDate = [format dateFromString:self.dataArr[j+1][@"release_time"]];
+                NSTimeInterval first = [firstDate timeIntervalSince1970]*1;
+                NSTimeInterval second = [secondDate timeIntervalSince1970]*1;
+                
+                
+                
+                if (first<second) {
+                    NSDictionary *dict = self.dataArr[j];
+                    self.dataArr[j] = self.dataArr[j+1];
+                    self.dataArr[j+1] = dict;
+                }
+            }
+        }
+    }
+    [self.mainTableView reloadData];
+    
+}
+
+
+
+
 
 //第四步：移除通知
 -(void)dealloc{
@@ -222,9 +380,9 @@
 
 #pragma mark - 加载数据
 
--(void)loadDataFromWeb{
+-(void)loadDataFromWeb:(NSString *)language{
         
-    [WebAgent getRewardHallInfo:user_ID success:^(id responseObject) {
+    [WebAgent getRewardHallInfo:user_ID AndLanguage:language  success:^(id responseObject) {
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         if (![dic[@"data"] isKindOfClass:[NSString class]]) {
@@ -232,7 +390,33 @@
         }else{
             self.dataArr = nil;
         }
-        [self.mainTableView reloadData];
+        NSArray *reward_info = self.dataArr;
+        if (reward_info.count != 0) {
+            if ([language isEqualToString:@"all"]) {
+                languageArr = [[NSMutableArray alloc]init];
+                
+                for (NSDictionary *dict in self.dataArr) {
+                    NSString *language = dict[@"language"];
+                    if (languageArr.count != 0) {
+                        BOOL hasLanguage = NO;
+                        for (NSString *str in languageArr) {
+                            if ([str isEqualToString:language]) {
+                                hasLanguage = YES;
+                            }
+                        }
+                        if (hasLanguage == NO) {
+                            [languageArr addObject:language];
+                        }
+                    }else{
+                        [languageArr addObject:language];
+                    }
+                }
+                
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.mainTableView reloadData];
+        });
         
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
@@ -240,106 +424,15 @@
         }];
 }
 
--(void)loadMoneyDataFromWeb{
-    [WebAgent money:@"money" success:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"select--money------------->%@",dic);
-        NSArray *descMoney = dic[@"data"];
-        [self.dataArr removeAllObjects];
-        if ([self.select isEqualToString:@"由高到低"]) {
-            for (int i = 0 ; i < descMoney.count; i++) {
-                [self.dataArr addObject:descMoney[i]];
-                [self.mainTableView reloadData];
-            }
-        }
-        if ([self.select isEqualToString:@"由低到高"]) {
-            for (int i = 0 ; i < descMoney.count; i++) {
-                [self.dataArr addObject:descMoney[descMoney.count-i-1] ];
-                [self.mainTableView reloadData];
-            }
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-        [self errorAction];
-    }];
-}
 
--(void)loadLanguageDataFromWeb{
-    
-    [WebAgent language:self.select success:^(id responseObject) {
-        
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"select--language------------->%@",dic);
-        NSArray *languageArr = dic[@"data"];
-        [self.dataArr removeAllObjects];
-        
-        for (int i = 0 ; i < languageArr.count; i++) {
-                [self.dataArr addObject:languageArr[i]];
-                [self.mainTableView reloadData];
-        }
-      
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-        [self errorAction];
-    }];
-}
 
--(void)loadTimeDataFromWeb{
-    [WebAgent time:@"time" success:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"select---time------------>%@",dic);
-        NSArray *descTime = dic[@"data"];
-        [self.dataArr removeAllObjects];
-        if ([self.select isEqualToString:@"由早到晚"]) {
-            for (int i = 0 ; i < descTime.count; i++) {
-                [self.dataArr addObject:descTime[i]];
-                [self.mainTableView reloadData];
-            }
-        }
-        if ([self.select isEqualToString:@"由晚到早"]) {
-            for (int i = 0 ; i < descTime.count; i++) {
-                [self.dataArr addObject:descTime[descTime.count - i-1]];
-                [self.mainTableView reloadData];
-            }
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-        [self errorAction];
-    }];
-}
-
--(void)searchDataFromWeb{
-    
-    [WebAgent searchContent:self.searchTextField.text success:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSArray *searchResualt = dic[@"data"];
-        [self.dataArr removeAllObjects];
-        for (int i = 0 ; i < searchResualt.count; i++) {
-                [self.dataArr addObject:searchResualt[i]];
-                [self.mainTableView reloadData];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-        [self errorAction];
-    }];
-}
 
 #pragma mark - 点击事件
 -(void)changeOrientationNinty:(UIView *)view
 {
     view.transform  = CGAffineTransformMakeRotation(CC_DEGREES_TO_RADIANS(90));
 }
--(void)cancelBtnClick{
-    self.searchTextField.frame = CGRectMake(kScreenWith*0.03, kScreenWith*0.02, UIScreenWidth*0.94, kScreenWith*0.08);
-    self.searchTextField.placeholder = @"搜索感兴趣的话题、分类、电影、歌曲、书籍、国家等🔍";
-    [self.searchTextField resignFirstResponder];
-    [self.cancelBtn removeFromSuperview];
-    
-}
+
 #pragma mark - error
 -(void)errorAction{
     CGSize size = [@"网络错误" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:25]}];
@@ -364,18 +457,7 @@
 }
 
 
-#pragma mark - UITextField事件捕捉
-- (void)textFieldOnFouce:(UITextField *)theTextField{
-       self.searchTextField.frame = CGRectMake(kScreenWith*0.03, kScreenWith*0.02, UIScreenWidth*0.8, kScreenWith*0.08);
-       self.searchTextField.placeholder = @"🔍搜索";
-       [self.navView addSubview:self.cancelBtn];
-}
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField{
-    NSLog(@"textField.text----->%@",self.searchTextField.text);
-    [self searchDataFromWeb];
-    [self.mainTableView reloadData];
-}
 
 #pragma mark - 表视图协议
 
@@ -417,37 +499,16 @@
     }
 }
 #pragma mark - getter
--(UIButton *)cancelBtn{
-    if (!_cancelBtn) {
-        _cancelBtn = [[UIButton alloc]initWithFrame:CGRectMake(UIScreenWidth*0.86, kScreenWith*0.04, kScreenWith*0.09, kScreenWith*0.04)];
-        [_cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
-        [_cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchDown];
-    }
-    return _cancelBtn;
-}
+
 -(UIView *)navView{
     if (!_navView) {
         _navView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenWith, 64)];
         _navView.backgroundColor =[UIColor whiteColor];
-        [_navView addSubview:self.searchTextField];
     }
     return _navView;
 }
--(UITextField *)searchTextField{
-    if (!_searchTextField) {
-        _searchTextField = [[UITextField alloc]initWithFrame:CGRectMake(kScreenWith*0.03, kScreenWith*0.02, UIScreenWidth*0.94, kScreenWith*0.08)];
-        _searchTextField.placeholder = @"     搜索感兴趣的话题、分类、电影、语言等🔍";
-        _searchTextField.backgroundColor = [UIColor whiteColor];
-        _searchTextField.layer.borderColor = [UIColor grayColor].CGColor;
-        _searchTextField.layer.borderWidth = 0.3;
-        _searchTextField.font = FONT_12;
-        _searchTextField.delegate = self;
-        [_searchTextField.layer setMasksToBounds:YES];
-        [_searchTextField.layer setCornerRadius:8.0];//设置矩形四个圆角半径
-    }
-    return _searchTextField;
-}
+
+
 - (UIImageView *)backgroundImageView{
     
     if (!_backgroundImageView) {
@@ -463,7 +524,7 @@
 - (UITableView *)mainTableView
 {
     if (!_mainTableView) {
-        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kScreenWith*0.35, self.view.bounds.size.width, self.view.bounds.size.height-0.225*SCREEN_HEIGHT+20) style:UITableViewStylePlain];
+        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 128+0.05*SCREEN_HEIGHT, self.view.bounds.size.width, self.view.bounds.size.height-0.225*SCREEN_HEIGHT+20) style:UITableViewStylePlain];
         [_mainTableView registerClass:[RewardCell class] forCellReuseIdentifier:@"RewardCell"];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
