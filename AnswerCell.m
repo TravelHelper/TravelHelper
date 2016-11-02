@@ -58,9 +58,6 @@
     self.headImageView.layer.masksToBounds = YES;
     self.headImageView.layer.cornerRadius = 0.111*SCREEN_WIDTH/2;
     self.headImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.034*SCREEN_WIDTH, 0.111*SCREEN_WIDTH, 0.111*SCREEN_WIDTH);
-    self.headImageView.layer.masksToBounds = YES;
-    self.headImageView.layer.cornerRadius = 0.111*SCREEN_WIDTH/2;
-
     self.nameLabel.frame = CGRectMake(0.157*SCREEN_WIDTH, 0.034*SCREEN_HEIGHT, SCREEN_WIDTH-0.151*SCREEN_WIDTH, 0.021*SCREEN_HEIGHT);
     CGSize textLabelSize;
     NSString *info = self.answerContentLabel.text;
@@ -111,7 +108,6 @@
 -(UIImageView *)headImageView{
 
     if (!_headImageView) {
-
         
         NSString *userID = data[@"user_id"];
         NSString *str = [NSString stringWithFormat:@"http://139.224.44.36/TravelHelper/uploadimg/%@.jpg",userID];
@@ -132,7 +128,6 @@
         
 //        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:headImgUrl]];
         
-
            }
     return _headImageView;
 }
