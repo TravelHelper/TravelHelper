@@ -10,6 +10,7 @@
 #import "AnswerCell.h"
 #import "WebAgent.h"
 #import "YBZRewardHallDetailModel.h"
+#import "UIImageView+WebCache.h"
 #import "YBZTranslatorAnswerViewController.h"
 #import "UIImageView+WebCache.h"
 @interface YBZTranslatorDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
@@ -276,29 +277,9 @@
         
         NSString *str = [NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,_rewardDetailModel.rewardImageName];
         NSURL *url = [NSURL URLWithString:str];
-        [_rewardImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-            NSLog(@"这里可以在图片加载完成之后做些事情");
-            if (image != nil) {
-                _rewardImageView.image = image;
-                sizeOfPic = image.size;
-            }else{
-                UIImage *image = [UIImage imageNamed:@"img"];
-                _rewardImageView.image = image;
-                sizeOfPic = image.size;
-            }
-            _rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
-//            dispatch_async(dispatch_get_main_queue(), ^{
-////                [self.contentView addSubview:self.rewardImageView];
-//            });
-            
-            
-        }];
+        [_rewardImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img"]];
+        sizeOfPic = _rewardImageView.image.size;
 
-        
-//        NSData *data = [NSData dataWithContentsOfURL:url];
-//        UIImage *img = [UIImage imageWithData:data];
-        
         _rewardImageView.backgroundColor = [UIColor blackColor];
     }
     return _rewardImageView;

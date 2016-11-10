@@ -106,6 +106,7 @@
         _moneyTextField = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.youBiImageView.frame)+10, self.youBiImageView.frame.origin.y-kScreenH*0.017, [UIScreen mainScreen].bounds.size.width*0.716, kScreenH*0.085)];
         _moneyTextField.font = [UIFont systemFontOfSize:40];
         _moneyTextField.delegate = self;
+        _moneyTextField.placeholder = @"00";
         _moneyTextField.backgroundColor= [UIColor whiteColor];
         _moneyTextField.keyboardType = UIKeyboardTypeNumberPad;
         [[UITextField appearance]setTintColor:[UIColor blackColor]];

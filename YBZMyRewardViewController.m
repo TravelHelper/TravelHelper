@@ -100,10 +100,11 @@
 -(void)viewWillAppear:(BOOL)animated{
 
     [self loadDataFromWeb:@"all"];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
-
+    [self clearOtherBtn];
 }
 
 //生成三个排序按钮
@@ -112,7 +113,7 @@
     NSArray *titleArr = @[@"状态排序",@"语言筛选",@"时间排序"];
     for (int i=0 ; i<3; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(SCREEN_WIDTH/3*i, 64, SCREEN_WIDTH/3, 0.05*SCREEN_HEIGHT);
+        btn.frame = CGRectMake(SCREEN_WIDTH/3*i, 74, SCREEN_WIDTH/3, 0.05*SCREEN_HEIGHT);
         btn.backgroundColor = [UIColor whiteColor];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btn setTitleColor:UIColorFromRGB(0x1D8FD2) forState:UIControlStateSelected];
@@ -162,18 +163,18 @@
     view.backgroundColor = [UIColor whiteColor];
     switch (tag) {
         case 100:
-            view.frame = CGRectMake(0, 64+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
+            view.frame = CGRectMake(0, 74+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
             view.tag = 1000;
             [self getBtnWithTag:1000 AndView:view];
             break;
         case 101:
-            view.frame = CGRectMake(SCREEN_WIDTH/3, 64+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, languageArr.count*0.05*SCREEN_HEIGHT);
+            view.frame = CGRectMake(SCREEN_WIDTH/3, 74+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, languageArr.count*0.05*SCREEN_HEIGHT);
             view.tag = 1001;
             [self getBtnWithTag:1001 AndView:view];
 
             break;
         case 102:
-            view.frame = CGRectMake(SCREEN_WIDTH/3*2, 64+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
+            view.frame = CGRectMake(SCREEN_WIDTH/3*2, 74+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
             view.tag = 1002;
             [self getBtnWithTag:1002 AndView:view];
 
@@ -444,7 +445,7 @@
                 }
 
             }
-                        dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [self.mainTableView reloadData];
             });
             
@@ -557,7 +558,7 @@
 - (UITableView *)mainTableView
 {
     if (!_mainTableView) {
-        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0.139*SCREEN_HEIGHT, self.view.bounds.size.width, self.view.bounds.size.height-0.225*SCREEN_HEIGHT+20) style:UITableViewStylePlain];
+        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0.159*SCREEN_HEIGHT, self.view.bounds.size.width, self.view.bounds.size.height-0.225*SCREEN_HEIGHT+20) style:UITableViewStylePlain];
         [_mainTableView registerClass:[RewardCell class] forCellReuseIdentifier:@"RewardCell"];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;

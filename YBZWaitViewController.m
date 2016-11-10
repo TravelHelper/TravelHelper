@@ -144,9 +144,8 @@
                 //通知进入聊天页面
                 NSLog(@"开始聊天");
                 NSDictionary *dict = [self getLanguageWithString:language];
-                [WebAgent sendRemoteNotificationsWithuseId:resultData[0][@"user_id"] WithsendMessage:@"进入聊天" WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:userID WithMessionID:message_id success:^(id responseObject) {
-                    //                    NSData *data = [[NSData alloc] initWithData:responseObject];
-                    //                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                [WebAgent sendRemoteNotificationsWithuseId:resultData[0][@"user_id"] WithsendMessage:@"进入聊天" WithType:@"0004" WithSenderID:userID WithMessionID:message_id   WithLanguage :  @"language" success:^(id responseObject) {
+
                     NSLog(@"反馈推送—进入聊天通知成功！");
                     //注销
                     [timer invalidate];
@@ -170,10 +169,10 @@
                 for (int i = 0 ; i< resultData.count; i++) {
                     NSString *user_ID = resultData[i];
                     NSString * strid = [user_ID stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
-                    [WebAgent sendRemoteNotificationsWithuseId:strid WithsendMessage:sendMessage WithlanguageCatgory:language WithpayNumber:payNumber WithSenderID:senderID WithMessionID:message_id success:^(id responseObject) {
+                    [WebAgent sendRemoteNotificationsWithuseId:strid WithsendMessage:sendMessage WithType:@"0001" WithSenderID:senderID WithMessionID:message_id  WithLanguage :  language success:^(id responseObject) {
                         NSData *data = [[NSData alloc]initWithData:responseObject];
-                        NSString *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                        NSLog(@"%@",str);
+                        NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//                        NSLog(@"%@",str);
                         NSLog(@"发送远程推送成功!");
                     } failure:^(NSError *error) {
                         NSLog(@"发送远程推送失败－－－>%@",error);
@@ -222,12 +221,14 @@
             }];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"我要取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
-                    [WebAgent sendRemoteNotificationsWithuseId:missionInfo[@"answer_id"] WithsendMessage:@"退出聊天" WithlanguageCatgory:missionInfo[@"language"] WithpayNumber:@"0" WithSenderID:userID WithMessionID:message_id success:^(id responseObject) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } failure:^(NSError *error) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                        
-                    }];
+                    [WebAgent sendRemoteNotificationsWithuseId:missionInfo[@"answer_id"]  WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:message_id  WithLanguage :  @"language" success:^(id responseObject) {
+
+                            [self.navigationController popViewControllerAnimated:YES];
+                        } failure:^(NSError *error) {
+                            [self.navigationController popViewControllerAnimated:YES];
+
+                        }];
+
                 } failure:^(NSError *error) {
                     
                 }];

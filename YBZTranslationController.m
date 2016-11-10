@@ -616,6 +616,7 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
     
         NSString *msgString = dic[@"msg"];
+        NSString *user_id = dic[@"data"][@"user_id"];
         if ([msgString isEqualToString:@"0000"]) {
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"textForView" object:nil];
@@ -623,9 +624,23 @@
             
             self.hidesBottomBarWhenPushed = YES;
             [WebAgent changeTranslatorBusy:userID state:@"1" success:^(id responseObject) {
-                QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
-                [self.navigationController pushViewController:quickVC animated:YES];
+                QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:user_id WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
+                //            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
+                NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
                 
+                [userdefault setObject:messionID forKey:@"messageId"];
+                
+                //            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+                [WebAgent sendRemoteNotificationsWithuseId:user_id WithsendMessage:@"匹配成功" WithType:@"0002" WithSenderID:userID WithMessionID:messionID  WithLanguage :  @"language" success:^(id responseObject) {
+                    
+                    NSLog(@"反馈推送—匹配成功通知成功！");
+                    [self.navigationController pushViewController:quickVC animated:YES];
+
+                } failure:^(NSError *error) {
+                    NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);
+//                    [self.navigationController pushViewController:quickVC animated:YES];
+                    
+                }];
             } failure:^(NSError *error) {
                 UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
@@ -638,17 +653,7 @@
 
             
 
-//            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"去评价" style:UIBarButtonItemStylePlain target:self action:@selector(intoFinishChat)];
-            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-            
-            [userdefault setObject:messionID forKey:@"messageId"];
-            
-//            NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-            [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"匹配成功" WithlanguageCatgory:language WithpayNumber:@"20" WithSenderID:userID WithMessionID:messionID success:^(id responseObject) {
-                NSLog(@"反馈推送—匹配成功通知成功！");
-            } failure:^(NSError *error) {
-                NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);
-            }];
+
         }else{
             
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，该用户请求已经被别人抢先接单了！" preferredStyle:UIAlertControllerStyleAlert];

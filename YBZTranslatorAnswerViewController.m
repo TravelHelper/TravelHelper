@@ -8,6 +8,9 @@
 
 //回答（译员）
 #import "YBZTranslatorAnswerViewController.h"
+#import "MBProgressHUD+XMG.h"
+#import "UIAlertController+SZYKit.h"
+
 #define INTERVAL_KEYBOARD  10
 #define kAnimationDuration 0.3f
 #define kViewHeight        50
@@ -177,34 +180,34 @@
         NSLog(@"-------------------->%@",self.rewardID);
         [WebAgent uploadreward_id:self.rewardID user_id:user_id[@"user_id"] reward_text:self.textView.text answer_time:locationString success:^(id responseObject) {
             NSLog(@"Success");
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提交成功" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alert show];
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dictionary= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    
             
+            [UIAlertController showAlertAtViewController:self title:@"提示" message:@"提交成功" confirmTitle:@"确定" confirmHandler:^(UIAlertAction *action) {
+                NSDictionary *answerChange = @{@"answer_change":self.reward_id};
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setObject:answerChange forKey:@"1"];
+                [WebAgent sendRemoteNotificationsWithuseId:dictionary[@"rewarder"] WithsendMessage:@"您发布的悬赏有人回答啦" WithType:@"0005" WithSenderID:user_id[@"user_id"] WithMessionID:@""   WithLanguage :  @"language"success:^(id responseObject) {
+
+                    [self.navigationController popViewControllerAnimated:YES];
+
+                } failure:^(NSError *error) {
+                    [MBProgressHUD showError:@"网络错误！推送失败"];
+                    [self.navigationController popViewControllerAnimated:YES];
+
+                }];
+            }];
             
-            NSDictionary *answerChange = @{@"answer_change":self.reward_id};
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            [userDefaults setObject:answerChange forKey:@"1"];
+
+            
             
         } failure:^(NSError *error) {
             NSLog(@"------------------> %@",error);
         }];
     }
 }
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(buttonIndex == 0)
-    {
-        if([self.isEmpty isEqualToString:@"YES"])
-        {
-            NSLog(@"");
-        }
-        else
-        {
-            [self.textView resignFirstResponder];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    }
-}
+
 
 -(void)textViewDidChange:(UITextView *)textView
 {

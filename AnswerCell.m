@@ -9,6 +9,7 @@
 #import "AnswerCell.h"
 #import "WebAgent.h"
 #import "UIImageView+WebCache.h"
+
 @interface AnswerCell()
 
 @property (nonatomic, strong) UIImageView *headImageView;
@@ -16,19 +17,18 @@
 @property (nonatomic, strong) UILabel *answerContentLabel;
 @property (nonatomic, strong) UILabel *answerTimeLabel;
 
+
 @end
 
 
 @implementation AnswerCell{
 
-    BOOL needChoose;
+    boolean_t needChoose;
     NSDictionary *data;
     NSString *acceptID;
 }
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-}
+
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier Model:(NSDictionary *)dict
 {
@@ -43,8 +43,10 @@
             needChoose = NO;
             acceptID = data[@"accept_id"];
         }
+
         [self setAllControlsFrame];
-        [self addAllControls];
+
+        NSLog(@"%@",data[@"answer_time"]);
         
     }
     return self;
@@ -52,12 +54,32 @@
 
 
 
--(void)setAllControlsFrame{
+-(void)layoutIfNeeded{
 
-    
+    [self addAllControls];
+    self.headImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.034*SCREEN_WIDTH, 0.111*SCREEN_WIDTH, 0.111*SCREEN_WIDTH);
     self.headImageView.layer.masksToBounds = YES;
     self.headImageView.layer.cornerRadius = 0.111*SCREEN_WIDTH/2;
-    self.headImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.034*SCREEN_WIDTH, 0.111*SCREEN_WIDTH, 0.111*SCREEN_WIDTH);
+    NSString *userID = data[@"user_id"];
+    NSString *str = [NSString stringWithFormat:@"http://139.224.44.36/TravelHelper/uploadimg/%@.jpg",userID];
+    NSURL *headImgUrl = [NSURL URLWithString:str];
+    [self.headImageView sd_setImageWithURL:headImgUrl placeholderImage:[UIImage imageNamed:@"HaveFun"]];
+    [self addSubview:self.headImageView];
+
+    
+    
+    
+
+}
+
+
+
+
+-(void)setAllControlsFrame{
+
+
+
+
     self.nameLabel.frame = CGRectMake(0.157*SCREEN_WIDTH, 0.034*SCREEN_HEIGHT, SCREEN_WIDTH-0.151*SCREEN_WIDTH, 0.021*SCREEN_HEIGHT);
     CGSize textLabelSize;
     NSString *info = self.answerContentLabel.text;
@@ -71,7 +93,6 @@
 }
 
 -(void)addAllControls{
-    [self addSubview:self.headImageView];
     [self addSubview:self.nameLabel];
     [self addSubview:self.answerTimeLabel];
     [self addSubview:self.answerContentLabel];
@@ -90,12 +111,19 @@
 
     
     [WebAgent upLoadMyChoose:data[@"answer_id"] AndRewardId:data[@"reward_id"] success:^(id responseObject) {
+    
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         [self.acceptBtn removeFromSuperview];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NeedToReloadData" object:nil];
         UIImageView *chooseImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"已采纳"]];
         chooseImageView.frame = self.acceptBtn.frame;
         [self addSubview:chooseImageView];
-        
+        [WebAgent sendRemoteNotificationsWithuseId:dict[@"data"] WithsendMessage:@"您有一个悬赏的回答被采纳" WithType:@"0006" WithSenderID:@"" WithMessionID:@""  WithLanguage :  @"language" success:^(id responseObject) {
+            NSLog(@"反馈推送—匹配成功通知成功！");
+        } failure:^(NSError *error) {
+            NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);
+        }];
     } failure:^(NSError *error) {
         
     }];
@@ -108,27 +136,19 @@
 -(UIImageView *)headImageView{
 
     if (!_headImageView) {
-        
-        NSString *userID = data[@"user_id"];
-        NSString *str = [NSString stringWithFormat:@"http://139.224.44.36/TravelHelper/uploadimg/%@.jpg",userID];
-        NSURL *headImgUrl = [NSURL URLWithString:str];
-        _headImageView=[[UIImageView alloc]init];
-        [_headImageView sd_setImageWithURL:headImgUrl completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-            NSLog(@"这里可以在图片加载完成之后做些事情");
-            
-            if (image != nil) {
-                _headImageView.image=image;
+/*            NSString *userID = data[@"user_id"];
+            NSString *str = [NSString stringWithFormat:@"http://139.224.44.36/TravelHelper/uploadimg/%@.jpg",userID];
+            NSURL *headImgUrl = [NSURL URLWithString:str];
+            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:headImgUrl]];
+            if (img != nil) {
+                _headImageView = [[UIImageView alloc]initWithImage:img];
             }else{
-                _headImageView.image=[UIImage imageNamed:@"HaveFun"];
-            }
-         
-            
-        }];
-        
-//        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:headImgUrl]];
-        
-           }
+ */
+                _headImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"HaveFun"]];
+ //           }
+    }
+
+
     return _headImageView;
 }
 
