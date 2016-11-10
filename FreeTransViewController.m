@@ -539,7 +539,9 @@
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     NSString *name = user_id[@"user_id"];
 
-    
+    if (name == nil) {
+        name = @"000";
+    }
     NSString *needStr=[NSString stringWithFormat:@"%d\"",needNumber];
     if (name == nil ) {
         name = @"";

@@ -18,6 +18,7 @@
 #import "UIAlertController+SZYKit.h"
 #import "WebAgent.h"
 #import "YBZtoalertView.h"
+#import "EMSDKFull.h"
 
 #define Trans_YingYu    @"en"
 #define Voice_YingYu    @"en-GB"
@@ -72,7 +73,7 @@
     // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
     [JPUSHService setupWithOption:launchOptions appKey:@"4309446657f3a7b64ef168ee"
                           channel:@"Publish channel"
-                 apsForProduction:false
+                 apsForProduction:NO
             advertisingIdentifier:advertisingId];
     [JPUSHService setBadge:0];
     [JPUSHService resetBadge];
@@ -129,7 +130,11 @@
         }
     }
     
-    
+    //AppKey:注册的AppKey，详细见下面注释。
+    //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
+    EMOptions *options = [EMOptions optionsWithAppkey:@"1146161023178105#travelhelper"];
+    options.apnsCertName = @"push";
+    [[EMClient sharedClient] initializeSDKWithOptions:options];
     
     return YES;
 }
@@ -188,7 +193,7 @@
 
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    
+     NSLog(@"My token is: %@", deviceToken);
     /// Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
     
@@ -356,11 +361,15 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    
+    [[EMClient sharedClient] applicationDidEnterBackground:application];
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    
+    [[EMClient sharedClient] applicationWillEnterForeground:application];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
@@ -520,6 +529,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     
 }
+
 
 -(void)getTargetID{
 

@@ -1080,6 +1080,7 @@
     }else{
         InterpretCustomTranslateViewController *translateVC = [[InterpretCustomTranslateViewController alloc]init];
         translateVC.hidesBottomBarWhenPushed = YES;
+        
         [self.navigationController pushViewController:translateVC animated:YES];
     }
 }

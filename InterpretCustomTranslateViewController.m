@@ -13,6 +13,7 @@
 #import "UIAlertController+SZYKit.h"
 #import "AFNetworking.h"
 #import "WebAgent.h"
+#import "MBProgressHUD+XMG.h"
 
 @interface InterpretCustomTranslateViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -25,18 +26,28 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"定制翻译";
-    [self loadDate];
-    self.mainTableView.delegate = self;
-    self.mainTableView.dataSource = self;
+    
+    UIBarButtonItem *callBtnItem=[[UIBarButtonItem alloc]initWithTitle:@"我的" style:UIBarButtonItemStylePlain target:self action:@selector(myClick)];
+    
+    self.navigationItem.rightBarButtonItem = callBtnItem;
     
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+
+    [super viewWillAppear:animated];
+    [self loadDate];
+    
+}
+
 #define mark - getters
 -(UITableView *)mainTableView{
     if (!_mainTableView) {
         _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, self.view.bounds.size.height)];
         _mainTableView.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"backgroundImage"]];
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+        _mainTableView.delegate = self;
+        _mainTableView.dataSource = self;
     }
     return _mainTableView;
 }
@@ -53,7 +64,7 @@
 -(void)loadDate{
     
     [WebAgent selectLoadDatesuccess:^(id responseObject) {
-        [self.view addSubview:self.mainTableView];
+        
         
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -68,8 +79,12 @@
             
             [self.mArr addObject:infoModel];
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.view addSubview:self.mainTableView];
+            
+        });
         
-        [self.mainTableView reloadData];
     } failure:^(NSError *error) {
          NSLog(@"%@",error);
     }];
@@ -116,14 +131,65 @@
         NSLog(@"user_id---%@",user_id);
         NSLog(@"customID---%@",cell.customID);
         
-        [WebAgent custom_id:cell.customID state:@"1" success:^(id responseObject) {
-            NSLog(@"success ! !!");
+        [WebAgent custom_id:cell.customID success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            if(!dic){
+                [MBProgressHUD showError:@"未知错误，请重试"];
+            }else{
+                NSString *tag = dic[@"duration"];
+                NSNumber *number = dic[@"difference_time"];
+                long differenceTime = [number longValue];
+                
+                if(differenceTime<0){
+                
+                    [MBProgressHUD showError:@"该订单已超时，无法接单"];
+                    
+                }else{
+                
+                    
+                    [WebAgent custom_id:cell.customID state:@"1" success:^(id responseObject) {
+                        NSLog(@"success ! !!");
+                        if([tag isEqualToString:@"connecttimeout"]){
+                            
+                            [MBProgressHUD showSuccess:@"接单成功，临近预约时间，请立即前往"];
+                            
+                        }
+                        [MBProgressHUD showSuccess:@"接单成功"];
+                    } failure:^(NSError *error) {
+                        NSLog(@"%@",error);
+                        
+                        [MBProgressHUD showError:@"接单失败，请重试"];
+                        
+                    }];
+                    
+
+                
+                }
+                
+            }
+            
+            
             
         } failure:^(NSError *error) {
-             NSLog(@"%@",error);
+            
         }];
+        
+        
         
     }];
 }
+
+
+
+-(void)myClick{
+
+
+    NSLog(@"我接受的定制");
+
+}
+
+
+
 
 @end

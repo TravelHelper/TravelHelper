@@ -12,6 +12,7 @@
 #import "YBZRewardHallDetailModel.h"
 #import "UIImageView+WebCache.h"
 #import "YBZTranslatorAnswerViewController.h"
+#import "UIImageView+WebCache.h"
 @interface YBZTranslatorDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     UIView *splitView;
@@ -57,7 +58,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-
+    [super viewWillAppear:animated];
     [self loadDataFromWeb];
 }
 
@@ -66,6 +67,7 @@
 -(void)loadDataFromWeb{
     
     [WebAgent rewardDetial:self.reward_id success:^(id responseObject) {
+        NSLog(@"aaaaa");
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSDictionary *dict = dic[@"data"][0];
@@ -86,7 +88,7 @@
         NSLog(@"1");
         [self setAllControlsFrame];
         [self addAllControls];
-        [self.answerTableView reloadData];
+//        [self.answerTableView reloadData];
 
         
     } failure:^(NSError *error) {
@@ -107,7 +109,7 @@
     NSString *info = self.contentLabel.text;
     textLabelSize = [info boundingRectWithSize:CGSizeMake(0.932*SCREEN_WIDTH, 0.077*SCREEN_HEIGHT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.034*SCREEN_WIDTH]} context:nil].size;
     self.contentLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.058*SCREEN_HEIGHT, 0.932*SCREEN_WIDTH, textLabelSize.height);
-    self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
+//    self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
     self.timeLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/2, 0.017*SCREEN_HEIGHT);
     self.answerNumLabel.frame = CGRectMake(2*SCREEN_WIDTH/3, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3-0.034*SCREEN_WIDTH, 0.017*SCREEN_HEIGHT);
     self.rewardMoneyLabel.frame = CGRectMake(0.677*SCREEN_WIDTH, 0.350*SCREEN_HEIGHT, 0.308*SCREEN_WIDTH, 0.055*SCREEN_HEIGHT);
@@ -134,7 +136,10 @@
 
 #pragma mark -----TableViewDelegate-----
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 
+    return 1;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     return _rewardDetailModel.answerArr.count;
@@ -143,8 +148,24 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSDictionary *dict = _rewardDetailModel.answerArr[indexPath.row];
-    AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
-    return cell.height;
+    
+    CGFloat height=[self returnCellHeightWithDictionaryModel:dict];
+    
+//    AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
+    return height;
+}
+
+-(CGFloat)returnCellHeightWithDictionaryModel:(NSDictionary *)dict{
+
+    CGFloat height;
+    
+    CGSize textLabelSize;
+    NSString *info = dict[@"answer_text"];
+    textLabelSize = [info boundingRectWithSize:CGSizeMake(SCREEN_WIDTH-0.167*SCREEN_WIDTH,MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.02*SCREEN_HEIGHT]} context:nil].size;
+    height= 0.08*SCREEN_HEIGHT+textLabelSize.height + 0.009*SCREEN_HEIGHT+0.038*SCREEN_HEIGHT+ 0.017*SCREEN_HEIGHT;
+    
+    return height;
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -253,6 +274,7 @@
     
     if (!_rewardImageView) {
         _rewardImageView = [[UIImageView alloc]init];
+        
         NSString *str = [NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,_rewardDetailModel.rewardImageName];
         NSURL *url = [NSURL URLWithString:str];
         [_rewardImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img"]];

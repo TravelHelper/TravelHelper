@@ -138,7 +138,7 @@
         [MBProgressHUD showMessage:@"加载数据中"];
         self.mainTableView.allowsSelection=NO;
         
-        [self.view addSubview:self.mainTableView];
+//        [self.view addSubview:self.mainTableView];
         self.view.backgroundColor=UIColorFromRGB(0xEBEBF1);
         self.navigationController.navigationBarHidden = NO;
         self.navigationItem.hidesBackButton = NO;

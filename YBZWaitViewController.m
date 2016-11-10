@@ -31,8 +31,8 @@
     NSTimer *timer;
     NSString *message_id;
     float intervalTime;
-
-
+    
+    
 }
 
 
@@ -66,14 +66,14 @@
     [self matchTranslatorWithsenderID:sender_ID WithsendMessage:send_Message WithlanguageCatgory:user_language WithpayNumber:pay_Number];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(quitApp) name:@"quitApp" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithTranslator:) name:@"beginChatWithTranslator" object:nil];
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopFindingTranslator) name:@"stopFindingTranslator" object:nil];
+    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopFindingTranslator) name:@"stopFindingTranslator" object:nil];
     
 }
 
 
 
 -(void)quitApp{
-
+    
     [timer invalidate];
     
 }
@@ -101,7 +101,7 @@
         [userDefaults setObject:message_id forKey:@"messageId"];
         NSDictionary *dict = @{@"senderID":senderID,@"sendMessage":sendMessage,@"languageCatgory":language,@"payNumber":payNumber};
         timer=[NSTimer scheduledTimerWithTimeInterval:intervalTime target:self selector:@selector(selectTranslatorWithDict:) userInfo:dict repeats:YES];
-
+        
         
         [timer fire];
         
@@ -132,7 +132,7 @@
                 //注销
                 [timer invalidate];
                 [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
-                        [self.navigationController popViewControllerAnimated:YES];
+                    [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(NSError *error) {
                     
                 }];
@@ -145,6 +145,7 @@
                 NSLog(@"开始聊天");
                 NSDictionary *dict = [self getLanguageWithString:language];
                 [WebAgent sendRemoteNotificationsWithuseId:resultData[0][@"user_id"] WithsendMessage:@"进入聊天" WithType:@"0004" WithSenderID:userID WithMessionID:message_id   WithLanguage :  @"language" success:^(id responseObject) {
+
                     NSLog(@"反馈推送—进入聊天通知成功！");
                     //注销
                     [timer invalidate];
@@ -158,7 +159,7 @@
                         }];
                         [alertVC addAction:okAction];
                         [self presentViewController:alertVC animated:YES completion:nil];        }];
-
+                    
                 } failure:^(NSError *error) {
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"进入聊天页面失败" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
                     [alert show];
@@ -180,7 +181,7 @@
                 
             }
         }
-            
+        
     } failure:^(NSError *error) {
         
     }];
@@ -200,7 +201,7 @@
 
 
 -(void)stopFindingTranslator{
-
+    
     //修改状态变为0
     [timer invalidate];
     [WebAgent getMissionInfo:message_id success:^(id responseObject) {
@@ -227,20 +228,21 @@
                             [self.navigationController popViewControllerAnimated:YES];
 
                         }];
+
                 } failure:^(NSError *error) {
                     
                 }];
             }];
-
+            
             [alertVC addAction:okAction];
             [alertVC addAction:cancelAction];
-
+            
             [self presentViewController:alertVC animated:YES completion:nil];
         }
     } failure:^(NSError *error) {
         
     }];
-
+    
 }
 
 
@@ -251,7 +253,7 @@
     
     NSString *translatorId = noti.object[@"translatorID"];
     NSString *language = noti.object[@"language_catgory"];
-  
+    
     NSString *VoiceLanguage;
     NSString *TransLanguage;
     if ([language isEqualToString:@"英语"]) {
@@ -354,28 +356,28 @@
         VoiceLanguage = Voice_YiDaLiYu;
         TransLanguage = Trans_YiDaLiYu;
     }
-
-
+    
+    
     [timer invalidate];
     [WebAgent changeTranslatorBusy:userID state:@"1" success:^(id responseObject) {
-            QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:translatorId WithUserIdentifier:@"USER" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
+        QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:userID WithTargetID:translatorId WithUserIdentifier:@"USER" WithVoiceLanguage:VoiceLanguage WithTransLanguage:TransLanguage];
         [self.navigationController pushViewController:quickVC animated:YES];
-
+        
     } failure:^(NSError *error) {
         [MBProgressHUD showError:@"网络连接错误"];
     }];
-
     
     
     
-  
+    
+    
 }
 
 -(UILabel *)userNameLabel{
     if (!_userNameLabel) {
         _userNameLabel = [[UILabel alloc]init];
         _userNameLabel.font = FONT_15;
-
+        
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:@"亲！正在为您匹配译员，请耐心等待!"];
         
         NSRange  qinRange = NSMakeRange(0, 2);
@@ -390,7 +392,7 @@
         [_userNameLabel setAttributedText:str];
         [_userNameLabel setTextAlignment:NSTextAlignmentCenter];
         
-
+        
     }
     return _userNameLabel;
 }

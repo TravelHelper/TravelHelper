@@ -79,6 +79,7 @@
 
 
 
+
     self.nameLabel.frame = CGRectMake(0.157*SCREEN_WIDTH, 0.034*SCREEN_HEIGHT, SCREEN_WIDTH-0.151*SCREEN_WIDTH, 0.021*SCREEN_HEIGHT);
     CGSize textLabelSize;
     NSString *info = self.answerContentLabel.text;
@@ -146,6 +147,7 @@
                 _headImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"HaveFun"]];
  //           }
     }
+
 
     return _headImageView;
 }
