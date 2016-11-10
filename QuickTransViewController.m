@@ -2324,7 +2324,10 @@
     
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
-    [self.backgroundImageView setImage:image];
+//    [self.backgroundImageView setImage:image];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [self saveImage:image withName:user_id[@"user_id"]];
     
     changeImgMark=true;
     NSLog(@"aa");

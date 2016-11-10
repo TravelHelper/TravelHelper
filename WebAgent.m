@@ -9,15 +9,49 @@
 #import "WebAgent.h"
 #import "APIClient.h"
 @implementation WebAgent
++(void)selectAcceptaccept_id:(NSString *)accept_id
+         success:(void (^)(id responseObject))success
+         failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"accept_id":accept_id};
+    [[APIClient sharedClient] POST:@"CustomTranslate/selectAccept/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+
++(void)uploaduser_id:(NSString *)user_id
+           language:(NSString *)language
+            scene:(NSString *)scene
+            content:(NSString *)content
+            custom_time:(NSString *)custom_time
+            duration:(NSString *)duration
+            offer_money:(NSString *)offer_money
+               state:(NSString *)state
+         success:(void (^)(id responseObject))success
+         failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"user_id":user_id,@"language":language,@"scene":scene,@"content":content,@"custom_time":custom_time,@"duration":duration,@"offer_money":offer_money,@"state":state};
+    [[APIClient sharedClient] POST:@"CustomTranslate/upload/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
+
+
 
 //改变cell的状态
 +(void)custom_id:(NSString *)custom_id
        state:(NSString *)state
+       accept_id:(NSString *)accept_id
          success:(void (^)(id responseObject))success
          failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"custom_id":custom_id,
-                           @"state":state};
+                           @"state":state,
+                           @"accept_id":accept_id};
     [[APIClient sharedClient] POST:@"CustomTranslate/resetcellstate/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

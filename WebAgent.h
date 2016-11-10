@@ -9,12 +9,30 @@
 #import <Foundation/Foundation.h>
 
 @interface WebAgent : NSObject
-
++(void)selectAcceptaccept_id:(NSString *)accept_id
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure;
 
 +(void)custom_id:(NSString *)custom_id
            state:(NSString *)state
+       accept_id:(NSString *)accept_id
          success:(void (^)(id responseObject))success
          failure:(void (^)(NSError *error))failure;
+
++(void)uploaduser_id:(NSString *)user_id
+            language:(NSString *)language
+               scene:(NSString *)scene
+             content:(NSString *)content
+         custom_time:(NSString *)custom_time
+            duration:(NSString *)duration
+         offer_money:(NSString *)offer_money
+               state:(NSString *)state
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure;
+
+
+
+
 
 +(void)userGetInfo:(NSString *)userId
            success:(void (^)(id responseObject))success

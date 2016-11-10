@@ -42,8 +42,8 @@
         [self addSubview:self.scLable];
         [self addSubview:self.contentLable];
         [self addSubview:self.cntLable];
-        [self addSubview:self.interperLable];
-        [self addSubview:self.itpLable];
+//        [self addSubview:self.interperLable];
+//        [self addSubview:self.itpLable];
         [self addSubview:self.translateTimeLable];
         [self addSubview:self.tslTimeLable];
         [self addSubview:self.durationLable];
@@ -102,15 +102,15 @@
     self.cntLable.font = FONT_10;
     self.cntLable.textColor = [UIColor whiteColor];
     
-    self.interperLable.frame = framInfo.interperLableFrame;
-    self.interperLable.text = infoModel.interper;
-    [self.interperLable setAdjustsFontSizeToFitWidth:YES];
-    self.interperLable.font = FONT_10;
-    self.interperLable.textColor = [UIColor whiteColor];
-    self.itpLable.frame = framInfo.itpFrame;
-    self.itpLable.text = @"应邀议员:";
-    self.itpLable.font = FONT_10;
-    self.itpLable.textColor = [UIColor whiteColor];
+//    self.interperLable.frame = framInfo.interperLableFrame;
+//    self.interperLable.text = infoModel.interper;
+//    [self.interperLable setAdjustsFontSizeToFitWidth:YES];
+//    self.interperLable.font = FONT_10;
+//    self.interperLable.textColor = [UIColor whiteColor];
+//    self.itpLable.frame = framInfo.itpFrame;
+//    self.itpLable.text = @"应邀议员:";
+//    self.itpLable.font = FONT_10;
+//    self.itpLable.textColor = [UIColor whiteColor];
     
     self.translateTimeLable.frame = framInfo.translateTimeLableFrame;
     self.translateTimeLable.text = infoModel.translateTime;

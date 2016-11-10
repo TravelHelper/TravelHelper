@@ -14,6 +14,7 @@
 #import "AFNetworking.h"
 #import "WebAgent.h"
 #import "MBProgressHUD+XMG.h"
+#import "YBZMyCustomViewController.h"
 
 @interface InterpretCustomTranslateViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -34,8 +35,24 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    
+    self.mainTableView.frame=CGRectMake(0, 10, self.view.bounds.size.width, self.view.bounds.size.height-10);
+    [self.view addSubview:self.mainTableView];
+    
+    
+    //    [UIView transitionWithView:self.view
+    //                      duration:0.5
+    //                       options:UIViewAnimationOptionCurveEaseIn //any animation
+    //                    animations:^ { [self.view addSubview:self.mainTableView]; }
+    //                    completion:nil];
+    
+    
+    
+}
 
-    [super viewWillAppear:animated];
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
     [self loadDate];
     
 }
@@ -76,12 +93,18 @@
             CustomTranslateInfoModel *infoModel = [[CustomTranslateInfoModel alloc]initWithcustomID:oneInfo[@"custom_id"] langueKind:oneInfo[@"language"] scene:oneInfo[@"scene"] content:oneInfo[@"content"] interper:nil translateTime:oneInfo[@"custom_time"] duration:oneInfo[@"duration"] offerMoney:oneInfo[@"offer_money"] publishTime:oneInfo[@"publish_time"]  cellKind:@"0"];
             
             infoModel.user_id = oneInfo[@"user_id"];
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+//            if(![infoModel.user_id isEqualToString:user_id[@"user_id"]]){
             
-            [self.mArr addObject:infoModel];
+                [self.mArr addObject:infoModel];
+
+//            }
+            
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            [self.view addSubview:self.mainTableView];
+            [self.mainTableView reloadData];
             
         });
         
@@ -148,7 +171,7 @@
                 }else{
                 
                     
-                    [WebAgent custom_id:cell.customID state:@"1" success:^(id responseObject) {
+                    [WebAgent custom_id:cell.customID state:@"1" accept_id:user_id success:^(id responseObject) {
                         NSLog(@"success ! !!");
                         if([tag isEqualToString:@"connecttimeout"]){
                             
@@ -184,9 +207,9 @@
 
 -(void)myClick{
 
-
     NSLog(@"我接受的定制");
-
+    YBZMyCustomViewController *myCustom=[[YBZMyCustomViewController alloc]init];
+    [self.navigationController pushViewController:myCustom animated:YES];
 }
 
 

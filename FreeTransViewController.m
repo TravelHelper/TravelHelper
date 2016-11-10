@@ -212,7 +212,7 @@
                 
                 NSURL *url = [NSURL URLWithString:url2];
                 
-                self.backgroundImageView.image=nil;
+//                self.backgroundImageView.image=nil;
                 
                 
                 UIImage *img=[UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
@@ -1812,8 +1812,10 @@
     
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
-    [self.backgroundImageView setImage:image];
-    
+//    [self.backgroundImageView setImage:image];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [self saveImage:image withName:user_id[@"user_id"]];
     changeImgMark=true;
     NSLog(@"aa");
     
