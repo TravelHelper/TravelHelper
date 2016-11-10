@@ -109,13 +109,16 @@
     
     NSTimer *getLoginStateTimer;
     
+    NSString *contentStr;
+    
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
 {
     self = [super init];
     if (self) {
-        self.user_id = userID;
+        contentStr=@"";
+        self.user_id =userID ;
         self.target_id = targetID;
         [self getTokenWithUserID:self.user_id];        //获取token并且登录融云服务器
         
@@ -145,8 +148,8 @@
         NSString *state = dic[@"result"];
         if ([state isEqualToString:@"0"]) {
             [getLoginStateTimer invalidate];
-            [MBProgressHUD showError:@"系统检测到对方可能已经离线，已自动为您退出聊天。"];
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            //            [MBProgressHUD showError:@"系统检测到对方可能已经离线，已自动为您退出聊天。"];
+            //            [self.navigationController popToRootViewControllerAnimated:YES];
             
         }else if([state isEqualToString:@"1"]){
             NSLog(@"1");
@@ -179,7 +182,7 @@
     _stringTransVC = [[StringTransViewController alloc]init];
     [_stringTransVC viewDidLoad];
     self.navigationController.interactivePopGestureRecognizer.delaysTouchesBegan=NO;
-
+    
     [self pullHistoryCount];
     self.senderID = self.user_id;
     NSArray *arr = [[NSUserDefaults standardUserDefaults] objectForKey:@"ChatHisTory"];
@@ -194,7 +197,7 @@
     [self.inputBottomView addSubview:self.inputTextView];
     [self.bottomTableView setContentOffset:CGPointMake(0, self.bottomTableView.bounds.size.height)];
     
-//    [self AddTapGestureRecognizer];
+    //    [self AddTapGestureRecognizer];
     [self reloadDataSourceWithNumber:ascCount];
     
     self.iFlySpeechRecognizer  = [[IFlySpeechRecognizer alloc]init];
@@ -231,33 +234,33 @@
     
     //    [self performSelector:@selector(sendAwebMessage) withObject:nil afterDelay:10];
     
-//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-//    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-//    
-//    NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg.jpg",user_id[@"user_id"]];
-//    
-//    NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,resultName];
-//    
-//    
-//    NSURL *url = [NSURL URLWithString:url2];
-//    
-//    [MBProgressHUD showMessage:@"图片资源加载中"];
-//
-//    [self.backgroundImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//        [self.backgroundImageView setImage:image];
-//        [MBProgressHUD hideHUD];
-//        NSLog(@"这里可以在图片加载完成之后做些事情");
-////        if(!image){
-////            UIImage *headImg=[[UIImage alloc]init];
-////            headImg = [UIImage imageNamed:@"translator"];
-////            [self.backgroundImageView setImage:headImg];
-////        }
-//        
-//        
-//    }];
+    //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    //    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    //
+    //    NSString *resultName=[NSString stringWithFormat:@"%@backgroundimg.jpg",user_id[@"user_id"]];
+    //
+    //    NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,resultName];
+    //
+    //
+    //    NSURL *url = [NSURL URLWithString:url2];
+    //
+    //    [MBProgressHUD showMessage:@"图片资源加载中"];
+    //
+    //    [self.backgroundImageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    //        [self.backgroundImageView setImage:image];
+    //        [MBProgressHUD hideHUD];
+    //        NSLog(@"这里可以在图片加载完成之后做些事情");
+    ////        if(!image){
+    ////            UIImage *headImg=[[UIImage alloc]init];
+    ////            headImg = [UIImage imageNamed:@"translator"];
+    ////            [self.backgroundImageView setImage:headImg];
+    ////        }
+    //
+    //
+    //    }];
     
     
-
+    
     
     [self.view addSubview:self.btnview];
     
@@ -392,7 +395,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-//    [MBProgressHUD showMessage:@"图片资源加载中"];
+    //    [MBProgressHUD showMessage:@"图片资源加载中"];
     
     
     
@@ -431,7 +434,7 @@
         if(permissionStatus == AVAudioSessionRecordPermissionUndetermined) ;
     }
     
-
+    
     
     
     userCount=0;
@@ -445,7 +448,7 @@
 
 -(void)connectRongCloudServerWithToken:(NSString *)token{
     //融云
-    [[RCIMClient sharedRCIMClient]initWithAppKey:@"kj7swf8o77j02"];
+    [[RCIMClient sharedRCIMClient]initWithAppKey:@"4z3hlwrv34git"];
     [[RCIMClient sharedRCIMClient] connectWithToken:token
                                             success:^(NSString *userId) {
                                                 NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
@@ -471,14 +474,14 @@
     
     NSString * timestamp = [[NSString alloc] initWithFormat:@"%ld",(NSInteger)[NSDate timeIntervalSinceReferenceDate]];
     NSString * nonce = [NSString stringWithFormat:@"%d",arc4random()];
-    NSString * appkey = @"kj7swf8o77j02";
+    NSString * appkey = @"4z3hlwrv34git";
     NSString * Signature = [[NSString stringWithFormat:@"%@%@%@",appkey,nonce,timestamp] sha1];//sha1对签名进行加密
     //以下拼接请求内容
     [manager.requestSerializer setValue:appkey forHTTPHeaderField:@"App-Key"];
     [manager.requestSerializer setValue:nonce forHTTPHeaderField:@"Nonce"];
     [manager.requestSerializer setValue:timestamp forHTTPHeaderField:@"Timestamp"];
     [manager.requestSerializer setValue:Signature forHTTPHeaderField:@"Signature"];
-    [manager.requestSerializer setValue:@"dsAcPXZxOq" forHTTPHeaderField:@"appSecret"];
+    [manager.requestSerializer setValue:@"9Rl8AwCiNTNh" forHTTPHeaderField:@"appSecret"];
     [manager.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     //开始请求
     [manager POST:urlstr parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -568,7 +571,7 @@
 //发送一条文本消息
 -(void)sendAwebMessage:(NSString *)extra{
     // 构建消息的内容，这里以文本消息为例。
-    RCTextMessage *testMessage = [RCTextMessage messageWithContent:@"Extra已经携带一切信息"];
+    RCTextMessage *testMessage = [RCTextMessage messageWithContent:contentStr];
     // 调用RCIMClient的sendMessage方法进行发送，结果会通过回调进行反馈。
     testMessage.extra = extra;
     [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_PRIVATE
@@ -643,10 +646,30 @@
             
             NSLog(@"消息内容：%@,附带消息内容---%@asdasdas----%@", testMessage.content,testMessage.extra,message.senderUserId);
             
-            NSDictionary *dict = [self getRCMessageDictionaryWithExtra:testMessage.extra];
+            NSMutableDictionary *dict = [self getRCMessageDictionaryWithExtra:testMessage.extra];
+            if(dict[@"senderImgPictureURL"]==nil){
+                dict=[NSMutableDictionary dictionary];
+                [dict setObject:@"" forKey:@"AVtoStringContent"];
+                [dict setObject:@"" forKey:@"audioSecond"];
+                [dict setObject:@"" forKey:@"chatAudioContent"];
+                [dict setObject:@"text" forKey:@"chatContentType"];
+                [dict setObject:@"" forKey:@"chatPictureURLContent"];
+                [dict setObject:testMessage.content forKey:@"chatTextContent"];
+                [dict setObject:@"" forKey:@"messageID"];
+                [dict setObject:@"" forKey:@"sendTime"];
+                [dict setObject:self.target_id forKey:@"senderID"];
+                [dict setObject:@"" forKey:@"senderImgPictureURL"];
+                
+                
+            }
+            //            [self getRCMessageDictionaryWithExtra:testMessage.extra]
             NSLog(@"消息信息》》》%@",dict);
             
             ///////
+            
+            
+            
+            
             
             [self addHistoryWithDict:dict];
             
@@ -723,7 +746,39 @@
             NSLog(@"时长：%ld,附带消息内容---%@asdasdas----%@", voiceMessage.duration,voiceMessage.extra,voiceMessage.wavAudioData);
             
             //语音存在本地，并且加入展示数组⬇️
-            NSDictionary *dic = [self getRCMessageDictionaryWithExtra:voiceMessage.extra];
+            //            NSDictionary *dic = [self getRCMessageDictionaryWithExtra:voiceMessage.extra];
+            
+            
+            
+            NSMutableDictionary *dic = [self getRCMessageDictionaryWithExtra:voiceMessage.extra];
+            
+            if(dic[@"senderImgPictureURL"]==nil){
+                
+                NSString *currentDateString = [self getCurerentTimeString];
+                NSString *ID = [NSString stringWithFormat:@"%@.wav",currentDateString];
+                self.cellMessageID = ID;
+                
+                
+                [dic setObject:@"" forKey:@"AVtoStringContent"];
+                [dic setObject:@"未知长度" forKey:@"audioSecond"];
+                [dic setObject:self.cellMessageID forKey:@"chatAudioContent"];
+                [dic setObject:@"audio" forKey:@"chatContentType"];
+                [dic setObject:@"" forKey:@"chatPictureURLContent"];
+                [dic setObject:@"" forKey:@"chatTextContent"];
+                [dic setObject:self.cellMessageID forKey:@"messageID"];
+                [dic setObject:self.cellMessageID forKey:@"sendTime"];
+                [dic setObject:self.target_id forKey:@"senderID"];
+                [dic setObject:@"" forKey:@"senderImgPictureURL"];
+                
+            }
+            
+            //            [self getRCMessageDictionaryWithExtra:testMessage.extra]
+            NSLog(@"消息信息》》》%@",dic);
+            
+            ///////
+            
+            
+            
             NSURL *uurl = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:dic[@"messageID"]]];
             [voiceMessage.wavAudioData writeToURL:uurl atomically:NO];
             NSLog(@"sccczsc...%@df%@",dic,uurl);
@@ -1022,7 +1077,7 @@
     [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
     [MBProgressHUD hideHUD];
     [self sendAWebVoice:extra];
-
+    
     //    [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
 }
 
@@ -1093,7 +1148,7 @@
         [self.bottomTableView reloadData];
         
         
-        
+        contentStr=text;
         
         [self sendAwebMessage:extra];
         
@@ -1204,7 +1259,7 @@
     model.chatContentType = object[@"chatContentType"];
     model.chatPictureURLContent = object[@"chatPictureURLContent"];
     model.messageID            = object[@"messageID"];
-    model.sendIdentifier = object[@"sendIdentifier"];
+    //    model.sendIdentifier = object[@"sendIdentifier"];
     model.AVtoStringContent = object[@"AVtoStringContent"];
     model.audioSecond = object[@"audioSecond"];
     model.chatAudioContent = object[@"chatAudioContent"];
@@ -1220,15 +1275,15 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSInteger i = indexPath.row;
-//    static NSString *CellIdentifier = @"Cell";
+    //    static NSString *CellIdentifier = @"Cell";
     NSDictionary *object = self.dataSource[i];
     ChatModel *model = [[ChatModel alloc]init];
-//    NSLog(@"%@",object[@"senderID"]);
-//    if ([object[@"user_id"] isEqualToString:self.senderID]) {
-//        model.isSender = 1;
-//    }else{
-//        model.isSender = 0;
-//    }
+    //    NSLog(@"%@",object[@"senderID"]);
+    //    if ([object[@"user_id"] isEqualToString:self.senderID]) {
+    //        model.isSender = 1;
+    //    }else{
+    //        model.isSender = 0;
+    //    }
     
     model.senderID = object[@"senderID"];
     model.chatTextContent = object[@"chatTextContent"];
@@ -1245,7 +1300,7 @@
     ChatFrameInfo *frameInfo = [[ChatFrameInfo alloc]initWithModel:model];
     
     
-//    ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
+    //    ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
     
     return frameInfo.cellHeight;
 }
@@ -1331,7 +1386,7 @@
 
 -(void)button:(UIButton *)button BaseTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
-//    [MBProgressHUD showSuccess:@"音频准备中"];
+    //    [MBProgressHUD showSuccess:@"音频准备中"];
     countDownNumber=18;
     timer=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
     
@@ -1611,17 +1666,17 @@
 }
 
 //-(void)tableView:(UITableView *)tableView BaseTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-//    
+//
 //    NSLog(@"Enaded!");
 //}
 //
 //-(void)tableView:(UITableView *)tableView BaseTouchesCancel:(NSSet *)touches withEvent:(UIEvent *)event{
-//    
+//
 //    NSLog(@"Cancel!");
 //}
 //
 //-(void)tableView:(UITableView *)tableView BaseTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-//    
+//
 //    NSLog(@"Moved!");
 //}
 
@@ -1697,25 +1752,25 @@
 - (void)textViewDidChange:(UITextView *)textView{
     
     NSLog(@"变了");
-//    if ([textView.text isEqualToString:@"\n"]){
-//        if (textView.text != nil && ![textView.text isEqualToString:@""]) {
-//            //发送消息！！！！！！
-//            NSLog(@"bbb");
-//            //            [self sendTextMessageMethodWithString:textView.text];
-////            return NO;
-//        }
-//    }
-
-//    if ([self.inputTextView.text isEqualToString:@""] || self.inputTextView.text == nil) {
-//        
-//        [self.sendMessageBtn removeFromSuperview];
-//        
-//    }else{
-//        
-//        [self.inputBottomView addSubview:self.sendMessageBtn];
-//        
-//    }
-//    
+    //    if ([textView.text isEqualToString:@"\n"]){
+    //        if (textView.text != nil && ![textView.text isEqualToString:@""]) {
+    //            //发送消息！！！！！！
+    //            NSLog(@"bbb");
+    //            //            [self sendTextMessageMethodWithString:textView.text];
+    ////            return NO;
+    //        }
+    //    }
+    
+    //    if ([self.inputTextView.text isEqualToString:@""] || self.inputTextView.text == nil) {
+    //
+    //        [self.sendMessageBtn removeFromSuperview];
+    //
+    //    }else{
+    //
+    //        [self.inputBottomView addSubview:self.sendMessageBtn];
+    //
+    //    }
+    //
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
@@ -1742,7 +1797,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView{
     //结束输入聊天信息
-//    [self sendTextMessageMethodWithString:textView.text];
+    //    [self sendTextMessageMethodWithString:textView.text];
 }
 
 #pragma mark - 私有方法
@@ -1752,20 +1807,20 @@
 
 
 //- (void)AddTapGestureRecognizer{
-//    
+//
 //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(cancelResignFirstResponder)];
-//    
+//
 //    tapGesture.delegate = self;
 //    tapGesture.numberOfTapsRequired=1;
 //    tapGesture.numberOfTouchesRequired=1;
 //    //    [self.bottomTableView addGestureRecognizer:tapGesture];
-//    
+//
 //}
 //
 //- (void)cancelResignFirstResponder{
-//    
+//
 //    [self.inputTextView resignFirstResponder];
-//    
+//
 //}
 //
 
@@ -1855,9 +1910,9 @@
     [MBProgressHUD showSuccess:@"对方已退出聊天"];
     [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
         [WebAgent changeTranslatorBusy:userIDinfo state:@"0" success:^(id responseObject) {
-        
+            
             [self.navigationController popToRootViewControllerAnimated:YES];
-
+            
         } failure:^(NSError *error) {
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
@@ -1878,7 +1933,7 @@
     NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
     NSDictionary *user_id = [userdefault objectForKey:@"user_id"];
     NSString *user__ID = user_id[@"user_id"];
-    [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithlanguageCatgory:_trans_Language WithpayNumber:@"0" WithSenderID:user__ID WithMessionID:mseeage_id success:^(id responseObject) {
+    [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:user__ID WithMessionID:mseeage_id  WithLanguage :  @"language"success:^(id responseObject) {
         [WebAgent stopFindingTranslator:userIDinfo missionID:@"无" success:^(id responseObject) {
             [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
                 
@@ -1895,41 +1950,41 @@
                         [alertVC addAction:okAction];
                         [self presentViewController:alertVC animated:YES completion:nil];
                     }];
-
-                    }
-                    else
-                    {
-                        [WebAgent changeTranslatorBusy:userIDinfo state:@"0" success:^(id responseObject) {
-                            
-                            FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.    target_id];
-                            [self.navigationController pushViewController:fbvc animated:YES];
-                            
-                        } failure:^(NSError *error) {
-                            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                            }];
-                            [alertVC addAction:okAction];
-                            [self presentViewController:alertVC animated:YES completion:nil];
+                    
+                }
+                else
+                {
+                    [WebAgent changeTranslatorBusy:userIDinfo state:@"0" success:^(id responseObject) {
+                        
+                        FeedBackViewController *fbvc = [[FeedBackViewController alloc]initWithtargetID:self.    target_id];
+                        [self.navigationController pushViewController:fbvc animated:YES];
+                        
+                    } failure:^(NSError *error) {
+                        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您的网络" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                         }];
-
-                                         }
+                        [alertVC addAction:okAction];
+                        [self presentViewController:alertVC animated:YES completion:nil];
+                    }];
+                    
+                }
                 
                 
-                } failure:^(NSError *error) {
-                    NSLog(@"失败");
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                    //            [self.navigationController popViewControllerAnimated:YES];
-                }];
-            
             } failure:^(NSError *error) {
-                NSLog(@"取消寻找议员状态失败");
+                NSLog(@"失败");
                 [self.navigationController popToRootViewControllerAnimated:YES];
+                //            [self.navigationController popViewControllerAnimated:YES];
             }];
-          } failure:^(NSError *error) {
+            
+        } failure:^(NSError *error) {
+            NSLog(@"取消寻找议员状态失败");
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }];
+    } failure:^(NSError *error) {
         NSLog(@"失败");
         [self.navigationController popToRootViewControllerAnimated:YES];
-
-//        [self.navigationController popViewControllerAnimated:YES];
+        
+        //        [self.navigationController popViewControllerAnimated:YES];
         
     }];
 }
@@ -2031,7 +2086,7 @@
     
 }
 
--(NSDictionary *)getRCMessageDictionaryWithExtra:(NSString *)extra{
+-(NSMutableDictionary *)getRCMessageDictionaryWithExtra:(NSString *)extra{
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSArray  * array= [extra componentsSeparatedByString:@"&"];
@@ -2144,10 +2199,10 @@
         //        _reportAudioBtn.backgroundColor = [UIColor lightGrayColor];
         //        [_reportAudioBtn setTitle:@"按住说话" forState:UIControlStateNormal];
         [_reportAudioBtn setImage:[UIImage imageNamed:@"saynew"] forState:UIControlStateNormal];
-//        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
-//        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
-//        
-//        [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
+        //        [_reportAudioBtn addTarget:self action:@selector(sendAudioInfoClick) forControlEvents:UIControlEventTouchUpInside];
+        //        [_reportAudioBtn addTarget:self action:@selector(benginRecordAudio) forControlEvents:UIControlEventTouchDown];
+        //
+        //        [_reportAudioBtn addTarget:self action:@selector(TouchDragExitClickWithEvent:) forControlEvents:UIControlEventTouchDragExit];
     }
     return _reportAudioBtn;
 }

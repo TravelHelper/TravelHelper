@@ -8,11 +8,14 @@
 
 #import "AppDelegate.h"
 #import "YBZRootViewController.h"
+#import "YBZTranslationController.h"
 #import "iflyMSC/IFlyMSC.h"
 //#import <RongIMLib/RongIMLib.h>
 #import <SMS_SDK/SMSSDK.h>
+#import "YBZMyRewardViewController.h"
 #import "FreeTransViewController.h"
 #import "JPUSHService.h"
+#import "UIAlertController+SZYKit.h"
 #import "WebAgent.h"
 #import "YBZtoalertView.h"
 
@@ -213,21 +216,23 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"%@",userInfo);
     NSLog(@"----------heiheihei------");
     NSString *language_catgory = [userInfo valueForKey:@"language_catgory"];
-    NSString *pay_number = [userInfo valueForKey:@"pay_number"];
+    if ([language_catgory isEqualToString:@""]||language_catgory == nil) {
+        language_catgory = @"";
+    }
+    NSString *pay_number = @"0";
     
     NSDictionary *aps = [userInfo valueForKey:@"aps"];
     NSString *content = [aps valueForKey:@"alert"]; //推送显示的内容
     
-    NSString *messionID = [userInfo valueForKey:@"ID"];
-    
+    NSString *messionID = [userInfo valueForKey:@"messionID"];
+    NSString *type = [userInfo valueForKey:@"type"];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
     [userDefaults setObject:messionID forKey:@"messageId"];
     
-    NSString *str = [content substringWithRange:NSMakeRange(content.length-8, 8)];
     
-    if ([content isEqualToString:@"匹配成功"]) {
+    if ([type isEqualToString:@"0002"]) {
         
         NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
         NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
@@ -244,14 +249,44 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         
         
-    }else if ([content isEqualToString:@"进入聊天"]){
+    }else if ([type isEqualToString:@"0004"]){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
         
         
         
-    }else if ([content isEqualToString:@"退出聊天"]){
+    }else if ([type isEqualToString:@"0003"]){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"backToRoot" object:@{@"yonghuID":yonghuID}];
-    }else if( [str isEqualToString:@"口语即时翻译请求"]){
+    }else if ([type isEqualToString:@"0005"]){
+        UIViewController *nowVC=[self currentViewController];
+        if ([nowVC isKindOfClass:[YBZTranslationController class]]) {
+            [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"您的悬赏被回答啦~快去采纳满意的答案吧" cancelTitle:@"确定" confirmTitle:@"我的悬赏" cancelHandler:^(UIAlertAction *action) {
+                
+            } confirmHandler:^(UIAlertAction *action) {
+                YBZMyRewardViewController *vc = [[YBZMyRewardViewController alloc ]init];
+                [nowVC.navigationController pushViewController:vc animated:YES];
+            }];
+        }else{
+            [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"您的悬赏被回答啦~请尽快采纳满意的答案" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+                
+            }];
+        }
+
+    }else if ([type isEqualToString:@"0006"]){
+        UIViewController *nowVC=[self currentViewController];
+        
+
+        if ([nowVC isKindOfClass:[YBZTranslationController class]]) {
+            [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"您有一条悬赏回答被采纳，请到钱包查看您的嗨币是否到账！" cancelTitle:@"确定" confirmTitle:@"钱包" cancelHandler:^(UIAlertAction *action) {
+                
+            } confirmHandler:^(UIAlertAction *action) {
+                
+            }];
+        }else{
+            [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"您有一条悬赏回答被采纳，请稍后到钱包查看您的嗨币是否到账！" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+                
+            }];
+        }
+    }else if( [type isEqualToString:@"0001"]){
         UIViewController *nowVC=[self currentViewController];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
@@ -268,7 +303,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             //    alertView.backgroundColor=[UIColor redColor];
             [nowVC.view addSubview:self.hubView];
             [nowVC.view addSubview:self.toalertView];
-        }else{
+        
+
+            
+        }else {
             
             [self.toalertView addModel:model];
         }
@@ -414,8 +452,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     NSDictionary *aps = [dic valueForKey:@"aps"];
     NSString *content = [aps valueForKey:@"alert"]; //推送显示的内容
-    
-    NSString *messionID = [dic valueForKey:@"ID"];
+    NSString *type = [dic valueForKey:@"type"];
+    NSString *messionID = [dic valueForKey:@"messionID"];
     
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -451,7 +489,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     //    }else
     //
     
-    if( [str isEqualToString:@"口语即时翻译请求"]){
+    if( [type isEqualToString:@"0001"]){
         UIViewController *nowVC=[self currentViewController];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];

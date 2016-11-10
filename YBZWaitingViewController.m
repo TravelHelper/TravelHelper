@@ -90,6 +90,10 @@
     
     NSString *VoiceLanguage;
     NSString *TransLanguage;
+    if ([language isEqualToString:@"language"]) {
+        VoiceLanguage = Voice_YingYu;
+        TransLanguage = Trans_YingYu;
+    }
     if ([language isEqualToString:@"英语"]) {
         
         VoiceLanguage = Voice_YingYu;

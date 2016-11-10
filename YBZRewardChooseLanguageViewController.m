@@ -40,11 +40,11 @@
     [self.view addSubview:lab];
     
     
-    self.mainTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 64+0.017*kScreenHeight,self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
+    self.mainTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 64+0.017*kScreenHeight,self.view.bounds.size.width, self.view.bounds.size.height-(64+0.017*kScreenHeight)) style:UITableViewStylePlain];
     self.mainTable.sectionHeaderHeight = 10;
     self.mainTable.delegate = self;
     self.mainTable.dataSource = self;
-    self.mainTable.scrollEnabled = NO;
+    self.mainTable.scrollEnabled = YES;
     [self.view addSubview:self.mainTable];
     
     
@@ -77,20 +77,30 @@
 {
     UIImage *img = [UIImage imageNamed:@"ensure"];
     UIImageView *ensureImg = [[UIImageView alloc]initWithImage:img];
+ //  @"英语",@"美式英语",@"粤语",@"日语",@"韩语",@"法语",@"西班牙语",@"泰语",@"阿拉伯语",@"俄语",@"葡萄牙语",@"德语",@"意大利语",@"希腊语",@"荷兰语",@"波兰语",@"丹麦语",@"芬兰语",@"捷克语",@"瑞典语",@"匈牙利语"
     Infor *infomation1 = [[Infor alloc] initWitensureImg:ensureImg language:@"英语"];
     Infor *infomation2 = [[Infor alloc] initWitensureImg:ensureImg language:@"日语"];
     Infor *infomation3 = [[Infor alloc] initWitensureImg:ensureImg language:@"法语"];
     Infor *infomation4 = [[Infor alloc] initWitensureImg:ensureImg language:@"德语"];
     Infor *infomation5 = [[Infor alloc] initWitensureImg:ensureImg language:@"韩语"];
-    Infor *infomation6 = [[Infor alloc] initWitensureImg:ensureImg language:@"意大利语"];
+    Infor *infomation6 = [[Infor alloc] initWitensureImg:ensureImg language:@"西班牙语"];
     Infor *infomation7 = [[Infor alloc] initWitensureImg:ensureImg language:@"泰语"];
-    Infor *infomation8 = [[Infor alloc] initWitensureImg:ensureImg language:@""];
-    Infor *infomation9 = [[Infor alloc] initWitensureImg:ensureImg language:@""];
-    Infor *infomation10 = [[Infor alloc] initWitensureImg:ensureImg language:@""];
-    Infor *infomation11 = [[Infor alloc] initWitensureImg:ensureImg language:@""];
-    Infor *infomation12 = [[Infor alloc] initWitensureImg:ensureImg language:@""];
-    
-    self.dataArr = @[infomation1,infomation2,infomation3,infomation4,infomation5,infomation6,infomation7,infomation8,infomation9,infomation10,infomation11,infomation12];
+    Infor *infomation8 = [[Infor alloc] initWitensureImg:ensureImg language:@"阿拉伯语"];
+    Infor *infomation9 = [[Infor alloc] initWitensureImg:ensureImg language:@"俄语"];
+    Infor *infomation10 = [[Infor alloc] initWitensureImg:ensureImg language:@"葡萄牙语"];
+    Infor *infomation11 = [[Infor alloc] initWitensureImg:ensureImg language:@"德语"];
+    Infor *infomation12 = [[Infor alloc] initWitensureImg:ensureImg language:@"意大利语"];
+    Infor *infomation13 = [[Infor alloc] initWitensureImg:ensureImg language:@"希腊语"];
+    Infor *infomation14 = [[Infor alloc] initWitensureImg:ensureImg language:@"荷兰语"];
+    Infor *infomation15 = [[Infor alloc] initWitensureImg:ensureImg language:@"波兰语"];
+    Infor *infomation16 = [[Infor alloc] initWitensureImg:ensureImg language:@"丹麦语"];
+    Infor *infomation17 = [[Infor alloc] initWitensureImg:ensureImg language:@"芬兰语"];
+    Infor *infomation18 = [[Infor alloc] initWitensureImg:ensureImg language:@"瑞典语"];
+    Infor *infomation19 = [[Infor alloc] initWitensureImg:ensureImg language:@"捷克语"];
+    Infor *infomation20 = [[Infor alloc] initWitensureImg:ensureImg language:@"匈牙利语"];
+
+   
+    self.dataArr = @[infomation1,infomation2,infomation3,infomation4,infomation5,infomation6,infomation7,infomation8,infomation9,infomation10,infomation11,infomation12,infomation13,infomation14,infomation15,infomation16,infomation17,infomation18,infomation19,infomation20];
 }
 
 #pragma mark - 行数

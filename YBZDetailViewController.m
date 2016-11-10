@@ -10,6 +10,7 @@
 #import "AnswerCell.h"
 #import "WebAgent.h"
 #import "YBZRewardDetailModel.h"
+#import "UIImageView+WebCache.h"
 
 @interface YBZDetailViewController ()<UITableViewDelegate,UITableViewDataSource>{
 
@@ -129,9 +130,14 @@
 
 #pragma mark -----TableViewDelegate-----
 
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
+    return 1;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
+//    NSInteger a = tableView.numberOfSections;
     return _rewardDetailModel.answerArr.count;
 }
 
@@ -140,15 +146,16 @@
     NSDictionary *dict = _rewardDetailModel.answerArr[indexPath.row];
     [dict setValue:_rewardDetailModel.acceptAnswer forKey:@"accept_id"];
     [dict setValue:_rewardDetailModel.rewardState forKey:@"proceed_state"];
-    AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
-    return cell.height;
+    CGFloat height=[self returnCellHeightWithDictionaryModel:dict];
+
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
     NSDictionary *dict = _rewardDetailModel.answerArr[indexPath.row];
     [dict setValue:_rewardDetailModel.rewardState forKey:@"proceed_state"];
-        AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell" Model:dict];
+    AnswerCell *cell = [[AnswerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AnswerCell" Model:dict];
     return cell;
 }
 
@@ -159,6 +166,18 @@
     [self loadDataFromWeb];
 }
 
+-(CGFloat)returnCellHeightWithDictionaryModel:(NSDictionary *)dict{
+    
+    CGFloat height;
+    
+    CGSize textLabelSize;
+    NSString *info = dict[@"answer_text"];
+    textLabelSize = [info boundingRectWithSize:CGSizeMake(SCREEN_WIDTH-0.167*SCREEN_WIDTH,MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.02*SCREEN_HEIGHT]} context:nil].size;
+    height= 0.08*SCREEN_HEIGHT+textLabelSize.height + 0.009*SCREEN_HEIGHT+0.038*SCREEN_HEIGHT+ 0.017*SCREEN_HEIGHT;
+    
+    return height;
+    
+}
 
 #pragma mark -----getters-----
 
@@ -192,14 +211,13 @@
 
     if (!_answerTableView) {
         _answerTableView = [[UITableView alloc]init];
-        [_answerTableView registerClass:[AnswerCell class] forCellReuseIdentifier:@"Cell"];
+        [_answerTableView registerClass:[AnswerCell class] forCellReuseIdentifier:@"AnswerCell"];
         _answerTableView.backgroundColor = [UIColor whiteColor];
-//        _answerTableView.separatorStyle=UITableViewCellSeparatorStyleNone;
         _answerTableView.allowsSelection = NO;
         _answerTableView.dataSource=self;
         _answerTableView.delegate=self;
-        _answerTableView.showsVerticalScrollIndicator = NO;
-        _answerTableView.tableFooterView = [[UIView alloc]init];
+        _answerTableView.tableFooterView=[[UIView alloc]initWithFrame:CGRectZero];
+
     }
     return _answerTableView;
 }
@@ -260,16 +278,9 @@
         _rewardImageView = [[UIImageView alloc]init];
         NSString *str = [NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,_rewardDetailModel.rewardImageName];
         NSURL *url = [NSURL URLWithString:str];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *img = [UIImage imageWithData:data];
-        if (img != nil) {
-            _rewardImageView.image = img;
-            sizeOfPic = img.size;
-        }else{
-            UIImage *image = [UIImage imageNamed:@"img"];
-            _rewardImageView.image = image;
-            sizeOfPic = image.size;
-        }
+        [_rewardImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img"]];
+        sizeOfPic = _rewardImageView.image.size;
+
         _rewardImageView.backgroundColor = [UIColor blackColor];
     }
     return _rewardImageView;

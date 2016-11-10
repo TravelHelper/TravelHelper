@@ -599,20 +599,20 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //口语即时，发送远程推送APNS
 +(void)sendRemoteNotificationsWithuseId:(NSString *)user_id
                         WithsendMessage:(NSString *)send_message
-                    WithlanguageCatgory:(NSString *)language_catgory
-                          WithpayNumber:(NSString *)pay_number
+                          WithType:(NSString *)type
                            WithSenderID:(NSString *)sender_id
-                          WithMessionID:(NSString *)ID
+                          WithMessionID:(NSString *)MessionID
+                           WithLanguage:(NSString *)language
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"user_id":user_id,
                            @"sender_id":sender_id,
                            @"send_message":send_message,
-                           @"language_catgory":language_catgory,
-                           @"pay_number":pay_number,
-                           @"ID":ID};
-    [[APIClient sharedClient] POST:@"Test/sendRemoteNotifications" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                           @"type":type,
+                           @"messionID":MessionID,
+                           @"language_catgory":language};
+    [[APIClient sharedClient] POST:@"Test/sendPush" parameters:dict  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);

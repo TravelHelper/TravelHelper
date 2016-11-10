@@ -151,10 +151,10 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 //口语即时，发送远程推送APNS
 +(void)sendRemoteNotificationsWithuseId:(NSString *)user_id
                         WithsendMessage:(NSString *)send_message
-                    WithlanguageCatgory:(NSString *)language_catgory
-                          WithpayNumber:(NSString *)pay_number
+                               WithType:(NSString *)type
                            WithSenderID:(NSString *)sender_id
-                          WithMessionID:(NSString *)ID
+                          WithMessionID:(NSString *)MessionID
+                           WithLanguage:(NSString *)language
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
 //语言

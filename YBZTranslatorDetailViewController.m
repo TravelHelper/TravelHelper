@@ -10,6 +10,7 @@
 #import "AnswerCell.h"
 #import "WebAgent.h"
 #import "YBZRewardHallDetailModel.h"
+#import "UIImageView+WebCache.h"
 #import "YBZTranslatorAnswerViewController.h"
 @interface YBZTranslatorDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
@@ -254,16 +255,9 @@
         _rewardImageView = [[UIImageView alloc]init];
         NSString *str = [NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,_rewardDetailModel.rewardImageName];
         NSURL *url = [NSURL URLWithString:str];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *img = [UIImage imageWithData:data];
-        if (img != nil) {
-            _rewardImageView.image = img;
-            sizeOfPic = img.size;
-        }else{
-            UIImage *image = [UIImage imageNamed:@"img"];
-            _rewardImageView.image = image;
-            sizeOfPic = image.size;
-        }
+        [_rewardImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img"]];
+        sizeOfPic = _rewardImageView.image.size;
+
         _rewardImageView.backgroundColor = [UIColor blackColor];
     }
     return _rewardImageView;

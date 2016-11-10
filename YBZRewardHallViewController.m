@@ -19,6 +19,7 @@
 #import "YBZTranslatorAnswerViewController.h"
 #import "YBZDetailViewController.h"
 #import "YBZSendRewardViewController.h"
+#import "UIAlertController+SZYKit.h"
 #import "RewardCell.h"
 
 #define kScreenWith        [UIScreen mainScreen].bounds.size.width
@@ -116,7 +117,7 @@
     NSArray *titleArr = @[@"金额排序",@"语言筛选",@"时间排序"];
     for (int i=0 ; i<3; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(SCREEN_WIDTH/3*i, 128, SCREEN_WIDTH/3, 0.05*SCREEN_HEIGHT);
+        btn.frame = CGRectMake(SCREEN_WIDTH/3*i, 74, SCREEN_WIDTH/3, 0.05*SCREEN_HEIGHT);
         btn.backgroundColor = [UIColor whiteColor];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btn setTitleColor:UIColorFromRGB(0x1D8FD2) forState:UIControlStateSelected];
@@ -166,18 +167,18 @@
     view.backgroundColor = [UIColor whiteColor];
     switch (tag) {
         case 100:
-            view.frame = CGRectMake(0, 128+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
+            view.frame = CGRectMake(0, 74+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
             view.tag = 1000;
             [self getBtnWithTag:1000 AndView:view];
             break;
         case 101:
-            view.frame = CGRectMake(SCREEN_WIDTH/3, 128+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, languageArr.count*0.05*SCREEN_HEIGHT);
+            view.frame = CGRectMake(SCREEN_WIDTH/3, 74+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, languageArr.count*0.05*SCREEN_HEIGHT);
             view.tag = 1001;
             [self getBtnWithTag:1001 AndView:view];
             
             break;
         case 102:
-            view.frame = CGRectMake(SCREEN_WIDTH/3*2, 128+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
+            view.frame = CGRectMake(SCREEN_WIDTH/3*2, 74+0.05*SCREEN_HEIGHT, SCREEN_WIDTH/3, 2*0.05*SCREEN_HEIGHT);
             view.tag = 1002;
             [self getBtnWithTag:1002 AndView:view];
             
@@ -390,28 +391,17 @@
         }else{
             self.dataArr = nil;
         }
+        if (self.dataArr == nil || self.dataArr.count == 0) {
+            [UIAlertController showAlertAtViewController:self title:@"提示" message:@"当前没有您所选语种的悬赏，请选择其他语种" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+                
+            }];
+        }
         NSArray *reward_info = self.dataArr;
         if (reward_info.count != 0) {
             if ([language isEqualToString:@"all"]) {
-                languageArr = [[NSMutableArray alloc]init];
-                
-                for (NSDictionary *dict in self.dataArr) {
-                    NSString *language = dict[@"language"];
-                    if (languageArr.count != 0) {
-                        BOOL hasLanguage = NO;
-                        for (NSString *str in languageArr) {
-                            if ([str isEqualToString:language]) {
-                                hasLanguage = YES;
-                            }
-                        }
-                        if (hasLanguage == NO) {
-                            [languageArr addObject:language];
-                        }
-                    }else{
-                        [languageArr addObject:language];
-                    }
-                }
-                
+                NSMutableArray *lArr = dic[@"language"];
+                languageArr = lArr;
+                [languageArr addObject:@"其他"];
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -524,7 +514,7 @@
 - (UITableView *)mainTableView
 {
     if (!_mainTableView) {
-        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 128+0.05*SCREEN_HEIGHT, self.view.bounds.size.width, self.view.bounds.size.height-0.225*SCREEN_HEIGHT+20) style:UITableViewStylePlain];
+        _mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0.159*SCREEN_HEIGHT, self.view.bounds.size.width, self.view.bounds.size.height-0.225*SCREEN_HEIGHT+20) style:UITableViewStylePlain];
         [_mainTableView registerClass:[RewardCell class] forCellReuseIdentifier:@"RewardCell"];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
