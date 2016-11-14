@@ -13,7 +13,7 @@
 #define kScreenHeight [[UIScreen mainScreen] bounds].size.height
 
 
-@interface YBZMyWindow ()
+@interface YBZMyWindow ()<UIGestureRecognizerDelegate>
 
 
 
@@ -43,7 +43,8 @@
         
         //添加移动的手势
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(locationChange:)];
-//        pan.delaysTouchesBegan = YES;
+        pan.delaysTouchesBegan = YES;
+        pan.delegate = self;
         [self addGestureRecognizer:pan];
         //添加点击的手势
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click:)];
@@ -55,83 +56,87 @@
     return self;
 }
 
+
 #pragma mark -触摸事件监听
 -(void)locationChange:(UIPanGestureRecognizer*)p
 {
     //[[UIApplication sharedApplication] keyWindow]
-    CGPoint panPoint = [p locationInView:[[UIApplication sharedApplication] keyWindow]];
-    if(p.state == UIGestureRecognizerStateBegan)
-    {
+    CGPoint panPoint = [p locationInView:[[[[UIApplication sharedApplication] keyWindow] rootViewController] view]];
+//    if(p.state == UIGestureRecognizerStateBegan)
+//    {
 //        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(changeColor) object:nil];
 //        _imageView.alpha = 0.8;
-    }
-    else if (p.state == UIGestureRecognizerStateEnded)
-    {
-        [self performSelector:@selector(changeColor) withObject:nil afterDelay:4.0];
-    }
+//    }
+//    else if (p.state == UIGestureRecognizerStateEnded)
+//    {
+//        [self performSelector:@selector(changeColor) withObject:nil afterDelay:4.0];
+//    }
     if(p.state == UIGestureRecognizerStateChanged)
     {
-        self.center = CGPointMake(panPoint.x, panPoint.y);
+        NSLog(@"x:%f------y:%f",panPoint.x,panPoint.y);
+//        self.center = CGPointMake(panPoint.x, panPoint.y);
+//        self.frame=CGRectMake(panPoint.x, panPoint.y, 100, 100);
+        self.center = CGPointMake(self.center.x + panPoint.x-self.frame.size.width/2, self.center.y + panPoint.y-self.frame.size.height/2);
     }
-    else if(p.state == UIGestureRecognizerStateEnded)
-    {
-        if(panPoint.x <= kScreenWidth/2)
-        {
-            if(panPoint.y <= 40+HEIGHT/2 && panPoint.x >= 20+WIDTH/2)
-            {
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.center = CGPointMake(panPoint.x, HEIGHT/2);
-                }];
-            }
-            else if(panPoint.y >= kScreenHeight-HEIGHT/2-40 && panPoint.x >= 20+WIDTH/2)
-            {
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.center = CGPointMake(panPoint.x, kScreenHeight-HEIGHT/2);
-                }];
-            }
-            else if (panPoint.x < WIDTH/2+15 && panPoint.y > kScreenHeight-HEIGHT/2)
-            {
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.center = CGPointMake(WIDTH/2, kScreenHeight-HEIGHT/2);
-                }];
-            }
-            else
-            {
-                CGFloat pointy = panPoint.y < HEIGHT/2 ? HEIGHT/2 :panPoint.y;
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.center = CGPointMake(WIDTH/2, pointy);
-                }];
-            }
-        }
-        else if(panPoint.x > kScreenWidth/2)
-        {
-            if(panPoint.y <= 40+HEIGHT/2 && panPoint.x < kScreenWidth-WIDTH/2-20 )
-            {
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.center = CGPointMake(panPoint.x, HEIGHT/2);
-                }];
-            }
-            else if(panPoint.y >= kScreenHeight-40-HEIGHT/2 && panPoint.x < kScreenWidth-WIDTH/2-20)
-            {
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.center = CGPointMake(panPoint.x, 480-HEIGHT/2);
-                }];
-            }
-            else if (panPoint.x > kScreenWidth-WIDTH/2-15 && panPoint.y < HEIGHT/2)
-            {
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.center = CGPointMake(kScreenWidth-WIDTH/2, HEIGHT/2);
-                }];
-            }
-            else
-            {
-                CGFloat pointy = panPoint.y > kScreenHeight-HEIGHT/2 ? kScreenHeight-HEIGHT/2 :panPoint.y;
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.center = CGPointMake(320-WIDTH/2, pointy);
-                }];
-            }
-        }
-    }
+//    else if(p.state == UIGestureRecognizerStateEnded)
+//    {
+//        if(panPoint.x <= kScreenWidth/2)
+//        {
+//            if(panPoint.y <= 40+HEIGHT/2 && panPoint.x >= 20+WIDTH/2)
+//            {
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    self.center = CGPointMake(panPoint.x, HEIGHT/2);
+//                }];
+//            }
+//            else if(panPoint.y >= kScreenHeight-HEIGHT/2-40 && panPoint.x >= 20+WIDTH/2)
+//            {
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    self.center = CGPointMake(panPoint.x, kScreenHeight-HEIGHT/2);
+//                }];
+//            }
+//            else if (panPoint.x < WIDTH/2+15 && panPoint.y > kScreenHeight-HEIGHT/2)
+//            {
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    self.center = CGPointMake(WIDTH/2, kScreenHeight-HEIGHT/2);
+//                }];
+//            }
+//            else
+//            {
+//                CGFloat pointy = panPoint.y < HEIGHT/2 ? HEIGHT/2 :panPoint.y;
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    self.center = CGPointMake(WIDTH/2, pointy);
+//                }];
+//            }
+//        }
+//        else if(panPoint.x > kScreenWidth/2)
+//        {
+//            if(panPoint.y <= 40+HEIGHT/2 && panPoint.x < kScreenWidth-WIDTH/2-20 )
+//            {
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    self.center = CGPointMake(panPoint.x, HEIGHT/2);
+//                }];
+//            }
+//            else if(panPoint.y >= kScreenHeight-40-HEIGHT/2 && panPoint.x < kScreenWidth-WIDTH/2-20)
+//            {
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    self.center = CGPointMake(panPoint.x, 480-HEIGHT/2);
+//                }];
+//            }
+//            else if (panPoint.x > kScreenWidth-WIDTH/2-15 && panPoint.y < HEIGHT/2)
+//            {
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    self.center = CGPointMake(kScreenWidth-WIDTH/2, HEIGHT/2);
+//                }];
+//            }
+//            else
+//            {
+//                CGFloat pointy = panPoint.y > kScreenHeight-HEIGHT/2 ? kScreenHeight-HEIGHT/2 :panPoint.y;
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    self.center = CGPointMake(320-WIDTH/2, pointy);
+//                }];
+//            }
+//        }
+//    }
 }
 
 - (void)click:(UITapGestureRecognizer*)t
@@ -144,7 +149,6 @@
     NSLog(@"click");
     
 }
-
 
 
 @end
