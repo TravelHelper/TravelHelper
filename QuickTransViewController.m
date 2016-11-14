@@ -107,7 +107,7 @@
     bool translateMark;
     bool changeImgMark;
     
-    NSTimer *getLoginStateTimer;
+    NSTimer *quitTimer;
     
     NSString *contentStr;
     
@@ -123,45 +123,24 @@
         [self getTokenWithUserID:self.user_id];        //获取token并且登录融云服务器
         
         self.userIdentifier = userIdentifier;
-        NSDictionary *dict = @{@"user_id":self.target_id};
-        getLoginStateTimer=[NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getTargetLoginState:) userInfo:dict repeats:YES];
         self.voice_Language = voice_Language;
         self.trans_Language = trans_Language;
-        
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+               NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:self.voice_Language forKey:@"VOICE_LANGUAGE"];
         [userDefaults setObject:self.trans_Language forKey:@"TRANS_LANGUAGE"];
         NSDictionary *user = [userDefaults dictionaryForKey:@"user_id"];
+        NSString *missionID = [userDefaults objectForKey:@"messageId"];
         userIDinfo = user[@"user_id"];
+        
+
         //欠缺单利处理 （头像获取）
     }
     return self;
 }
 
 
--(void)getTargetLoginState:(NSTimer *)timer{
-    NSDictionary *dict = [timer userInfo];
-    NSString *userID = dict[@"user_id" ];
-    [WebAgent getTargetLoginState:userID success:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSString *state = dic[@"result"];
-        if ([state isEqualToString:@"0"]) {
-            [getLoginStateTimer invalidate];
-            //            [MBProgressHUD showError:@"系统检测到对方可能已经离线，已自动为您退出聊天。"];
-            //            [self.navigationController popToRootViewControllerAnimated:YES];
-            
-        }else if([state isEqualToString:@"1"]){
-            NSLog(@"1");
-        }
-        
-    } failure:^(NSError *error) {
-        
-    }];
-    
-    
-    
-}
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -188,7 +167,13 @@
     NSArray *arr = [[NSUserDefaults standardUserDefaults] objectForKey:@"ChatHisTory"];
     self.dataArr = [NSMutableArray arrayWithArray:arr];
     self.dataSource = [[NSMutableArray alloc]init];
-    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:self.voice_Language forKey:@"VOICE_LANGUAGE"];
+    [userDefaults setObject:self.trans_Language forKey:@"TRANS_LANGUAGE"];
+    NSString *missionID = [userDefaults objectForKey:@"messageId"];
+    NSDictionary *chatDic = @{@"userID":self.user_id,@"targetID":self.target_id,@"missionID":missionID};
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"chatMessage" object:chatDic];
+
     self.cwViewController = [[CWViewController alloc]init];
     [self.view addSubview:self.bottomTableView];
     [self.view addSubview:self.inputBottomView];
@@ -205,7 +190,7 @@
     
     //设置导航栏返回按钮的点击事件
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"结束聊天" style:UIBarButtonItemStylePlain target:self action:@selector(sendMessageAndPop)];
-    
+
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(backToRoot) name:@"backToRoot" object:nil];
     
     //键盘弹出
@@ -1908,6 +1893,7 @@
 
 -(void)backToRoot{
     [MBProgressHUD showSuccess:@"对方已退出聊天"];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"quitChat" object:nil];
     [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
         [WebAgent changeTranslatorBusy:userIDinfo state:@"0" success:^(id responseObject) {
             
@@ -1934,6 +1920,8 @@
     NSDictionary *user_id = [userdefault objectForKey:@"user_id"];
     NSString *user__ID = user_id[@"user_id"];
     [WebAgent sendRemoteNotificationsWithuseId:self.target_id WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:user__ID WithMessionID:mseeage_id  WithLanguage :  @"language"success:^(id responseObject) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"quitChat" object:nil];
+
         [WebAgent stopFindingTranslator:userIDinfo missionID:@"无" success:^(id responseObject) {
             [WebAgent removeFromWaitingQueue:userIDinfo success:^(id responseObject) {
                 
@@ -2087,6 +2075,17 @@
 }
 
 -(NSMutableDictionary *)getRCMessageDictionaryWithExtra:(NSString *)extra{
+    
+
+    if ([extra isEqualToString:@"文字消息"]) {
+        extra = nil;
+    }else{
+        extra = nil;
+        NSLog(@"语音消息");
+    }
+    
+    
+    
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSArray  * array= [extra componentsSeparatedByString:@"&"];

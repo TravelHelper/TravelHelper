@@ -151,7 +151,6 @@
     
     [self initLeftButton];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(quitApp2) name:@"quitApp2" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeState) name:@"changeLoginState" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Login) name:@"Login" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Logout) name:@"Logout" object:nil];
@@ -381,10 +380,7 @@
     [loginStateTimer invalidate];
 }
 
--(void)quitApp2{
 
-    [loginStateTimer invalidate];
-}
 
 -(void)changeState{
 
@@ -424,13 +420,6 @@
                         loginStates = NO;
                     }
                     userID = user_id[@"user_id"];
-                    if (userID != nil && ![userID isEqualToString:@""]) {
-                        NSDictionary *dict = @{@"user_id" : userID};
-                        loginStateTimer=[NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(updateLoginState:) userInfo:dict repeats:YES];
-                        
-                        [loginStateTimer fire];
-                        
-                    }
                     [WebAgent getuserTranslateState:userID success:^(id responseObject) {
                         NSData *data = [[NSData alloc]initWithData:responseObject];
                         NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
