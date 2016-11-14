@@ -64,19 +64,12 @@
     [self.view addSubview:self.userNameLabel];
     
     [self matchTranslatorWithsenderID:sender_ID WithsendMessage:send_Message WithlanguageCatgory:user_language WithpayNumber:pay_Number];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(quitApp) name:@"quitApp" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithTranslator:) name:@"beginChatWithTranslator" object:nil];
-    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopFindingTranslator) name:@"stopFindingTranslator" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopFindingTranslator) name:@"stopFindingTranslator" object:nil];
     
 }
 
 
-
--(void)quitApp{
-    
-    [timer invalidate];
-    
-}
 
 
 

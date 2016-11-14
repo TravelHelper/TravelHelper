@@ -35,7 +35,11 @@
 
 @implementation AppDelegate{
 
-    NSTimer *timer;
+    BOOL isChat;
+    NSString *userID;
+    NSString *targetID;
+    NSString *missionID;
+    NSTimer *quitTimer;
 }
 
 
@@ -45,15 +49,41 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    isChat = NO;
+    missionID = @"";
+    targetID = @"";
+    quitTimer = [NSTimer timerWithTimeInterval:10 repeats:YES block:^(NSTimer * _Nonnull timer) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"stopFindingTranslator" object:nil];
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        userID = user_id[@"user_id"];
+
+        if (isChat == NO) {
+            [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+                
+            } failure:^(NSError *error) {
+                
+            }];
+        }else if(isChat == YES){
+            [WebAgent sendRemoteNotificationsWithuseId:targetID WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:missionID WithLanguage:@"language" success:^(id responseObject) {
+           } failure:^(NSError *error) {
+                
+            }];
+            
+
+        }
+
     
-   timer =  [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(quitApp3) userInfo:nil repeats:NO];
+    }];
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
     ///远程推送！！！千万不能动⬇️
     //    [JPUSHService resetBadge];
-    //    [JPUSHService setBadge:0];
-    
-    
+    //    [JPUSHService setBadge:0];quitChat
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(chatMessage:) name:@"chatMessage" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(quitChat) name:@"quitChat" object:nil];
+
+    isChat = NO;
     NSString *advertisingId = nil;
     //Required
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
@@ -316,32 +346,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             [self.toalertView addModel:model];
         }
         
-        //        if(self.alertVC){
-        //
-        //            self.alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"接收到新的翻译任务！" preferredStyle:UIAlertControllerStyleAlert];
-        //            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"现在就去" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        //                [[NSNotificationCenter defaultCenter]postNotificationName:@"recieveARemoteRequire" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number,@"messionID":messionID}];
-        //            }];
-        //            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"算了吧" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        //                self.alertVC=nil;
-        //            }];
-        //            [self.alertVC addAction:okAction];
-        //            [self.alertVC addAction:cancelAction];
-        //
-        //            [self.window.rootViewController presentViewController:self.alertVC animated:YES completion:nil];
-        //
-        //        }
-        
-        
-        
-        
-        
     }
-    
-    
-    
-    
-    
     
 }
 
@@ -385,13 +390,37 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    [timer fire];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp" object:nil];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"quitApp2" object:nil];
-
+    
+    //退出应用
+//    quitTimer=[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(postQuitMessage:) userInfo:nil repeats:YES];
+    [quitTimer fire];
     
     
 }
+
+-(void)postQuitMessage:(NSTimer *)timer{
+
+    if (isChat == YES) {
+        [WebAgent sendRemoteNotificationsWithuseId:targetID WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:missionID WithLanguage:@"language" success:^(id responseObject) {
+            [WebAgent userLogout:userID success:^(id responseObject) {
+                isChat = NO;
+            } failure:^(NSError *error) {
+                
+            }];
+
+        } failure:^(NSError *error) {
+            
+        }];
+    }
+
+}
+
+-(void)chatMessage{
+
+    
+}
+
+
 -(void)hideView{
     
     
@@ -530,21 +559,25 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 
+-(void)quitChat{
 
--(void)getTargetID{
+    isChat = NO;
+}
 
+
+-(void)chatMessage:(NSNotification *)notification{
+  
+    isChat = YES;
+    NSDictionary *dict = notification.object;
+    userID = dict[@"userID"];
+    targetID = dict[@"targetID"];
+    missionID = dict[@"missionID"];
 
 }
 
 
 
 
-
--(void)quitApp3{
-
-    
-    [timer invalidate];
-}
 
 
 
