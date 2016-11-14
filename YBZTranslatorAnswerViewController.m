@@ -10,6 +10,8 @@
 #import "YBZTranslatorAnswerViewController.h"
 #import "MBProgressHUD+XMG.h"
 #import "UIAlertController+SZYKit.h"
+#import "MHFacebookImageViewer.h"
+#import "UIImageView+MHFacebookImageViewer.h"
 
 #define INTERVAL_KEYBOARD  10
 #define kAnimationDuration 0.3f
@@ -37,7 +39,8 @@
     self.view.backgroundColor = myRewardBackgroundColor;
     [self.view addSubview:self.pictureView];
     [self.view addSubview:self.textView];
-    [self.view addSubview:self.imageView];
+//    [self.view addSubview:self.imageView];
+    [self.pictureView addSubview:self.imageView];
     self.title = @"回  答";
     
     self.navigationItem.leftBarButtonItem = self.backButton;
@@ -45,7 +48,7 @@
     
     //添加键盘的监听事件
     //    //注册通知,监听键盘弹出事件
-    
+    [self.imageView setupImageViewer];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     //    //注册通知,监听键盘消失事件
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -91,34 +94,23 @@
     }
     return _pictureView;
 }
--(void)choosePictureClick
-{
-    NSLog(@"kai kai kai ");
-    self.imageView.hidden = NO;
-}
 -(UIImageView *)imageView
 {
     if(!_imageView)
     {
-        _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0 , 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-        _imageView.hidden = YES;
+        
+        _imageView = [[UIImageView alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 50, 10 , 40, 33)];
+//        _imageView.alpha=0.1;
+//        _imageView.hidden = YES;
         [_imageView setImage:self.previewImg];
         _imageView.backgroundColor = [UIColor colorWithRed:107/255.0 green:107/255.0 blue:99/255.0 alpha:0.8];
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
         //image点击事件
         [_imageView setUserInteractionEnabled:YES];
-        UITapGestureRecognizer *click = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imageViewClick)];
-        [_imageView addGestureRecognizer:click];
+//        UITapGestureRecognizer *click = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imageViewClick)];
+//        [_imageView addGestureRecognizer:click];
     }
     return _imageView;
-}
--(void)imageViewClick
-{
-    if(self.imageView.hidden == NO)
-    {
-        self.imageView.hidden = YES;
-        NSLog(@"guan guan guan ");
-    }
 }
 #pragma mark - 取消按钮及点击事件
 -(UIBarButtonItem *)backButton
@@ -225,10 +217,7 @@
 -(void)keyboardWillShow:(NSNotification *)notification
 {
     //当图片显示时，点击输入框、空白或图片本身 图片消失
-    if(self.imageView.hidden == NO)
-    {
-        self.imageView.hidden = YES;
-    }
+    
     //获取键盘高度
     CGRect keyboardRect = [[[notification userInfo]objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
     NSTimeInterval animationDuration = [[[notification userInfo]objectForKey:UIKeyboardAnimationDurationUserInfoKey]
@@ -251,10 +240,6 @@
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     //当图片显示时，点击输入框、空白或图片本身 图片消失
-    if(self.imageView.hidden == NO)
-    {
-        self.imageView.hidden = YES;
-    }
     
     [self.textView resignFirstResponder];
 }
