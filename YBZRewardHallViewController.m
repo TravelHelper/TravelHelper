@@ -492,7 +492,7 @@
 
 -(UIView *)navView{
     if (!_navView) {
-        _navView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenWith, 64)];
+        _navView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWith, 64)];
         _navView.backgroundColor =[UIColor whiteColor];
     }
     return _navView;
