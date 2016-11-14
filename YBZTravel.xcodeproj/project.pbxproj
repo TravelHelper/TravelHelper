@@ -272,6 +272,9 @@
 		A0552ED71D3A2C8C00E04D7A /* SelectedMessageInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */; };
 		A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */; };
 		FE08A6141DD4147D00E37B88 /* YBZMyCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08A6131DD4147D00E37B88 /* YBZMyCustomViewController.m */; };
+		FE08A6191DD462F600E37B88 /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08A6161DD462F600E37B88 /* MHFacebookImageViewer.m */; };
+		FE08A61A1DD462F600E37B88 /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08A6181DD462F600E37B88 /* UIImageView+MHFacebookImageViewer.m */; };
+		FE08A61D1DD5BACC00E37B88 /* YBZMyWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08A61C1DD5BACC00E37B88 /* YBZMyWindow.m */; };
 		FE1482671D8925D100804A0A /* YBZtoAlertModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1482641D8925D100804A0A /* YBZtoAlertModel.m */; };
 		FE1482681D8925D100804A0A /* YBZtoalertView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1482661D8925D100804A0A /* YBZtoalertView.m */; };
 		FE19429C1DA8DDE9004DC96B /* ZLCWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE19429B1DA8DDE9004DC96B /* ZLCWebView.m */; };
@@ -837,6 +840,12 @@
 		A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectedMessageInfoCell.xib; sourceTree = "<group>"; };
 		FE08A6121DD4147D00E37B88 /* YBZMyCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMyCustomViewController.h; sourceTree = "<group>"; };
 		FE08A6131DD4147D00E37B88 /* YBZMyCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyCustomViewController.m; sourceTree = "<group>"; };
+		FE08A6151DD462F600E37B88 /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
+		FE08A6161DD462F600E37B88 /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
+		FE08A6171DD462F600E37B88 /* UIImageView+MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MHFacebookImageViewer.h"; sourceTree = "<group>"; };
+		FE08A6181DD462F600E37B88 /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
+		FE08A61B1DD5BACC00E37B88 /* YBZMyWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMyWindow.h; sourceTree = "<group>"; };
+		FE08A61C1DD5BACC00E37B88 /* YBZMyWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyWindow.m; sourceTree = "<group>"; };
 		FE1183CF1D8F7D6D007AEF26 /* YBZTravel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YBZTravel.entitlements; sourceTree = "<group>"; };
 		FE1482631D8925D100804A0A /* YBZtoAlertModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZtoAlertModel.h; sourceTree = "<group>"; };
 		FE1482641D8925D100804A0A /* YBZtoAlertModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZtoAlertModel.m; sourceTree = "<group>"; };
@@ -1050,6 +1059,10 @@
 		1ED862E91D2F39DD00529094 /* ThirdTools */ = {
 			isa = PBXGroup;
 			children = (
+				FE08A6151DD462F600E37B88 /* MHFacebookImageViewer.h */,
+				FE08A6161DD462F600E37B88 /* MHFacebookImageViewer.m */,
+				FE08A6171DD462F600E37B88 /* UIImageView+MHFacebookImageViewer.h */,
+				FE08A6181DD462F600E37B88 /* UIImageView+MHFacebookImageViewer.m */,
 				7D909FBD1DD447950055A46C /* HyphenateFullSDK */,
 				FE1EFE2E1D83A1A000FDD1BE /* PCMDataPlayer.h */,
 				FE1EFE2F1D83A1A000FDD1BE /* PCMDataPlayer.mm */,
@@ -1757,6 +1770,8 @@
 				A03ED0581D2DE20800BD9C0A /* AppDelegate.h */,
 				A03ED0591D2DE20800BD9C0A /* AppDelegate.m */,
 				1ED863171D2F499200529094 /* PrefixHeader.pch */,
+				FE08A61B1DD5BACC00E37B88 /* YBZMyWindow.h */,
+				FE08A61C1DD5BACC00E37B88 /* YBZMyWindow.m */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -2390,6 +2405,7 @@
 				7D3E99861D6D42B500F13F42 /* TopView.m in Sources */,
 				7D3E99961D6D42C300F13F42 /* MessageInfoCellData.m in Sources */,
 				FE55FFAF1DC73EF400A93A8F /* YBZCustomPublishViewController.m in Sources */,
+				FE08A6191DD462F600E37B88 /* MHFacebookImageViewer.m in Sources */,
 				A0532CB71D38CF8E00FC1AB1 /* EvaluatePeopleCell.m in Sources */,
 				A03ED05A1D2DE20800BD9C0A /* AppDelegate.m in Sources */,
 				7D3E99951D6D42C300F13F42 /* UnfoldModel.m in Sources */,
@@ -2485,6 +2501,7 @@
 				A03ED0F31D2E3EF500BD9C0A /* YBZProductListViewController.m in Sources */,
 				5322B8101D7E6120004B8C87 /* MKAnnotationView+WebCache.m in Sources */,
 				1ED863131D2F39DD00529094 /* ViewController+MASAdditions.m in Sources */,
+				FE08A61D1DD5BACC00E37B88 /* YBZMyWindow.m in Sources */,
 				A03ED0C21D2DF1BE00BD9C0A /* YBZInterpretViewController.m in Sources */,
 				1CF5443B1D609CB2001B4381 /* YBZTongyongViewController.m in Sources */,
 				A0532CB91D38CF8E00FC1AB1 /* FeedBackViewController.m in Sources */,
@@ -2513,6 +2530,7 @@
 				5352677E1D7EAD2A00302B66 /* YBZOrderDetailsView.m in Sources */,
 				93ABF8611D8EE4870027506F /* CustomTranslateTableViewCell.m in Sources */,
 				A03ED0CF1D2E088300BD9C0A /* YBZUserInfoViewController.m in Sources */,
+				FE08A61A1DD462F600E37B88 /* UIImageView+MHFacebookImageViewer.m in Sources */,
 				1ED863D21D3390F000529094 /* MJRefreshBaseView.m in Sources */,
 				A012EE021D509CAB00144BAD /* BaseTableView.m in Sources */,
 				A012EE041D509CAB00144BAD /* ChatModel.m in Sources */,
@@ -2765,9 +2783,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
-
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2810,9 +2826,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
-
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
