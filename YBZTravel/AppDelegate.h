@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YBZMyWindow.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -14,6 +15,8 @@
 
 @property (nonatomic, strong) NSDictionary *userDic;
 
+@property (nonatomic, strong) UIWindow *thisAlertWindow;
 
+@property (nonatomic,strong) YBZMyWindow *myWindow;
 @end
 

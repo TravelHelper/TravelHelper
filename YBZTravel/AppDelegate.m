@@ -165,6 +165,8 @@
     EMOptions *options = [EMOptions optionsWithAppkey:@"1146161023178105#travelhelper"];
     options.apnsCertName = @"push";
     [[EMClient sharedClient] initializeSDKWithOptions:options];
+//    self.myWindow = [[YBZMyWindow alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];
+//    [self.myWindow makeKeyAndVisible];
     
     return YES;
 }
@@ -578,6 +580,28 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 
 
+
+
+- (UIWindow *)thisAlertWindow
+{
+    if (!_thisAlertWindow) {
+        _thisAlertWindow = [[UIWindow alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];
+        [_thisAlertWindow setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
+        /*
+         UIWindowLevel 有如下三种:
+         UIKIT_EXTERN const UIWindowLevel UIWindowLevelNormal;
+         UIKIT_EXTERN const UIWindowLevel UIWindowLevelAlert;
+         UIKIT_EXTERN const UIWindowLevel UIWindowLevelStatusBar;
+         */
+        //
+        UIViewController *controller = [[UIViewController alloc] init];
+        controller.view.backgroundColor=[UIColor redColor];
+        _thisAlertWindow.rootViewController = controller;
+        [_thisAlertWindow setWindowLevel:UIWindowLevelNormal];//
+//        [_thisAlertWindow addSubview:self];
+    }
+    return _thisAlertWindow;
+}
 
 
 
