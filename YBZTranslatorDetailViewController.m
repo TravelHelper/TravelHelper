@@ -109,7 +109,7 @@
     NSString *info = self.contentLabel.text;
     textLabelSize = [info boundingRectWithSize:CGSizeMake(0.932*SCREEN_WIDTH, 0.077*SCREEN_HEIGHT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.034*SCREEN_WIDTH]} context:nil].size;
     self.contentLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.058*SCREEN_HEIGHT, 0.932*SCREEN_WIDTH, textLabelSize.height);
-//    self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
+    self.rewardImageView.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.136*SCREEN_HEIGHT, 0.145*SCREEN_HEIGHT/sizeOfPic.height*sizeOfPic.width, 0.145*SCREEN_HEIGHT);
     self.timeLabel.frame = CGRectMake(0.034*SCREEN_WIDTH, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/2, 0.017*SCREEN_HEIGHT);
     self.answerNumLabel.frame = CGRectMake(2*SCREEN_WIDTH/3, 0.3*SCREEN_HEIGHT, SCREEN_WIDTH/3-0.034*SCREEN_WIDTH, 0.017*SCREEN_HEIGHT);
     self.rewardMoneyLabel.frame = CGRectMake(0.677*SCREEN_WIDTH, 0.350*SCREEN_HEIGHT, 0.308*SCREEN_WIDTH, 0.055*SCREEN_HEIGHT);
@@ -274,12 +274,11 @@
     
     if (!_rewardImageView) {
         _rewardImageView = [[UIImageView alloc]init];
-        
         NSString *str = [NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,_rewardDetailModel.rewardImageName];
         NSURL *url = [NSURL URLWithString:str];
         [_rewardImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img"]];
         sizeOfPic = _rewardImageView.image.size;
-
+        
         _rewardImageView.backgroundColor = [UIColor blackColor];
     }
     return _rewardImageView;

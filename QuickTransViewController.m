@@ -108,7 +108,7 @@
     bool changeImgMark;
     
     NSTimer *quitTimer;
-    
+   NSString *audioLength;
     NSString *contentStr;
     
 }
@@ -504,7 +504,7 @@
 #pragma mark - 融云
 
 //发送一条语音消息
--(void)sendAWebVoice:(NSString *)extra{
+-(void)sendAWebVoice:(NSString *)extra AndAudioSecond:(long)second{
     
     NSDictionary *dict = [self getRCMessageDictionaryWithExtra:extra];
     
@@ -514,7 +514,7 @@
     RCVoiceMessage *voiceMessage = [RCVoiceMessage messageWithAudio:[NSData dataWithContentsOfURL:URL] duration:[dict[@"audioSecond"] intValue]];
     
     voiceMessage.extra = extra;
-    
+    voiceMessage.duration = second;
     [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_PRIVATE targetId:self.target_id content:voiceMessage pushContent:nil pushData:nil success:^(long messageId) {
         NSLog(@"发送成功。当前消息ID：%ld", messageId);
         
@@ -745,7 +745,7 @@
                 
                 
                 [dic setObject:@"" forKey:@"AVtoStringContent"];
-                [dic setObject:@"未知长度" forKey:@"audioSecond"];
+                [dic setObject:audioLength forKey:@"audioSecond"];
                 [dic setObject:self.cellMessageID forKey:@"chatAudioContent"];
                 [dic setObject:@"audio" forKey:@"chatContentType"];
                 [dic setObject:@"" forKey:@"chatPictureURLContent"];
@@ -1049,7 +1049,6 @@
     
     NSString *extra = [self getRCMessageExtraStringWithsenderID:dict[@"senderID"] chatTextContent:dict[@"chatTextContent"] chatContentType:dict[@"chatContentType"] chatPictureURLContent:dict[@"chatPictureURLContent"] messageID:dict[@"messageID"] senderImgPictureURL:dict[@"senderImgPictureURL"] chatAudioContent:dict[@"chatAudioContent"] audioSecond:dict[@"audioSecond"] sendIdentifier:dict[@"sendIdentifier"] AVtoStringContent:dict[@"AVtoStringContent"] sendTime:dict[@"sendTime"]];
     
-    
     self.inputTextView.text = nil;
     [self.dataArr insertObject:dict atIndex:count];
     ascCount = ascCount + 1;
@@ -1061,7 +1060,7 @@
     NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
     [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
     [MBProgressHUD hideHUD];
-    [self sendAWebVoice:extra];
+    [self sendAWebVoice:extra AndAudioSecond:needNumber];
     
     //    [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
 }
@@ -2080,8 +2079,8 @@
     if ([extra isEqualToString:@"文字消息"]) {
         extra = nil;
     }else{
+        audioLength = extra;
         extra = nil;
-        NSLog(@"语音消息");
     }
     
     

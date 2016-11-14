@@ -1,21 +1,23 @@
 //
-//  MoneyNavigationController.m
-//  Moneybag
+//  YBZRuleViewController.m
+//  YBZTravel
 //
-//  Created by sks on 16/8/2.
-//  Copyright © 2016年 liuzhongyi. All rights reserved.
+//  Created by 孙锐 on 2016/11/14.
+//  Copyright © 2016年 tjufe. All rights reserved.
 //
 
-#import "MoneyNavigationController.h"
+#import "YBZRuleViewController.h"
 
-@interface MoneyNavigationController ()
+@interface YBZRuleViewController ()
 
 @end
 
-@implementation MoneyNavigationController
+@implementation YBZRuleViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"规则";
     // Do any additional setup after loading the view.
 }
 

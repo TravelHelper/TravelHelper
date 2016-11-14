@@ -66,6 +66,7 @@
             }];
         }else if(isChat == YES){
             [WebAgent sendRemoteNotificationsWithuseId:targetID WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:missionID WithLanguage:@"language" success:^(id responseObject) {
+                
            } failure:^(NSError *error) {
                 
             }];
