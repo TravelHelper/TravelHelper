@@ -19,6 +19,8 @@
 #import "WebAgent.h"
 #import "YBZtoalertView.h"
 #import "EMSDKFull.h"
+#import "BaiduMobStat.h"
+
 
 #define Trans_YingYu    @"en"
 #define Voice_YingYu    @"en-GB"
@@ -49,6 +51,17 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    
+    
+    //Baidutongji
+    BaiduMobStat* statTracker = [BaiduMobStat defaultStat];
+    statTracker.shortAppVersion  = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    statTracker.enableDebugOn = YES;
+    [statTracker startWithAppId:@"34fe3d89a2"];
+    
+    
+    
     isChat = NO;
     missionID = @"";
     targetID = @"";
@@ -95,7 +108,7 @@
                                               categories:nil];
     } else {
         //categories 必须为nil
-        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+    [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                                           UIRemoteNotificationTypeSound |
                                                           UIRemoteNotificationTypeAlert)
                                               categories:nil];
@@ -391,11 +404,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 
+
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
     //退出应用
-//    quitTimer=[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(postQuitMessage:) userInfo:nil repeats:YES];
+//    quitTimer=[NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(postQuitMessage:) userInfo:nil repeats:YES];
     [quitTimer fire];
     
     
@@ -405,11 +419,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
     if (isChat == YES) {
         [WebAgent sendRemoteNotificationsWithuseId:targetID WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:missionID WithLanguage:@"language" success:^(id responseObject) {
-            [WebAgent userLogout:userID success:^(id responseObject) {
-                isChat = NO;
-            } failure:^(NSError *error) {
-                
-            }];
 
         } failure:^(NSError *error) {
             

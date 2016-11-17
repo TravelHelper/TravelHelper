@@ -15,6 +15,8 @@
 #import "QuickTransViewController.h"
 #import "WebAgent.h"
 #import "AFNetworking.h"
+#import "BaiduMobStat.h"
+
 
 @interface YBZChangeLanguageViewController () <UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
 
@@ -296,6 +298,7 @@
         NSLog(@"英文");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"英语"];
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于英语的口语即时翻译请求" WithlanguageCatgory:@"英语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
 
@@ -304,6 +307,8 @@
         NSLog(@"法语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"法语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于法语的口语即时翻译请求" WithlanguageCatgory:@"法语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -311,6 +316,8 @@
         NSLog(@"德语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"德语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于德语的口语即时翻译请求" WithlanguageCatgory:@"德语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -318,6 +325,8 @@
         NSLog(@"日语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"日语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于日语的口语即时翻译请求" WithlanguageCatgory:@"日语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -325,6 +334,8 @@
         NSLog(@"意大利语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"意大利语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于意大利语的口语即时翻译请求" WithlanguageCatgory:@"意大利语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -332,6 +343,8 @@
         NSLog(@"西班牙");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"西班牙"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于西班牙语的口语即时翻译请求" WithlanguageCatgory:@"西班牙语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -339,6 +352,8 @@
         NSLog(@"韩文");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"韩文"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于韩语的口语即时翻译请求" WithlanguageCatgory:@"韩语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -346,6 +361,8 @@
         NSLog(@"葡萄牙语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"葡萄牙语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于葡萄牙语的口语即时翻译请求" WithlanguageCatgory:@"葡萄牙语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -353,6 +370,8 @@
         NSLog(@"俄语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"俄语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于俄语的口语即时翻译请求" WithlanguageCatgory:@"俄语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -360,6 +379,8 @@
         NSLog(@"丹麦语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"丹麦语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于丹麦语的口语即时翻译请求" WithlanguageCatgory:@"丹麦语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -367,6 +388,8 @@
         NSLog(@"美国语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"美国语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于美语的口语即时翻译请求" WithlanguageCatgory:@"美语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -374,6 +397,8 @@
         NSLog(@"泰语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"泰语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于泰语的口语即时翻译请求" WithlanguageCatgory:@"泰语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -381,6 +406,8 @@
         NSLog(@"阿拉伯语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"阿拉伯语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于阿拉伯语的口语即时翻译请求" WithlanguageCatgory:@"阿拉伯语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -388,6 +415,8 @@
         NSLog(@"希腊语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"希腊语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于希腊语的口语即时翻译请求" WithlanguageCatgory:@"希腊语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -395,6 +424,8 @@
         NSLog(@"荷兰语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"荷兰语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于荷兰语的口语即时翻译请求" WithlanguageCatgory:@"荷兰语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -402,6 +433,8 @@
         NSLog(@"波兰语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"波兰语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于波兰语的口语即时翻译请求" WithlanguageCatgory:@"波兰语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -409,6 +442,8 @@
         NSLog(@"芬兰语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"芬兰语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于芬兰语的口语即时翻译请求" WithlanguageCatgory:@"芬兰语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -416,13 +451,18 @@
         NSLog(@"捷克语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"捷克"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于捷克语的口语即时翻译请求" WithlanguageCatgory:@"捷克语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
     if (indexPath.row == 18) {
         NSLog(@"瑞典语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+ 
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"瑞典语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于瑞典语的口语即时翻译请求" WithlanguageCatgory:@"瑞典语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }
@@ -430,6 +470,8 @@
         NSLog(@"匈牙利语");
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *selfID = [defaults objectForKey:@"user_id"];
+        [[BaiduMobStat defaultStat] logEvent:@"0001" eventLabel:@"匈牙利语"];
+
         YBZWaitViewController *waitVC = [[YBZWaitViewController alloc]initWithsenderID:selfID[@"user_id"] WithsendMessage:@"您收到一个关于匈牙利语的口语即时翻译请求" WithlanguageCatgory:@"匈牙利语" WithpayNumber:@"20"];
         [self.navigationController pushViewController:waitVC animated:YES];
     }

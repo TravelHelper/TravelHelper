@@ -151,6 +151,9 @@
 		7D84273E1D634638000BFEAD /* CollectionAudioInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427371D634638000BFEAD /* CollectionAudioInfoCell.m */; };
 		7D8427441D634681000BFEAD /* YBZMyFavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427431D634681000BFEAD /* YBZMyFavoriteViewController.m */; };
 		7D909FE91DD447950055A46C /* libHyphenateFullSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D909FE81DD447950055A46C /* libHyphenateFullSDK.a */; };
+		7D9951B11DDAE4DA00D859D0 /* libBaiduMobStat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B01DDAE4DA00D859D0 /* libBaiduMobStat.a */; };
+		7D9951B31DDAE74C00D859D0 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7D9951B51DDAE79600D859D0 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */; };
 		7DF218BF1D5F82ED002F9D6D /* YBZWaitingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */; };
 		7DF2554F1D742F2F006822AD /* RewardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF2554E1D742F2F006822AD /* RewardCell.m */; };
 		7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */; };
@@ -630,6 +633,10 @@
 		7D909FE51DD447950055A46C /* IEMContactManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMContactManager.h; sourceTree = "<group>"; };
 		7D909FE61DD447950055A46C /* IEMGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMGroupManager.h; sourceTree = "<group>"; };
 		7D909FE81DD447950055A46C /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenateFullSDK.a; sourceTree = "<group>"; };
+		7D9951AF1DDAE4DA00D859D0 /* BaiduMobStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaiduMobStat.h; sourceTree = "<group>"; };
+		7D9951B01DDAE4DA00D859D0 /* libBaiduMobStat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBaiduMobStat.a; sourceTree = "<group>"; };
+		7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
 		7DF218BD1D5F82ED002F9D6D /* YBZWaitingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZWaitingViewController.h; sourceTree = "<group>"; };
 		7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZWaitingViewController.m; sourceTree = "<group>"; };
 		7DF2554D1D742F2F006822AD /* RewardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RewardCell.h; sourceTree = "<group>"; };
@@ -876,27 +883,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A012EDBB1D509A6D00144BAD /* libstdc++.tbd in Frameworks */,
+				7D9951B51DDAE79600D859D0 /* libz.1.2.5.tbd in Frameworks */,
+				A012EDD11D509AFC00144BAD /* Foundation.framework in Frameworks */,
+				A012EDD31D509B0400144BAD /* UIKit.framework in Frameworks */,
+				A012EDCF1D509AEE00144BAD /* CoreGraphics.framework in Frameworks */,
+				A012EDDF1D509B4600144BAD /* CoreTelephony.framework in Frameworks */,
+				A012EDD71D509B1D00144BAD /* SystemConfiguration.framework in Frameworks */,
+				A012EDE11D509B5500144BAD /* CoreLocation.framework in Frameworks */,
+				1E7056071D5324F400A000F5 /* Security.framework in Frameworks */,
+				7D9951B31DDAE74C00D859D0 /* JavaScriptCore.framework in Frameworks */,
 				FEED8EA91DBDA36E00EF7BDB /* libiconv.tbd in Frameworks */,
 				FEED8EA71DBDA33600EF7BDB /* MobileCoreServices.framework in Frameworks */,
 				FE19429F1DA8E043004DC96B /* WebKit.framework in Frameworks */,
 				A012EDD91D509B2800144BAD /* AudioToolbox.framework in Frameworks */,
 				FE1EFE2D1D83A14B00FDD1BE /* MediaPlayer.framework in Frameworks */,
 				1E7056091D53250A00A000F5 /* AdSupport.framework in Frameworks */,
-				1E7056071D5324F400A000F5 /* Security.framework in Frameworks */,
 				1E7056051D5324C600A000F5 /* CoreFoundation.framework in Frameworks */,
 				A012EDE31D509B5F00144BAD /* libz.tbd in Frameworks */,
-				A012EDE11D509B5500144BAD /* CoreLocation.framework in Frameworks */,
-				A012EDDF1D509B4600144BAD /* CoreTelephony.framework in Frameworks */,
 				A012EDDD1D509B3A00144BAD /* AVFoundation.framework in Frameworks */,
 				A012EDDB1D509B3200144BAD /* AddressBook.framework in Frameworks */,
 				FE6C6A141D82AB890021B187 /* MOBFoundation.framework in Frameworks */,
 				1E7056001D53247700A000F5 /* jpush-ios-2.1.8.a in Frameworks */,
-				A012EDD71D509B1D00144BAD /* SystemConfiguration.framework in Frameworks */,
 				FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */,
 				A012EDD51D509B1300144BAD /* QuartzCore.framework in Frameworks */,
-				A012EDD31D509B0400144BAD /* UIKit.framework in Frameworks */,
-				A012EDD11D509AFC00144BAD /* Foundation.framework in Frameworks */,
-				A012EDCF1D509AEE00144BAD /* CoreGraphics.framework in Frameworks */,
 				A012EDCD1D509AE300144BAD /* AssetsLibrary.framework in Frameworks */,
 				A012EDCB1D509AD900144BAD /* CFNetwork.framework in Frameworks */,
 				A012EDC91D509AB700144BAD /* CoreAudio.framework in Frameworks */,
@@ -907,9 +917,9 @@
 				A012EDBF1D509A8A00144BAD /* libc++abi.tbd in Frameworks */,
 				A012EDBD1D509A7B00144BAD /* libsqlite3.tbd in Frameworks */,
 				7D909FE91DD447950055A46C /* libHyphenateFullSDK.a in Frameworks */,
-				A012EDBB1D509A6D00144BAD /* libstdc++.tbd in Frameworks */,
 				A012EDB91D509A6000144BAD /* libxml2.tbd in Frameworks */,
 				A012EDB71D509A5500144BAD /* MapKit.framework in Frameworks */,
+				7D9951B11DDAE4DA00D859D0 /* libBaiduMobStat.a in Frameworks */,
 				A012EDB51D509A4700144BAD /* OpenGLES.framework in Frameworks */,
 				A012EDB21D509A0900144BAD /* iflyMSC.framework in Frameworks */,
 				A012EDB01D5099E000144BAD /* RongIMLib.framework in Frameworks */,
@@ -1518,6 +1528,15 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
+		7D9951B61DDAECC100D859D0 /* Baidu */ = {
+			isa = PBXGroup;
+			children = (
+				7D9951AF1DDAE4DA00D859D0 /* BaiduMobStat.h */,
+				7D9951B01DDAE4DA00D859D0 /* libBaiduMobStat.a */,
+			);
+			name = Baidu;
+			sourceTree = "<group>";
+		};
 		934D1A5F1D8ED9B800BD1006 /* CustomTranslate */ = {
 			isa = PBXGroup;
 			children = (
@@ -1648,6 +1667,7 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
+				7D9951B61DDAECC100D859D0 /* Baidu */,
 				FE55FFAC1DC73EAE00A93A8F /* CustomPublish */,
 				FE2E404C1DC33DCB0062E515 /* WeitView */,
 				FEED8EAD1DBDA73B00EF7BDB /* VideoConnect */,
@@ -2135,6 +2155,8 @@
 		FE19429D1DA8E043004DC96B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */,
+				7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */,
 				FEED8EA81DBDA36E00EF7BDB /* libiconv.tbd */,
 				FEED8EA61DBDA33600EF7BDB /* MobileCoreServices.framework */,
 				FE19429E1DA8E043004DC96B /* WebKit.framework */,
@@ -2761,12 +2783,17 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 					"$(PROJECT_DIR)/ThirdTools/HyphenateFullSDK/lib",
 					"$(PROJECT_DIR)/ThirdTools/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ThirdTools/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/Call/plugin",
+					"$(PROJECT_DIR)",
+					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2804,12 +2831,17 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 					"$(PROJECT_DIR)/ThirdTools/HyphenateFullSDK/lib",
 					"$(PROJECT_DIR)/ThirdTools/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ThirdTools/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/Call/plugin",
+					"$(PROJECT_DIR)",
+					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

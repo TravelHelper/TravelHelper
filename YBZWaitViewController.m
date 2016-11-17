@@ -65,8 +65,9 @@
     
     [self matchTranslatorWithsenderID:sender_ID WithsendMessage:send_Message WithlanguageCatgory:user_language WithpayNumber:pay_Number];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginChatWithTranslator:) name:@"beginChatWithTranslator" object:nil];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopFindingTranslator) name:@"stopFindingTranslator" object:nil];
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopFindingTranslator) name:@"stopFindingTranslator" object:nil];
+    [[BaiduMobStat defaultStat] eventStart:@"0002" eventLabel:@"BeginChating"];
+
 }
 
 
@@ -120,12 +121,15 @@
         NSString *code = dic[@"code"];
         if (resultData.count == 0) {
             NSLog(@"%@", code);
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，当前没有该语种的对应译员" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"抱歉，暂无空闲的译员，请稍后再试！" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 //注销
                 [timer invalidate];
                 [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
+                    [[BaiduMobStat defaultStat] eventEnd:@"0002" eventLabel:@"End"];
+
                     [self.navigationController popViewControllerAnimated:YES];
+
                 } failure:^(NSError *error) {
                     
                 }];
@@ -203,7 +207,10 @@
         NSDictionary *missionInfo = dic[@"data"][0];
         if ([missionInfo[@"answer_id"] isEqualToString:@"0"]) {
             [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
+                [[BaiduMobStat defaultStat] eventEnd:@"0002" eventLabel:@"End"];
+
                 [self.navigationController popViewControllerAnimated:YES];
+
             } failure:^(NSError *error) {
                 
             }];
@@ -216,9 +223,15 @@
                 [WebAgent stopFindingTranslator:userID missionID:message_id success:^(id responseObject) {
                     [WebAgent sendRemoteNotificationsWithuseId:missionInfo[@"answer_id"]  WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:message_id  WithLanguage :  @"language" success:^(id responseObject) {
 
+                        [[BaiduMobStat defaultStat] eventEnd:@"0002" eventLabel:@"End"];
+
                             [self.navigationController popViewControllerAnimated:YES];
+
                         } failure:^(NSError *error) {
+                            [[BaiduMobStat defaultStat] eventEnd:@"0002" eventLabel:@"End"];
+
                             [self.navigationController popViewControllerAnimated:YES];
+
 
                         }];
 
