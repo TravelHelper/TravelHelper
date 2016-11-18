@@ -10,6 +10,7 @@
 #import "YBZRootViewController.h"
 #import "YBZTranslationController.h"
 #import "iflyMSC/IFlyMSC.h"
+#import "YBZWaitingViewController.h"
 //#import <RongIMLib/RongIMLib.h>
 #import <SMS_SDK/SMSSDK.h>
 #import "YBZMyRewardViewController.h"
@@ -17,8 +18,13 @@
 #import "JPUSHService.h"
 #import "UIAlertController+SZYKit.h"
 #import "WebAgent.h"
+#import "UIAlertController+SZYKit.h"
 #import "YBZtoalertView.h"
 #import "EMSDKFull.h"
+#import "BaiduMobStat.h"
+#import "QuickTransViewController.h"
+#import "MBProgressHUD+XMG.h"
+
 
 #define Trans_YingYu    @"en"
 #define Voice_YingYu    @"en-GB"
@@ -40,6 +46,7 @@
     NSString *targetID;
     NSString *missionID;
     NSTimer *quitTimer;
+    BOOL needPush;
 }
 
 
@@ -49,6 +56,17 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    
+    
+    //Baidutongji
+    BaiduMobStat* statTracker = [BaiduMobStat defaultStat];
+    statTracker.shortAppVersion  = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    statTracker.enableDebugOn = YES;
+    [statTracker startWithAppId:@"34fe3d89a2"];
+
+    
+    needPush = NO;
     isChat = NO;
     missionID = @"";
     targetID = @"";
@@ -66,7 +84,14 @@
             }];
         }else if(isChat == YES){
             [WebAgent sendRemoteNotificationsWithuseId:targetID WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:missionID WithLanguage:@"language" success:^(id responseObject) {
+                
            } failure:^(NSError *error) {
+                
+            }];
+            
+            [WebAgent changeTranslatorBusy:userID state:@"0" success:^(id responseObject) {
+                
+            } failure:^(NSError *error) {
                 
             }];
             
@@ -94,7 +119,7 @@
                                               categories:nil];
     } else {
         //categories 必须为nil
-        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+    [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                                           UIRemoteNotificationTypeSound |
                                                           UIRemoteNotificationTypeAlert)
                                               categories:nil];
@@ -287,9 +312,45 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         
     }else if ([type isEqualToString:@"0004"]){
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+//        needPush = YES;
         
+        UIViewController *nowVC=[self currentViewController];
+        if (![nowVC isKindOfClass:[YBZWaitingViewController class]]) {
+            [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"已有用户与您匹配成功，请立刻开始即时翻译！" confirmTitle:@"现在就去" confirmHandler:^(UIAlertAction *action) {
+                NSDictionary *dict = [self getLanguage:language_catgory];
+                NSUserDefaults *user_Info = [NSUserDefaults standardUserDefaults];
+                NSDictionary *user_id = [user_Info dictionaryForKey:@"user_id"];
+                NSString *mission_id = [user_Info objectForKey:@"messageId"];
+
+
+                [WebAgent selectCancelState:mission_id success:^(id responseObject) {
+                    NSData *data = [[NSData alloc] initWithData:responseObject];
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                    if ([dic[@"data"] isEqualToString:@"1"]) {
+                        [UIAlertController showAlertAtViewController:nowVC title:@"抱歉" message:@"您来晚了，用户已取消翻译" confirmTitle:@"我知道了"confirmHandler:^(UIAlertAction *action) {
+                            
+                        }];
+                    }else{
+
+                        QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:user_id[@"user_id"] WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+                        [nowVC.navigationController pushViewController:quickVC animated:YES];
+                    }
+
+                } failure:^(NSError *error) {
+                    [MBProgressHUD showError:@"进入聊天页面失败" toView:nowVC.view];
+                }];
+            }];
+        }else{
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"pushIntoTransView" object:@{@"yonghuID":yonghuID,@"language_catgory":language_catgory,@"pay_number":pay_number}];
+
+        }
         
+
+
+        
+
+//        NSDictionary *dict = @{@"language_catigory":language_catgory ,@"yonghuID":yonghuID};
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(rootVCLoadDone:) name:@"rootVCLoadDone" object:dict];
         
     }else if ([type isEqualToString:@"0003"]){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"backToRoot" object:@{@"yonghuID":yonghuID}];
@@ -390,11 +451,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 
+
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
     //退出应用
-//    quitTimer=[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(postQuitMessage:) userInfo:nil repeats:YES];
+//    quitTimer=[NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(postQuitMessage:) userInfo:nil repeats:YES];
     [quitTimer fire];
     
     
@@ -404,11 +466,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
     if (isChat == YES) {
         [WebAgent sendRemoteNotificationsWithuseId:targetID WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:missionID WithLanguage:@"language" success:^(id responseObject) {
-            [WebAgent userLogout:userID success:^(id responseObject) {
-                isChat = NO;
-            } failure:^(NSError *error) {
-                
-            }];
 
         } failure:^(NSError *error) {
             
@@ -601,6 +658,143 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 //        [_thisAlertWindow addSubview:self];
     }
     return _thisAlertWindow;
+}
+
+-(NSDictionary *)getLanguage:(NSString *)language{
+    
+    NSString *VoiceLanguage;
+    NSString *TransLanguage;
+    if ([language isEqualToString:@"language"]) {
+        VoiceLanguage = Voice_YingYu;
+        TransLanguage = Trans_YingYu;
+    }
+    if ([language isEqualToString:@"英语"]) {
+        
+        VoiceLanguage = Voice_YingYu;
+        TransLanguage = Trans_YingYu;
+    }
+    if ([language isEqualToString:@"美式英语"]) {
+        
+        VoiceLanguage = Voice_MeiYu;
+        TransLanguage = Trans_MeiYu;
+    }
+    if ([language isEqualToString:@"韩语"]) {
+        
+        VoiceLanguage = Voice_HanYu;
+        TransLanguage = Trans_HanYu;
+    }
+    if ([language isEqualToString:@"西班牙语"]) {
+        
+        VoiceLanguage = Voice_XiBanYa;
+        TransLanguage = Trans_XiBanYa;
+    }
+    if ([language isEqualToString:@"泰语"]) {
+        
+        VoiceLanguage = Voice_TaiYu;
+        TransLanguage = Trans_TaiYu;
+    }
+    if ([language isEqualToString:@"阿拉伯语"]) {
+        
+        VoiceLanguage = Voice_ALaBoYu;
+        TransLanguage = Trans_ALaBoYu;
+    }
+    if ([language isEqualToString:@"俄语"]) {
+        
+        VoiceLanguage = Voice_EYu;
+        TransLanguage = Trans_EYu;
+    }
+    if ([language isEqualToString:@"葡萄牙语"]) {
+        
+        VoiceLanguage = Voice_PuTaoYaYu;
+        TransLanguage = Trans_PuTaoYaYu;
+    }
+    if ([language isEqualToString:@"希腊语"]) {
+        
+        VoiceLanguage = Voice_XiLaYu;
+        TransLanguage = Trans_XiLaYu;
+    }
+    if ([language isEqualToString:@"荷兰语"]) {
+        
+        VoiceLanguage = Voice_HeLanYu;
+        TransLanguage = Trans_HeLanYu;
+    }
+    if ([language isEqualToString:@"波兰语"]) {
+        
+        VoiceLanguage = Voice_BoLanYu;
+        TransLanguage = Trans_BoLanYu;
+    }
+    if ([language isEqualToString:@"丹麦语"]) {
+        
+        VoiceLanguage = Voice_DanMaiYu;
+        TransLanguage = Trans_DanMaiYu;
+    }
+    if ([language isEqualToString:@"芬兰语"]) {
+        
+        VoiceLanguage = Voice_FenLanYu;
+        TransLanguage = Trans_FenLanYu;
+    }
+    if ([language isEqualToString:@"捷克语"]) {
+        
+        VoiceLanguage = Voice_JieKeYu;
+        TransLanguage = Trans_JieKeYu;
+    }
+    if ([language isEqualToString:@"瑞典语"]) {
+        
+        VoiceLanguage = Voice_RuiDianYu;
+        TransLanguage = Trans_RuiDianYu;
+    }
+    if ([language isEqualToString:@"匈牙利语"]) {
+        
+        VoiceLanguage = Voice_XiongYaLiYu;
+        TransLanguage = Trans_XiongYaLiYu;
+    }
+    if ([language isEqualToString:@"日语"]) {
+        
+        VoiceLanguage = Voice_RiYu;
+        TransLanguage = Trans_RiYu;
+    }
+    if ([language isEqualToString:@"法语"]) {
+        
+        VoiceLanguage = Voice_FaYa;
+        TransLanguage = Trans_FaYu;
+    }
+    if ([language isEqualToString:@"德语"]) {
+        
+        VoiceLanguage = Voice_DeYu;
+        TransLanguage = Trans_DeYu;
+    }
+    if ([language isEqualToString:@"意大利语"]) {
+        
+        VoiceLanguage = Voice_YiDaLiYu;
+        TransLanguage = Trans_YiDaLiYu;
+    }
+    if (VoiceLanguage == nil || TransLanguage == nil) {
+        VoiceLanguage = @"language";
+        TransLanguage = @"language";
+    }
+    NSDictionary *dic =@{@"voice":VoiceLanguage,@"trans":TransLanguage};
+    return dic;
+}
+
+
+-(void)rootVCLoadDone:(NSNotification *)object{
+    NSDictionary *dictionary = object.object;
+    NSString *language_catgory = dictionary[@"language_catgory"];
+    NSString *yonghuID = dictionary[@"yonghuID"];
+    NSDictionary *dict =  [self getLanguage:language_catgory];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:user_id[@"user_id"] WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+    UIViewController *nowVC=[self currentViewController];
+    if ([nowVC isKindOfClass:[YBZRootViewController class]]) {
+        [nowVC.navigationController pushViewController:quickVC animated:YES];
+    }else{
+        YBZTranslationController *rootVC = [[YBZTranslationController alloc]init];
+        self.window.rootViewController = rootVC;
+        nowVC=[self currentViewController];
+        [nowVC.navigationController pushViewController:nowVC animated:YES];
+    }
+
 }
 
 

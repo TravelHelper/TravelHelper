@@ -10,7 +10,7 @@
 #import "UserTableViewCell.h"
 #import "YBZUserInfoViewController.h"
 #import "YBZUserOrderViewController.h"
-#import "YBZMoneyBagViewController.h"
+#import "YBZMyMoneyViewController.h"
 #import "YBZUserFavoriteViewController.h"
 #import "YBZUserEwalletsViewController.h"
 #import "UserSetViewController.h"
@@ -1121,11 +1121,11 @@
         }
 
         if ( section == 3 && row == 0) {
-            [MBProgressHUD showError:@"敬请期待下次更新"];
+//            [MBProgressHUD showError:@"敬请期待下次更新"];
 //            [self.view addSubview:self.alertLabel];
-//            YBZMoneyBagViewController *bagVC = [[YBZMoneyBagViewController alloc]init];
-//            bagVC.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:bagVC animated:YES];
+            YBZMyMoneyViewController *bagVC = [[YBZMyMoneyViewController alloc]init];
+            bagVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:bagVC animated:YES];
             
         }
         

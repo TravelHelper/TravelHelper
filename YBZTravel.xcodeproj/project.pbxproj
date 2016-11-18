@@ -113,6 +113,9 @@
 		7D0315C11D6F28E700983D23 /* YBZRewardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0315C01D6F28E700983D23 /* YBZRewardDetailModel.m */; };
 		7D04F3601D4303A9008BD5EB /* EvaluatePeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D04F35F1D4303A9008BD5EB /* EvaluatePeopleCell.xib */; };
 		7D28E3591D6DAAB600B51EF7 /* QuickTransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */; };
+		7D2DD8431DD9883100B80949 /* YBZRestMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */; };
+		7D2DD8461DD9885C00B80949 /* YBZRechagrgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */; };
+		7D2DD8491DD9886800B80949 /* YBZRuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8481DD9886800B80949 /* YBZRuleViewController.m */; };
 		7D3E99651D6D420200F13F42 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99641D6D420200F13F42 /* Model.m */; };
 		7D3E996C1D6D420900F13F42 /* Btn_TableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99671D6D420900F13F42 /* Btn_TableView.m */; };
 		7D3E996D1D6D420900F13F42 /* ExpandTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99691D6D420900F13F42 /* ExpandTableVC.m */; };
@@ -138,6 +141,7 @@
 		7D3E99B01D6D42D700F13F42 /* YBZChoosePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99A61D6D42D700F13F42 /* YBZChoosePhotoViewController.m */; };
 		7D3E99B11D6D42D700F13F42 /* YBZRewardMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99A81D6D42D700F13F42 /* YBZRewardMoneyViewController.m */; };
 		7D6674BF1D49951100043937 /* complaintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6674BE1D49951100043937 /* complaintViewController.m */; };
+		7D6DE4FD1DD953A500ED64DD /* YBZMyMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6DE4FC1DD953A500ED64DD /* YBZMyMoneyViewController.m */; };
 		7D8427381D634638000BFEAD /* DetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84272C1D634638000BFEAD /* DetailsView.m */; };
 		7D8427391D634638000BFEAD /* CollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84272E1D634638000BFEAD /* CollectionModel.m */; };
 		7D84273A1D634638000BFEAD /* CollectionCellFrameInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427301D634638000BFEAD /* CollectionCellFrameInfo.m */; };
@@ -146,17 +150,10 @@
 		7D84273D1D634638000BFEAD /* FreeWalkerInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427351D634638000BFEAD /* FreeWalkerInfoCell.m */; };
 		7D84273E1D634638000BFEAD /* CollectionAudioInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427371D634638000BFEAD /* CollectionAudioInfoCell.m */; };
 		7D8427441D634681000BFEAD /* YBZMyFavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427431D634681000BFEAD /* YBZMyFavoriteViewController.m */; };
-		7D8427501D634A1E000BFEAD /* MeMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427471D634A1E000BFEAD /* MeMoneyViewController.m */; };
-		7D8427511D634A1E000BFEAD /* IncomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427491D634A1E000BFEAD /* IncomeViewController.m */; };
-		7D8427521D634A1E000BFEAD /* ExpenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84274B1D634A1E000BFEAD /* ExpenseViewController.m */; };
-		7D8427531D634A1E000BFEAD /* ExchangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84274D1D634A1E000BFEAD /* ExchangeViewController.m */; };
-		7D8427541D634A1E000BFEAD /* MoneyNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84274F1D634A1E000BFEAD /* MoneyNavigationController.m */; };
-		7D8427571D634A39000BFEAD /* YBZMoneyBagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427561D634A39000BFEAD /* YBZMoneyBagViewController.m */; };
-		7D84275F1D634AAB000BFEAD /* Information.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8427591D634AAB000BFEAD /* Information.m */; };
-		7D8427601D634AAB000BFEAD /* InformationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84275B1D634AAB000BFEAD /* InformationTableViewCell.m */; };
-		7D8427611D634AAB000BFEAD /* InformationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D84275C1D634AAB000BFEAD /* InformationTableViewCell.xib */; };
-		7D8427621D634AAB000BFEAD /* CellInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D84275E1D634AAB000BFEAD /* CellInformation.m */; };
 		7D909FE91DD447950055A46C /* libHyphenateFullSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D909FE81DD447950055A46C /* libHyphenateFullSDK.a */; };
+		7D9951B11DDAE4DA00D859D0 /* libBaiduMobStat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B01DDAE4DA00D859D0 /* libBaiduMobStat.a */; };
+		7D9951B31DDAE74C00D859D0 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7D9951B51DDAE79600D859D0 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */; };
 		7DF218BF1D5F82ED002F9D6D /* YBZWaitingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */; };
 		7DF2554F1D742F2F006822AD /* RewardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF2554E1D742F2F006822AD /* RewardCell.m */; };
 		7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */; };
@@ -530,6 +527,12 @@
 		7D04F35F1D4303A9008BD5EB /* EvaluatePeopleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EvaluatePeopleCell.xib; sourceTree = "<group>"; };
 		7D28E3571D6DAAB600B51EF7 /* QuickTransViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickTransViewController.h; sourceTree = "<group>"; };
 		7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickTransViewController.m; sourceTree = "<group>"; };
+		7D2DD8411DD9883100B80949 /* YBZRestMoneyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRestMoneyViewController.h; sourceTree = "<group>"; };
+		7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRestMoneyViewController.m; sourceTree = "<group>"; };
+		7D2DD8441DD9885C00B80949 /* YBZRechagrgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRechagrgeViewController.h; sourceTree = "<group>"; };
+		7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRechagrgeViewController.m; sourceTree = "<group>"; };
+		7D2DD8471DD9886800B80949 /* YBZRuleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRuleViewController.h; sourceTree = "<group>"; };
+		7D2DD8481DD9886800B80949 /* YBZRuleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRuleViewController.m; sourceTree = "<group>"; };
 		7D3E99631D6D420200F13F42 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		7D3E99641D6D420200F13F42 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		7D3E99661D6D420900F13F42 /* Btn_TableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Btn_TableView.h; sourceTree = "<group>"; };
@@ -579,6 +582,8 @@
 		7D3E99A81D6D42D700F13F42 /* YBZRewardMoneyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRewardMoneyViewController.m; sourceTree = "<group>"; };
 		7D6674BD1D49951100043937 /* complaintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = complaintViewController.h; sourceTree = "<group>"; };
 		7D6674BE1D49951100043937 /* complaintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = complaintViewController.m; sourceTree = "<group>"; };
+		7D6DE4FB1DD953A500ED64DD /* YBZMyMoneyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMyMoneyViewController.h; sourceTree = "<group>"; };
+		7D6DE4FC1DD953A500ED64DD /* YBZMyMoneyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyMoneyViewController.m; sourceTree = "<group>"; };
 		7D84272B1D634638000BFEAD /* DetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsView.h; sourceTree = "<group>"; };
 		7D84272C1D634638000BFEAD /* DetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsView.m; sourceTree = "<group>"; };
 		7D84272D1D634638000BFEAD /* CollectionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionModel.h; sourceTree = "<group>"; };
@@ -594,25 +599,6 @@
 		7D8427371D634638000BFEAD /* CollectionAudioInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionAudioInfoCell.m; sourceTree = "<group>"; };
 		7D8427421D634681000BFEAD /* YBZMyFavoriteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMyFavoriteViewController.h; sourceTree = "<group>"; };
 		7D8427431D634681000BFEAD /* YBZMyFavoriteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyFavoriteViewController.m; sourceTree = "<group>"; };
-		7D8427461D634A1E000BFEAD /* MeMoneyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeMoneyViewController.h; sourceTree = "<group>"; };
-		7D8427471D634A1E000BFEAD /* MeMoneyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeMoneyViewController.m; sourceTree = "<group>"; };
-		7D8427481D634A1E000BFEAD /* IncomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomeViewController.h; sourceTree = "<group>"; };
-		7D8427491D634A1E000BFEAD /* IncomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomeViewController.m; sourceTree = "<group>"; };
-		7D84274A1D634A1E000BFEAD /* ExpenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpenseViewController.h; sourceTree = "<group>"; };
-		7D84274B1D634A1E000BFEAD /* ExpenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpenseViewController.m; sourceTree = "<group>"; };
-		7D84274C1D634A1E000BFEAD /* ExchangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeViewController.h; sourceTree = "<group>"; };
-		7D84274D1D634A1E000BFEAD /* ExchangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExchangeViewController.m; sourceTree = "<group>"; };
-		7D84274E1D634A1E000BFEAD /* MoneyNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoneyNavigationController.h; sourceTree = "<group>"; };
-		7D84274F1D634A1E000BFEAD /* MoneyNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoneyNavigationController.m; sourceTree = "<group>"; };
-		7D8427551D634A39000BFEAD /* YBZMoneyBagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMoneyBagViewController.h; sourceTree = "<group>"; };
-		7D8427561D634A39000BFEAD /* YBZMoneyBagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMoneyBagViewController.m; sourceTree = "<group>"; };
-		7D8427581D634AAB000BFEAD /* Information.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Information.h; sourceTree = "<group>"; };
-		7D8427591D634AAB000BFEAD /* Information.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Information.m; sourceTree = "<group>"; };
-		7D84275A1D634AAB000BFEAD /* InformationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationTableViewCell.h; sourceTree = "<group>"; };
-		7D84275B1D634AAB000BFEAD /* InformationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InformationTableViewCell.m; sourceTree = "<group>"; };
-		7D84275C1D634AAB000BFEAD /* InformationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InformationTableViewCell.xib; sourceTree = "<group>"; };
-		7D84275D1D634AAB000BFEAD /* CellInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellInformation.h; sourceTree = "<group>"; };
-		7D84275E1D634AAB000BFEAD /* CellInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellInformation.m; sourceTree = "<group>"; };
 		7D909FBF1DD447950055A46C /* EMCallEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCallEnum.h; sourceTree = "<group>"; };
 		7D909FC01DD447950055A46C /* EMCallLocalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCallLocalView.h; sourceTree = "<group>"; };
 		7D909FC11DD447950055A46C /* EMCallManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCallManagerDelegate.h; sourceTree = "<group>"; };
@@ -654,6 +640,10 @@
 		7D909FE51DD447950055A46C /* IEMContactManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMContactManager.h; sourceTree = "<group>"; };
 		7D909FE61DD447950055A46C /* IEMGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMGroupManager.h; sourceTree = "<group>"; };
 		7D909FE81DD447950055A46C /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenateFullSDK.a; sourceTree = "<group>"; };
+		7D9951AF1DDAE4DA00D859D0 /* BaiduMobStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaiduMobStat.h; sourceTree = "<group>"; };
+		7D9951B01DDAE4DA00D859D0 /* libBaiduMobStat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBaiduMobStat.a; sourceTree = "<group>"; };
+		7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
 		7DF218BD1D5F82ED002F9D6D /* YBZWaitingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZWaitingViewController.h; sourceTree = "<group>"; };
 		7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZWaitingViewController.m; sourceTree = "<group>"; };
 		7DF2554D1D742F2F006822AD /* RewardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RewardCell.h; sourceTree = "<group>"; };
@@ -951,29 +941,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
 				FE26E1361DDD552D00EED412 /* StoreKit.framework in Frameworks */,
+
+				A012EDBB1D509A6D00144BAD /* libstdc++.tbd in Frameworks */,
+				7D9951B51DDAE79600D859D0 /* libz.1.2.5.tbd in Frameworks */,
+				A012EDD11D509AFC00144BAD /* Foundation.framework in Frameworks */,
+				A012EDD31D509B0400144BAD /* UIKit.framework in Frameworks */,
+				A012EDCF1D509AEE00144BAD /* CoreGraphics.framework in Frameworks */,
+				A012EDDF1D509B4600144BAD /* CoreTelephony.framework in Frameworks */,
+				A012EDD71D509B1D00144BAD /* SystemConfiguration.framework in Frameworks */,
+				A012EDE11D509B5500144BAD /* CoreLocation.framework in Frameworks */,
+				1E7056071D5324F400A000F5 /* Security.framework in Frameworks */,
+				7D9951B31DDAE74C00D859D0 /* JavaScriptCore.framework in Frameworks */,
+
 				FEED8EA91DBDA36E00EF7BDB /* libiconv.tbd in Frameworks */,
 				FEED8EA71DBDA33600EF7BDB /* MobileCoreServices.framework in Frameworks */,
 				FE19429F1DA8E043004DC96B /* WebKit.framework in Frameworks */,
 				A012EDD91D509B2800144BAD /* AudioToolbox.framework in Frameworks */,
 				FE1EFE2D1D83A14B00FDD1BE /* MediaPlayer.framework in Frameworks */,
 				1E7056091D53250A00A000F5 /* AdSupport.framework in Frameworks */,
-				1E7056071D5324F400A000F5 /* Security.framework in Frameworks */,
 				1E7056051D5324C600A000F5 /* CoreFoundation.framework in Frameworks */,
 				A012EDE31D509B5F00144BAD /* libz.tbd in Frameworks */,
-				A012EDE11D509B5500144BAD /* CoreLocation.framework in Frameworks */,
-				A012EDDF1D509B4600144BAD /* CoreTelephony.framework in Frameworks */,
 				A012EDDD1D509B3A00144BAD /* AVFoundation.framework in Frameworks */,
 				A012EDDB1D509B3200144BAD /* AddressBook.framework in Frameworks */,
 				FE6C6A141D82AB890021B187 /* MOBFoundation.framework in Frameworks */,
 				1E7056001D53247700A000F5 /* jpush-ios-2.1.8.a in Frameworks */,
-				A012EDD71D509B1D00144BAD /* SystemConfiguration.framework in Frameworks */,
 				FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */,
 				A012EDD51D509B1300144BAD /* QuartzCore.framework in Frameworks */,
+
 				A012EDD31D509B0400144BAD /* UIKit.framework in Frameworks */,
 				A012EDD11D509AFC00144BAD /* Foundation.framework in Frameworks */,
 				A012EDCF1D509AEE00144BAD /* CoreGraphics.framework in Frameworks */,
 				FE7804B01DDEE368000D6026 /* libHyphenateFullSDK.a in Frameworks */,
+
 				A012EDCD1D509AE300144BAD /* AssetsLibrary.framework in Frameworks */,
 				A012EDCB1D509AD900144BAD /* CFNetwork.framework in Frameworks */,
 				A012EDC91D509AB700144BAD /* CoreAudio.framework in Frameworks */,
@@ -984,9 +985,9 @@
 				A012EDBF1D509A8A00144BAD /* libc++abi.tbd in Frameworks */,
 				A012EDBD1D509A7B00144BAD /* libsqlite3.tbd in Frameworks */,
 				7D909FE91DD447950055A46C /* libHyphenateFullSDK.a in Frameworks */,
-				A012EDBB1D509A6D00144BAD /* libstdc++.tbd in Frameworks */,
 				A012EDB91D509A6000144BAD /* libxml2.tbd in Frameworks */,
 				A012EDB71D509A5500144BAD /* MapKit.framework in Frameworks */,
+				7D9951B11DDAE4DA00D859D0 /* libBaiduMobStat.a in Frameworks */,
 				A012EDB51D509A4700144BAD /* OpenGLES.framework in Frameworks */,
 				A012EDB21D509A0900144BAD /* iflyMSC.framework in Frameworks */,
 				A012EDB01D5099E000144BAD /* RongIMLib.framework in Frameworks */,
@@ -1467,6 +1468,21 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		7D6DE4FA1DD94AB100ED64DD /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7D6DE4FB1DD953A500ED64DD /* YBZMyMoneyViewController.h */,
+				7D6DE4FC1DD953A500ED64DD /* YBZMyMoneyViewController.m */,
+				7D2DD8411DD9883100B80949 /* YBZRestMoneyViewController.h */,
+				7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */,
+				7D2DD8441DD9885C00B80949 /* YBZRechagrgeViewController.h */,
+				7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */,
+				7D2DD8471DD9886800B80949 /* YBZRuleViewController.h */,
+				7D2DD8481DD9886800B80949 /* YBZRuleViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		7D84272A1D63460B000BFEAD /* MyFavorite */ = {
 			isa = PBXGroup;
 			children = (
@@ -1492,25 +1508,7 @@
 		7D8427451D6349FE000BFEAD /* MyMoney */ = {
 			isa = PBXGroup;
 			children = (
-				7D8427461D634A1E000BFEAD /* MeMoneyViewController.h */,
-				7D8427471D634A1E000BFEAD /* MeMoneyViewController.m */,
-				7D8427481D634A1E000BFEAD /* IncomeViewController.h */,
-				7D8427491D634A1E000BFEAD /* IncomeViewController.m */,
-				7D84274A1D634A1E000BFEAD /* ExpenseViewController.h */,
-				7D84274B1D634A1E000BFEAD /* ExpenseViewController.m */,
-				7D84274C1D634A1E000BFEAD /* ExchangeViewController.h */,
-				7D84274D1D634A1E000BFEAD /* ExchangeViewController.m */,
-				7D84274E1D634A1E000BFEAD /* MoneyNavigationController.h */,
-				7D84274F1D634A1E000BFEAD /* MoneyNavigationController.m */,
-				7D8427551D634A39000BFEAD /* YBZMoneyBagViewController.h */,
-				7D8427561D634A39000BFEAD /* YBZMoneyBagViewController.m */,
-				7D8427581D634AAB000BFEAD /* Information.h */,
-				7D8427591D634AAB000BFEAD /* Information.m */,
-				7D84275A1D634AAB000BFEAD /* InformationTableViewCell.h */,
-				7D84275B1D634AAB000BFEAD /* InformationTableViewCell.m */,
-				7D84275C1D634AAB000BFEAD /* InformationTableViewCell.xib */,
-				7D84275D1D634AAB000BFEAD /* CellInformation.h */,
-				7D84275E1D634AAB000BFEAD /* CellInformation.m */,
+				7D6DE4FA1DD94AB100ED64DD /* Controller */,
 			);
 			name = MyMoney;
 			sourceTree = "<group>";
@@ -1597,6 +1595,15 @@
 				7D909FE81DD447950055A46C /* libHyphenateFullSDK.a */,
 			);
 			path = lib;
+			sourceTree = "<group>";
+		};
+		7D9951B61DDAECC100D859D0 /* Baidu */ = {
+			isa = PBXGroup;
+			children = (
+				7D9951AF1DDAE4DA00D859D0 /* BaiduMobStat.h */,
+				7D9951B01DDAE4DA00D859D0 /* libBaiduMobStat.a */,
+			);
+			name = Baidu;
 			sourceTree = "<group>";
 		};
 		934D1A5F1D8ED9B800BD1006 /* CustomTranslate */ = {
@@ -1729,6 +1736,7 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
+				7D9951B61DDAECC100D859D0 /* Baidu */,
 				FE55FFAC1DC73EAE00A93A8F /* CustomPublish */,
 				FE2E404C1DC33DCB0062E515 /* WeitView */,
 				FEED8EAD1DBDA73B00EF7BDB /* VideoConnect */,
@@ -2223,7 +2231,12 @@
 		FE19429D1DA8E043004DC96B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+
 				FE26E1351DDD552D00EED412 /* StoreKit.framework */,
+
+				7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */,
+				7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */,
+
 				FEED8EA81DBDA36E00EF7BDB /* libiconv.tbd */,
 				FEED8EA61DBDA33600EF7BDB /* MobileCoreServices.framework */,
 				FE19429E1DA8E043004DC96B /* WebKit.framework */,
@@ -2506,7 +2519,6 @@
 				A0532CC41D38D03E00FC1AB1 /* star_gray.png in Resources */,
 				1B05138E1D3F5DAC00F05C9D /* LICENSE in Resources */,
 				A0532C961D38C6B400FC1AB1 /* CustomInfoCell.xib in Resources */,
-				7D8427611D634AAB000BFEAD /* InformationTableViewCell.xib in Resources */,
 				1C8C5FDB1D6F0E2700763AB9 /* 匹配译员动态图.gif in Resources */,
 				A0532C771D38C32200FC1AB1 /* UserSetoutTableViewCell.xib in Resources */,
 				1ED863D11D3390F000529094 /* MJRefresh.bundle in Resources */,
@@ -2543,7 +2555,6 @@
 				1ED863D61D3390F000529094 /* UIScrollView+MJExtension.m in Sources */,
 				7DF2554F1D742F2F006822AD /* RewardCell.m in Sources */,
 				1ED863081D2F39DD00529094 /* AFViewShaker.m in Sources */,
-				7D8427531D634A1E000BFEAD /* ExchangeViewController.m in Sources */,
 				A012EE071D509CAB00144BAD /* StringTransViewController.m in Sources */,
 				A0552ED01D3A2C8C00E04D7A /* LocMessageInfoCell.m in Sources */,
 				7D3E99861D6D42B500F13F42 /* TopView.m in Sources */,
@@ -2566,7 +2577,6 @@
 				7D3E99651D6D420200F13F42 /* Model.m in Sources */,
 				5322B81B1D7E6120004B8C87 /* UIImage+MultiFormat.m in Sources */,
 				1B0513891D3F5DAC00F05C9D /* AFNetworkReachabilityManager.m in Sources */,
-				7D8427541D634A1E000BFEAD /* MoneyNavigationController.m in Sources */,
 				1ED863DE1D34D67500529094 /* YBZChangeLanguageInfo.m in Sources */,
 				A0532CD41D38D7D300FC1AB1 /* PickAvatarImage.m in Sources */,
 				FE1482671D8925D100804A0A /* YBZtoAlertModel.m in Sources */,
@@ -2574,7 +2584,6 @@
 				A0552ED51D3A2C8C00E04D7A /* PlaceNameModel.m in Sources */,
 				531144771D794F95000B98E8 /* YBZMyOrderViewController.m in Sources */,
 				1B05138F1D3F5DAC00F05C9D /* README.md in Sources */,
-				7D8427601D634AAB000BFEAD /* InformationTableViewCell.m in Sources */,
 				A0532C7A1D38C32200FC1AB1 /* UserSetViewController.m in Sources */,
 				7D3E99971D6D42C300F13F42 /* LanguageCell.m in Sources */,
 				5322B8171D7E6120004B8C87 /* SDWebImageManager.m in Sources */,
@@ -2608,11 +2617,13 @@
 				1ED863D41D3390F000529094 /* MJRefreshFooterView.m in Sources */,
 				A03ED0A11D2DE46F00BD9C0A /* YBZBaseNaviController.m in Sources */,
 				531144A21D7A69E6000B98E8 /* YBZOrderDetailsViewController.m in Sources */,
+				7D2DD8431DD9883100B80949 /* YBZRestMoneyViewController.m in Sources */,
 				1E70550E1D5180AB00A000F5 /* YBZLanguageSearchResultViewController.m in Sources */,
 				FE2E40551DC347260062E515 /* YBZWaitViewController.m in Sources */,
 				A03ED0D91D2E0ACA00BD9C0A /* YBZUserEwalletsViewController.m in Sources */,
 				A0532CAB1D38CB3700FC1AB1 /* AboutViewController.m in Sources */,
 				7DFD9BF71D714401007BDE4D /* YBZRewardHallDetailModel.m in Sources */,
+				7D2DD8461DD9885C00B80949 /* YBZRechagrgeViewController.m in Sources */,
 				7D84273A1D634638000BFEAD /* CollectionCellFrameInfo.m in Sources */,
 				5322B81D1D7E6120004B8C87 /* UIImageView+HighlightedWebCache.m in Sources */,
 				A0552ED61D3A2C8C00E04D7A /* SelectedCellFrameInfo.m in Sources */,
@@ -2631,7 +2642,6 @@
 				7D3E99941D6D42C300F13F42 /* UnfoldFrameModel.m in Sources */,
 				A012EE0A1D509CE700144BAD /* testViewController.m in Sources */,
 				A0532C871D38C3F600FC1AB1 /* AccountTableViewCell.m in Sources */,
-				7D8427571D634A39000BFEAD /* YBZMoneyBagViewController.m in Sources */,
 				A0552ECF1D3A2C8C00E04D7A /* LocCellFrameInfo.m in Sources */,
 				A0532CCC1D38D4FE00FC1AB1 /* UserTableViewCell.m in Sources */,
 				1B0513931D3F5DAC00F05C9D /* UIActivityIndicatorView+AFNetworking.m in Sources */,
@@ -2654,7 +2664,6 @@
 				7D3E99831D6D42B500F13F42 /* UnfoldCell.m in Sources */,
 				1B0513961D3F5DAC00F05C9D /* UIProgressView+AFNetworking.m in Sources */,
 				7D3E99B11D6D42D700F13F42 /* YBZRewardMoneyViewController.m in Sources */,
-				7D8427501D634A1E000BFEAD /* MeMoneyViewController.m in Sources */,
 				A03ED0B61D2DE9D200BD9C0A /* YBZTranslationController.m in Sources */,
 				53BFC6E41D83EC2E00BBB9E0 /* YBZalertView.m in Sources */,
 				A03ED0B91D2DEA0C00BD9C0A /* YBZFreeTravelController.m in Sources */,
@@ -2663,6 +2672,7 @@
 				1CF4DAE21D6F043700F6BA94 /* YBZGifView.m in Sources */,
 				531144CA1D7AC8EC000B98E8 /* YBZbtnView.m in Sources */,
 				1ED863111D2F39DD00529094 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				7D6DE4FD1DD953A500ED64DD /* YBZMyMoneyViewController.m in Sources */,
 				1ED863EB1D38868500529094 /* YBZSingleCodeInfo.m in Sources */,
 				A0552EB71D3A166A00E04D7A /* FreeTravelViewController.m in Sources */,
 				7D0315C11D6F28E700983D23 /* YBZRewardDetailModel.m in Sources */,
@@ -2690,8 +2700,10 @@
 				1ED8630B1D2F39DD00529094 /* MASConstraint.m in Sources */,
 				1B0513981D3F5DAC00F05C9D /* UIWebView+AFNetworking.m in Sources */,
 				A0532CB61D38CF8E00FC1AB1 /* CellFrameInfo.m in Sources */,
+
 				FE08A6201DD9641700E37B88 /* YBZTargetWaitingViewController.m in Sources */,
 				7D84275F1D634AAB000BFEAD /* Information.m in Sources */,
+
 				93ABF85B1D8EE33B0027506F /* CustomTranslateCellFramInfo.m in Sources */,
 				FEED8EAC1DBDA72B00EF7BDB /* YBZVideocontentViewController.m in Sources */,
 				1E70550A1D517F3D00A000F5 /* YBZFreeTranslationInfo.m in Sources */,
@@ -2710,7 +2722,6 @@
 				7D3E99771D6D421500F13F42 /* YBZTranslatorAnswerViewController.m in Sources */,
 				A03ED0BF1D2DF1A100BD9C0A /* YBZFreeTranslationViewController.m in Sources */,
 				1ED8630A1D2F39DD00529094 /* MASCompositeConstraint.m in Sources */,
-				7D8427521D634A1E000BFEAD /* ExpenseViewController.m in Sources */,
 				5322B8121D7E6120004B8C87 /* SDImageCache.m in Sources */,
 				A0532C971D38C6B400FC1AB1 /* EditViewController.m in Sources */,
 				FE1EFE361D87AF6700FDD1BE /* YBZcalledView.m in Sources */,
@@ -2723,9 +2734,9 @@
 				FE1482681D8925D100804A0A /* YBZtoalertView.m in Sources */,
 				1B0513911D3F5DAC00F05C9D /* AFImageDownloader.m in Sources */,
 				1B96DA411D435ADC00FD5BA6 /* NSString+SZYKit.m in Sources */,
+				7D2DD8491DD9886800B80949 /* YBZRuleViewController.m in Sources */,
 				7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */,
 				1ED8630E1D2F39DD00529094 /* MASViewAttribute.m in Sources */,
-				7D8427621D634AAB000BFEAD /* CellInformation.m in Sources */,
 				A0532CD11D38D7BA00FC1AB1 /* PersonalSignatureVC.m in Sources */,
 				1ED863D71D3390F000529094 /* UIScrollView+MJRefresh.m in Sources */,
 				1C09F7321D5F25FE00B8CE3C /* YBZOtherViewController.m in Sources */,
@@ -2756,7 +2767,6 @@
 				A012EDFD1D509CAB00144BAD /* FreeTransViewController.m in Sources */,
 				A0552ED71D3A2C8C00E04D7A /* SelectedMessageInfoCell.m in Sources */,
 				1ED8636C1D3347F500529094 /* SYTableHeaderView.m in Sources */,
-				7D8427511D634A1E000BFEAD /* IncomeViewController.m in Sources */,
 				FEE4921D1D73DE0A00CCED58 /* MBProgressHUD.m in Sources */,
 				7DF218BF1D5F82ED002F9D6D /* YBZWaitingViewController.m in Sources */,
 				7D3E996D1D6D420900F13F42 /* ExpandTableVC.m in Sources */,
@@ -2935,12 +2945,17 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 					"$(PROJECT_DIR)/ThirdTools/HyphenateFullSDK/lib",
 					"$(PROJECT_DIR)/ThirdTools/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ThirdTools/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/Call/plugin",
+					"$(PROJECT_DIR)",
+					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2978,12 +2993,17 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib",
 					"$(PROJECT_DIR)/ThirdTools/HyphenateFullSDK/lib",
 					"$(PROJECT_DIR)/ThirdTools/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ThirdTools/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/Call/plugin",
+					"$(PROJECT_DIR)",
+					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

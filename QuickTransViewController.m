@@ -109,7 +109,7 @@
     bool changeImgMark;
     
     NSTimer *quitTimer;
-    
+   NSString *audioLength;
     NSString *contentStr;
     
 }
@@ -130,6 +130,7 @@
         [userDefaults setObject:self.voice_Language forKey:@"VOICE_LANGUAGE"];
         [userDefaults setObject:self.trans_Language forKey:@"TRANS_LANGUAGE"];
         NSDictionary *user = [userDefaults dictionaryForKey:@"user_id"];
+        
         NSString *missionID = [userDefaults objectForKey:@"messageId"];
         userIDinfo = user[@"user_id"];
         
@@ -151,7 +152,7 @@
     [self setTitle:@"即时翻译"];
     [self.view addSubview:self.backgroundImageView];
     recordMark=1;
-    [self setupRefresh];
+//    [self setupRefresh];
     
     self.isCancelSendRecord = NO;
     self.isRecognizer = NO;
@@ -505,7 +506,7 @@
 #pragma mark - 融云
 
 //发送一条语音消息
--(void)sendAWebVoice:(NSString *)extra{
+-(void)sendAWebVoice:(NSString *)extra AndAudioSecond:(long)second{
     
     NSDictionary *dict = [self getRCMessageDictionaryWithExtra:extra];
     
@@ -515,7 +516,7 @@
     RCVoiceMessage *voiceMessage = [RCVoiceMessage messageWithAudio:[NSData dataWithContentsOfURL:URL] duration:[dict[@"audioSecond"] intValue]];
     
     voiceMessage.extra = extra;
-    
+    voiceMessage.duration = second;
     [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_PRIVATE targetId:self.target_id content:voiceMessage pushContent:nil pushData:nil success:^(long messageId) {
         NSLog(@"发送成功。当前消息ID：%ld", messageId);
         
@@ -752,7 +753,7 @@
                 
                 
                 [dic setObject:@"" forKey:@"AVtoStringContent"];
-                [dic setObject:@"未知长度" forKey:@"audioSecond"];
+                [dic setObject:audioLength forKey:@"audioSecond"];
                 [dic setObject:self.cellMessageID forKey:@"chatAudioContent"];
                 [dic setObject:@"audio" forKey:@"chatContentType"];
                 [dic setObject:@"" forKey:@"chatPictureURLContent"];
@@ -1057,7 +1058,6 @@
     
     NSString *extra = [self getRCMessageExtraStringWithsenderID:dict[@"senderID"] chatTextContent:dict[@"chatTextContent"] chatContentType:dict[@"chatContentType"] chatPictureURLContent:dict[@"chatPictureURLContent"] messageID:dict[@"messageID"] senderImgPictureURL:dict[@"senderImgPictureURL"] chatAudioContent:dict[@"chatAudioContent"] audioSecond:dict[@"audioSecond"] sendIdentifier:dict[@"sendIdentifier"] AVtoStringContent:dict[@"AVtoStringContent"] sendTime:dict[@"sendTime"]];
     
-    
     self.inputTextView.text = nil;
     [self.dataArr insertObject:dict atIndex:count];
     ascCount = ascCount + 1;
@@ -1069,14 +1069,16 @@
     NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
     [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
     [MBProgressHUD hideHUD];
+
     dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     //2.添加任务到队列中，就可以执行任务
     //异步函数：具备开启新线程的能力
     dispatch_async(queue, ^{
         // 在另一个线程中启动下载功能，加GCD控制
-        [self sendAWebVoice:extra];
+       [self sendAWebVoice:extra AndAudioSecond:needNumber];
     });
    
+
     
     //    [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
 }
@@ -2108,8 +2110,8 @@
     if ([extra isEqualToString:@"文字消息"]) {
         extra = nil;
     }else{
+        audioLength = extra;
         extra = nil;
-        NSLog(@"语音消息");
     }
     
     

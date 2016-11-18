@@ -1070,7 +1070,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                  success:(void (^)(id responseObject))success
                  failure:(void (^)(NSError *error))failure{
     
-    
+    if (mission_id == nil) {
+        mission_id = @"0000";
+    }
     NSDictionary *dict = @{@"mession_id":mission_id};
     [[APIClient sharedClient] POST:@"QuickTrans/getMissionInfo/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
