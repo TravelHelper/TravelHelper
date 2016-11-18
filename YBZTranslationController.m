@@ -131,7 +131,7 @@
     
     [super viewDidLoad];
     self.isUser = YES;
-
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"rootVCLoadDone" object:nil];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     [userinfo setObject:@"0" forKey:@"userBackgroundChange"];
     [NSThread sleepForTimeInterval:2];

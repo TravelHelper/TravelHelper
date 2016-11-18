@@ -129,6 +129,7 @@
         [userDefaults setObject:self.voice_Language forKey:@"VOICE_LANGUAGE"];
         [userDefaults setObject:self.trans_Language forKey:@"TRANS_LANGUAGE"];
         NSDictionary *user = [userDefaults dictionaryForKey:@"user_id"];
+        
         NSString *missionID = [userDefaults objectForKey:@"messageId"];
         userIDinfo = user[@"user_id"];
         
@@ -150,7 +151,7 @@
     [self setTitle:@"即时翻译"];
     [self.view addSubview:self.backgroundImageView];
     recordMark=1;
-    [self setupRefresh];
+//    [self setupRefresh];
     
     self.isCancelSendRecord = NO;
     self.isRecognizer = NO;

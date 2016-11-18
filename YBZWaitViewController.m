@@ -141,7 +141,8 @@
                 //通知进入聊天页面
                 NSLog(@"开始聊天");
                 NSDictionary *dict = [self getLanguageWithString:language];
-                [WebAgent sendRemoteNotificationsWithuseId:resultData[0][@"user_id"] WithsendMessage:@"进入聊天" WithType:@"0004" WithSenderID:userID WithMessionID:message_id   WithLanguage :  @"language" success:^(id responseObject) {
+                [WebAgent sendRemoteNotificationsWithuseId:resultData[0][@"user_id"] WithsendMessage:@"进入聊天"  WithType:@"0004" WithSenderID:userID WithMessionID:message_id WithLanguage: @"language" success:^(id responseObject) {
+                    
 
                     NSLog(@"反馈推送—进入聊天通知成功！");
                     //注销
