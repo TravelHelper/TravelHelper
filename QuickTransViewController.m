@@ -30,6 +30,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIImage+needkit.h"
 
+
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
 
@@ -609,6 +610,12 @@
               left:(int)nLeft
             object:(id)object {
     
+    dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //2.添加任务到队列中，就可以执行任务
+    //异步函数：具备开启新线程的能力
+    dispatch_async(queue, ^{
+        // 在另一个线程中启动下载功能，加GCD控制
+        
     
     if ([self.target_id isEqualToString:message.senderUserId]) {
         
@@ -828,6 +835,7 @@
     }
     
     NSLog(@"还剩余的未接收的消息数：%d", nLeft);
+        });
 }
 
 #pragma mark - 语音听写私有方法 & IFlySpeechRecognizerDelegate
@@ -1061,7 +1069,14 @@
     NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
     [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
     [MBProgressHUD hideHUD];
-    [self sendAWebVoice:extra];
+    dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //2.添加任务到队列中，就可以执行任务
+    //异步函数：具备开启新线程的能力
+    dispatch_async(queue, ^{
+        // 在另一个线程中启动下载功能，加GCD控制
+        [self sendAWebVoice:extra];
+    });
+   
     
     //    [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
 }
@@ -1135,7 +1150,14 @@
         
         contentStr=text;
         
-        [self sendAwebMessage:extra];
+        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        //2.添加任务到队列中，就可以执行任务
+        //异步函数：具备开启新线程的能力
+        dispatch_async(queue, ^{
+            // 在另一个线程中启动下载功能，加GCD控制
+             [self sendAwebMessage:extra];
+        });
+       
         
         NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
         [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -1724,10 +1746,16 @@
     
     self.isKeyboardShow = NO;
     NSTimeInterval duration = [noti.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    self.isequal=YES;
+    
     [UIView animateWithDuration:duration animations:^{
         self.inputBottomView.transform = CGAffineTransformIdentity;
         self.bottomTableView.transform = CGAffineTransformIdentity;
+        self.backgroundImageView.transform =CGAffineTransformIdentity;
+        self.inputBottomView.transform = CGAffineTransformIdentity;
+        self.btnview.transform =CGAffineTransformIdentity;
     }];
+
     
 }
 

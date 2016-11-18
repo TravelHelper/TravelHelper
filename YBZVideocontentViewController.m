@@ -26,7 +26,7 @@
 @property (nonatomic,strong) UIButton *pauseVideo;
 @property (nonatomic,strong) UIButton *changeCamara;
 
-@property (nonatomic,strong) UIImageView *imageView;
+//@property (nonatomic,strong) UIImageView *imageView;
 
 
 @end
@@ -64,31 +64,31 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"视频/语音通话";
-    [self.imageView setupImageViewer];
-//    [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
-//    
-//    EMError *error = [[EMClient sharedClient] registerWithUsername:localChar password:@"111111"];
-//    if (error==nil) {
-//        NSLog(@"注册成功");
-//    }
-//    
-//    EMError *error2 = [[EMClient sharedClient] loginWithUsername:localChar password:@"111111"];
-//    if (!error2) {
-//        NSLog(@"登录成功");
-//    }
-//    
-//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//    //默认情况下扬声器播放
-//    [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
-//    [audioSession setActive:YES error:nil];
-//    
-//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES]; //建议在播放之前设置yes，播放结束设置NO，这个功能是开启红外感应
-//    
-//    //添加监听
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(sensorStateChange:)
-//                                                 name:@"UIDeviceProximityStateDidChangeNotification"
-//                                               object:nil];
+//    [self.imageView setupImageViewer];
+    [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
+    
+    EMError *error = [[EMClient sharedClient] registerWithUsername:localChar password:@"111111"];
+    if (error==nil) {
+        NSLog(@"注册成功");
+    }
+    
+    EMError *error2 = [[EMClient sharedClient] loginWithUsername:localChar password:@"111111"];
+    if (!error2) {
+        NSLog(@"登录成功");
+    }
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    //默认情况下扬声器播放
+    [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [audioSession setActive:YES error:nil];
+    
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES]; //建议在播放之前设置yes，播放结束设置NO，这个功能是开启红外感应
+    
+    //添加监听
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sensorStateChange:)
+                                                 name:@"UIDeviceProximityStateDidChangeNotification"
+                                               object:nil];
     
     
     [self.view addSubview:self.sendbtn];
@@ -96,7 +96,7 @@
     [self.view addSubview:self.pauseVoice];
     [self.view addSubview:self.pauseVideo];
     [self.view addSubview:self.changeCamara];
-    [self.view addSubview:self.imageView];
+//    [self.view addSubview:self.imageView];
     
     
 }
@@ -265,22 +265,22 @@
     }
     return _sendVoiceBtn;
 }
--(UIImageView *)imageView{
-
-    if(!_imageView){
-    
-        _imageView=[[UIImageView alloc]init];
-        [_imageView setImage:[UIImage imageNamed:@"backgroundImage"]];
-        _imageView.frame=CGRectMake(40, 250, 200, 200);
-        
-        _imageView.contentMode = UIViewContentModeScaleAspectFill;
-//        [imageView setupImageViewer];
-        _imageView.clipsToBounds = YES;
-        
-
-    }
-    return _imageView;
-}
+//-(UIImageView *)imageView{
+//
+//    if(!_imageView){
+//    
+//        _imageView=[[UIImageView alloc]init];
+//        [_imageView setImage:[UIImage imageNamed:@"backgroundImage"]];
+//        _imageView.frame=CGRectMake(40, 250, 200, 200);
+//        
+//        _imageView.contentMode = UIViewContentModeScaleAspectFill;
+////        [imageView setupImageViewer];
+//        _imageView.clipsToBounds = YES;
+//        
+//
+//    }
+//    return _imageView;
+//}
 -(void)sendVoiceBtnclick{
     
     NSLog(@"发送音频通知!");
