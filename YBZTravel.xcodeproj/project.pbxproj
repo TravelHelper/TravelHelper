@@ -294,6 +294,7 @@
 		FE6C6A141D82AB890021B187 /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A101D82AB890021B187 /* MOBFoundation.framework */; };
 		FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A111D82AB890021B187 /* SMS_SDK.framework */; };
 		FE7804B01DDEE368000D6026 /* libHyphenateFullSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE7804AF1DDEE368000D6026 /* libHyphenateFullSDK.a */; };
+		FE7804B41DE2966A000D6026 /* YBZRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7804B31DE2966A000D6026 /* YBZRulesViewController.m */; };
 		FEE492141D73D9DA00CCED58 /* UIAlertController+SZYKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */; };
 		FEE4921B1D73DE0A00CCED58 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE492171D73DE0A00CCED58 /* MBProgressHUD+XMG.m */; };
 		FEE4921C1D73DE0A00CCED58 /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FEE492181D73DE0A00CCED58 /* MBProgressHUD.bundle */; };
@@ -921,6 +922,8 @@
 		FE7804AC1DDEE368000D6026 /* IEMContactManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMContactManager.h; sourceTree = "<group>"; };
 		FE7804AD1DDEE368000D6026 /* IEMGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMGroupManager.h; sourceTree = "<group>"; };
 		FE7804AF1DDEE368000D6026 /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenateFullSDK.a; sourceTree = "<group>"; };
+		FE7804B21DE2966A000D6026 /* YBZRulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRulesViewController.h; sourceTree = "<group>"; };
+		FE7804B31DE2966A000D6026 /* YBZRulesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRulesViewController.m; sourceTree = "<group>"; };
 		FEE492121D73D9DA00CCED58 /* UIAlertController+SZYKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+SZYKit.h"; sourceTree = "<group>"; };
 		FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+SZYKit.m"; sourceTree = "<group>"; };
 		FEE492161D73DE0A00CCED58 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
@@ -941,9 +944,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
 				FE26E1361DDD552D00EED412 /* StoreKit.framework in Frameworks */,
-
 				A012EDBB1D509A6D00144BAD /* libstdc++.tbd in Frameworks */,
 				7D9951B51DDAE79600D859D0 /* libz.1.2.5.tbd in Frameworks */,
 				A012EDD11D509AFC00144BAD /* Foundation.framework in Frameworks */,
@@ -954,7 +955,6 @@
 				A012EDE11D509B5500144BAD /* CoreLocation.framework in Frameworks */,
 				1E7056071D5324F400A000F5 /* Security.framework in Frameworks */,
 				7D9951B31DDAE74C00D859D0 /* JavaScriptCore.framework in Frameworks */,
-
 				FEED8EA91DBDA36E00EF7BDB /* libiconv.tbd in Frameworks */,
 				FEED8EA71DBDA33600EF7BDB /* MobileCoreServices.framework in Frameworks */,
 				FE19429F1DA8E043004DC96B /* WebKit.framework in Frameworks */,
@@ -969,12 +969,10 @@
 				1E7056001D53247700A000F5 /* jpush-ios-2.1.8.a in Frameworks */,
 				FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */,
 				A012EDD51D509B1300144BAD /* QuartzCore.framework in Frameworks */,
-
 				A012EDD31D509B0400144BAD /* UIKit.framework in Frameworks */,
 				A012EDD11D509AFC00144BAD /* Foundation.framework in Frameworks */,
 				A012EDCF1D509AEE00144BAD /* CoreGraphics.framework in Frameworks */,
 				FE7804B01DDEE368000D6026 /* libHyphenateFullSDK.a in Frameworks */,
-
 				A012EDCD1D509AE300144BAD /* AssetsLibrary.framework in Frameworks */,
 				A012EDCB1D509AD900144BAD /* CFNetwork.framework in Frameworks */,
 				A012EDC91D509AB700144BAD /* CoreAudio.framework in Frameworks */,
@@ -1736,6 +1734,7 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
+				FE7804B11DE2955D000D6026 /* rules */,
 				7D9951B61DDAECC100D859D0 /* Baidu */,
 				FE55FFAC1DC73EAE00A93A8F /* CustomPublish */,
 				FE2E404C1DC33DCB0062E515 /* WeitView */,
@@ -2231,12 +2230,9 @@
 		FE19429D1DA8E043004DC96B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-
 				FE26E1351DDD552D00EED412 /* StoreKit.framework */,
-
 				7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */,
 				7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */,
-
 				FEED8EA81DBDA36E00EF7BDB /* libiconv.tbd */,
 				FEED8EA61DBDA33600EF7BDB /* MobileCoreServices.framework */,
 				FE19429E1DA8E043004DC96B /* WebKit.framework */,
@@ -2356,6 +2352,15 @@
 				FE7804AF1DDEE368000D6026 /* libHyphenateFullSDK.a */,
 			);
 			path = lib;
+			sourceTree = "<group>";
+		};
+		FE7804B11DE2955D000D6026 /* rules */ = {
+			isa = PBXGroup;
+			children = (
+				FE7804B21DE2966A000D6026 /* YBZRulesViewController.h */,
+				FE7804B31DE2966A000D6026 /* YBZRulesViewController.m */,
+			);
+			name = rules;
 			sourceTree = "<group>";
 		};
 		FEE492151D73DE0A00CCED58 /* MBProgressHUD */ = {
@@ -2690,6 +2695,7 @@
 				1ED863D21D3390F000529094 /* MJRefreshBaseView.m in Sources */,
 				A012EE021D509CAB00144BAD /* BaseTableView.m in Sources */,
 				A012EE041D509CAB00144BAD /* ChatModel.m in Sources */,
+				FE7804B41DE2966A000D6026 /* YBZRulesViewController.m in Sources */,
 				A0532CBA1D38CF8E00FC1AB1 /* PeoPle.m in Sources */,
 				A0552EB31D3A163C00E04D7A /* NIChengViewController.m in Sources */,
 				A012EE031D509CAB00144BAD /* ChatTableViewCell.m in Sources */,
@@ -2700,10 +2706,7 @@
 				1ED8630B1D2F39DD00529094 /* MASConstraint.m in Sources */,
 				1B0513981D3F5DAC00F05C9D /* UIWebView+AFNetworking.m in Sources */,
 				A0532CB61D38CF8E00FC1AB1 /* CellFrameInfo.m in Sources */,
-
 				FE08A6201DD9641700E37B88 /* YBZTargetWaitingViewController.m in Sources */,
-				7D84275F1D634AAB000BFEAD /* Information.m in Sources */,
-
 				93ABF85B1D8EE33B0027506F /* CustomTranslateCellFramInfo.m in Sources */,
 				FEED8EAC1DBDA72B00EF7BDB /* YBZVideocontentViewController.m in Sources */,
 				1E70550A1D517F3D00A000F5 /* YBZFreeTranslationInfo.m in Sources */,
@@ -2941,7 +2944,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2989,7 +2992,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

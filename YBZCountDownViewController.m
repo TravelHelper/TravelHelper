@@ -12,7 +12,7 @@
 @interface YBZCountDownViewController ()
     @property(nonatomic,strong) UILabel *timeCountLabel;
     @property(nonatomic,strong) NSTimer *countTimer;
-    @property(nonatomic,strong)UIButton *finishBtn;
+    @property(nonatomic,strong) UIButton *finishBtn;
 @end
 
 @implementation YBZCountDownViewController{

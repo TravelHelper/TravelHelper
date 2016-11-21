@@ -35,6 +35,7 @@
 #import "JPUSHService.h"
 #import "YBZTargetWaitingViewController.h"
 #import "YBZMoneyViewController.h"
+#import "YBZRulesViewController.h"
 
 
 #define kImageCount 5
@@ -984,6 +985,7 @@
     YBZTargetWaitingViewController *needText=[[YBZTargetWaitingViewController alloc]init];
     YBZMoneyViewController *moneyController=[[YBZMoneyViewController alloc]init];
     YBZFreeTranslationViewController *freeTransVC = [[YBZFreeTranslationViewController alloc]initWithTitle:@"免费翻译"];
+    YBZRulesViewController *ruleVC=[[YBZRulesViewController alloc]init];
     freeTransVC.hidesBottomBarWhenPushed = YES;
 //    needText.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:freeTransVC animated:YES];
