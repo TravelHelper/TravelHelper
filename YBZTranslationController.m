@@ -33,7 +33,8 @@
 #import "YBZtoalertView.h"
 #import "YBZadvertisingimageView.h"
 #import "JPUSHService.h"
-
+#import "YBZTargetWaitingViewController.h"
+#import "YBZMoneyViewController.h"
 
 
 #define kImageCount 5
@@ -980,12 +981,16 @@
 //    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
 //    FeedBackViewController *con=[[FeedBackViewController alloc]initWithtargetID:user_id[@"user_id"]];
     
-    
-    
+    YBZTargetWaitingViewController *needText=[[YBZTargetWaitingViewController alloc]init];
+    YBZMoneyViewController *moneyController=[[YBZMoneyViewController alloc]init];
     YBZFreeTranslationViewController *freeTransVC = [[YBZFreeTranslationViewController alloc]initWithTitle:@"免费翻译"];
     freeTransVC.hidesBottomBarWhenPushed = YES;
-//    con.hidesBottomBarWhenPushed=YES;
+//    needText.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:freeTransVC animated:YES];
+//    [self.navigationController pushViewController:moneyController animated:YES];
+//    [self.navigationController presentViewController:needText animated:YES completion:^{
+//        
+//    }];
     
 }
 

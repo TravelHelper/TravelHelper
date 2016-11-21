@@ -23,6 +23,7 @@
 #import "AFHTTPSessionManager.h"
 #import "UIImageView+WebCache.h"
 #import "UIImage+needkit.h"
+#import "ChatFrameInfo.h"
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
 #define LANGUAGE_CHINESE  @"CHINESE"
@@ -39,7 +40,7 @@
 @property(nonatomic,strong) UIButton    *changeSendContentBtn;
 @property(nonatomic,strong) UIButton    *selectLangueageBtn;
 @property(nonatomic,strong) BaseAudioButton    *reportAudioBtn;
-@property(nonatomic,strong) UIButton    *sendMessageBtn;
+//@property(nonatomic,strong) UIButton    *sendMessageBtn;
 @property(nonatomic,strong) UITextView *inputTextView;
 @property(nonatomic,strong) NSString * senderID;
 @property(nonatomic,strong) NSMutableArray *dataArr;
@@ -79,6 +80,9 @@
 
 @property (nonatomic,strong) YBZbtnView *btnview;
 @property (nonatomic,assign) BOOL isequal;
+
+@property (nonatomic, strong) ChatFrameInfo *frameInfo;
+
 @end
 
 @implementation FreeTransViewController{
@@ -565,7 +569,7 @@
     [self reloadDataSourceWithNumber:ascCount];
     [self.bottomTableView reloadData];
     
-    [self.sendMessageBtn removeFromSuperview];
+//    [self.sendMessageBtn removeFromSuperview];
     
     NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
     [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -594,42 +598,46 @@
         [self.dataArr insertObject:dict atIndex:count];
         ascCount = ascCount + 1;
         [self reloadDataSourceWithNumber:ascCount];
-        [self.bottomTableView reloadData];
-        
-        [self.sendMessageBtn removeFromSuperview];
-        
-        NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
-        [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        
-        if (self.isKeyboardShow == YES) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.bottomTableView reloadData];
+            NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
+            [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
             
-            NSInteger cccount = self.dataSource.count;
-            NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
-            CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
-            CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
-            ;
-            [UIView animateWithDuration:0.25 animations:^{
+            if (self.isKeyboardShow == YES) {
                 
-                CGFloat moveY = 0.0;
-                CGFloat xiangjian;
-                xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
-                
-                if (xiangjian <= 0) {
-                    moveY = 0;
-                }
-                
-                if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
-                    moveY = xiangjian;
-                }
-                
-                if (xiangjian >= KeyboardWillShowHeight ) {
-                    moveY = KeyboardWillShowHeight;
-                }
-                self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
-                self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
-            }];
-            ///////
-        }
+                NSInteger cccount = self.dataSource.count;
+                NSIndexPath *iindex = [NSIndexPath indexPathForRow:cccount - 1 inSection:0];
+                CGRect    rect = [self.bottomTableView rectForRowAtIndexPath:iindex];
+                CGFloat   cellMaxY = rect.origin.y + rect.size.height + 64;
+                ;
+                [UIView animateWithDuration:0.25 animations:^{
+                    
+                    CGFloat moveY = 0.0;
+                    CGFloat xiangjian;
+                    xiangjian = cellMaxY - ([UIScreen mainScreen].bounds.size.height - KeyboardWillShowHeight - CGRectGetHeight(self.inputBottomView.frame));
+                    
+                    if (xiangjian <= 0) {
+                        moveY = 0;
+                    }
+                    
+                    if (xiangjian > 0 && xiangjian < KeyboardWillShowHeight) {
+                        moveY = xiangjian;
+                    }
+                    
+                    if (xiangjian >= KeyboardWillShowHeight ) {
+                        moveY = KeyboardWillShowHeight;
+                    }
+                    self.inputBottomView.transform = CGAffineTransformMakeTranslation(0, -KeyboardWillShowHeight);
+                    self.bottomTableView.transform = CGAffineTransformMakeTranslation(0, -moveY);
+                }];
+                ///////
+            }
+        });
+       
+        
+//        [self.sendMessageBtn removeFromSuperview];
+        
+       
         
     }
 }
@@ -643,6 +651,7 @@
     if ([self.inputTextView.text  isEqual: @""]) {
         NSLog(@"空了2");
     }else{
+        
         NSString *currentDateString = [self getCurerentTimeString];
         self.cellMessageID = currentDateString;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -666,9 +675,15 @@
         [self.dataArr insertObject:dict atIndex:count];
         ascCount = ascCount + 1;
         [self reloadDataSourceWithNumber:ascCount];
+        
+        
+        
         [self.bottomTableView reloadData];
         
-        [self.sendMessageBtn removeFromSuperview];
+        
+        
+        
+//        [self.sendMessageBtn removeFromSuperview];
         
         NSIndexPath *index = [NSIndexPath indexPathForRow:ascCount - 1 inSection:0];
         [self.bottomTableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -704,8 +719,17 @@
             
         }
         
-        [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
         
+        
+        dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        //2.添加任务到队列中，就可以执行任务
+        //异步函数：具备开启新线程的能力
+        dispatch_async(queue, ^{
+            // 在另一个线程中启动下载功能，加GCD控制
+//            [self performSelector:@selector(freeTranslationMethod) withObject:nil afterDelay:1.0f];
+            [self freeTranslationMethod];
+
+        });
     }
     
     
@@ -780,7 +804,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSInteger i = indexPath.row;
-    static NSString *CellIdentifier = @"Cell";
+//    static NSString *CellIdentifier = @"Cell";
     NSDictionary *object = self.dataSource[i];
     ChatModel *model = [[ChatModel alloc]init];
     
@@ -796,10 +820,27 @@
     model.chatPictureURLContent = object[@"chatPictureURLContent"];
     model.AVtoStringContent = object[@"AVtoStringContent"];
     
-    ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
+    self.frameInfo = [[ChatFrameInfo alloc]initWithModel:model];
     
-    return cell.height;
+//    ChatTableViewCell *cell = [[ChatTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier Model:model];
+    
+    return self.frameInfo.cellHeight;;
 }
+
+//-(CGFloat)returnCellHeightWithDictionaryModel:(NSDictionary *)dict{
+//    
+//    CGFloat height;
+//    
+//    CGSize textLabelSize;
+//    NSString *info = dict[@"answer_text"];
+//    textLabelSize = [info boundingRectWithSize:CGSizeMake(SCREEN_WIDTH-0.167*SCREEN_WIDTH,MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:0.02*SCREEN_HEIGHT]} context:nil].size;
+//    height= 0.08*SCREEN_HEIGHT+textLabelSize.height + 0.009*SCREEN_HEIGHT+0.038*SCREEN_HEIGHT+ 0.017*SCREEN_HEIGHT;
+//    
+//    return height;
+//    
+//}
+
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -1247,18 +1288,20 @@
     self.isKeyboardShow = NO;
     
     NSTimeInterval duration = [noti.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    self.isequal=YES;
+
     [UIView animateWithDuration:duration animations:^{
         self.inputBottomView.transform = CGAffineTransformIdentity;
         self.bottomTableView.transform = CGAffineTransformIdentity;
-    }];
-    
-    [UIView animateWithDuration:0.3 animations:^{
         self.backgroundImageView.transform =CGAffineTransformIdentity;
         self.inputBottomView.transform = CGAffineTransformIdentity;
         self.btnview.transform =CGAffineTransformIdentity;
-    }completion:^(BOOL finished) {
-        
     }];
+//        [UIView animateWithDuration:0.3 animations:^{
+//       
+//    }completion:^(BOOL finished) {
+//        
+//    }];
 }
 
 
@@ -1272,11 +1315,11 @@
     }
     if ([self.inputTextView.text isEqualToString:@""] || self.inputTextView.text == nil) {
         
-        [self.sendMessageBtn removeFromSuperview];
+//        [self.sendMessageBtn removeFromSuperview];
         
     }else{
         
-        [self.inputBottomView addSubview:self.sendMessageBtn];
+//        [self.inputBottomView addSubview:self.sendMessageBtn];
         
     }
     
@@ -1479,13 +1522,13 @@
     
 }
 
--(void)sendMessageBtnClick{
-    if (self.inputTextView.text == nil) {
-        NSLog(@"空了7");
-    }
-    [self sendTextMessageMethodWithString:self.inputTextView.text];
-    NSLog(@"发送消息");
-}
+//-(void)sendMessageBtnClick{
+//    if (self.inputTextView.text == nil) {
+//        NSLog(@"空了7");
+//    }
+//    [self sendTextMessageMethodWithString:self.inputTextView.text];
+//    NSLog(@"发送消息");
+//}
 
 #pragma mark - getters
 
