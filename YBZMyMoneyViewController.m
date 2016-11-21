@@ -10,6 +10,8 @@
 #import "YBZRestMoneyViewController.h"
 #import "YBZRechagrgeViewController.h"
 #import "YBZRuleViewController.h"
+#import "WebAgent.h"
+#import "MBProgressHUD+XMG.h"
 
 @interface YBZMyMoneyViewController ()
 
@@ -25,29 +27,59 @@
 @implementation YBZMyMoneyViewController{
 
     NSArray *labelTextArr;
+    NSString *signNumber;
+    NSString *userID;
+    BOOL canClick;
+    BOOL allowSign;
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setAllControlsFrame];
+    signNumber = @"5";
     [self addAllControls];
     
 }
 
+
+-(void)loadDataFromWeb{
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    userID = user_id[@"user_id"];
+    [WebAgent getMoneyNumber:user_id[@"user_id"] success:^(id responseObject) {
+        canClick = YES;
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        if ([dic[@"allow"]isEqualToString: @"0"]) {
+            allowSign = NO;
+        }else if([dic[@"allow"]isEqualToString: @"1"]){
+            allowSign = YES;
+        }
+        signNumber = dic[@"data"];
+        [self getMissionLabelAndView];
+
+
+    } failure:^(NSError *error) {
+        [MBProgressHUD showError:@"网络错误，数据加载失败" toView:self.view];
+        canClick = NO;
+    }];
+    
+    
+
+    
+}
+
+
 -(void)addAllControls{
     
-    self.view.backgroundColor = UIColorFromRGB(0XF8F8F8);
+    self.view.backgroundColor = UIColorFromRGB(0xEFEFF4);
     self.title = @"电子钱包";
     labelTextArr = @[@"余额",@"充值",@"规则"];
     [self getThreeBtnView];
-    [self getMissionLabelAndView];
+    [self loadDataFromWeb];
+
 }
 
--(void)setAllControlsFrame{
-    
-    
-}
 
 -(void)getMissionLabelAndView{
 
@@ -61,16 +93,77 @@
     missionView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:missionView];
     
+    [self addShareAndSignBtn:missionView];
+    [self addMoneyImageView:missionView AndNumber:signNumber];
+    
+    
+}
+
+-(void)addShareAndSignBtn:(UIView *)missionView{
     UIButton *signBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    signBtn.frame = CGRectMake(0.2*SCREEN_WIDTH, 0.148*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH);
-    [signBtn setBackgroundImage:[UIImage imageNamed:@"签到"] forState:UIControlStateNormal];
+    signBtn.frame = CGRectMake(0.23*SCREEN_WIDTH, 0.148*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH);
+    signBtn.tag = 200;
+
     [signBtn addTarget:self action:@selector(signBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+
+    [signBtn setBackgroundImage:[UIImage imageNamed:@"签到"] forState:UIControlStateNormal];
     [missionView addSubview:signBtn];
+    
+    
     UIButton *shareBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    shareBtn.frame = CGRectMake(0.66*SCREEN_WIDTH, 0.148*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH);
-    [shareBtn setBackgroundImage:[UIImage imageNamed:@"分享"] forState:UIControlStateNormal];
+    shareBtn.frame = CGRectMake(0.63*SCREEN_WIDTH, 0.148*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH);
+    shareBtn.tag = 201;
+
     [shareBtn addTarget:self action:@selector(shareBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [shareBtn setBackgroundImage:[UIImage imageNamed:@"分享"] forState:UIControlStateNormal];
     [missionView addSubview:shareBtn];
+    
+    UILabel *signLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.23*SCREEN_WIDTH, 0.443*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH)];
+    signLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+    signLabel.textColor = UIColorFromRGB(0x747474);
+    signLabel.textAlignment = NSTextAlignmentCenter;
+    if (allowSign == YES) {
+        signLabel.text = @"签到";
+    }else{
+        signLabel.text = @"已签到";
+    }
+    signLabel.tag = 100;
+    [missionView addSubview:signLabel];
+    
+    UILabel *shareLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.63*SCREEN_WIDTH, 0.443*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH)];
+    shareLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+    shareLabel.textColor = UIColorFromRGB(0x747474);
+    shareLabel.textAlignment = NSTextAlignmentCenter;
+    shareLabel.text = @"分享";
+    shareLabel.tag = 101;
+    [missionView addSubview:shareLabel];
+}
+
+
+-(void)addMoneyImageView:(UIView *)view AndNumber:(NSString *)number{
+
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(0.255*SCREEN_WIDTH,0.73*view.bounds.size.height, 0.045*SCREEN_WIDTH, 0.045*SCREEN_WIDTH)];
+    imgView.image = [UIImage imageNamed:@"增加钱币"];
+    [view addSubview:imgView];
+    UIImageView *imgView2 = [[UIImageView alloc]initWithFrame:CGRectMake(0.655*SCREEN_WIDTH, 0.73*view.bounds.size.height, 0.045*SCREEN_WIDTH, 0.045*SCREEN_WIDTH)];
+    imgView2.image = [UIImage imageNamed:@"增加钱币"];
+    [view addSubview:imgView2];
+    
+    UILabel *signLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.305*SCREEN_WIDTH,0.725*view.bounds.size.height, 0.045*SCREEN_WIDTH, 0.045*SCREEN_WIDTH)];
+    signLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+    signLabel.textColor = [UIColor redColor];
+    signLabel.text = number;
+    signLabel.textAlignment = NSTextAlignmentLeft;
+    
+    [view addSubview:signLabel];
+    
+    UILabel *shareLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.705*SCREEN_WIDTH,0.725*view.bounds.size.height, 0.045*SCREEN_WIDTH, 0.045*SCREEN_WIDTH)];
+    shareLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+    shareLabel.textColor = [UIColor redColor];
+    shareLabel.text = @"5";
+    shareLabel.textAlignment = NSTextAlignmentLeft;
+    
+    [view addSubview:shareLabel];
     
 }
 
@@ -139,6 +232,65 @@
     }
 }
 
+-(UIView *)chooseToShare{
+    
+    UIView *chooseView = [[UIView alloc]initWithFrame:CGRectMake(0,SCREEN_HEIGHT, SCREEN_WIDTH, 0.653*SCREEN_WIDTH)];
+    chooseView.tag = 1000;
+    chooseView.backgroundColor =UIColorFromRGB(0XF8F8F8);
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.035*SCREEN_HEIGHT)];
+    label.backgroundColor = [UIColor whiteColor];
+    label.text = @"   分享到：";
+    label.textAlignment = NSTextAlignmentLeft;
+    label.textColor = [UIColor grayColor];
+    [chooseView addSubview:label];
+    NSArray *arr = @[@"新浪微博",@"空间",@"微信好友",@"朋友圈"];
+    NSArray *titleArr= @[@"新浪微博",@"QQ空间",@"微信好友",@"朋友圈"];
+    for (int i=0; i<arr.count; i++){
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        CGFloat width = 0.15*SCREEN_WIDTH;
+        CGFloat sep = (SCREEN_WIDTH-4*0.15*SCREEN_WIDTH)/8;
+       btn.frame = CGRectMake(sep*(2*i+1)+i*width,0.102*SCREEN_HEIGHT,width,width);
+        [btn setImage:[UIImage imageNamed:arr[i]] forState:UIControlStateNormal];
+        [chooseView addSubview:btn];
+        if (i==0) {
+            [btn addTarget:self action:@selector(shareToQFriend) forControlEvents:UIControlEventTouchUpInside];
+        }else if (i==1){
+            [btn addTarget:self action:@selector(shareToQZone) forControlEvents:UIControlEventTouchUpInside];
+        }else if (i==2){
+            [btn addTarget:self action:@selector(shareToVFriend) forControlEvents:UIControlEventTouchUpInside];
+        }else {
+            [btn addTarget:self action:@selector(shareToVZone) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(sep*(2*i+1)+i*width,0.2*SCREEN_HEIGHT,width,0.034*SCREEN_WIDTH)];
+        label.text = titleArr[i];
+        label.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+        label.backgroundColor = [UIColor clearColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor grayColor];
+        
+        [chooseView addSubview:label];
+    }
+    
+    return chooseView;
+}
+
+-(void)shareToQFriend{
+   NSLog(@"shareToQFriend");
+}
+
+-(void)shareToQZone{
+    NSLog(@"shareToQZone");
+}
+
+-(void)shareToVFriend{
+    NSLog(@"shareToVFriend");
+}
+
+-(void)shareToVZone{
+    NSLog(@"shareToVZone");
+}
+
 #pragma mark =====ONCLICK=====
 -(void)restMoneyBtnClick:(UIButton *)sender{
 
@@ -165,12 +317,66 @@
 -(void)shareBtnClick:(UIButton *)sender{
     
     NSLog(@"share");
+    if (sender.selected == NO) {
+        UIView *view = [self chooseToShare];
+        [self.view addSubview:view];
+        [UIView animateWithDuration:0.3 animations:^{
+            view.transform = CGAffineTransformMakeTranslation(0, -0.653*SCREEN_WIDTH);
+        }];
+        sender.selected = YES;
+    }else if(sender.selected == YES){
+
+        [self removeShareView];
+        sender.selected = NO;
+    }
 
     
 }
+
+
+-(void)removeShareView{
+
+    for (UIView *view in self.view.subviews) {
+        if (view.tag == 1000) {
+            [UIView animateWithDuration:0.3 animations:^{
+                view.transform = CGAffineTransformIdentity;
+            }];
+        }
+    }
+}
+
+
 -(void)signBtnClick:(UIButton *)sender{
-    
-    NSLog(@"sign");
+
+    if (canClick == NO) {
+        [MBProgressHUD showError:@"网络错误，请重新加载界面" toView:self.view];
+    }else{
+        [WebAgent signDays:userID money:signNumber success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSString *success = dic[@"data"];
+            NSString *str = dic[@"msg"];
+            if (allowSign == YES) {
+                if ([success isEqualToString:@"0"]) {
+                    [MBProgressHUD showError:str toView:self.view];
+                }else if ([success isEqualToString:@"1"]){
+                    [MBProgressHUD showSuccess:str toView:self.view];
+                    allowSign = NO;
+                    for (UILabel *label in sender.superview.subviews) {
+                        if (label.tag == 100) {
+                            label.text = @"已签到";
+                        }
+                    }
+                }
+            }else{
+                [MBProgressHUD showError:str toView:self.view];
+            }
+
+        } failure:^(NSError *error) {
+            [MBProgressHUD showError:@"签到失败，请重试！" toView:self.view];
+        }];
+        
+    }
     
     
 }

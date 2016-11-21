@@ -1208,5 +1208,37 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 }
 
++(void)getMoneyNumber:(NSString *)user_id success:(void (^)(id))success failure:(void (^)(NSError *))failure{
+
+    NSDictionary *dict = @{@"user_id":user_id};
+    
+    [[APIClient sharedClient] POST:@"MyMoney/getMoneyNumber/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+
+}
+
++(void)signDays:(NSString *)user_id
+          money:(NSString *)money
+        success:(void (^)(id responseObject))success
+        failure:(void (^)(NSError *error))failure{
+
+    NSDictionary *dict = @{@"user_id":user_id,@"money":money};
+    
+    [[APIClient sharedClient] POST:@"MyMoney/signDays/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+}
+
+
 
 @end

@@ -382,4 +382,15 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                    success:(void (^)(id responseObject))success
                    failure:(void (^)(NSError *error))failure;
 
++(void)getMoneyNumber:(NSString *)user_id
+                   success:(void (^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure;
+
++(void)signDays:(NSString *)user_id
+             money:(NSString *)money
+              success:(void (^)(id responseObject))success
+              failure:(void (^)(NSError *error))failure;
+
+
+
 @end

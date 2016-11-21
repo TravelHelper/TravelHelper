@@ -154,6 +154,7 @@
 		7D9951B11DDAE4DA00D859D0 /* libBaiduMobStat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B01DDAE4DA00D859D0 /* libBaiduMobStat.a */; };
 		7D9951B31DDAE74C00D859D0 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7D9951B51DDAE79600D859D0 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */; };
+		7DB595321DE1A533004D796D /* YBZMoneyDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB595311DE1A533004D796D /* YBZMoneyDetailsViewController.m */; };
 		7DF218BF1D5F82ED002F9D6D /* YBZWaitingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */; };
 		7DF2554F1D742F2F006822AD /* RewardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF2554E1D742F2F006822AD /* RewardCell.m */; };
 		7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */; };
@@ -637,6 +638,8 @@
 		7D9951B01DDAE4DA00D859D0 /* libBaiduMobStat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBaiduMobStat.a; sourceTree = "<group>"; };
 		7D9951B21DDAE74C00D859D0 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		7D9951B41DDAE79600D859D0 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
+		7DB595301DE1A533004D796D /* YBZMoneyDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMoneyDetailsViewController.h; sourceTree = "<group>"; };
+		7DB595311DE1A533004D796D /* YBZMoneyDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMoneyDetailsViewController.m; sourceTree = "<group>"; };
 		7DF218BD1D5F82ED002F9D6D /* YBZWaitingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZWaitingViewController.h; sourceTree = "<group>"; };
 		7DF218BE1D5F82ED002F9D6D /* YBZWaitingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZWaitingViewController.m; sourceTree = "<group>"; };
 		7DF2554D1D742F2F006822AD /* RewardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RewardCell.h; sourceTree = "<group>"; };
@@ -1410,6 +1413,8 @@
 				7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */,
 				7D2DD8471DD9886800B80949 /* YBZRuleViewController.h */,
 				7D2DD8481DD9886800B80949 /* YBZRuleViewController.m */,
+				7DB595301DE1A533004D796D /* YBZMoneyDetailsViewController.h */,
+				7DB595311DE1A533004D796D /* YBZMoneyDetailsViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2412,6 +2417,7 @@
 				A0552EB41D3A163C00E04D7A /* ASBirthSelectSheet.m in Sources */,
 				1E70550B1D517F3D00A000F5 /* YBZFreeTranslationViewCell.m in Sources */,
 				93ABF8641D8EE4E80027506F /* InterpretCustomTranslateViewController.m in Sources */,
+				7DB595321DE1A533004D796D /* YBZMoneyDetailsViewController.m in Sources */,
 				1B0513901D3F5DAC00F05C9D /* AFAutoPurgingImageCache.m in Sources */,
 				7D28E3591D6DAAB600B51EF7 /* QuickTransViewController.m in Sources */,
 				1B05138B1D3F5DAC00F05C9D /* AFURLRequestSerialization.m in Sources */,
