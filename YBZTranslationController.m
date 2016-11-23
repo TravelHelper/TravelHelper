@@ -982,16 +982,22 @@
 //    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
 //    FeedBackViewController *con=[[FeedBackViewController alloc]initWithtargetID:user_id[@"user_id"]];
     
-    YBZTargetWaitingViewController *needText=[[YBZTargetWaitingViewController alloc]init];
-    YBZMoneyViewController *moneyController=[[YBZMoneyViewController alloc]init];
+//    [WebAgent moneyDouCostWithID:@"0000" andCostCount:@"20" success:^(id responseObject) {
+//        NSLog(@"asd");
+//    } failure:^(NSError *error) {
+//        NSLog(@"qwe");
+//    }];
+    
+//    YBZTargetWaitingViewController *needText=[[YBZTargetWaitingViewController alloc]init];
+//    YBZMoneyViewController *moneyController=[[YBZMoneyViewController alloc]init];
     YBZFreeTranslationViewController *freeTransVC = [[YBZFreeTranslationViewController alloc]initWithTitle:@"免费翻译"];
-    YBZRulesViewController *ruleVC=[[YBZRulesViewController alloc]init];
-    freeTransVC.hidesBottomBarWhenPushed = YES;
+//    YBZRulesViewController *ruleVC=[[YBZRulesViewController alloc]init];
+//    freeTransVC.hidesBottomBarWhenPushed = YES;
 //    needText.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:freeTransVC animated:YES];
 //    [self.navigationController pushViewController:moneyController animated:YES];
 //    [self.navigationController presentViewController:needText animated:YES completion:^{
-//        
+    
 //    }];
     
 }

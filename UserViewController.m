@@ -1022,8 +1022,8 @@
     {
         NSLog(@"点击进入我的订单");
         [self intoInfoSettingClick];
-//        YBZMyOrderViewController *myorderVC = [[YBZMyOrderViewController alloc] init];
-//        [self.navigationController pushViewController:myorderVC animated:YES];
+        
+      
         
     }
     if ( section == 1 && row==1) {
@@ -1104,6 +1104,21 @@
         
         }
         if ( section == 2 && row==0) {
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+            if(user_id[@"user_id"] == NULL)
+            {
+                YBZLoginViewController *logVC = [[YBZLoginViewController alloc]initWithTitle:@"登录"];
+                YBZBaseNaviController *nav = [[YBZBaseNaviController alloc]initWithRootViewController:logVC];
+                logVC.view.backgroundColor = [UIColor whiteColor];
+                [self presentViewController:nav animated:YES completion:nil];
+            }
+            else{
+                
+//                YBZMyOrderViewController *myorderVC = [[YBZMyOrderViewController alloc] init];
+//                [self.navigationController pushViewController:myorderVC animated:YES];
+                
+            }
             [MBProgressHUD showError:@"敬请期待下次更新"];
             
         }

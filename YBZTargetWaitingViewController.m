@@ -159,7 +159,7 @@
     EMError *error2 = [[EMClient sharedClient] loginWithUsername:localChar password:@"111111"];
     if (!error2) {
         NSLog(@"登录成功");
-//        [self sendbtnclick];
+        [self sendbtnclick];
     }
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -242,7 +242,7 @@
     
     [UIView animateWithDuration:2 animations:^{
         
-        waterView.transform = CGAffineTransformScale(waterView.transform, 1.2, 1.2);
+        waterView.transform = CGAffineTransformScale(waterView.transform, 1.5, 1.5);
         
         waterView.alpha = 0;
         

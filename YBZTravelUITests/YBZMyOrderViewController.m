@@ -40,7 +40,7 @@
     [self loaddatefromweb];
     //初始化数组
     if (!self.myTitleArray) {
-        self.myTitleArray=@[@"全部",@"口语即时",@"悬赏交易",@"定制翻译",@"自由行"];
+        self.myTitleArray=@[@"全部",@"口语即时",@"悬赏交易",@"定制翻译"];
     }
     
     self.items=[[NSMutableArray alloc]init];

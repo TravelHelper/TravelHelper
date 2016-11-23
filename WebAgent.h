@@ -9,6 +9,44 @@
 #import <Foundation/Foundation.h>
 
 @interface WebAgent : NSObject
+
+//money:
+
+//count是str能玩么？
++(void)moneyDouCostWithID:(NSString *)user_id
+             andCostCount:(NSString *)costCount
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure;
+
++(void)moneyBiCostWithID:(NSString *)user_id
+             andCostCount:(NSString *)costCount
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
+
++(void)getBiWithID:(NSString *)user_id
+             andPurchaseCount:(NSString *)purchaseCount
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
+
++(void)getDouWithID:(NSString *)user_id
+             andPurchaseCount:(NSString *)purchaseCount
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
+
++(void)costBiForDouWithID:(NSString *)user_id
+               andBi_cost:(NSString *)bi_cost
+               andDou_get:(NSString *)dou_get
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
+
+
+
+
+
+
+//end
+
+
 +(void)selectAcceptaccept_id:(NSString *)accept_id
                      success:(void (^)(id responseObject))success
                      failure:(void (^)(NSError *error))failure;
