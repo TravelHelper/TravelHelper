@@ -20,21 +20,32 @@
 
     NSDictionary *dict;
     NSDictionary *uploadInfo;
+    NSString *money;
 }
+
+- (instancetype)initWithMoney:(NSString *)myMoney{
+    self = [super init];
+    if (self) {
+        money = myMoney;
+        self.view.backgroundColor = UIColorFromRGB(0xEFEFF4);
+        self.title = @"充值";
+        [self.view addSubview:self.contentView];
+        [self addMoneyViewControlsWithMoney:money];
+        [self getRechargeCenterViewWithInfo:dict];
+    }
+    return self;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = UIColorFromRGB(0xEFEFF4);
-    self.title = @"充值";
-    [self.view addSubview:self.contentView];
-    [self addMoneyViewControlsWithMoney:@"336"];
-    [self getRechargeCenterViewWithInfo:dict];
+
     
 }
 
--(void)addMoneyViewControlsWithMoney:(NSString *)money{
+-(void)addMoneyViewControlsWithMoney:(NSString *)moneystr{
     
-    NSString *string = [NSString stringWithFormat:@"我的嗨币：%@",money];
+    NSString *string = [NSString stringWithFormat:@"我的嗨币：%@",moneystr ];
     NSUInteger length = money.length;
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:string];
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0,4)];
@@ -99,7 +110,7 @@
         [moneyLabel setText:[NSString stringWithFormat:@"%d嗨币",i]];
         moneyLabel.textColor = [UIColor blackColor];
         moneyLabel.frame = CGRectMake(0, 0.0193*SCREEN_HEIGHT, view.bounds.size.width, 0.0289*SCREEN_HEIGHT);
-        moneyLabel.font = [UIFont systemFontOfSize:0.0289*SCREEN_HEIGHT];
+        moneyLabel.font = [UIFont systemFontOfSize:0.043*SCREEN_WIDTH];
         moneyLabel.textAlignment = NSTextAlignmentCenter;
         UILabel *saleLabel = [[UILabel alloc]init];
         [saleLabel setText:[NSString stringWithFormat:@"%d元",i*2]];

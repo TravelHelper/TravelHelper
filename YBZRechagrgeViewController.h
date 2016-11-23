@@ -9,5 +9,5 @@
 #import "YBZBaseViewController.h"
 
 @interface YBZRechagrgeViewController : YBZBaseViewController
-
+- (instancetype)initWithMoney:(NSString *)myMoney;
 @end

@@ -11,7 +11,7 @@
 @interface YBZMoneyDetailsViewController : YBZBaseViewController
 
 
-- (instancetype)initWithTitle:(NSString *)title AndType:(NSString *)type AndInfo:(NSDictionary *)dict;
+- (instancetype)initWithTitle:(NSString *)title AndType:(NSString *)type AndInfo:(NSMutableArray *)array;
 
 
 @end
