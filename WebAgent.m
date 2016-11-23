@@ -1264,7 +1264,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                   failure:(void (^)(NSError *error))failure{
     NSDictionary *dict = @{@"user_id":user_id,@"costCount":costCount};
     
-    [[APIClient sharedClient] POST:@"Money/moneyDouCost/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"MyMoney/moneyDouCost/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
@@ -1276,11 +1276,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 +(void)moneyBiCostWithID:(NSString *)user_id
             andCostCount:(NSString *)costCount
+            andSource_id:(NSString *)source_id
                  success:(void (^)(id responseObject))success
                  failure:(void (^)(NSError *error))failure{
-    NSDictionary *dict = @{@"user_id":user_id,@"costCount":costCount};
+    NSDictionary *dict = @{@"user_id":user_id,@"costCount":costCount,@"source_id":source_id};
     
-    [[APIClient sharedClient] POST:@"Money/moneyBiCost/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"MyMoney/moneyBiCost/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
@@ -1289,14 +1290,15 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 
 }
-
+//
 +(void)getBiWithID:(NSString *)user_id
   andPurchaseCount:(NSString *)purchaseCount
+      andSource_id:(NSString *)source_id
            success:(void (^)(id responseObject))success
            failure:(void (^)(NSError *error))failure{
-    NSDictionary *dict = @{@"user_id":user_id,@"purchaseCount":purchaseCount};
+    NSDictionary *dict = @{@"user_id":user_id,@"purchaseCount":purchaseCount,@"source_id":source_id};
     
-    [[APIClient sharedClient] POST:@"Money/getBi/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"MyMoney/getBi/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
@@ -1309,11 +1311,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 
 +(void)getDouWithID:(NSString *)user_id
    andPurchaseCount:(NSString *)purchaseCount
+       andSource_id:(NSString *)source_id
             success:(void (^)(id responseObject))success
             failure:(void (^)(NSError *error))failure{
-    NSDictionary *dict = @{@"user_id":user_id,@"purchaseCount":purchaseCount};
+    NSDictionary *dict = @{@"user_id":user_id,@"purchaseCount":purchaseCount,@"source_id":source_id};
     
-    [[APIClient sharedClient] POST:@"Money/getDou/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"MyMoney/getDou/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
@@ -1329,7 +1332,7 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                   failure:(void (^)(NSError *error))failure{
     NSDictionary *dict = @{@"user_id":user_id,@"bi_cost":bi_cost,@"dou_get":dou_get};
     
-    [[APIClient sharedClient] POST:@"Money/costBiForDou/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"MyMoney/costBiForDou/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);

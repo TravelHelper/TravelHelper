@@ -8,11 +8,18 @@
 
 #import "YBZRechagrgeViewController.h"
 #import "UIAlertController+SZYKit.h"
+#import <StoreKit/StoreKit.h>
+#import "SVProgressHUD.h"
 
-@interface YBZRechagrgeViewController ()
+
+@interface YBZRechagrgeViewController ()<SKProductsRequestDelegate>
 
 @property (nonatomic,strong) UIView *contentView;
 @property (nonatomic, strong) UIButton *rechargeBtn;
+
+@property (nonatomic,strong) NSArray *profuctIdArr;
+@property (nonatomic,copy) NSString *currentProId;
+
 
 @end
 
@@ -40,6 +47,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.profuctIdArr = @[@"001",@"001",@"001",@"001",@"001",@"001"];
     
 }
 
@@ -154,14 +162,7 @@
 }
 
 
--(void)gotoRecharge:(UIButton*)sender{
 
-    NSLog(@"gotoRecharge:%@",uploadInfo[@"money"]);
-    [UIAlertController showAlertAtViewController:self title:@"提示" message:@"恭喜您！充值成功！" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
-        
-    }];
-    
-}
 
 
 #pragma mark -----getters-----
@@ -188,6 +189,108 @@
         }
     return _rechargeBtn;
 }
+
+
+
+//-(void)gotoRecharge:(UIButton*)sender{
+//    
+//    NSLog(@"gotoRecharge:%@",uploadInfo[@"money"]);
+//    [UIAlertController showAlertAtViewController:self title:@"提示" message:@"恭喜您！充值成功！" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+//        
+//    }];
+//    
+//}
+
+- (void)gotoRecharge:(UIButton *)button
+{
+    NSLog(@"gotoRecharge:%@",uploadInfo[@"money"]);
+    int a = [uploadInfo[@"money"]intValue];
+    NSString *product = self.profuctIdArr[a];
+    _currentProId = product;
+    if([SKPaymentQueue canMakePayments]){
+        [self requestProductData:product];
+    }else{
+        NSLog(@"不允许程序内付费");
+    }
+}
+
+//请求商品
+- (void)requestProductData:(NSString *)type{
+    NSLog(@"-------------请求对应的产品信息----------------");
+    
+    [SVProgressHUD showWithStatus:nil maskType:SVProgressHUDMaskTypeBlack];
+    
+    NSArray *product = [[NSArray alloc] initWithObjects:type,nil];
+    
+    NSSet *nsset = [NSSet setWithArray:product];
+    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:nsset];
+    request.delegate = self;
+    [request start];
+    
+}
+
+//收到产品返回信息
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response{
+    
+    NSLog(@"--------------收到产品反馈消息---------------------");
+    NSArray *product = response.products;
+    if([product count] == 0){
+        [SVProgressHUD dismiss];
+        NSLog(@"--------------没有商品------------------");
+        return;
+    }
+    
+    NSLog(@"productID:%@", response.invalidProductIdentifiers);
+    NSLog(@"产品付费数量:%lu",(unsigned long)[product count]);
+    
+    SKProduct *p = nil;
+    for (SKProduct *pro in product) {
+        NSLog(@"%@", [pro description]);
+        NSLog(@"%@", [pro localizedTitle]);
+        NSLog(@"%@", [pro localizedDescription]);
+        NSLog(@"%@", [pro price]);
+        NSLog(@"%@", [pro productIdentifier]);
+        
+        if([pro.productIdentifier isEqualToString:_currentProId]){
+            p = pro;
+        }
+    }
+    
+    SKPayment *payment = [SKPayment paymentWithProduct:p];
+    
+    NSLog(@"发送购买请求");
+    [[SKPaymentQueue defaultQueue] addPayment:payment];
+}
+
+//请求失败
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error{
+    [SVProgressHUD showErrorWithStatus:@"支付失败"];
+    NSLog(@"------------------错误-----------------:%@", error);
+}
+
+- (void)requestDidFinish:(SKRequest *)request{
+    [SVProgressHUD dismiss];
+    NSLog(@"------------反馈信息结束-----------------");
+}
+
+//交易结束
+- (void)completeTransaction:(SKPaymentTransaction *)transaction{
+    NSLog(@"交易结束");
+    
+    [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+}
+
+
+- (void)dealloc{
+    //    [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
 
 
 

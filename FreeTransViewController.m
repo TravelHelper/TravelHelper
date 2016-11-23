@@ -133,7 +133,7 @@
     //    TapGestureTecognizer.cancelsTouchesInView=NO;
     //    [self.view addGestureRecognizer:TapGestureTecognizer];
     
-    
+//    [self costForDou];
     
     //    [self setupRefresh];
     self.navigationController.interactivePopGestureRecognizer.delaysTouchesBegan=NO;
@@ -1952,6 +1952,7 @@
     [imageData writeToFile:fullPath atomically:NO];
     
 }
+
 
 
 
