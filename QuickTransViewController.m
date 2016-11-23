@@ -547,6 +547,14 @@
             } failure:^(NSError *error) {
                 
             }];
+            [WebAgent moneyDouCostWithID:@"" andCostCount:@"" success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                
+            } failure:^(NSError *error) {
+                
+            }];
+//            [WebAgent ]
             
         }
         
@@ -593,6 +601,13 @@
                                                NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
                                                NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
                                                [WebAgent UpdateUserMessageCount:mseeage_id andUser_price:strCount success:^(id responseObject) {
+                                                   
+                                               } failure:^(NSError *error) {
+                                                   
+                                               }];
+                                               [WebAgent moneyDouCostWithID:@"" andCostCount:@"" success:^(id responseObject) {
+                                                   NSData *data = [[NSData alloc]initWithData:responseObject];
+                                                   NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                                                    
                                                } failure:^(NSError *error) {
                                                    
@@ -2508,4 +2523,45 @@
 }
 
 
+
+
+- (void)costForDou
+{
+    UIAlertController *alertController;
+    
+    //    __block NSUInteger blockSourceType = 0;
+    
+    // 判断是否支持相机
+    //支持访问相机与相册情况
+    alertController = [UIAlertController alertControllerWithTitle:@"嗨豆不足" message:@"嗨币兑换 1:1" preferredStyle:    UIAlertControllerStyleAlert];
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        // 可以在这里对textfield进行定制，例如改变背景色
+        
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+        textField.returnKeyType = UIReturnKeyDone;
+        
+        
+    }];
+    
+    // Create the actions.
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+        
+    }];
+    
+    UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+        UITextField *textField=alertController.textFields.firstObject;
+        NSLog(@"%@",textField.text);
+    }];
+    
+    // Add the actions.
+    [alertController addAction:cancelAction];
+    [alertController addAction:otherAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    
+}
 @end
