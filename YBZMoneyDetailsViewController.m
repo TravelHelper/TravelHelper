@@ -22,18 +22,28 @@
 @implementation YBZMoneyDetailsViewController{
 
     NSString *detailsType;
-    NSDictionary *detailsInfo;
+    NSMutableArray *detailsInfo;
+    NSMutableArray *todayInfoArr;
     NSMutableArray *infoArr;
+    int plusMoney;
+    int plusMoneyAll;
+    NSString *inoutType;
+    NSMutableArray *middleArr;
+
 }
 
-- (instancetype)initWithTitle:(NSString *)title AndType:(NSString *)type AndInfo:(NSDictionary *)dict
+- (instancetype)initWithTitle:(NSString *)title AndType:(NSString *)type AndInfo:(NSMutableArray *)array
 {
     self = [super init];
     if (self) {
         self.title = title;
         detailsType = type;
-        detailsInfo = dict;
+        detailsInfo = array;
+        todayInfoArr = [NSMutableArray array];
+        middleArr = [NSMutableArray array];
         self.view.backgroundColor = UIColorFromRGB(0xEFEFF4);
+        infoArr = [NSMutableArray array];
+        [self getNeedDataWithArray:array];
      
         
         
@@ -42,14 +52,72 @@
 }
 
 
+-(void)getNeedDataWithArray:(NSMutableArray *)array{
+
+    NSDate *  senddate=[NSDate date];
+    
+    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+    
+    [dateformatter setDateFormat:@"YYYY-MM-dd"];
+    
+    NSString *  locationString=[dateformatter stringFromDate:senddate];
+    for (int i=0; i<array.count; i++) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [infoArr addObject:dict];
+    }
+    if ([detailsType isEqualToString:@"bean"]) {
+        if (array.count != 0) {
+            for (int i=0; i<array.count; i++) {
+                [infoArr[i] setObject:array[i][@"money_deal_source_name"] forKey:@"name"];
+                [infoArr[i] setObject:array[i][@"bean_deal_money"] forKey:@"money"];
+                NSArray *strarr = [array[i][@"bean_deal_time"]  componentsSeparatedByString:@" "];
+                [infoArr[i] setObject:strarr[0] forKey:@"date"];
+
+                plusMoneyAll = plusMoneyAll +[infoArr[i][@"money"]intValue];
+
+                [infoArr[i] setObject:strarr[1] forKey:@"time"];
+                inoutType = array[i][@"bean_deal_type"];
+                if ([infoArr[i][@"date"] isEqualToString:locationString]) {
+                    plusMoney = plusMoney + [infoArr[i][@"money"]intValue];
+                    [todayInfoArr addObject:infoArr[i]];
+                }
+
+            }
+        }
+    }else if([detailsType isEqualToString:@"money"]){
+        if (array.count != 0) {
+            for (int i=0; i<array.count ; i++) {
+                [infoArr[i] setObject:array[i][@"money_deal_source_name"] forKey:@"name"];
+                [infoArr[i] setObject:array[i][@"money_deal_money"] forKey:@"money"];
+                
+                NSArray *strarr = [array[i][@"money_deal_time"]  componentsSeparatedByString:@" "];
+                [infoArr[i] setObject:strarr[0] forKey:@"date"];
+                [infoArr[i] setObject:strarr[1] forKey:@"time"];
+                plusMoneyAll = plusMoneyAll +[infoArr[i][@"money"]intValue];
+                inoutType = array[i][@"money_deal_type"];
+                if ([infoArr[i][@"date"] isEqualToString:locationString]) {
+                    plusMoney = plusMoney + [infoArr[i][@"money"]intValue];
+                    [todayInfoArr addObject:infoArr];
+                }
+            }
+
+        }
+    }
+    middleArr = todayInfoArr;
+    [self getMainViewWithInfo:detailsInfo];
+
+    
+   
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self getMainViewWithInfo:detailsInfo];
     
 }
 
 
--(void)getMainViewWithInfo:(NSDictionary *)info{
+-(void)getMainViewWithInfo:(NSMutableArray *)info{
 
     self.topView.frame = CGRectMake(0 , 64, SCREEN_WIDTH, 0.1024*SCREEN_HEIGHT);
     self.weekBtn.frame = CGRectMake(0, 0, SCREEN_WIDTH/2, self.topView.bounds.size.height);
@@ -59,11 +127,11 @@
     NSString *weekStr;
     NSString *allStr;
     if ([detailsType isEqualToString:@"bean"]) {
-        weekStr = [NSString stringWithFormat:@"本周:%d豆",32];
-        allStr = [NSString stringWithFormat:@"总计:%d豆",250];
+        weekStr = [NSString stringWithFormat:@"今日:%d豆",plusMoney];
+        allStr = [NSString stringWithFormat:@"总计:%d豆",plusMoneyAll];
     }else if ([detailsType isEqualToString:@"money"]){
-        weekStr = [NSString stringWithFormat:@"本周:%d币",32];
-        allStr = [NSString stringWithFormat:@"总计:%d币",250];
+        weekStr = [NSString stringWithFormat:@"今日:%d币",plusMoney];
+        allStr = [NSString stringWithFormat:@"总计:%d币",plusMoneyAll];
     }
     [self.weekBtn setTitle:weekStr forState:UIControlStateNormal];
     [self.allBtn setTitle:allStr forState:UIControlStateNormal];
@@ -78,7 +146,7 @@
 #pragma mark -----delegate------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
-    return 10;
+    return middleArr.count;
 }
 
 
@@ -86,7 +154,7 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     
-    [self addViewInCell:cell WithInfo:nil];
+    [self addViewInCell:cell WithInfo:middleArr[indexPath.row]];
     
     
     return cell;
@@ -100,15 +168,24 @@
 
 -(void)addViewInCell:(UITableViewCell *)cell WithInfo:(NSDictionary *)info{
 
-    NSString *date = @"2016-11-21";
-    NSString *time = @"22:05";
+    NSString *date = info[@"date"];
+    NSString *time = info[@"time"];
+    
     NSString *moneyStr;
     if ([detailsType isEqualToString:@"bean"]) {
-        moneyStr = [NSString stringWithFormat:@"%@嗨豆",@"+10"];
+        if ([inoutType isEqualToString:@"in"]) {
+            moneyStr = [NSString stringWithFormat:@"+%@嗨豆",info[@"money"]];
+        }else{
+            moneyStr = [NSString stringWithFormat:@"-%@嗨豆",info[@"money"]];
+        }
+//        moneyStr = [NSString stringWithFormat:@"%@嗨豆",@"+10"];
     }else if ([detailsType isEqualToString:@"money"]){
-        moneyStr = [NSString stringWithFormat:@"%@嗨币",@"+10"];
-    }
-    NSString *getWayStr = @"口语即时";
+        if ([inoutType isEqualToString:@"in"]) {
+            moneyStr = [NSString stringWithFormat:@"+%@嗨币",info[@"money"]];
+        }else{
+            moneyStr = [NSString stringWithFormat:@"-%@嗨币",info[@"money"]];
+        }    }
+    NSString *getWayStr = info[@"name"];
     UILabel *dateLabel = [self getLabelWithStr:date color:[UIColor blackColor] position:@"left" AndY:0.017*SCREEN_HEIGHT font:0.0455*SCREEN_WIDTH];
     UILabel *timeLabel = [self getLabelWithStr:time color:[UIColor grayColor] position:@"left" AndY:0.091*SCREEN_WIDTH font:0.0303*SCREEN_WIDTH];
     UILabel *moneyLabel = [self getLabelWithStr:moneyStr color:[UIColor blackColor] position:@"right" AndY:0.017*SCREEN_HEIGHT font:0.0455*SCREEN_WIDTH];
@@ -146,6 +223,8 @@
     
     sender.selected = YES;
     self.allBtn.selected = NO;
+    middleArr = todayInfoArr;
+    [self.detailsTableView reloadData];
     [UIView animateWithDuration:0.3 animations:^{
         self.separateView.frame = CGRectMake((SCREEN_WIDTH/2- 0.212*SCREEN_WIDTH)/2, self.topView.bounds.size.height-0.0026*SCREEN_HEIGHT, 0.212*SCREEN_WIDTH, 0.0026*SCREEN_HEIGHT);
     }];
@@ -156,6 +235,8 @@
     
     sender.selected = YES;
     self.weekBtn.selected = NO;
+    middleArr = infoArr;
+    [self.detailsTableView reloadData];
     [UIView animateWithDuration:0.3 animations:^{
         self.separateView.frame = CGRectMake((SCREEN_WIDTH/2- 0.212*SCREEN_WIDTH)/2+SCREEN_WIDTH/2, self.topView.bounds.size.height-0.0026*SCREEN_HEIGHT, 0.212*SCREEN_WIDTH, 0.0026*SCREEN_HEIGHT);
     }];

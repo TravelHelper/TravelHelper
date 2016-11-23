@@ -21,15 +21,72 @@
 
 @end
 
-@implementation YBZRestMoneyViewController
+@implementation YBZRestMoneyViewController{
+
+    NSArray *moneyArr;
+    NSArray *beanArr;
+    NSMutableArray *moneyInArray;
+    NSMutableArray *moneyOutArray;
+    NSMutableArray *beanInArray;
+    NSMutableArray *beanOutArray;
+    NSString *moneyRest;
+    NSString *beanRest;
+    NSDictionary *dic;
+}
+- (instancetype)initWithDict:(NSDictionary *)dict
+{
+    self = [super init];
+    if (self) {
+        dic = dict;
+        moneyInArray = [NSMutableArray array];
+        moneyOutArray = [NSMutableArray array];
+        beanInArray = [NSMutableArray array];
+        beanOutArray = [NSMutableArray array];
+        self.view.backgroundColor = UIColorFromRGB(0xEFEFF4);
+        self.title = @"余额";
+        [self loadDataFromWeb];
+        [self setFrame];
+        [self addAllControls];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = UIColorFromRGB(0xEFEFF4);
-    self.title = @"余额";
-    [self setFrame];
-    [self addAllControls];
+
 }
+
+-(void)loadDataFromWeb{
+        moneyRest = dic[@"data"][@"money"];
+        beanRest = dic[@"data"][@"bean"];
+        moneyArr =dic[@"data"][@"money_info"];
+        beanArr =dic[@"data"][@"bean_info"];
+        if (moneyArr.count != 0) {
+            for (int i=0; i<moneyArr.count; i++) {
+                if ([moneyArr[i][@"money_deal_type"] isEqualToString:@"in"]) {
+                    [moneyInArray addObject:moneyArr[i]];
+                }else if ([moneyArr[i][@"money_deal_type"] isEqualToString:@"out"]) {
+                    [moneyOutArray addObject:moneyArr[i]];
+                }
+            }
+        }
+        if (beanArr.count != 0) {
+            for (int i=0; i<beanArr.count; i++) {
+                if ([beanArr[i][@"bean_deal_type"] isEqualToString:@"in"]) {
+                    [beanInArray addObject:beanArr[i]];
+                }else if ([beanArr[i][@"bean_deal_type"] isEqualToString:@"out"]) {
+                    [beanOutArray addObject:beanArr[i]];
+                }
+            }
+        }
+        
+        
+        [self addMoneyViewControlsWithMoney:moneyRest];
+        [self addBeanViewControlsWithBean:beanRest];
+        
+
+}
+
 
 -(void)setFrame{
 
@@ -48,8 +105,7 @@
     [self.view addSubview:self.topView];
     [self.topView addSubview:self.separateView];
     [self.view addSubview:self.moneyView];
-    [self addMoneyViewControlsWithMoney:@"336"];
-    [self addBeanViewControlsWithBean:@"200"];
+
 }
 
 -(void)clearView{
@@ -171,25 +227,25 @@
 
 -(void)outPutMoneyDetails{
 
-    YBZMoneyDetailsViewController *vc = [[YBZMoneyDetailsViewController alloc]initWithTitle:@"嗨币支出" AndType:@"money" AndInfo:nil];
+    YBZMoneyDetailsViewController *vc = [[YBZMoneyDetailsViewController alloc]initWithTitle:@"嗨币支出" AndType:@"money" AndInfo:moneyOutArray];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)inPutMoneyDetails{
     
-    YBZMoneyDetailsViewController *vc = [[YBZMoneyDetailsViewController alloc]initWithTitle:@"嗨币收入" AndType:@"money" AndInfo:nil];
+    YBZMoneyDetailsViewController *vc = [[YBZMoneyDetailsViewController alloc]initWithTitle:@"嗨币收入" AndType:@"money" AndInfo:moneyInArray];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)outPutBeanDetails{
 
-    YBZMoneyDetailsViewController *vc = [[YBZMoneyDetailsViewController alloc]initWithTitle:@"嗨豆支出" AndType:@"bean" AndInfo:nil ];
+    YBZMoneyDetailsViewController *vc = [[YBZMoneyDetailsViewController alloc]initWithTitle:@"嗨豆支出" AndType:@"bean" AndInfo:beanOutArray ];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)inPutBeanDetails{
     
-    YBZMoneyDetailsViewController *vc = [[YBZMoneyDetailsViewController alloc]initWithTitle:@"嗨豆收入" AndType:@"bean" AndInfo:nil];
+    YBZMoneyDetailsViewController *vc = [[YBZMoneyDetailsViewController alloc]initWithTitle:@"嗨豆收入" AndType:@"bean" AndInfo:beanInArray];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

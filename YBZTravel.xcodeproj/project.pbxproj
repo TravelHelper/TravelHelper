@@ -115,7 +115,6 @@
 		7D28E3591D6DAAB600B51EF7 /* QuickTransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */; };
 		7D2DD8431DD9883100B80949 /* YBZRestMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */; };
 		7D2DD8461DD9885C00B80949 /* YBZRechagrgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */; };
-		7D2DD8491DD9886800B80949 /* YBZRuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8481DD9886800B80949 /* YBZRuleViewController.m */; };
 		7D3E99651D6D420200F13F42 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99641D6D420200F13F42 /* Model.m */; };
 		7D3E996C1D6D420900F13F42 /* Btn_TableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99671D6D420900F13F42 /* Btn_TableView.m */; };
 		7D3E996D1D6D420900F13F42 /* ExpandTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99691D6D420900F13F42 /* ExpandTableVC.m */; };
@@ -533,8 +532,6 @@
 		7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRestMoneyViewController.m; sourceTree = "<group>"; };
 		7D2DD8441DD9885C00B80949 /* YBZRechagrgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRechagrgeViewController.h; sourceTree = "<group>"; };
 		7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRechagrgeViewController.m; sourceTree = "<group>"; };
-		7D2DD8471DD9886800B80949 /* YBZRuleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRuleViewController.h; sourceTree = "<group>"; };
-		7D2DD8481DD9886800B80949 /* YBZRuleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRuleViewController.m; sourceTree = "<group>"; };
 		7D3E99631D6D420200F13F42 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		7D3E99641D6D420200F13F42 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		7D3E99661D6D420900F13F42 /* Btn_TableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Btn_TableView.h; sourceTree = "<group>"; };
@@ -1478,8 +1475,8 @@
 				7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */,
 				7D2DD8441DD9885C00B80949 /* YBZRechagrgeViewController.h */,
 				7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */,
-				7D2DD8471DD9886800B80949 /* YBZRuleViewController.h */,
-				7D2DD8481DD9886800B80949 /* YBZRuleViewController.m */,
+				FE7804B21DE2966A000D6026 /* YBZRulesViewController.h */,
+				FE7804B31DE2966A000D6026 /* YBZRulesViewController.m */,
 				7DB595301DE1A533004D796D /* YBZMoneyDetailsViewController.h */,
 				7DB595311DE1A533004D796D /* YBZMoneyDetailsViewController.m */,
 			);
@@ -1739,7 +1736,6 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
-				FE7804B11DE2955D000D6026 /* rules */,
 				7D9951B61DDAECC100D859D0 /* Baidu */,
 				FE55FFAC1DC73EAE00A93A8F /* CustomPublish */,
 				FE2E404C1DC33DCB0062E515 /* WeitView */,
@@ -2359,15 +2355,6 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
-		FE7804B11DE2955D000D6026 /* rules */ = {
-			isa = PBXGroup;
-			children = (
-				FE7804B21DE2966A000D6026 /* YBZRulesViewController.h */,
-				FE7804B31DE2966A000D6026 /* YBZRulesViewController.m */,
-			);
-			name = rules;
-			sourceTree = "<group>";
-		};
 		FEE492151D73DE0A00CCED58 /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -2743,7 +2730,6 @@
 				FE1482681D8925D100804A0A /* YBZtoalertView.m in Sources */,
 				1B0513911D3F5DAC00F05C9D /* AFImageDownloader.m in Sources */,
 				1B96DA411D435ADC00FD5BA6 /* NSString+SZYKit.m in Sources */,
-				7D2DD8491DD9886800B80949 /* YBZRuleViewController.m in Sources */,
 				7DFD9BF41D714179007BDE4D /* YBZTranslatorDetailViewController.m in Sources */,
 				1ED8630E1D2F39DD00529094 /* MASViewAttribute.m in Sources */,
 				A0532CD11D38D7BA00FC1AB1 /* PersonalSignatureVC.m in Sources */,

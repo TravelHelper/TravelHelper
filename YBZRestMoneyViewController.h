@@ -10,4 +10,8 @@
 
 @interface YBZRestMoneyViewController : YBZBaseViewController
 
+- (instancetype)initWithDict:(NSDictionary *)dict;
+
+
+
 @end

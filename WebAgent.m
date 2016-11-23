@@ -1239,6 +1239,21 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     
 }
 
-
++(void)restMoneyInfoWithUserID:(NSString *)user_id
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure{
+   
+    NSDictionary *dict = @{@"user_id":user_id};
+    
+    [[APIClient sharedClient] POST:@"MyMoney/getAllMoneyInfo/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+    
+    
+}
 
 @end

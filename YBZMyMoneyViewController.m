@@ -9,7 +9,7 @@
 #import "YBZMyMoneyViewController.h"
 #import "YBZRestMoneyViewController.h"
 #import "YBZRechagrgeViewController.h"
-#import "YBZRuleViewController.h"
+#import "YBZRulesViewController.h"
 #import "WebAgent.h"
 #import "MBProgressHUD+XMG.h"
 
@@ -31,6 +31,7 @@
     NSString *userID;
     BOOL canClick;
     BOOL allowSign;
+    NSDictionary *pushDic;
 }
 
 
@@ -40,7 +41,6 @@
     [self addAllControls];
     
 }
-
 
 -(void)loadDataFromWeb{
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -64,6 +64,14 @@
         canClick = NO;
     }];
     
+    [WebAgent restMoneyInfoWithUserID:user_id[@"user_id"] success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        pushDic = [[NSDictionary alloc]initWithDictionary:dic];
+        
+    } failure:^(NSError *error) {
+        
+    }];
     
 
     
@@ -295,14 +303,15 @@
 -(void)restMoneyBtnClick:(UIButton *)sender{
 
     NSLog(@"rest");
-    YBZRestMoneyViewController *restMoneyVC = [[YBZRestMoneyViewController alloc]init];
+    YBZRestMoneyViewController *restMoneyVC = [[YBZRestMoneyViewController alloc]initWithDict:pushDic];
     [self.navigationController pushViewController:restMoneyVC animated:YES];
 }
 
 -(void)rechargeBtnClick:(UIButton *)sender{
     
     NSLog(@"rechage");
-    YBZRechagrgeViewController *rechageVC = [[YBZRechagrgeViewController alloc]init];
+    YBZRechagrgeViewController *rechageVC = [[YBZRechagrgeViewController alloc]initWithMoney:pushDic[@"data"][@"money"]];
+    
     [self.navigationController pushViewController:rechageVC animated:YES];
 
 }
@@ -310,7 +319,7 @@
 -(void)ruleBtnClick:(UIButton *)sender{
     
     NSLog(@"rule");
-    YBZRuleViewController *ruleVC = [[YBZRuleViewController alloc]init];
+    YBZRulesViewController *ruleVC = [[YBZRulesViewController alloc]init];
     [self.navigationController pushViewController:ruleVC animated:YES];
 }
 
