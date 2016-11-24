@@ -238,7 +238,7 @@
     
     
     //创建请求到苹果官方进行购买验证
-    NSURL *url=[NSURL URLWithString:SANDBOX];
+    NSURL *url=[NSURL URLWithString:AppStore];
     NSMutableURLRequest *requestM=[NSMutableURLRequest requestWithURL:url];
     requestM.HTTPBody=bodyData;
     requestM.HTTPMethod=@"POST";
@@ -250,8 +250,53 @@
         return;
     }
     NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
-    NSLog(@"%@",dic);
-    if([dic[@"status"] intValue]==0){
+    
+    if([dic[@"status"]intValue]==21007){
+    
+        
+        NSURL *url=[NSURL URLWithString:SANDBOX];
+        NSMutableURLRequest *requestM=[NSMutableURLRequest requestWithURL:url];
+        requestM.HTTPBody=bodyData;
+        requestM.HTTPMethod=@"POST";
+        //创建连接并发送同步请求
+        NSError *error=nil;
+        NSData *responseData=[NSURLConnection sendSynchronousRequest:requestM returningResponse:nil error:&error];
+        if (error) {
+            NSLog(@"验证购买过程中发生错误，错误信息：%@",error.localizedDescription);
+            return;
+        }
+        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
+        
+        if([dic[@"status"] intValue]==0){
+            NSLog(@"购买成功！");
+            NSDictionary *dicReceipt= dic[@"receipt"];
+            NSDictionary *dicInApp=[dicReceipt[@"in_app"] firstObject];
+            NSString *productIdentifier= dicInApp[@"product_id"];//读取产品标识
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_ID = [userdefault objectForKey:@"user_id"];
+            NSString *user_id = user_ID[@"user_id"];
+            int money = [productIdentifier intValue];
+            [WebAgent getBiWithID:user_id andPurchaseCount:[NSString stringWithFormat:@"%d",money] andSource_id:@"0006" success:^(id responseObject) {
+                
+            } failure:^(NSError *error) {
+                
+            }];
+            
+            //        NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
+            //        if ([productIdentifier isEqualToString:@"001"]) {
+            //            int purchasedCount=[defaults integerForKey:productIdentifier];//已购买数量
+            //            [[NSUserDefaults standardUserDefaults] setInteger:(purchasedCount+1) forKey:productIdentifier];
+            //        }else{
+            //            [defaults setBool:YES forKey:productIdentifier];
+            //        }
+            //在此处对购买记录进行存储，可以存储到开发商的服务器端
+        }else{
+            [MBProgressHUD showError:@"购买失败，未通过验证！"];
+            NSLog(@"购买失败，未通过验证！");
+        }
+
+    
+    }else if([dic[@"status"] intValue]==0){
         NSLog(@"购买成功！");
         NSDictionary *dicReceipt= dic[@"receipt"];
         NSDictionary *dicInApp=[dicReceipt[@"in_app"] firstObject];
@@ -275,6 +320,7 @@
 //        }
         //在此处对购买记录进行存储，可以存储到开发商的服务器端
     }else{
+        [MBProgressHUD showError:@"购买失败，未通过验证！"];
         NSLog(@"购买失败，未通过验证！");
     }
 }
