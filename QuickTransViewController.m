@@ -29,6 +29,7 @@
 #import "ChatFrameInfo.h"
 #import "UIImageView+WebCache.h"
 #import "UIImage+needkit.h"
+#import "YBZRechagrgeViewController.h"
 
 
 #define LANGUAGE_ENGLISH  @"ENGLISH"
@@ -112,6 +113,10 @@
    NSString *audioLength;
     NSString *contentStr;
     
+    int bidata;
+    
+    bool msgEnable;
+    
 }
 
 - (instancetype)initWithUserID:(NSString *)userID WithTargetID:(NSString *)targetID WithUserIdentifier:(NSString *)userIdentifier WithVoiceLanguage:(NSString *)voice_Language WithTransLanguage:(NSString *)trans_Language
@@ -146,6 +151,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    msgEnable=true;
     changeImgMark=false;
     translateMark=NO;
     self.isequal = YES;
@@ -508,6 +514,8 @@
 //发送一条语音消息
 -(void)sendAWebVoice:(NSString *)extra AndAudioSecond:(long)second{
     
+    if(msgEnable==true){
+    
     NSDictionary *dict = [self getRCMessageDictionaryWithExtra:extra];
     
     
@@ -547,10 +555,63 @@
             } failure:^(NSError *error) {
                 
             }];
-            [WebAgent moneyDouCostWithID:@"" andCostCount:@"" success:^(id responseObject) {
+            
+            [WebAgent moneyDouCostWithID:self.user_id andCostCount:@"1" success:^(id responseObject) {
                 NSData *data = [[NSData alloc]initWithData:responseObject];
                 NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *str=dic[@"msg"];
+                if([str isEqualToString:@"SUCCESS"]){
                 
+                    int count=[dic[@"data"]intValue];
+                    if(count<=10){
+                        if(count>=0){
+                            [MBProgressHUD showNormalMessage:[NSString stringWithFormat:@"当前嗨豆余额:%d",count]];
+                        }else{
+                            
+                            msgEnable=false;
+                            
+                            bidata=[dic[@"bidata"]intValue];
+                            if(bidata==0){
+                                
+                                
+                                UIAlertController *alertController;
+                                alertController = [UIAlertController alertControllerWithTitle:@"余额不足" message:@"是否进行充值" preferredStyle:    UIAlertControllerStyleAlert];
+                                [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                    YBZRechagrgeViewController *viewController=[[YBZRechagrgeViewController alloc]init];
+                                    [self.navigationController pushViewController:viewController animated:YES];
+                                    
+                                    }]];
+                                
+                                [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                                    
+                                    NSLog(@"点击取消");
+                                    // 取消
+                                    return;
+                                }]];
+                                
+                                [self presentViewController:alertController animated:YES completion:nil];
+                                
+                               
+                                
+                                
+                                
+                                
+                            }else{
+                                [self costForDouWith:bidata];
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }else{
+                
+                    [MBProgressHUD showError:@"扣费失败"];
+                    bidata=[dic[@"bidata"]intValue];
+                    [self costForDouWith:bidata];
+
+                
+                }
             } failure:^(NSError *error) {
                 
             }];
@@ -561,10 +622,18 @@
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"发送失败。消息ID：%ld， 错误码：%ld", messageId, (long)nErrorCode);
     }];
+        
+    }else{
+    
+        [self costForDouWith:bidata];
+    
+    }
     
 }
 //发送一条文本消息
 -(void)sendAwebMessage:(NSString *)extra{
+    
+     if(msgEnable==true){
     // 构建消息的内容，这里以文本消息为例。
     RCTextMessage *testMessage = [RCTextMessage messageWithContent:contentStr];
     // 调用RCIMClient的sendMessage方法进行发送，结果会通过回调进行反馈。
@@ -605,13 +674,77 @@
                                                } failure:^(NSError *error) {
                                                    
                                                }];
-                                               [WebAgent moneyDouCostWithID:@"" andCostCount:@"" success:^(id responseObject) {
+                                               
+                                               [WebAgent moneyDouCostWithID:self.user_id andCostCount:@"1" success:^(id responseObject) {
                                                    NSData *data = [[NSData alloc]initWithData:responseObject];
                                                    NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                                                   NSString *str=dic[@"msg"];
+                                                   bidata=[dic[@"bidata"]intValue];
                                                    
+                                                   
+                                                   
+                                                   
+                                                   if([str isEqualToString:@"SUCCESS"]){
+                                                       
+                                                       int count=[dic[@"data"]intValue];
+                                                       if(count<=10){
+                                                           if(count>=0){
+                                                               [MBProgressHUD showNormalMessage:[NSString stringWithFormat:@"当前嗨豆余额:%d",count]];
+                                                           }else{
+                                                              
+                                                               
+                                                               [self costForDouWith:bidata];
+
+                                                           }
+                                                           
+                                                       }
+                                                       
+                                                   }else{
+                                                       
+                                                       
+                                                       
+//                                                       [MBProgressHUD showError:@"扣费失败"];
+                                                       
+                                                       msgEnable=false;
+                                                       
+                                                       bidata=[dic[@"bidata"]intValue];
+                                          
+                                                       if(bidata==0){
+                                                           
+                                                           
+                                                           UIAlertController *alertController;
+                                                           alertController = [UIAlertController alertControllerWithTitle:@"余额不足" message:@"是否进行充值" preferredStyle:    UIAlertControllerStyleAlert];
+                                                           [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                                               YBZRechagrgeViewController *viewController=[[YBZRechagrgeViewController alloc]initWithMoney:@"0"];
+                                                               [self.navigationController pushViewController:viewController animated:YES];
+                                                               
+                                                           }]];
+                                                           
+                                                           [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                                                               
+                                                               NSLog(@"点击取消");
+                                                               // 取消
+                                                               return;
+                                                           }]];
+                                                           
+                                                           [self presentViewController:alertController animated:YES completion:nil];
+                                                           
+                                                           
+                                                           
+                                                           
+                                                           
+                                                           
+                                                       }else{
+                                                           [self costForDouWith:bidata];
+                                                       }
+                                                   }
                                                } failure:^(NSError *error) {
                                                    
                                                }];
+
+                                               
+                                               
+                                               
                                                
                                            }
                                            
@@ -619,6 +752,12 @@
                                        } error:^(RCErrorCode nErrorCode, long messageId) {
                                            NSLog(@"发送失败。消息ID：%ld， 错误码：%ld", messageId, (long)nErrorCode);
                                        }];
+     }else{
+         
+         [self costForDouWith:bidata];
+         
+     }
+
 }
 
 //接收文本以及语音消息
@@ -2525,15 +2664,14 @@
 
 
 
-- (void)costForDou
+- (void)costForDouWith:(int) biCount
 {
     UIAlertController *alertController;
     
     //    __block NSUInteger blockSourceType = 0;
     
-    // 判断是否支持相机
-    //支持访问相机与相册情况
-    alertController = [UIAlertController alertControllerWithTitle:@"嗨豆不足" message:@"嗨币兑换 1:1" preferredStyle:    UIAlertControllerStyleAlert];
+    NSString *str=[NSString stringWithFormat:@"嗨豆不足(剩余%d)",biCount];
+    alertController = [UIAlertController alertControllerWithTitle:str message:@"嗨币兑换 1:1" preferredStyle:    UIAlertControllerStyleAlert];
     
     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         // 可以在这里对textfield进行定制，例如改变背景色
@@ -2554,6 +2692,31 @@
         NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
         UITextField *textField=alertController.textFields.firstObject;
         NSLog(@"%@",textField.text);
+        NSString *tobicost=textField.text;
+        
+        int realInt=[textField.text intValue];
+        if(realInt>biCount){
+        
+            [MBProgressHUD showError:@"余额不足"];
+        }else{
+        
+            [WebAgent costBiForDouWithID:self.user_id andBi_cost:tobicost andDou_get:tobicost success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *needResult=dic[@"msg"];
+                if([needResult isEqualToString:@"SUCCESS"]){
+                    
+                    [MBProgressHUD showSuccess:@"兑换成功"];
+                    msgEnable=true;
+                }else{
+                    
+                    [MBProgressHUD showError:@"兑换失败,请重试"];
+                }
+            } failure:^(NSError *error) {
+                
+            }];
+        }
+        
     }];
     
     // Add the actions.

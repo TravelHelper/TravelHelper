@@ -25,6 +25,7 @@
 #import "MBProgressHUD+XMG.h"
 #import "YBZChooseTranslatorViewController.h"
 #import "UIImageView+WebCache.h"
+#import "YBZMyRewardViewController.h"
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource,GTStarsScoreDelegate>
 {
@@ -1123,6 +1124,7 @@
             
         }
         if ( section == 2 && row==1) {
+           
             [MBProgressHUD showError:@"敬请期待下次更新"];
 //            [self.view addSubview:self.alertLabel];
 //            YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
@@ -1131,7 +1133,10 @@
             
         }
         if ( section == 2 && row==2) {
-            [MBProgressHUD showError:@"敬请期待下次更新"];
+            YBZMyRewardViewController *myRewardVC = [[YBZMyRewardViewController alloc]init];
+            myRewardVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:myRewardVC animated:YES];
+//            [MBProgressHUD showError:@"敬请期待下次更新"];
             
         }
 

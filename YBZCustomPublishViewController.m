@@ -35,6 +35,7 @@
     NSString *orderTime;
     int timeLong;
     BOOL messageMark;
+    int bidata;
 }
 
 - (void)viewDidLoad {
@@ -47,7 +48,7 @@
     self.title=@"定制翻译";
     [self.view addSubview:self.sendBtn];
     [self.view addSubview:self.contentView];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toReturnPrice) name:@"returnPrice" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toReturnPrice) name:@"returnPrice" object:nil];
     
     [self setLabel];
     [self setBtn];
@@ -295,13 +296,87 @@
 //        _priceLabel.enabled=NO;
 //        [_priceLabel setTitle:@"请完善信息" forState:UIControlStateNormal];
         //    [_longBtn.titleLabel setFont:[UIFont systemFontOfSize:0.04*SCREEN_WIDTH]];
-        [_priceLabel setTitle:@"请完善信息" forState:UIControlStateNormal];
+        [_priceLabel setTitle:@"请填写价格" forState:UIControlStateNormal];
         [_priceLabel setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [_priceLabel.titleLabel setFont:[UIFont systemFontOfSize:0.04*SCREEN_WIDTH]];
+        [_priceLabel addTarget:self action:@selector(priceLabelClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _priceLabel;
 
 }
+
+-(void)priceLabelClick{
+
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [WebAgent moneyDouCostWithID:user_id[@"user_id"] andCostCount:@"0" success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//        NSString *str=dic[@"msg"];
+        bidata=[dic[@"bidata"]intValue];
+        
+        
+        UIAlertController *alertController;
+        
+        //    __block NSUInteger blockSourceType = 0;
+        
+        NSString *priceStr=[NSString stringWithFormat:@"当前游币余额:%d",bidata];
+        
+        alertController = [UIAlertController alertControllerWithTitle:@"价格填写" message:priceStr preferredStyle:    UIAlertControllerStyleAlert];
+        
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            // 可以在这里对textfield进行定制，例如改变背景色
+            
+            
+            textField.keyboardType = UIKeyboardTypeNumberPad;
+            textField.returnKeyType = UIReturnKeyDone;
+            
+            
+        }];
+        
+        // Create the actions.
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+            
+        }];
+        
+        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+            UITextField *textField=alertController.textFields.firstObject;
+            NSLog(@"%@",textField.text);
+            //        NSString *tobicost=textField.text;
+            
+            int resultInt=[textField.text intValue];
+            if(resultInt>bidata){
+                [MBProgressHUD showError:@"悬赏不得大于游币余额"];
+            }else{
+                [self.priceLabel setTitle:textField.text forState:UIControlStateNormal];
+                [self.priceLabel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+
+            }
+            
+            
+        }];
+        
+        // Add the actions.
+        [alertController addAction:cancelAction];
+        [alertController addAction:otherAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+
+        
+        
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+    
+
+    
+}
+
 -(void)longBtnClick{
 
     NSLog(@"long");
@@ -388,7 +463,7 @@
 
         
     }
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"returnPrice" object:nil];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"returnPrice" object:nil];
     
 }
 -(void)timeCancelClick{
@@ -472,13 +547,13 @@
         
         [self.scenceBtn setTitle:@"语音" forState:UIControlStateNormal];
         [self.scenceBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"returnPrice" object:nil];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"returnPrice" object:nil];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
         [self.scenceBtn setTitle:@"视频" forState:UIControlStateNormal];
         [self.scenceBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"returnPrice" object:nil];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"returnPrice" object:nil];
     }]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -494,7 +569,7 @@
 //        [_chooseLanguageArr addObject:string];
         [self.languageBtn setTitle:string forState:UIControlStateNormal];
         [self.languageBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"returnPrice" object:nil];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"returnPrice" object:nil];
         NSLog(@"%@",string);
     }];
     
@@ -561,8 +636,8 @@
 }
 -(void)toReturnPrice{
 
-    float languageRatio=1.0;
-    float scenceRation=1.0;
+//    float languageRatio=1.0;
+//    float scenceRation=1.0;
 //    float timeLongRation=1.0;
     int mark=0;
     if(![self.languageBtn.titleLabel.text isEqualToString:@"选择语种"]){
@@ -573,20 +648,20 @@
             
                 if([self.scenceBtn.titleLabel.text isEqualToString:@"语音"]){
                 
-                    scenceRation=1.0;
+//                    scenceRation=1.0;
                 }else{
                 
-                    scenceRation=1.5;
+//                    scenceRation=1.5;
                 }
                 if(![orderTime isEqualToString:@""]){
                 
                     if(timeLong!=0){
                     
-                        int resultPrice=timeLong*languageRatio*scenceRation*2;
-                        NSString *priceStr=[NSString stringWithFormat:@"%d游币",resultPrice];
-//                        self.priceLabel.textColor=[UIColor redColor];
-                        [_priceLabel setTitle:priceStr forState:UIControlStateNormal];
-                        [_priceLabel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+//                        int resultPrice=timeLong*languageRatio*scenceRation*2;
+//                        NSString *priceStr=[NSString stringWithFormat:@"%d游币",resultPrice];
+////                        self.priceLabel.textColor=[UIColor redColor];
+//                        [_priceLabel setTitle:priceStr forState:UIControlStateNormal];
+//                        [_priceLabel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
                         
                         mark=1;
                     }
@@ -616,29 +691,43 @@
 -(void)sendBtnClick{
     
     NSLog(@"发布了");
-    
+    [self toReturnPrice];
     
     if(messageMark==true){
         [MBProgressHUD showMessage:@"提交中"];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-        [WebAgent uploaduser_id:user_id[@"user_id"] language:self.languageBtn.titleLabel.text scene:self.scenceBtn.titleLabel.text content:self.contentTextView.text custom_time:orderTime duration:self.longBtn.titleLabel.text offer_money:self.priceLabel.titleLabel.text state:@"0" success:^(id responseObject) {
-            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-            NSData *data = [[NSData alloc]initWithData:responseObject];
-            NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSString *message=dic[@"state"];
-            [MBProgressHUD hideHUD];
-            if([message isEqualToString:@"SUCCESS"]){
-                [MBProgressHUD showSuccess:@"提交成功"];
-                [self.navigationController popViewControllerAnimated:YES];
-            }else{
-                [MBProgressHUD showError:@"上传失败 请重试"];
-            }
+        
+        
+        [WebAgent moneyBiCostWithID:user_id[@"user_id"] andCostCount:self.priceLabel.titleLabel.text andSource_id:@"0002" success:^(id responseObject) {
+
+            [WebAgent uploaduser_id:user_id[@"user_id"] language:self.languageBtn.titleLabel.text scene:self.scenceBtn.titleLabel.text content:self.contentTextView.text custom_time:orderTime duration:self.longBtn.titleLabel.text offer_money:self.priceLabel.titleLabel.text state:@"0" success:^(id responseObject) {
+                //            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *message=dic[@"state"];
+                [MBProgressHUD hideHUD];
+                if([message isEqualToString:@"SUCCESS"]){
+                    [MBProgressHUD showSuccess:@"提交成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                    [MBProgressHUD showError:@"上传失败 请重试"];
+                }
+                
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"提交失败，请检查网络"];
+            }];
+            
+            
             
         } failure:^(NSError *error) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showError:@"提交失败，请检查网络"];
+            NSLog(@"fail");
         }];
+        
+        
+        
+   
     }else{
         
         [MBProgressHUD showError:@"请完善定制信息"];

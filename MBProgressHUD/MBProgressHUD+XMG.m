@@ -36,8 +36,26 @@
 {
     [self show:success icon:@"success.png" view:view];
 }
++ (MBProgressHUD *)showNormalMessage:(NSString *)message
+{
+    return [self showNormalMessage:message toView:nil];
+}
 
 #pragma mark 显示一些信息
++ (MBProgressHUD *)showNormalMessage:(NSString *)message toView:(UIView *)view {
+    if (view == nil) view =[[UIApplication sharedApplication].delegate window] ;
+    // 快速显示一个提示信息
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    hud.labelText = message;
+    // 隐藏时候从父控件中移除
+    hud.removeFromSuperViewOnHide = YES;
+    // YES代表需要蒙版效果
+    hud.dimBackground = YES;
+    
+    [hud hide:YES afterDelay:0.7];
+    
+    return hud;
+}
 + (MBProgressHUD *)showMessage:(NSString *)message toView:(UIView *)view {
     if (view == nil) view =[[UIApplication sharedApplication].delegate window] ;
     // 快速显示一个提示信息
@@ -47,6 +65,7 @@
     hud.removeFromSuperViewOnHide = YES;
     // YES代表需要蒙版效果
     hud.dimBackground = YES;
+    
     return hud;
 }
 
