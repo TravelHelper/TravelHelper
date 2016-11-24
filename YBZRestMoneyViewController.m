@@ -220,7 +220,7 @@
 
 -(void)pushRechargeView{
 
-    YBZRechagrgeViewController *vc = [[YBZRechagrgeViewController alloc]init];
+    YBZRechagrgeViewController *vc = [[YBZRechagrgeViewController alloc]initWithMoney:moneyRest];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
