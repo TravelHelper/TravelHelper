@@ -1341,7 +1341,49 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 }
 
++(void)getMoneyDouDealWithMissionID:(NSString *)missionID
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure{
+    NSDictionary *dict = @{@"mission_id":missionID};
+    
+    [[APIClient sharedClient] POST:@"MyMoney/getMoneyDouDeal/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
 
++(void)updateTranslatorAnswerID:(NSString *)userID
+                      MissionID:(NSString *)missionID
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure{
+    NSDictionary *dict = @{@"mission_id":missionID ,@"user_id":userID};
+    
+    [[APIClient sharedClient] POST:@"Appraisal/updateTranslatorAnswerID/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
++(void)uploadAppealInfoWithRewardID:(NSString *)reward_id
+                      appealInfo:(NSString *)appealInfo
+                              money:(NSString *)money
+                        success:(void (^)(id responseObject))success
+                        failure:(void (^)(NSError *error))failure{
+    NSDictionary *dict = @{@"reward_id":reward_id ,@"appeal_info":appealInfo,@"money":money};
+    
+    [[APIClient sharedClient] POST:@"Reward/uploadAppealInfo/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
 
 
 @end

@@ -119,11 +119,16 @@
         UIImageView *chooseImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"已采纳"]];
         chooseImageView.frame = self.acceptBtn.frame;
         [self addSubview:chooseImageView];
-        [WebAgent sendRemoteNotificationsWithuseId:dict[@"data"] WithsendMessage:@"您有一个悬赏的回答被采纳" WithType:@"0006" WithSenderID:@"" WithMessionID:@""  WithLanguage :  @"language" success:^(id responseObject) {
-            NSLog(@"反馈推送—匹配成功通知成功！");
+        [WebAgent getBiWithID:dict[@"data"] andPurchaseCount:dict[@"money"] andSource_id:@"0003" success:^(id responseObject) {
+            [WebAgent sendRemoteNotificationsWithuseId:dict[@"data"] WithsendMessage:@"您有一个悬赏的回答被采纳" WithType:@"0006" WithSenderID:@"" WithMessionID:@""  WithLanguage :  @"language" success:^(id responseObject) {
+                NSLog(@"反馈推送—匹配成功通知成功！");
+            } failure:^(NSError *error) {
+                NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);
+            }];
         } failure:^(NSError *error) {
-            NSLog(@"反馈推送－匹配成功通知失败－－>%@",error);
+            NSLog(@"wangluocuowu");
         }];
+        
     } failure:^(NSError *error) {
         
     }];

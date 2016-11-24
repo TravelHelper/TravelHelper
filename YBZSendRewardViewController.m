@@ -450,13 +450,23 @@
                            rewardtag:self.returnTagLabel.text
                              success:^(id responseObject) {
                             
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"发送成功" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            }];
-            [alertVC addAction:okAction];
-            [self presentViewController:alertVC animated:YES completion:nil];
-             NSLog(@"－－－－－－－success");
+
+                                 
+                                 NSString *userID = user_id[@"user_id"];
+                                 NSString *money =  self.returnMoneyLabel.text;
+                                 [WebAgent moneyBiCostWithID:userID andCostCount:money andSource_id:@"0003" success:^(id responseObject) {
+                                     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"发送成功" preferredStyle:UIAlertControllerStyleAlert];
+                                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                                         [self.navigationController popToRootViewControllerAnimated:YES];
+                                     }];
+                                     [alertVC addAction:okAction];
+                                     [self presentViewController:alertVC animated:YES completion:nil];
+                                     NSLog(@"－－－－－－－success");
+                                 } failure:^(NSError *error) {
+                                     NSLog(@"fail");
+                                 }];
+                                 
+                                 
                                  
         } failure:^(NSError *error) {
             

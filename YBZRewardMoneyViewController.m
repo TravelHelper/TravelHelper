@@ -123,14 +123,14 @@
         [self.navigationController popViewControllerAnimated:YES];
 
     }else{
-        CGSize size = [@"游币账户余额不足" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+        CGSize size = [@"嗨币账户余额不足" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
         self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - size.width) / 2, CGRectGetMaxY(self.bottomView.frame)-40, size.width + 10, size.height + 6)];
         self.alertLabel.backgroundColor = [UIColor clearColor];
         self.alertLabel.layer.cornerRadius = 5;
         //将UiLabel设置圆角 此句不可少
         self.alertLabel.layer.masksToBounds = YES;
         self.alertLabel.alpha = 0.8;
-        self.alertLabel.text = @"游币账户余额不足";
+        self.alertLabel.text = @"嗨币账户余额不足";
         self.alertLabel.font = [UIFont systemFontOfSize:14];
         [self.alertLabel setTextAlignment:NSTextAlignmentCenter];
         self.alertLabel.textColor = [UIColor whiteColor];

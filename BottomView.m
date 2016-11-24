@@ -65,7 +65,7 @@
     [WebAgent restMoenyUser_id: userID success:^(id responseObject) {
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *str= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        self.amountYouBi = str[@"money_youbi"];
+        self.amountYouBi = str[@"money_bi"];
         NSLog(@"----------------->%@",self.amountYouBi);
         [self addSubview:self.eDuLabel];
         [self addSubview:self.allMoneyLabel];
@@ -124,7 +124,7 @@
 }
 -(UILabel *)allMoneyLabel{
 
-    NSString *labelText = [NSString stringWithFormat:@"%@游币",self.amountYouBi];
+    NSString *labelText = [NSString stringWithFormat:@"%@嗨币",self.amountYouBi];
     CGSize size = [labelText sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     _allMoneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.eDuLabel.frame.origin.x + self.eDuLabel.bounds.size.width + 5, self.eDuLabel.frame.origin.y, size.width, size.height)];
     _allMoneyLabel.text = labelText;
@@ -138,9 +138,9 @@
 -(UILabel *)eDuLabel
 {
     if (!_eDuLabel) {
-        CGSize size = [@"游币账户余额，" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+        CGSize size = [@"嗨币账户余额，" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
         _eDuLabel = [[UILabel alloc]initWithFrame:CGRectMake(40, self.lineLabel.frame.origin.y + 10, size.width, size.height)];
-        _eDuLabel.text = @"游币账户余额，";
+        _eDuLabel.text = @"嗨币账户余额，";
         _eDuLabel.font = [UIFont systemFontOfSize:14];
         _eDuLabel.textColor = [UIColor colorWithRed:87 / 255.0 green:134 / 255.0 blue:157 / 255.0 alpha:1];
     }
@@ -152,7 +152,7 @@
     if (!_alertLabel) {
         _alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(40, self.lineLabel.frame.origin.y + 30, 200 , 20)];
         _alertLabel.backgroundColor = [UIColor whiteColor];
-        _alertLabel.text = @"游币账户余额不足";
+        _alertLabel.text = @"嗨币账户余额不足";
         _alertLabel.font = [UIFont systemFontOfSize:14];
         _alertLabel.textColor = [UIColor redColor];
         _alertLabel.hidden = YES;

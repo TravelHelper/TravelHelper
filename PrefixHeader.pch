@@ -137,18 +137,18 @@
 
 
 
-//#define API_HOST @"http://139.224.44.36/TravelHelper/index.php/Home/"
-//#define positionImg    @"http://139.224.44.36/TravelHelper/upload.php"
-//#define serviseId @"139.224.44.36"
+#define API_HOST @"http://139.224.44.36/TravelHelper/index.php/Home/"
+#define positionImg    @"http://139.224.44.36/TravelHelper/upload.php"
+#define serviseId @"139.224.44.36"
 
 
 //#define API_HOST @"http://192.168.0.102/TravelHelper/index.php/Home/"
 //#define positionImg    @"http://192.168.0.102/TravelHelper/upload.php"
 //#define serviseId @"192.168.0.102"
 
-#define API_HOST @"http://139.224.44.36/TravelHelper/index.php/Home/"
-#define positionImg    @"http://139.224.44.36/TravelHelper/upload.php"
-#define serviseId @"139.224.44.36"
+//#define API_HOST @"http://127.0.0.1/TravelHelper/index.php/Home/"
+//#define positionImg    @"http://127.0.0.1/TravelHelper/upload.php"
+//#define serviseId @"127.0.0.1"
 
 
 

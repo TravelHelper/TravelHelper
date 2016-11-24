@@ -115,6 +115,7 @@
 		7D28E3591D6DAAB600B51EF7 /* QuickTransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */; };
 		7D2DD8431DD9883100B80949 /* YBZRestMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */; };
 		7D2DD8461DD9885C00B80949 /* YBZRechagrgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */; };
+		7D362AD31DE6C49400C7CF40 /* YBZAppealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D362AD21DE6C49400C7CF40 /* YBZAppealViewController.m */; };
 		7D3E99651D6D420200F13F42 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99641D6D420200F13F42 /* Model.m */; };
 		7D3E996C1D6D420900F13F42 /* Btn_TableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99671D6D420900F13F42 /* Btn_TableView.m */; };
 		7D3E996D1D6D420900F13F42 /* ExpandTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99691D6D420900F13F42 /* ExpandTableVC.m */; };
@@ -532,6 +533,8 @@
 		7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRestMoneyViewController.m; sourceTree = "<group>"; };
 		7D2DD8441DD9885C00B80949 /* YBZRechagrgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRechagrgeViewController.h; sourceTree = "<group>"; };
 		7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRechagrgeViewController.m; sourceTree = "<group>"; };
+		7D362AD11DE6C49400C7CF40 /* YBZAppealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZAppealViewController.h; sourceTree = "<group>"; };
+		7D362AD21DE6C49400C7CF40 /* YBZAppealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZAppealViewController.m; sourceTree = "<group>"; };
 		7D3E99631D6D420200F13F42 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		7D3E99641D6D420200F13F42 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		7D3E99661D6D420900F13F42 /* Btn_TableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Btn_TableView.h; sourceTree = "<group>"; };
@@ -1479,6 +1482,8 @@
 				FE7804B31DE2966A000D6026 /* YBZRulesViewController.m */,
 				7DB595301DE1A533004D796D /* YBZMoneyDetailsViewController.h */,
 				7DB595311DE1A533004D796D /* YBZMoneyDetailsViewController.m */,
+				7D362AD11DE6C49400C7CF40 /* YBZAppealViewController.h */,
+				7D362AD21DE6C49400C7CF40 /* YBZAppealViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2650,6 +2655,7 @@
 				A03ED0C51D2DF33A00BD9C0A /* YBZLoginViewController.m in Sources */,
 				1B610CE41D47590A00541B6B /* EmailViewController.m in Sources */,
 				A012EE051D509CAB00144BAD /* ChatFrameInfo.m in Sources */,
+				7D362AD31DE6C49400C7CF40 /* YBZAppealViewController.m in Sources */,
 				7D3E996E1D6D420900F13F42 /* ExpandCell.m in Sources */,
 				7D84273E1D634638000BFEAD /* CollectionAudioInfoCell.m in Sources */,
 				A03ED0F31D2E3EF500BD9C0A /* YBZProductListViewController.m in Sources */,
