@@ -370,12 +370,17 @@
                     [MBProgressHUD showError:str toView:self.view];
                 }else if ([success isEqualToString:@"1"]){
                     [MBProgressHUD showSuccess:str toView:self.view];
-                    allowSign = NO;
-                    for (UILabel *label in sender.superview.subviews) {
-                        if (label.tag == 100) {
-                            label.text = @"已签到";
+                    [WebAgent getDouWithID:userID andPurchaseCount:signNumber andSource_id:@"1001" success:^(id responseObject) {
+                        allowSign = NO;
+                        for (UILabel *label in sender.superview.subviews) {
+                            if (label.tag == 100) {
+                                label.text = @"已签到";
+                            }
                         }
-                    }
+                    } failure:^(NSError *error) {
+                        
+                    }];
+
                 }
             }else{
                 [MBProgressHUD showError:str toView:self.view];
