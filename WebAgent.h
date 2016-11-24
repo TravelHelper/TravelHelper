@@ -351,7 +351,11 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                 andTranslator_price:(NSString *)translator_price
                             success:(void (^)(id responseObject))success
                             failure:(void (^)(NSError *error))failure;
-
++(void)uploadAppealInfoWithRewardID:(NSString *)reward_id
+                         appealInfo:(NSString *)appealInfo
+                              money:(NSString *)money
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure;
 +(void)UpdateUserMessageCount:(NSString *)ID
                 andUser_price:(NSString *)user_price
                       success:(void (^)(id responseObject))success
@@ -436,4 +440,12 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
         success:(void (^)(id responseObject))success
         failure:(void (^)(NSError *error))failure;
 
++(void)getMoneyDouDealWithMissionID:(NSString *)missionID
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure;
+
++(void)updateTranslatorAnswerID:(NSString *)userID
+                      MissionID:(NSString *)missionID
+                        success:(void (^)(id responseObject))success
+                        failure:(void (^)(NSError *error))failure;
 @end

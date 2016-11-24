@@ -18,5 +18,8 @@
 @property (nonatomic, strong) UIWindow *thisAlertWindow;
 
 @property (nonatomic,strong) YBZMyWindow *myWindow;
+
+
+
 @end
 

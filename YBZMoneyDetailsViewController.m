@@ -97,13 +97,14 @@
                 inoutType = array[i][@"money_deal_type"];
                 if ([infoArr[i][@"date"] isEqualToString:locationString]) {
                     plusMoney = plusMoney + [infoArr[i][@"money"]intValue];
-                    [todayInfoArr addObject:infoArr];
+                    [todayInfoArr addObject:infoArr[i]];
                 }
             }
 
         }
     }
-    middleArr = todayInfoArr;
+    [middleArr removeAllObjects];
+    [middleArr addObjectsFromArray: todayInfoArr];
     [self getMainViewWithInfo:detailsInfo];
 
     
@@ -223,7 +224,8 @@
     
     sender.selected = YES;
     self.allBtn.selected = NO;
-    middleArr = todayInfoArr;
+    [middleArr removeAllObjects];
+    [middleArr addObjectsFromArray:todayInfoArr];
     [self.detailsTableView reloadData];
     [UIView animateWithDuration:0.3 animations:^{
         self.separateView.frame = CGRectMake((SCREEN_WIDTH/2- 0.212*SCREEN_WIDTH)/2, self.topView.bounds.size.height-0.0026*SCREEN_HEIGHT, 0.212*SCREEN_WIDTH, 0.0026*SCREEN_HEIGHT);
@@ -235,7 +237,8 @@
     
     sender.selected = YES;
     self.weekBtn.selected = NO;
-    middleArr = infoArr;
+    [middleArr removeAllObjects];
+    [middleArr addObjectsFromArray:infoArr];
     [self.detailsTableView reloadData];
     [UIView animateWithDuration:0.3 animations:^{
         self.separateView.frame = CGRectMake((SCREEN_WIDTH/2- 0.212*SCREEN_WIDTH)/2+SCREEN_WIDTH/2, self.topView.bounds.size.height-0.0026*SCREEN_HEIGHT, 0.212*SCREEN_WIDTH, 0.0026*SCREEN_HEIGHT);

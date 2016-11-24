@@ -19,6 +19,7 @@
 #import "UIAlertController+SZYKit.h"
 #import "WebAgent.h"
 #import "UIAlertController+SZYKit.h"
+#import "YBZMyMoneyViewController.h"
 #import "YBZtoalertView.h"
 #import "EMSDKFull.h"
 #import "BaiduMobStat.h"
@@ -48,6 +49,7 @@
     NSString *targetID;
     NSString *missionID;
     NSTimer *quitTimer;
+    NSString *userIdentifier;
     BOOL needPush;
 }
 
@@ -76,6 +78,7 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:@"stopFindingTranslator" object:nil];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        
         userID = user_id[@"user_id"];
 
         if (isChat == NO) {
@@ -91,13 +94,22 @@
                 
             }];
             
+            
+            
             [WebAgent changeTranslatorBusy:userID state:@"0" success:^(id responseObject) {
                 
             } failure:^(NSError *error) {
                 
             }];
             
+            [WebAgent getMoneyDouDealWithMissionID:missionID  success:^(id responseObject) {
+                        
+            } failure:^(NSError *error) {
+                        
+            }];
 
+   
+            
         }
 
     
@@ -424,8 +436,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 NSUserDefaults *user_Info = [NSUserDefaults standardUserDefaults];
                 NSDictionary *user_id = [user_Info dictionaryForKey:@"user_id"];
                 NSString *mission_id = [user_Info objectForKey:@"messageId"];
-
-
+                
+                
+                
                 [WebAgent selectCancelState:mission_id success:^(id responseObject) {
                     NSData *data = [[NSData alloc] initWithData:responseObject];
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -434,9 +447,19 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                             
                         }];
                     }else{
+                        [WebAgent changeTranslatorBusy:user_id[@"user_id"] state:@"1" success:^(id responseObject) {
+                            [MBProgressHUD showError:mission_id toView:nowVC.view];
+                            [WebAgent updateTranslatorAnswerID:user_id[@"user_id"] MissionID:mission_id success:^(id responseObject) {
+                                   QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:user_id[@"user_id"] WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
+                                [nowVC.navigationController pushViewController:quickVC animated:YES];
 
-                        QuickTransViewController *quickVC = [[QuickTransViewController alloc]initWithUserID:user_id[@"user_id"] WithTargetID:yonghuID WithUserIdentifier:@"TRANSTOR" WithVoiceLanguage:dict[@"voice"] WithTransLanguage:dict[@"trans"]];
-                        [nowVC.navigationController pushViewController:quickVC animated:YES];
+                            } failure:^(NSError *error) {
+                                
+                            }];
+
+                        } failure:^(NSError *error) {
+                            
+                        }];
                     }
 
                 } failure:^(NSError *error) {
@@ -480,7 +503,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"您有一条悬赏回答被采纳，请到钱包查看您的嗨币是否到账！" cancelTitle:@"确定" confirmTitle:@"钱包" cancelHandler:^(UIAlertAction *action) {
                 
             } confirmHandler:^(UIAlertAction *action) {
-                
+                YBZMyMoneyViewController *myMoneyVC = [[YBZMyMoneyViewController alloc]init];
+                [nowVC.navigationController pushViewController:myMoneyVC animated:YES];
             }];
         }else{
             [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"您有一条悬赏回答被采纳，请稍后到钱包查看您的嗨币是否到账！" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
@@ -735,7 +759,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     userID = dict[@"userID"];
     targetID = dict[@"targetID"];
     missionID = dict[@"missionID"];
-
+    userIdentifier = dict[@"userIdentifier"];
 }
 
 

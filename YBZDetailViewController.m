@@ -8,9 +8,11 @@
 
 #import "YBZDetailViewController.h"
 #import "AnswerCell.h"
+#import "YBZAppealViewController.h"
 #import "WebAgent.h"
 #import "YBZRewardDetailModel.h"
 #import "UIImageView+WebCache.h"
+#import "UIAlertController+SZYKit.h"
 
 @interface YBZDetailViewController ()<UITableViewDelegate,UITableViewDataSource>{
 
@@ -43,6 +45,8 @@
 
     CGSize sizeOfPic;
     UIImageView *tagImage;
+    NSString *rewardMoney;
+    NSString *rewardID;
 }
 
 - (void)viewDidLoad {
@@ -54,10 +58,24 @@
     self.title = @"悬赏详情";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewData) name:@"NeedToReloadData" object:nil];
     [self loadDataFromWeb];
+    UIBarButtonItem *rightBtn=[[UIBarButtonItem alloc]initWithTitle:@"申诉" style:UIBarButtonItemStylePlain target:self action:@selector(appealBtnClick)];
+
+    self.navigationItem.rightBarButtonItem = rightBtn;
 
     
 }
 
+
+-(void)appealBtnClick{
+
+    int needmoney = [rewardMoney intValue]*0.8;
+    NSString *moneyStr = [NSString stringWithFormat:@"%d",needmoney];
+    
+    YBZAppealViewController *appealVC = [[YBZAppealViewController alloc]initWithTitle:@"申诉" AndMoney:moneyStr AndrewardID:rewardID];
+    [self.navigationController pushViewController:appealVC animated:YES];
+    
+    
+}
 
 #pragma mark -----WebAgent-----
 -(void)loadDataFromWeb{
@@ -67,6 +85,8 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSDictionary *dict = dic[@"data"][0];
         NSMutableArray *arr = dict[@"answer_list"];
+        rewardMoney = dict[@"reward_money"];
+        rewardID = dict[@"reward_id"];
         NSUInteger i;
         if ([arr isKindOfClass:[NSString class]] ) {
             i=0;

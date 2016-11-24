@@ -28,6 +28,8 @@
     NSDictionary *dict;
     NSDictionary *uploadInfo;
     NSString *money;
+    NSArray *moneybiArr;
+    NSArray *moneymoneyArr;
 }
 
 - (instancetype)initWithMoney:(NSString *)myMoney{
@@ -36,6 +38,7 @@
         money = myMoney;
         self.view.backgroundColor = UIColorFromRGB(0xEFEFF4);
         self.title = @"充值";
+        
         [self.view addSubview:self.contentView];
         [self addMoneyViewControlsWithMoney:money];
         [self getRechargeCenterViewWithInfo:dict];
@@ -48,6 +51,8 @@
     [super viewDidLoad];
 
     self.profuctIdArr = @[@"001",@"001",@"001",@"001",@"001",@"001"];
+    moneybiArr = @[@"60",@"126",@"315",@"1078",@"1472",@"3772"];
+    moneymoneyArr = @[@"6",@"12",@"30",@"98",@"128",@"328"];
     
 }
 
@@ -115,13 +120,17 @@
         }
         view.frame = CGRectMake(count*width+(count-1)*0.2845*SCREEN_WIDTH, ((int)(i/row)+1)*width+(int)(i/row)*0.1724*SCREEN_WIDTH, 0.2845*SCREEN_WIDTH, 0.1724*SCREEN_WIDTH);
         UILabel *moneyLabel = [[UILabel alloc]init];
-        [moneyLabel setText:[NSString stringWithFormat:@"%d嗨币",i]];
+        NSString *str =moneybiArr[i];
+        int strint = [str intValue];
+        [moneyLabel setText:[NSString stringWithFormat:@"%d嗨币",strint]];
         moneyLabel.textColor = [UIColor blackColor];
         moneyLabel.frame = CGRectMake(0, 0.0193*SCREEN_HEIGHT, view.bounds.size.width, 0.0289*SCREEN_HEIGHT);
         moneyLabel.font = [UIFont systemFontOfSize:0.043*SCREEN_WIDTH];
         moneyLabel.textAlignment = NSTextAlignmentCenter;
         UILabel *saleLabel = [[UILabel alloc]init];
-        [saleLabel setText:[NSString stringWithFormat:@"%d元",i*2]];
+        NSString *str2 =moneymoneyArr[i];
+        int strint2 = [str2 intValue];
+        [saleLabel setText:[NSString stringWithFormat:@"%d元",strint2]];
         saleLabel.textColor = [UIColor blackColor];
         saleLabel.frame = CGRectMake(0, 0.0578*SCREEN_HEIGHT, view.bounds.size.width, 0.0293*SCREEN_WIDTH);
         saleLabel.font = [UIFont systemFontOfSize:0.0293*SCREEN_WIDTH];
