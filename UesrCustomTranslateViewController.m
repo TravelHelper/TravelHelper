@@ -259,7 +259,7 @@
                             
                             CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
                             
-                            NSString *typeStr=infoModel.langueKind;
+                            NSString *typeStr=infoModel.scene;
                             
                             YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:nil];
                             [self.navigationController pushViewController:prepareController animated:YES];
@@ -290,7 +290,7 @@
 //            [self textClick];
             CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
             
-            NSString *typeStr=infoModel.langueKind;
+            NSString *typeStr=infoModel.scene;
             
             YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:nil];
             [self.navigationController pushViewController:prepareController animated:YES];

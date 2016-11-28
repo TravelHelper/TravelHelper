@@ -348,8 +348,13 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                          report_time:(NSString *)report_time
                              success:(void(^)(id responseObject))success
                              failure:(void (^)(NSError *error))failure;
++(void)updateCustomTranState:(NSString *)custom_id
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure;
 
-
++(void)getNameWithID:(NSString *)user_id
+             success:(void (^)(id responseObject))success
+             failure:(void (^)(NSError *error))failure;
 
 +(void)getHaveFunInfo:(void (^)(id responseObject))success
               failure:(void (^)(NSError *error))failure;

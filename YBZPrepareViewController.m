@@ -51,6 +51,7 @@
 {
     self = [super init];
     if (self) {
+        dataInfo = @{@"user_name":@"嘟嘟嘟嘟",@"first_time":@"2016-11-28 14:47:22",@"custom_time":@"15:00:00",@"duration":@"1"};
         if ([type isEqualToString:@"语音"]) {
             chatType = @"语音呼叫";
         }else if ([type isEqualToString:@"视频"]){
@@ -205,7 +206,7 @@
     thirdState.textColor = [UIColor blackColor];
     thirdState.backgroundColor = [UIColor clearColor];
     thirdState.textAlignment = NSTextAlignmentLeft;
-    thirdState.text = @"开始定制                16:50";
+    thirdState.text = [NSString stringWithFormat:@"开始定制                %@",dataInfo[@"time"]];
     thirdState.frame = CGRectMake(thirdLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, thirdLabelFrame.origin.y-(0.0712*SCREEN_HEIGHT-0.0794*SCREEN_WIDTH)/2, 0.603*SCREEN_WIDTH, 0.0712*SCREEN_HEIGHT);
     thirdState.font = [UIFont systemFontOfSize:0.0407*SCREEN_WIDTH];
     [self.view addSubview:thirdState];
@@ -246,7 +247,7 @@
     firstTime.backgroundColor = [UIColor clearColor];
     firstTime.textAlignment = NSTextAlignmentLeft;
     firstTime.numberOfLines = 0;
-    firstTime.text = @"2016-11-26 16:30:59";
+    firstTime.text = dataInfo[@"first_time"];
     firstTime.frame = CGRectMake(firstLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, CGRectGetMaxY(firstLabelFrame)+0.0089*SCREEN_HEIGHT, SCREEN_WIDTH/3*2, 0.03175*SCREEN_WIDTH);
     firstTime.font = [UIFont systemFontOfSize:0.03175*SCREEN_WIDTH];
     [self.view addSubview:firstTime];
@@ -337,7 +338,7 @@
             break;
         case 2:
             [self.view addSubview:secondBtn];
-            secondState.text = @"嗨番 已进入准备页面";
+            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",dataInfo[@"user_name"]];
             thirdLabel.backgroundColor = UIColorFromRGB(0xC7C7C7);
             forthLabel.backgroundColor = UIColorFromRGB(0xC7C7C7);
             thirdState.textColor = UIColorFromRGB(0xCBCBCB);
@@ -348,13 +349,13 @@
             [self.view addSubview:secondBtn];
             [self.view addSubview:thirdBtn];
             [self.view addSubview:thirdStateTableView];
-            secondState.text = @"嗨番 已进入准备页面";
+            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",dataInfo[@"user_name"]];
             thirdState.text = @"开始定制";
             forthLabel.backgroundColor = UIColorFromRGB(0xC7C7C7);
             forthState.textColor = UIColorFromRGB(0xCBCBCB);
             break;
         case 4:
-            secondState.text = @"嗨番 已进入准备页面";
+            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",dataInfo[@"user_name"]];
             thirdState.text = @"开始定制";
             [self.view addSubview:thirdStateTableView];
             [self.view addSubview:forthBtn];
@@ -463,13 +464,13 @@
     NSString *string;
     if ([sender isEqualToString:@"USER"]) {
         if ([eventType isEqualToString:@"发起"]) {
-            if ([chatType isEqualToString:@"0000"]) {
+            if ([chatType isEqualToString:@"语音"]) {
                 string = @"您 发起了语音呼叫";
             }else{
                 string = @"您 发起了视频呼叫";
             }
         }else{
-            if ([chatType isEqualToString:@"0000"]) {
+            if ([chatType isEqualToString:@"语音"]) {
                 string = @"您 结束了语音呼叫";
             }else{
                 string = @"您 结束了视频呼叫";
@@ -478,16 +479,16 @@
         }
     }else{
         if ([eventType isEqualToString:@"发起"]) {
-            if ([chatType isEqualToString:@"0000"]) {
-                string = [NSString stringWithFormat: @"%@ 发起了语音呼叫",sender];
+            if ([chatType isEqualToString:@"语音"]) {
+                string = [NSString stringWithFormat: @"%@ 发起了语音呼叫",dataInfo[@"user_name"]];
             }else{
-                string = [NSString stringWithFormat: @"%@ 发起了视频呼叫",sender];
+                string = [NSString stringWithFormat: @"%@ 发起了视频呼叫",dataInfo[@"user_name"]];
             }
         }else{
-            if ([chatType isEqualToString:@"0000"]) {
-                string = [NSString stringWithFormat: @"%@ 结束了语音呼叫",sender];
+            if ([chatType isEqualToString:@"语音"]) {
+                string = [NSString stringWithFormat: @"%@ 结束了语音呼叫",dataInfo[@"user_name"]];
             }else{
-                string = [NSString stringWithFormat: @"%@ 结束了视频呼叫",sender];
+                string = [NSString stringWithFormat: @"%@ 结束了视频呼叫",dataInfo[@"user_name"]];
             }
             
         }
