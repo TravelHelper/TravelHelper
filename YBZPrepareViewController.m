@@ -52,8 +52,8 @@
 {
     self = [super init];
     if (self) {
-        dataInfo = @{@"user_id":@"95BBBF54_D1B7_4743_BBA5_49F6A0EFCA55",@"first_time":@"2016-11-28 14:47:22",@"custom_time":@"15:00:00",@"duration":@"1" ,@"identity":@"user"};
-        [WebAgent getNameWithID:dataInfo[@"user_id"] success:^(id responseObject) {
+        dataInfo = info;
+        [WebAgent getNameWithID:dataInfo[@"user_name"] success:^(id responseObject) {
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSString *name = dict[@"name"];

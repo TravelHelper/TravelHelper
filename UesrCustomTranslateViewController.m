@@ -333,7 +333,7 @@
                     needDic[@"first_time"]=firstTime;
                 }
 
-                needDic[@"user_name"]=infoModel.customID;
+                needDic[@"user_name"]=infoModel.interper;
                 
                 needDic[@"custom_time"]=infoModel.translateTime;
                 needDic[@"duration"]=infoModel.duration;
