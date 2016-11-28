@@ -1122,7 +1122,7 @@
         }
         if ( section == 2 && row==1) {
            
-            YBZPrepareViewController *prepareVC = [[YBZPrepareViewController alloc]initWithType:@"0000" AndState:@"0001"];
+            YBZPrepareViewController *prepareVC = [[YBZPrepareViewController alloc]initWithType:@"语音" AndState:@"0001" AndInfo:nil];
             [self.navigationController pushViewController:prepareVC animated:YES];
             
         }

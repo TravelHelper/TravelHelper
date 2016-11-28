@@ -15,6 +15,7 @@
 
 @implementation YBZPrepareViewController{
 
+    NSDictionary *dataInfo;
     NSString *chatType;
     UILabel *firstLabel;
     CGRect firstLabelFrame;
@@ -46,13 +47,13 @@
     
 }
 
-- (instancetype)initWithType:(NSString *)type AndState:(NSString *)state
+- (instancetype)initWithType:(NSString *)type AndState:(NSString *)state AndInfo:(NSDictionary *)info
 {
     self = [super init];
     if (self) {
-        if ([type isEqualToString:@"0000"]) {
+        if ([type isEqualToString:@"语音"]) {
             chatType = @"语音呼叫";
-        }else if ([type isEqualToString:@"0001"]){
+        }else if ([type isEqualToString:@"视频"]){
             chatType = @"视频呼叫";
         }
             

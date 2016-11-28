@@ -10,7 +10,7 @@
 
 @interface YBZPrepareViewController : YBZBaseViewController
 
-- (instancetype)initWithType:(NSString *)type AndState:(NSString *)state;
+- (instancetype)initWithType:(NSString *)type AndState:(NSString *)state AndInfo:(NSDictionary *)info;
 
 
 @end
