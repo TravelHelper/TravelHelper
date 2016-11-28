@@ -24,6 +24,7 @@
 
 @property(nonatomic ,strong)NSString *star;
 @property(nonatomic ,strong)NSString *proceedState;
+@property(nonatomic ,strong)NSString *firstTime;
 
 - (instancetype)initWithcustomID:(NSString *)customID
                       langueKind:(NSString *)langueKind

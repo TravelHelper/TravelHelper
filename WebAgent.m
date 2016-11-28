@@ -1405,9 +1405,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)getNameWithID:(NSString *)custom_id
                             success:(void (^)(id responseObject))success
                             failure:(void (^)(NSError *error))failure{
-    NSDictionary *dict = @{@"custom_id":custom_id};
+    NSDictionary *dict = @{@"user_id":custom_id};
     
-    [[APIClient sharedClient] POST:@"customTranslate/updateCustomTranState/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"user/getNameWithID/"parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
@@ -1419,9 +1419,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
 +(void)updateCustomTranState:(NSString *)user_id
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure{
-    NSDictionary *dict = @{@"user_id":user_id};
+    NSDictionary *dict = @{@"custom_id":user_id};
     
-    [[APIClient sharedClient] POST:@"user/getNameWithID/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[APIClient sharedClient] POST:@"customTranslate/updateCustomTranState/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
