@@ -34,6 +34,9 @@
 
 @property (nonatomic,strong) UIImageView *backgrountImageView;
 
+@property (nonatomic,strong) UIButton *confirmBtn;
+@property (nonatomic,strong) UIButton *refuseBtn;
+
 
 
 @end
@@ -84,7 +87,24 @@
     
         [self.view addSubview:self.backgrountImageView];
         [self.view addSubview:self.headImageView];
-        [self.view addSubview:self.cancelBtn];
+        if(myIscall == false){
+            
+            self.nameLabel.text=@"Simon";
+            self.stateLabel.text=@"邀请你进行语音聊天...";
+            self.confirmBtn.frame=CGRectMake(0.13*SCREEN_WIDTH, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
+            self.refuseBtn.frame=CGRectMake(0.87*SCREEN_WIDTH-0.12*SCREEN_HEIGHT, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
+            
+            
+            [self.view addSubview:self.confirmBtn];
+            [self.view addSubview:self.refuseBtn];
+            
+            
+        }else{
+            self.nameLabel.text=@"Simon";
+            self.stateLabel.text=@"等待对方接听中...";
+            [self.view addSubview:self.cancelBtn];
+        }
+        
         [self.view addSubview:self.nameLabel];
         [self.view addSubview:self.stateLabel];
     
@@ -92,7 +112,24 @@
     
         [self.view addSubview:self.viewContainer];
         [self.view addSubview:self.headImageView];
-        [self.view addSubview:self.cancelBtn];
+        if(myIscall == false){
+            
+            self.nameLabel.text=@"Simon";
+            self.stateLabel.text=@"邀请你进行视频聊天...";
+            self.confirmBtn.frame=CGRectMake(0.13*SCREEN_WIDTH, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
+            self.refuseBtn.frame=CGRectMake(0.87*SCREEN_WIDTH-0.12*SCREEN_HEIGHT, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
+            
+            
+            [self.view addSubview:self.confirmBtn];
+            [self.view addSubview:self.refuseBtn];
+            
+            
+        }else{
+            self.nameLabel.text=@"Simon";
+            self.stateLabel.text=@"等待对方接听中...";
+            [self.view addSubview:self.cancelBtn];
+        }
+
         [self.view addSubview:self.nameLabel];
         [self.view addSubview:self.stateLabel];
         
@@ -120,8 +157,7 @@
     [super viewWillAppear:animated];
     
     
-    self.nameLabel.text=@"Simon";
-    self.stateLabel.text=@"等待对方接听中...";
+   
     
     
     self.viewContainer.frame=CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -392,10 +428,7 @@
     if(!_cancelBtn){
         _cancelBtn=[[UIButton alloc]init];
         _cancelBtn.backgroundColor=[UIColor redColor];
-        //        NSString *stu_id = ApplicationDelegate.userSession;
-        //        NSString *stu_pwd = ApplicationDelegate.userPsw;
-       
-        [_cancelBtn setTitle:@"挂断" forState:UIControlStateNormal];
+             [_cancelBtn setTitle:@"挂断" forState:UIControlStateNormal];
         //[_exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];
         [_cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
         
@@ -407,6 +440,43 @@
     }
     return _cancelBtn;
 }
+
+
+-(UIButton *)refuseBtn{
+    if(!_refuseBtn){
+        _refuseBtn=[[UIButton alloc]init];
+        [_refuseBtn setImage:[UIImage imageNamed:@"refuse"] forState:UIControlStateNormal];
+//        [_refuseBtn setTitle:@"拒绝" forState:UIControlStateNormal];
+        //[_exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [_refuseBtn addTarget:self action:@selector(refuseBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+//        [_refuseBtn setFont:[UIFont systemFontOfSize:0.045*SCREEN_WIDTH]];
+//        [_refuseBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        _refuseBtn.layer.masksToBounds = YES;
+//        _refuseBtn.layer.cornerRadius = 0.05*SCREEN_WIDTH;
+    }
+    return _refuseBtn;
+}
+
+-(UIButton *)confirmBtn{
+    if(!_confirmBtn){
+        _confirmBtn=[[UIButton alloc]init];
+        [_confirmBtn setImage:[UIImage imageNamed:@"confirm"] forState:UIControlStateNormal];
+//        [_confirmBtn setTitle:@"接听" forState:UIControlStateNormal];
+        //[_exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [_confirmBtn addTarget:self action:@selector(confirmBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+//        [_confirmBtn setFont:[UIFont systemFontOfSize:0.045*SCREEN_WIDTH]];
+//        [_confirmBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        _confirmBtn.layer.masksToBounds = YES;
+//        _confirmBtn.layer.cornerRadius = 0.05*SCREEN_WIDTH;
+    }
+    return _confirmBtn;
+}
+
+
 
 -(UIView *)viewContainer{
 
@@ -457,7 +527,20 @@
 
 }
 
+-(void)refuseBtnClick{
 
+    [[EMClient sharedClient].callManager endCall:self.callSession.callId reason:EMCallEndReasonHangup];
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+-(void)confirmBtnClick{
+
+    [[EMClient sharedClient].callManager answerIncomingCall:self.callSession.callId];
+    
+    [MBProgressHUD showMessage:@"接收到通话请求，载入中。。"];
+}
 
 
 -(void)cancelBtnClick{
@@ -485,11 +568,16 @@
     //    [self.view addSubview:aSession.localVideoView];
     //    aSession.remoteVideoView=[[EMCallRemoteView alloc]initWithFrame:CGRectMake(40, 64, 200, 200)];
     //    [self.view addSubview:aSession.remoteVideoView];
+    self.confirmBtn.frame=CGRectMake(1, 1, 1, 1);
+    self.refuseBtn.frame=CGRectMake(1, 1, 1, 1);
+    
+    
+    [self.view addSubview:self.confirmBtn];
+    [self.view addSubview:self.refuseBtn];
+    
     
     NSLog(@"%@",aSession.callId);
-    [[EMClient sharedClient].callManager answerIncomingCall:aSession.callId];
-    
-    [MBProgressHUD showMessage:@"接收到通话请求，载入中。。"];
+   
     
 }
 //
@@ -520,8 +608,14 @@
         [self.viewContainer removeFromSuperview];
         [self.headImageView removeFromSuperview];
         [waterTimer invalidate];
-        self.nameLabel.text=@"Simon 视频通话中...";
-        self.stateLabel.text=@"01:20";
+        
+        
+//        self.nameLabel.text=@"Simon 视频通话中...";
+//        self.stateLabel.text=@"01:20";
+        
+        [self.nameLabel removeFromSuperview];
+        [self.stateLabel removeFromSuperview];
+        
         aSession.localVideoView=[[EMCallLocalView alloc]initWithFrame:CGRectMake(20, 0, 210*SCREEN_WIDTH/SCREEN_HEIGHT, 210)];
         [self.view addSubview:aSession.localVideoView];
         self.callSession=aSession;
@@ -580,6 +674,10 @@
     }else{
         [MBProgressHUD hideHUD];
     }
+    [MBProgressHUD showNormalMessage:@"对方结束了通话"];
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 

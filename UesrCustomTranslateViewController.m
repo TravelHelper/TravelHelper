@@ -121,6 +121,7 @@
             CustomTranslateInfoModel *infoModel = [[CustomTranslateInfoModel alloc]initWithcustomID:oneInfo[@"custom_id"] langueKind:oneInfo[@"language"] scene:oneInfo[@"scene"] content:oneInfo[@"content"] interper:oneInfo[@"accept_id"] translateTime:oneInfo[@"custom_time"] duration:oneInfo[@"duration"] offerMoney:oneInfo[@"offer_money"] publishTime:oneInfo[@"publish_time"]  cellKind:oneInfo[@"state"]];
             infoModel.star= oneInfo[@"star"];
             infoModel.proceedState=oneInfo[@"proceed_state"];
+            infoModel.firstTime=oneInfo[@"first_time"];
             [self.mArr addObject:infoModel];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -254,20 +255,42 @@
                         NSLog(@"-----------进入等候页------");
                         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-                        [WebAgent custom_id:cell.customID state:@"2" accept_id:user_id[@"user_id"] success:^(id responseObject) {
-                            NSLog(@"cell reset  success ");
+                        [WebAgent updateCustomTranState:cell.customID success:^(id responseObject) {
+                            NSData *data = [[NSData alloc]initWithData:responseObject];
+                            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                            NSDictionary *toneeddic = dic[@"data"];
+
+                            NSString *firstTime=toneeddic[@"first_time"];
                             
                             CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
                             
+                            NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                            
+                            needDic[@"user_name"]=infoModel.customID;
+                            needDic[@"first_time"]=firstTime;
+                            needDic[@"custom_time"]=infoModel.translateTime;
+                            needDic[@"duration"]=infoModel.duration;
                             NSString *typeStr=infoModel.scene;
                             
-                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:nil];
+                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:needDic];
                             [self.navigationController pushViewController:prepareController animated:YES];
+                            
+                        } failure:^(NSError *error) {
+                             [MBProgressHUD showError:@"等候页面进入失败，请重试"];
+                        }];
+                        
+                        
+                        [WebAgent custom_id:cell.customID state:@"2" accept_id:user_id[@"user_id"] success:^(id responseObject) {
+                            NSLog(@"cell reset  success ");
+                            
+//                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                            
+                           
 //                            [self waitBtnClick];
                             
                         } failure:^(NSError *error) {
                             NSLog(@"%@",error);
-                            [MBProgressHUD showError:@"等候页面进入失败，请重试"];
+                           
                         }];
                         
                         
@@ -290,10 +313,45 @@
 //            [self textClick];
             CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
             
-            NSString *typeStr=infoModel.scene;
+//            NSString *typeStr=infoModel.scene;
             
-            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:nil];
-            [self.navigationController pushViewController:prepareController animated:YES];
+            [WebAgent updateCustomTranState:infoModel.customID success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSDictionary *toneeddic = dic[@"data"];
+                
+                
+                NSString *firstTime=toneeddic[@"first_time"];
+                
+                
+                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                
+                NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                if(dic[@"data"]==nil){
+                    needDic[@"first_time"]=infoModel.firstTime;
+                }else{
+                    needDic[@"first_time"]=firstTime;
+                }
+
+                needDic[@"user_name"]=infoModel.customID;
+                
+                needDic[@"custom_time"]=infoModel.translateTime;
+                needDic[@"duration"]=infoModel.duration;
+                NSString *typeStr=infoModel.scene;
+                
+                YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:needDic];
+                [self.navigationController pushViewController:prepareController animated:YES];
+                
+            } failure:^(NSError *error) {
+                [MBProgressHUD showError:@"等候页面进入失败，请重试"];
+            }];
+
+            
+            
+            
+            
+//            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:nil];
+//            [self.navigationController pushViewController:prepareController animated:YES];
             
             
             
