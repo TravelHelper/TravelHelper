@@ -44,6 +44,7 @@
     int proceedState;
     int countDownTime;
     NSTimer *countDownTimer;
+    NSString *userName;
     
 }
 
@@ -51,7 +52,15 @@
 {
     self = [super init];
     if (self) {
-        dataInfo = @{@"user_name":@"嘟嘟嘟嘟",@"first_time":@"2016-11-28 14:47:22",@"custom_time":@"15:00:00",@"duration":@"1"};
+        dataInfo = @{@"user_id":@"95BBBF54_D1B7_4743_BBA5_49F6A0EFCA55",@"first_time":@"2016-11-28 14:47:22",@"custom_time":@"15:00:00",@"duration":@"1" ,@"identity":@"user"};
+        [WebAgent getNameWithID:dataInfo[@"user_id"] success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSString *name = dict[@"name"];
+            userName = name;
+        } failure:^(NSError *error) {
+            
+        }];
         if ([type isEqualToString:@"语音"]) {
             chatType = @"语音呼叫";
         }else if ([type isEqualToString:@"视频"]){
@@ -84,6 +93,7 @@
 //        }
 //        
 //    }];
+
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"准备";
     [self addAllControls];
@@ -206,7 +216,7 @@
     thirdState.textColor = [UIColor blackColor];
     thirdState.backgroundColor = [UIColor clearColor];
     thirdState.textAlignment = NSTextAlignmentLeft;
-    thirdState.text = [NSString stringWithFormat:@"开始定制                %@",dataInfo[@"time"]];
+    thirdState.text = [NSString stringWithFormat:@"开始定制                %@",dataInfo[@"custom_time"]];
     thirdState.frame = CGRectMake(thirdLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, thirdLabelFrame.origin.y-(0.0712*SCREEN_HEIGHT-0.0794*SCREEN_WIDTH)/2, 0.603*SCREEN_WIDTH, 0.0712*SCREEN_HEIGHT);
     thirdState.font = [UIFont systemFontOfSize:0.0407*SCREEN_WIDTH];
     [self.view addSubview:thirdState];
@@ -338,7 +348,7 @@
             break;
         case 2:
             [self.view addSubview:secondBtn];
-            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",dataInfo[@"user_name"]];
+            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",userName];
             thirdLabel.backgroundColor = UIColorFromRGB(0xC7C7C7);
             forthLabel.backgroundColor = UIColorFromRGB(0xC7C7C7);
             thirdState.textColor = UIColorFromRGB(0xCBCBCB);
@@ -349,13 +359,13 @@
             [self.view addSubview:secondBtn];
             [self.view addSubview:thirdBtn];
             [self.view addSubview:thirdStateTableView];
-            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",dataInfo[@"user_name"]];
+            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",userName];
             thirdState.text = @"开始定制";
             forthLabel.backgroundColor = UIColorFromRGB(0xC7C7C7);
             forthState.textColor = UIColorFromRGB(0xCBCBCB);
             break;
         case 4:
-            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",dataInfo[@"user_name"]];
+            secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",userName];
             thirdState.text = @"开始定制";
             [self.view addSubview:thirdStateTableView];
             [self.view addSubview:forthBtn];
@@ -480,15 +490,15 @@
     }else{
         if ([eventType isEqualToString:@"发起"]) {
             if ([chatType isEqualToString:@"语音"]) {
-                string = [NSString stringWithFormat: @"%@ 发起了语音呼叫",dataInfo[@"user_name"]];
+                string = [NSString stringWithFormat: @"%@ 发起了语音呼叫",userName];
             }else{
-                string = [NSString stringWithFormat: @"%@ 发起了视频呼叫",dataInfo[@"user_name"]];
+                string = [NSString stringWithFormat: @"%@ 发起了视频呼叫",userName];
             }
         }else{
             if ([chatType isEqualToString:@"语音"]) {
-                string = [NSString stringWithFormat: @"%@ 结束了语音呼叫",dataInfo[@"user_name"]];
+                string = [NSString stringWithFormat: @"%@ 结束了语音呼叫",userName];
             }else{
-                string = [NSString stringWithFormat: @"%@ 结束了视频呼叫",dataInfo[@"user_name"]];
+                string = [NSString stringWithFormat: @"%@ 结束了视频呼叫",userName];
             }
             
         }
@@ -519,6 +529,47 @@
     
 }
 
+-(NSString *)getNowTime{
+    NSDate *currentDate = [NSDate date];//获取当前时间，日期
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:currentDate];
+    NSLog(@"dateString:%@",dateString);
+    
+    return dateString;
+}
 
+
+-(NSString *)changeDateToString:(NSDate *)date{
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    NSLog(@"dateString:%@",dateString);
+    return dateString;
+}
+
+
+-(long)changeTimeToSecond:(NSString *)time{
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *date = [dateFormatter dateFromString:time];
+    NSLog(@"%@", date);
+    long timeSp = [[NSNumber numberWithDouble:[date timeIntervalSince1970]] integerValue];
+    return timeSp;
+    
+}
+
+-(NSString *)changeSecondToTime:(long)second{
+
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:second];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:confromTimesp];
+    NSLog(@"dateString:%@",dateString);
+    
+    return dateString;
+}
 
 @end
