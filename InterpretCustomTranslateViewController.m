@@ -172,7 +172,7 @@
                 
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-                    [WebAgent custom_id:cell.customID state:@"1" accept_id:user_id[@"user_id"] success:^(id responseObject) {
+                    [WebAgent custom_id:user_id[@"user_id"] state:@"1" accept_id:user_id[@"user_id"] success:^(id responseObject) {
                         NSLog(@"success ! !!");
                         if([tag isEqualToString:@"connecttimeout"]){
                             
