@@ -346,15 +346,21 @@
             NSLog(@"%@",textField.text);
             //        NSString *tobicost=textField.text;
             
-            int resultInt=[textField.text intValue];
-            if(resultInt>bidata){
-                [MBProgressHUD showError:@"悬赏不得大于游币余额"];
+            if([textField.text isEqualToString:@""]){
+                [MBProgressHUD showError:@"金额不能为空白"];
             }else{
-                [self.priceLabel setTitle:textField.text forState:UIControlStateNormal];
-                [self.priceLabel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-
+                int resultInt=[textField.text intValue];
+                if(resultInt>bidata){
+                    [MBProgressHUD showError:@"悬赏不得大于游币余额"];
+                }else{
+                    [self.priceLabel setTitle:textField.text forState:UIControlStateNormal];
+                    [self.priceLabel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                    
+                }
+                
             }
             
+           
             
         }];
         
@@ -722,6 +728,7 @@
             
             
         } failure:^(NSError *error) {
+            [MBProgressHUD showError:@"扣币失败，请重试"];
             NSLog(@"fail");
         }];
         

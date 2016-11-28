@@ -88,15 +88,19 @@
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSArray *infoArr = dic[@"custom_info"];
-        
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+
         for (int i = 0 ; i < infoArr.count; i++) {
             NSDictionary *oneInfo = infoArr[i];
             
-            CustomTranslateInfoModel *infoModel = [[CustomTranslateInfoModel alloc]initWithcustomID:oneInfo[@"custom_id"] langueKind:oneInfo[@"language"] scene:oneInfo[@"scene"] content:oneInfo[@"content"] interper:nil translateTime:oneInfo[@"custom_time"] duration:oneInfo[@"duration"] offerMoney:oneInfo[@"offer_money"] publishTime:oneInfo[@"publish_time"]  cellKind:oneInfo[@"state"]];
+            CustomTranslateInfoModel *infoModel = [[CustomTranslateInfoModel alloc]initWithcustomID:oneInfo[@"custom_id"] langueKind:oneInfo[@"language"] scene:oneInfo[@"scene"] content:oneInfo[@"content"] interper:user_id[@"user_id"] translateTime:oneInfo[@"custom_time"] duration:oneInfo[@"duration"] offerMoney:oneInfo[@"offer_money"] publishTime:oneInfo[@"publish_time"]  cellKind:oneInfo[@"state"]];
             
+            infoModel.star=oneInfo[@"star"];
             infoModel.user_id = oneInfo[@"user_id"];
-            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+            
+            
+            
 //            if(![infoModel.user_id isEqualToString:user_id[@"user_id"]]){
             
                 [self.mArr addObject:infoModel];
@@ -261,8 +265,24 @@
             
         }else{
             NSLog(@"------点击可以评价进入“订单详情页”-------");
-            YBZOrderDetailsViewController *details = [[YBZOrderDetailsViewController alloc]init];
-            [self.navigationController pushViewController:details animated:YES];
+            
+            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+            
+            NSString *star= infoModel.star;
+            
+            if(star ==NULL){
+            
+                [MBProgressHUD showNormalMessage:@"对方尚未对此订单进行评价哦"];
+            
+            }else{
+            
+                NSString *needStr=[NSString stringWithFormat:@"订单已被评价 星级:%@星",star];
+                [MBProgressHUD showNormalMessage:needStr];
+            
+            }
+            
+//            YBZOrderDetailsViewController *details = [[YBZOrderDetailsViewController alloc]init];
+//            [self.navigationController pushViewController:details animated:YES];
             
         }
     }

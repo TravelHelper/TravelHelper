@@ -11,6 +11,7 @@
 @interface FeedBackViewController : UIViewController
 
 - (instancetype)initWithtargetID:(NSString *)targetID;
+- (instancetype)initWithtargetID:(NSString *)targetID AndmassageId:(NSString *)msgId;
 
 @end
 

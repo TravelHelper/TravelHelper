@@ -311,6 +311,23 @@ usersignature:(NSString *)user_signature
     
 }
 
++(void)UpdateStarWithcustom_id:(NSString *)custom_id
+                       andStar:(NSString *)star
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure
+{
+    
+    
+    NSDictionary *dict = @{@"custom_id":custom_id,@"star":star};
+    
+    [[APIClient sharedClient] POST:@"CustomTranslate/getStar/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+}
+
 
 
 

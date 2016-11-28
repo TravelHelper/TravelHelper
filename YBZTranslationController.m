@@ -988,13 +988,15 @@
 //        NSLog(@"qwe");
 //    }];
     
-//    YBZTargetWaitingViewController *needText=[[YBZTargetWaitingViewController alloc]init];
+    YBZTargetWaitingViewController *needText=[[YBZTargetWaitingViewController alloc]initWithUserId:userID targetId:userID andType:@"语音" andIsCall:false];
 //    YBZMoneyViewController *moneyController=[[YBZMoneyViewController alloc]init];
     YBZFreeTranslationViewController *freeTransVC = [[YBZFreeTranslationViewController alloc]initWithTitle:@"免费翻译"];
 //    YBZRulesViewController *ruleVC=[[YBZRulesViewController alloc]init];
 //    freeTransVC.hidesBottomBarWhenPushed = YES;
 //    needText.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:freeTransVC animated:YES];
+    [self.navigationController presentViewController:needText animated:YES completion:^{
+        
+    }];
 //    [self.navigationController pushViewController:moneyController animated:YES];
 //    [self.navigationController presentViewController:needText animated:YES completion:^{
     

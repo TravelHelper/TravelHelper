@@ -30,6 +30,12 @@
 @property (strong, nonatomic) UILabel *stateLabel;
 
 
+
+
+@property (nonatomic,strong) UIImageView *backgrountImageView;
+
+
+
 @end
 
 @implementation YBZTargetWaitingViewController
@@ -41,6 +47,25 @@
     NSTimer *countDownTimer;
     int callCount;
     NSTimer *waterTimer;
+    NSString *mytype;
+    BOOL myIscall;
+}
+
+
+
+- (instancetype)initWithUserId:(NSString *)userId
+                      targetId:(NSString *)targetId
+                       andType:(NSString *)type
+                     andIsCall:(BOOL)isCall
+{
+    self = [super init];
+    if (self) {
+        localChar=userId;
+        targetChar=targetId;
+        mytype=type;
+        myIscall=isCall;
+    }
+    return self;
 }
 
 
@@ -48,17 +73,33 @@
     [super viewDidLoad];
     
     callCount=0;
-    localChar=@"2";
-    targetChar=@"1";
+//    localChar=@"2";
+//    targetChar=@"1";
     realCountDown=4;
 
     self.view.backgroundColor=[UIColor whiteColor];
     waterTimer=[NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(clickAnimation:) userInfo:nil repeats:YES];
-    [self.view addSubview:self.viewContainer];
-    [self.view addSubview:self.headImageView];
-    [self.view addSubview:self.cancelBtn];
-    [self.view addSubview:self.nameLabel];
-    [self.view addSubview:self.stateLabel];
+    
+    if([mytype isEqualToString:@"语音"]){
+    
+        [self.view addSubview:self.backgrountImageView];
+        [self.view addSubview:self.headImageView];
+        [self.view addSubview:self.cancelBtn];
+        [self.view addSubview:self.nameLabel];
+        [self.view addSubview:self.stateLabel];
+    
+    }else{
+    
+        [self.view addSubview:self.viewContainer];
+        [self.view addSubview:self.headImageView];
+        [self.view addSubview:self.cancelBtn];
+        [self.view addSubview:self.nameLabel];
+        [self.view addSubview:self.stateLabel];
+        
+    }
+    
+    
+    
 }
 
 //-(UIImageView *)userIconImageV
@@ -77,13 +118,38 @@
 //    self.callSession.localVideoView=[[EMCallLocalView alloc]initWithFrame:CGRectMake(40, 250, 200, 200)];
 //    [self.view addSubview:self.callSession.localVideoView];
     [super viewWillAppear:animated];
+    
+    
     self.nameLabel.text=@"Simon";
     self.stateLabel.text=@"等待对方接听中...";
+    
+    
     self.viewContainer.frame=CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     self.headImageView.frame=CGRectMake(SCREEN_WIDTH*3/8-0.019*SCREEN_WIDTH, SCREEN_HEIGHT/2-0.019*SCREEN_WIDTH-0.1*SCREEN_HEIGHT, SCREEN_WIDTH/4+0.038*SCREEN_WIDTH, SCREEN_WIDTH/4+0.038*SCREEN_WIDTH);
     self.headImageView.layer.masksToBounds=YES;
     self.headImageView.layer.cornerRadius=SCREEN_WIDTH/8+0.019*SCREEN_WIDTH;
-    self.headImageView.image=[UIImage imageNamed:@"head233"];
+    
+    
+    NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,targetChar];
+    
+    NSURL *url = [NSURL URLWithString:url2];
+    
+    UIImage *img=[UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    
+    if(img==nil){
+        UIImage *image=[UIImage imageNamed:@"head2"];
+        [self.headImageView setImage:image];
+//        [MBProgressHUD hideHUD];
+        
+    }else{
+        //            UIImage *image=[UIImage imageNamed:@"backgroundImage"];
+        [self.headImageView setImage:img];
+//        [MBProgressHUD hideHUD];
+        
+    }
+    
+    
+//    self.headImageView.image=[UIImage imageNamed:@"head233"];
 //    self.headImageView.backgroundColor=[UIColor greenColor];
     self.nameLabel.frame=CGRectMake(0.1*SCREEN_WIDTH, SCREEN_HEIGHT/2-0.019*SCREEN_WIDTH-0.1*SCREEN_HEIGHT+SCREEN_WIDTH/4+0.038*SCREEN_WIDTH+50, 0.8*SCREEN_WIDTH, 0.06*SCREEN_HEIGHT);
     self.stateLabel.frame=CGRectMake(0.1*SCREEN_WIDTH, SCREEN_HEIGHT/2-0.019*SCREEN_WIDTH-0.1*SCREEN_HEIGHT+SCREEN_WIDTH/4+0.038*SCREEN_WIDTH+50+0.06*SCREEN_HEIGHT+10, 0.8*SCREEN_WIDTH, 0.06*SCREEN_HEIGHT);
@@ -159,7 +225,18 @@
     EMError *error2 = [[EMClient sharedClient] loginWithUsername:localChar password:@"111111"];
     if (!error2) {
         NSLog(@"登录成功");
-        [self sendbtnclick];
+        if(myIscall==true){
+            
+            if([mytype isEqualToString:@"语音"]){
+                
+                [self sendVoiceBtnclick];
+                
+            }else{
+                [self sendbtnclick];
+            }
+            
+        }
+
     }
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -276,6 +353,32 @@
     
 }
 
+-(void)sendVoiceBtnclick{
+    
+    NSLog(@"发送音频通知!");
+    
+    [MBProgressHUD showMessage:@"请求发送，等待接听"];
+    
+    EMError *error = nil;
+    //    startVoiceCall
+    [[EMClient sharedClient].callManager startVoiceCall:targetChar completion:^(EMCallSession *aCallSession, EMError *aError) {
+        //        completionBlock(aCallSession, aError);
+        
+        if (!error){
+            //1.对方窗口
+            self.callSession=aCallSession;
+            //            aCallSession.remoteVideoView=[[EMCallRemoteView alloc]initWithFrame:CGRectMake(40, 64, 200, 200)];
+            //            [self.view addSubview:aCallSession.remoteVideoView];
+            //            aCallSession.localVideoView=[[EMCallLocalView alloc]initWithFrame:CGRectMake(40, 250, 200, 200)];
+            //            [self.view addSubview:aCallSession.localVideoView];
+        }
+        
+    }];
+    
+    
+}
+
+
 -(UIImageView *)headImageView{
 
     if(!_headImageView){
@@ -340,6 +443,22 @@
     return _stateLabel;
 
 }
+
+-(UIImageView *)backgrountImageView{
+
+    if(!_backgrountImageView){
+    
+        _backgrountImageView=[[UIImageView alloc]initWithFrame:self.view.bounds];
+        UIImage *image=[UIImage imageNamed:@"通话背景"];
+        _backgrountImageView.image=image;
+    
+    }
+    return _backgrountImageView;
+
+}
+
+
+
 
 -(void)cancelBtnClick{
     [self dismissViewControllerAnimated:YES completion:^{

@@ -46,6 +46,7 @@
 
     float starValue;
     MBProgressHUD *HUD;
+    NSString *myMsgId;
 }
 
 
@@ -53,10 +54,23 @@
 {
     self = [super init];
     if (self) {
+        myMsgId=nil;
         self.target_id=targetID;
     }
     return self;
 }
+
+- (instancetype)initWithtargetID:(NSString *)targetID AndmassageId:(NSString *)msgId
+{
+    self = [super init];
+    if (self) {
+        self.target_id=targetID;
+        myMsgId=msgId;
+    }
+    return self;
+}
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -230,19 +244,19 @@
 }
 
 -(void)sendClick{
-
-    NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-    NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
-    
-    
     NSString *stringFloat = [NSString stringWithFormat:@"%.1f",starValue*10];
     
+       [MBProgressHUD showMessage:@"评价中..."];
+
     
-    
-//    NSString *messageContent=[NSString stringWithFormat:@"当前评价分数为:%@颗星星，是否确认？",stringFloat];
-//    [UIAlertController showAlertAtViewController:self title:@"提示" message:messageContent cancelTitle:@"确定" confirmTitle:@"取消" cancelHandler:^(UIAlertAction *action) {
-    [MBProgressHUD showMessage:@"评价中..."];
-        [WebAgent UpdateUserMessageWithID:mseeage_id andStar:stringFloat andMoney:@"0" success:^(id responseObject) {
+    if(myMsgId==nil){
+        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+        NSString *mseeage_id = [userdefault objectForKey:@"messageId"];
+        
+        myMsgId=mseeage_id;
+        
+        
+        [WebAgent UpdateUserMessageWithID:myMsgId andStar:stringFloat andMoney:@"0" success:^(id responseObject) {
             
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -256,7 +270,30 @@
             [MBProgressHUD showError:@"评价失败,请检查网络"];
         }];
         
+
+       
+    }else{
+    
+    //对定制的评价界面（新写一个接口）
+        [WebAgent UpdateStarWithcustom_id:myMsgId andStar:stringFloat success:^(id responseObject) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showSuccess:@"评价成功！返回上一页"];
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        } failure:^(NSError *error) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showError:@"评价失败,请检查网络"];
+        }];
         
+        
+        
+        
+    
+    }
+    
+   
+    
+    
         
         
         
