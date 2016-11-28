@@ -10,4 +10,9 @@
 
 @interface YBZVideocontentViewController : UIViewController
 
+- (instancetype)initWithUserId:(NSString *)userId
+                      targetId:(NSString *)targetId
+                       andType:(NSString *)type
+                     andIsCall:(BOOL)isCall;
+
 @end

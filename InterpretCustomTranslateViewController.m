@@ -95,11 +95,11 @@
             infoModel.user_id = oneInfo[@"user_id"];
             NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
             NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-//            if(![infoModel.user_id isEqualToString:user_id[@"user_id"]]){
+            if(![infoModel.user_id isEqualToString:user_id[@"user_id"]]){
             
                 [self.mArr addObject:infoModel];
 
-//            }
+            }
             
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -186,6 +186,9 @@
                         
                     }];
                     
+                    
+                    [self.mArr removeObjectAtIndex:indexPath.row];
+                    [self.mainTableView reloadData];
 
                 
                 }

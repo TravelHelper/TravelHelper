@@ -39,16 +39,22 @@
     int realCountDown;
     NSTimer *countDownTimer;
     int callCount;
+    NSString *mytype;
+    BOOL myIscall;
 }
 //930258
 
 - (instancetype)initWithUserId:(NSString *)userId
                       targetId:(NSString *)targetId
+                       andType:(NSString *)type
+                     andIsCall:(BOOL)isCall
 {
     self = [super init];
     if (self) {
         localChar=userId;
         targetChar=targetId;
+        mytype=type;
+        myIscall=isCall;
     }
     return self;
 }
@@ -57,8 +63,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     callCount=0;
-    localChar=@"1";
-    targetChar=@"2";
+//    localChar=@"1";
+//    targetChar=@"2";
     
     realCountDown=4;
     
@@ -75,6 +81,20 @@
     EMError *error2 = [[EMClient sharedClient] loginWithUsername:localChar password:@"111111"];
     if (!error2) {
         NSLog(@"登录成功");
+        
+        if(myIscall==true){
+        
+            if([mytype isEqualToString:@"语音"]){
+            
+                [self sendVoiceBtnclick];
+            
+            }else{
+                [self sendbtnclick];
+            }
+        
+        }
+        
+        
     }
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -97,6 +117,9 @@
     [self.view addSubview:self.pauseVideo];
     [self.view addSubview:self.changeCamara];
 //    [self.view addSubview:self.imageView];
+    
+//    [self sendVoiceBtnclick];
+//    [self sendbtnclick];
     
     
 }
@@ -302,7 +325,7 @@
         }
         
     }];
-    
+   
     
 }
 
@@ -431,18 +454,18 @@
     self.callSession=aSession;
     if(aReason==EMCallEndReasonFailed){
         
-        if(callCount<=5){
-            callCount++;
+//        if(callCount<=5){
+//            callCount++;
             secondsCountDown=realCountDown;
             countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeFireMethod) userInfo:nil repeats:YES];
 
             
-        }else{
-            callCount=0;
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showError:@"请求超时，请重试"];
-            
-        }
+//        }else{
+//            callCount=0;
+//            [MBProgressHUD hideHUD];
+//            [MBProgressHUD showError:@"请求超时，请重试"];
+//            
+//        }
         
         
     }else{

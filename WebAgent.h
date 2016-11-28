@@ -10,6 +10,13 @@
 
 @interface WebAgent : NSObject
 
+
+
++(void)UpdateStarWithcustom_id:(NSString *)custom_id
+                       andStar:(NSString *)star
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure;
+
 //money:
 
 
