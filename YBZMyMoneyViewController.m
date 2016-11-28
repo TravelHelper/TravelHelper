@@ -29,6 +29,10 @@
     NSArray *labelTextArr;
     NSString *signNumber;
     NSString *userID;
+    UILabel *signLabel;
+    UILabel *shareLabel;
+    UILabel *shareTextLabel;
+    UILabel *signTextLabel;
     BOOL canClick;
     BOOL allowSign;
     NSDictionary *pushDic;
@@ -42,6 +46,10 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [self loadDataFromWeb];
+}
+
 -(void)loadDataFromWeb{
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
@@ -52,11 +60,13 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         if ([dic[@"allow"]isEqualToString: @"0"]) {
             allowSign = NO;
+            signTextLabel.text = @"已签到";
         }else if([dic[@"allow"]isEqualToString: @"1"]){
             allowSign = YES;
+            signTextLabel.text = @"签到";
         }
         signNumber = dic[@"data"];
-        [self getMissionLabelAndView];
+        signLabel.text = signNumber;
 
 
     } failure:^(NSError *error) {
@@ -84,7 +94,8 @@
     self.title = @"电子钱包";
     labelTextArr = @[@"余额",@"充值",@"规则"];
     [self getThreeBtnView];
-    [self loadDataFromWeb];
+    [self getMissionLabelAndView];
+
 
 }
 
@@ -126,25 +137,23 @@
     [shareBtn setBackgroundImage:[UIImage imageNamed:@"分享"] forState:UIControlStateNormal];
     [missionView addSubview:shareBtn];
     
-    UILabel *signLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.23*SCREEN_WIDTH, 0.443*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH)];
-    signLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
-    signLabel.textColor = UIColorFromRGB(0x747474);
-    signLabel.textAlignment = NSTextAlignmentCenter;
-    if (allowSign == YES) {
-        signLabel.text = @"签到";
-    }else{
-        signLabel.text = @"已签到";
-    }
-    signLabel.tag = 100;
-    [missionView addSubview:signLabel];
+    signTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.23*SCREEN_WIDTH, 0.443*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH)];
+    signTextLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+    signTextLabel.textColor = UIColorFromRGB(0x747474);
+    signTextLabel.textAlignment = NSTextAlignmentCenter;
+ 
+    signTextLabel.text = @"签到";
+ 
+    signTextLabel.tag = 100;
+    [missionView addSubview:signTextLabel];
     
-    UILabel *shareLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.63*SCREEN_WIDTH, 0.443*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH)];
-    shareLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
-    shareLabel.textColor = UIColorFromRGB(0x747474);
-    shareLabel.textAlignment = NSTextAlignmentCenter;
-    shareLabel.text = @"分享";
-    shareLabel.tag = 101;
-    [missionView addSubview:shareLabel];
+   shareTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.63*SCREEN_WIDTH, 0.443*missionView.bounds.size.height, 0.14*SCREEN_WIDTH, 0.14*SCREEN_WIDTH)];
+    shareTextLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
+    shareTextLabel.textColor = UIColorFromRGB(0x747474);
+    shareTextLabel.textAlignment = NSTextAlignmentCenter;
+    shareTextLabel.text = @"分享";
+    shareTextLabel.tag = 101;
+    [missionView addSubview:shareTextLabel];
 }
 
 
@@ -157,15 +166,15 @@
     imgView2.image = [UIImage imageNamed:@"增加钱币"];
     [view addSubview:imgView2];
     
-    UILabel *signLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.305*SCREEN_WIDTH,0.725*view.bounds.size.height, 0.045*SCREEN_WIDTH, 0.045*SCREEN_WIDTH)];
+    signLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.305*SCREEN_WIDTH,0.725*view.bounds.size.height, 0.045*SCREEN_WIDTH, 0.045*SCREEN_WIDTH)];
     signLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
     signLabel.textColor = [UIColor redColor];
-    signLabel.text = number;
+    signLabel.text = @"5";
     signLabel.textAlignment = NSTextAlignmentLeft;
     
     [view addSubview:signLabel];
     
-    UILabel *shareLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.705*SCREEN_WIDTH,0.725*view.bounds.size.height, 0.045*SCREEN_WIDTH, 0.045*SCREEN_WIDTH)];
+    shareLabel = [[UILabel alloc]initWithFrame:CGRectMake(0.705*SCREEN_WIDTH,0.725*view.bounds.size.height, 0.045*SCREEN_WIDTH, 0.045*SCREEN_WIDTH)];
     shareLabel.font = [UIFont systemFontOfSize:0.034*SCREEN_WIDTH];
     shareLabel.textColor = [UIColor redColor];
     shareLabel.text = @"5";
@@ -377,6 +386,8 @@
                                 label.text = @"已签到";
                             }
                         }
+                        [self loadDataFromWeb];
+
                     } failure:^(NSError *error) {
                         
                     }];

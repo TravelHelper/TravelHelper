@@ -20,6 +20,7 @@
 #import "YBZSendRewardViewController.h"
 #import "YBZCustomPublishViewController.h"
 #import "FeedBackViewController.h"
+#import "YBZPrepareViewController.h"
 
 
 @interface UesrCustomTranslateViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -59,7 +60,7 @@
 //                       options:UIViewAnimationOptionCurveEaseIn //any animation
 //                    animations:^ { [self.view addSubview:self.mainTableView]; }
 //                    completion:nil];
-    
+    [self loadDate];
     
 
 }
@@ -67,7 +68,7 @@
 -(void)viewDidAppear:(BOOL)animated{
 
     [super viewDidAppear:animated];
-    [self loadDate];
+    
 
 }
 
@@ -119,6 +120,7 @@
             
             CustomTranslateInfoModel *infoModel = [[CustomTranslateInfoModel alloc]initWithcustomID:oneInfo[@"custom_id"] langueKind:oneInfo[@"language"] scene:oneInfo[@"scene"] content:oneInfo[@"content"] interper:oneInfo[@"accept_id"] translateTime:oneInfo[@"custom_time"] duration:oneInfo[@"duration"] offerMoney:oneInfo[@"offer_money"] publishTime:oneInfo[@"publish_time"]  cellKind:oneInfo[@"state"]];
             infoModel.star= oneInfo[@"star"];
+            infoModel.proceedState=oneInfo[@"proceed_state"];
             [self.mArr addObject:infoModel];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -255,7 +257,13 @@
                         [WebAgent custom_id:cell.customID state:@"2" accept_id:user_id[@"user_id"] success:^(id responseObject) {
                             NSLog(@"cell reset  success ");
                             
-                            [self waitBtnClick];
+                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                            
+                            NSString *typeStr=infoModel.langueKind;
+                            
+                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState];
+                            [self.navigationController pushViewController:prepareController animated:YES];
+//                            [self waitBtnClick];
                             
                         } failure:^(NSError *error) {
                             NSLog(@"%@",error);
@@ -279,7 +287,15 @@
         }else if ([cell.infoModel.cellKind isEqualToString:@"2"]) {
             NSLog(@"---2---点击进入“定制进行页面”----------");
             
-            [self textClick];
+//            [self textClick];
+            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+            
+            NSString *typeStr=infoModel.langueKind;
+            
+            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState];
+            [self.navigationController pushViewController:prepareController animated:YES];
+            
+            
             
             
         }else{

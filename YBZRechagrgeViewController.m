@@ -65,8 +65,22 @@
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(5,length)];
     
     [self getViewWithPicName:@"钱币详情" TitleText:str needBtn:nil needHub:NO WithTarget:nil AndX:0 AndY:64+0.0026*SCREEN_HEIGHT AndHeight:0.1284*SCREEN_HEIGHT addIntoView:self.view];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(addBiNotification:) name:@"addBiNotification" object:nil];
+
+
     
-    
+}
+
+-(void)addBiNotification:(NSNotification *)not{
+    NSString *moneyInfo = not.object[@"money"];
+
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [WebAgent getBiWithID:user_id[@"user_id"] andPurchaseCount:moneyInfo andSource_id:@"0006" success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 

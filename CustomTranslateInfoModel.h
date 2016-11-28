@@ -23,7 +23,7 @@
 @property(nonatomic ,strong)NSString *user_id;
 
 @property(nonatomic ,strong)NSString *star;
-
+@property(nonatomic ,strong)NSString *proceedState;
 
 - (instancetype)initWithcustomID:(NSString *)customID
                       langueKind:(NSString *)langueKind
