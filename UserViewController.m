@@ -7,6 +7,7 @@
 //
 
 #import "UserViewController.h"
+#import "YBZPrepareViewController.h"
 #import "UserTableViewCell.h"
 #import "YBZUserInfoViewController.h"
 #import "YBZUserOrderViewController.h"
@@ -623,7 +624,7 @@
                     _avatarImag.image= [UIImage imageNamed:@"collect"];
                     [cell addSubview:_avatarImag];
                    
-                    cell.nameLable.text = @"我的收藏";
+                    cell.nameLable.text = @"我的定制";
                      return cell;
                 }
                 else
@@ -900,7 +901,7 @@
                         imageView.image= [UIImage imageNamed:@"collect"];
                         [cell addSubview:imageView];
                         
-                        cell.nameLable.text = @"我的收藏";
+                        cell.nameLable.text = @"我的定制";
                         return cell;
                     }
                     else
@@ -1029,10 +1030,6 @@
     }
     if ( section == 1 && row==1) {
         [self intoInfoSettingClick];
-//        YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
-//        myVC.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:myVC animated:YES];
-        
     }
     if(section==1&&row==2){
         [self intoInfoSettingClick];
@@ -1125,11 +1122,8 @@
         }
         if ( section == 2 && row==1) {
            
-            [MBProgressHUD showError:@"敬请期待下次更新"];
-//            [self.view addSubview:self.alertLabel];
-//            YBZMyFavoriteViewController *myVC = [[YBZMyFavoriteViewController alloc]init];
-//            myVC.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:myVC animated:YES];
+            YBZPrepareViewController *prepareVC = [[YBZPrepareViewController alloc]initWithType:@"0000" AndState:@"0001"];
+            [self.navigationController pushViewController:prepareVC animated:YES];
             
         }
         if ( section == 2 && row==2) {
@@ -1342,7 +1336,6 @@
     
     if (!_translatorTableView) {
         _translatorTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
-        
         _translatorTableView.delegate = self;
         _translatorTableView.dataSource = self;
         

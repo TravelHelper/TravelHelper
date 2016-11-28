@@ -46,6 +46,10 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [self loadDataFromWeb];
+}
+
 -(void)loadDataFromWeb{
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
@@ -90,7 +94,6 @@
     self.title = @"电子钱包";
     labelTextArr = @[@"余额",@"充值",@"规则"];
     [self getThreeBtnView];
-    [self loadDataFromWeb];
     [self getMissionLabelAndView];
 
 

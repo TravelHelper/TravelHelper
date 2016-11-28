@@ -115,6 +115,7 @@
 		7D28E3591D6DAAB600B51EF7 /* QuickTransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D28E3581D6DAAB600B51EF7 /* QuickTransViewController.m */; };
 		7D2DD8431DD9883100B80949 /* YBZRestMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */; };
 		7D2DD8461DD9885C00B80949 /* YBZRechagrgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */; };
+		7D30013B1DE81F3800DEE742 /* YBZPrepareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D30013A1DE81F3800DEE742 /* YBZPrepareViewController.m */; };
 		7D362AD31DE6C49400C7CF40 /* YBZAppealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D362AD21DE6C49400C7CF40 /* YBZAppealViewController.m */; };
 		7D3E99651D6D420200F13F42 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99641D6D420200F13F42 /* Model.m */; };
 		7D3E996C1D6D420900F13F42 /* Btn_TableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E99671D6D420900F13F42 /* Btn_TableView.m */; };
@@ -533,6 +534,8 @@
 		7D2DD8421DD9883100B80949 /* YBZRestMoneyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRestMoneyViewController.m; sourceTree = "<group>"; };
 		7D2DD8441DD9885C00B80949 /* YBZRechagrgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRechagrgeViewController.h; sourceTree = "<group>"; };
 		7D2DD8451DD9885C00B80949 /* YBZRechagrgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRechagrgeViewController.m; sourceTree = "<group>"; };
+		7D3001391DE81F3800DEE742 /* YBZPrepareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZPrepareViewController.h; sourceTree = "<group>"; };
+		7D30013A1DE81F3800DEE742 /* YBZPrepareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZPrepareViewController.m; sourceTree = "<group>"; };
 		7D362AD11DE6C49400C7CF40 /* YBZAppealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZAppealViewController.h; sourceTree = "<group>"; };
 		7D362AD21DE6C49400C7CF40 /* YBZAppealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZAppealViewController.m; sourceTree = "<group>"; };
 		7D3E99631D6D420200F13F42 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
@@ -1632,6 +1635,8 @@
 				936BFC0E1D92ACF80017897F /* WaitInterpreterViewController.m */,
 				FE08A6121DD4147D00E37B88 /* YBZMyCustomViewController.h */,
 				FE08A6131DD4147D00E37B88 /* YBZMyCustomViewController.m */,
+				7D3001391DE81F3800DEE742 /* YBZPrepareViewController.h */,
+				7D30013A1DE81F3800DEE742 /* YBZPrepareViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2601,6 +2606,7 @@
 				A03ED0F61D2E3F1700BD9C0A /* YBZProductDetailInfoViewController.m in Sources */,
 				5322B8181D7E6120004B8C87 /* SDWebImagePrefetcher.m in Sources */,
 				7D3E99AC1D6D42D700F13F42 /* YBZSendRewardViewController.m in Sources */,
+				7D30013B1DE81F3800DEE742 /* YBZPrepareViewController.m in Sources */,
 				5322B8161D7E6120004B8C87 /* SDWebImageDownloaderOperation.m in Sources */,
 				1B0513921D3F5DAC00F05C9D /* AFNetworkActivityIndicatorManager.m in Sources */,
 				FEE492141D73D9DA00CCED58 /* UIAlertController+SZYKit.m in Sources */,

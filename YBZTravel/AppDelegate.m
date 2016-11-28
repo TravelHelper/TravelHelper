@@ -271,16 +271,17 @@
             NSLog(@"购买成功！");
             NSDictionary *dicReceipt= dic[@"receipt"];
             NSDictionary *dicInApp=[dicReceipt[@"in_app"] firstObject];
-            NSString *productIdentifier= dicInApp[@"product_id"];//读取产品标识
-            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-            NSDictionary *user_ID = [userdefault objectForKey:@"user_id"];
-            NSString *user_id = user_ID[@"user_id"];
+            NSString *productIdentifier= dicInApp[@"product_id"];//读取产品标识            
             int money = [productIdentifier intValue];
-            [WebAgent getBiWithID:user_id andPurchaseCount:[NSString stringWithFormat:@"%d",money] andSource_id:@"0006" success:^(id responseObject) {
-                
-            } failure:^(NSError *error) {
-                
-            }];
+            if (money == 1 ) {
+                NSDictionary *dicReceipt= dic[@"receipt"];
+                NSDictionary *dicInApp=[dicReceipt[@"in_app"] lastObject];
+                NSString *productIdentifier= dicInApp[@"product_id"];//读取产品标识
+                money = [productIdentifier intValue];
+
+            }
+            NSDictionary *dictionary = @{@"money":[NSString stringWithFormat:@"%d" ,money]};
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"addBiNotification" object:dictionary];
             
             //        NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
             //        if ([productIdentifier isEqualToString:@"001"]) {
