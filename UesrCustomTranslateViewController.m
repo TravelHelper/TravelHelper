@@ -261,7 +261,7 @@
                             
                             NSString *typeStr=infoModel.langueKind;
                             
-                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState];
+                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:nil];
                             [self.navigationController pushViewController:prepareController animated:YES];
 //                            [self waitBtnClick];
                             
@@ -292,7 +292,7 @@
             
             NSString *typeStr=infoModel.langueKind;
             
-            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState];
+            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:nil];
             [self.navigationController pushViewController:prepareController animated:YES];
             
             
