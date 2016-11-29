@@ -92,14 +92,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"准备";
     [self addAllControls];
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-//    NSString *hasKye = [userinfo stringForKey:dataInfo[@"mission_id"]];
-    id hasKye=[userinfo objectForKey:dataInfo[@"mission_id"]];
-    if (!hasKye)
-    {
-        NSDictionary *infodic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
-        secondTimeInfo = infodic[@"second_time"];
-    }
+
 //    if (hasKye.length != 0) {
 //        NSDictionary *infodic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
 //        secondTimeInfo = infodic[@"second_time"];
@@ -289,6 +282,16 @@
     firstTime.frame = CGRectMake(firstLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, CGRectGetMaxY(firstLabelFrame)+0.0089*SCREEN_HEIGHT, SCREEN_WIDTH/3*2, 0.03175*SCREEN_WIDTH);
     firstTime.font = [UIFont systemFontOfSize:0.03175*SCREEN_WIDTH];
     [self.view addSubview:firstTime];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    //    NSString *hasKye = [userinfo stringForKey:dataInfo[@"mission_id"]];
+    NSString *hasKye=[userinfo stringForKey:dataInfo[@"mission_id"]];
+    if (hasKye != nil)
+    {
+        NSDictionary *infodic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
+        secondTimeInfo = infodic[@"second_time"];
+    }else{
+        secondTimeInfo = @"对方未进入";
+    }
     secondTime = [[UILabel alloc]init];
     secondTime.textColor = UIColorFromRGB(0xC7C7C7);
     secondTime.backgroundColor = [UIColor clearColor];
