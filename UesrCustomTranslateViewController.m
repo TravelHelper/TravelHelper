@@ -175,20 +175,29 @@
     
     if ([cell.infoModel.cellKind isEqualToString:@"0"]) {
         
-        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"是否需要删除？" cancelTitle:@"取消" confirmTitle:@"删除" cancelHandler:^(UIAlertAction *action) {
+        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"是否需要删除(返回悬赏)？" cancelTitle:@"取消" confirmTitle:@"删除" cancelHandler:^(UIAlertAction *action) {
             
         } confirmHandler:^(UIAlertAction *action) {
             [cell removeFromSuperview];
             [self.mArr removeObjectAtIndex:indexPath.row];
             [self.mainTableView reloadData];
-            
-            [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
-                NSLog(@"have delected  !!!");
-                [MBProgressHUD showSuccess:@"删除成功！"];
+            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+            [WebAgent getBiWithID:user_id[@"user_id"] andPurchaseCount:infoModel.offerMoney andSource_id:@"0007" success:^(id responseObject) {
+                [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
+                    NSLog(@"have delected  !!!");
+                    [MBProgressHUD showSuccess:@"删除成功,悬赏已返还"];
+                } failure:^(NSError *error) {
+                    NSLog(@"%@",error);
+                    
+                }];
+
             } failure:^(NSError *error) {
-                NSLog(@"%@",error);
                 [MBProgressHUD showError:@"删除失败,请检查网络"];
             }];
+            
+            
         }];
         
     }else{
@@ -210,7 +219,33 @@
                     
                     if([tag isEqualToString:@"timeout"]){
                         
-                        [MBProgressHUD showError:@"请求已过时很久"];
+//                        [MBProgressHUD showError:@"请求已过时很久"];
+                        
+                        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"订单已过期是否删除？" cancelTitle:@"取消" confirmTitle:@"删除" cancelHandler:^(UIAlertAction *action) {
+                            
+                        } confirmHandler:^(UIAlertAction *action) {
+                            [cell removeFromSuperview];
+                            [self.mArr removeObjectAtIndex:indexPath.row];
+                            [self.mainTableView reloadData];
+                            
+                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+                            [WebAgent getBiWithID:user_id[@"user_id"] andPurchaseCount:infoModel.offerMoney andSource_id:@"0007" success:^(id responseObject) {
+                                [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
+                                    NSLog(@"have delected  !!!");
+                                    [MBProgressHUD showSuccess:@"删除成功,悬赏已返还"];
+                                } failure:^(NSError *error) {
+                                    NSLog(@"%@",error);
+                                    
+                                }];
+                                
+                            } failure:^(NSError *error) {
+                                [MBProgressHUD showError:@"删除失败,请检查网络"];
+                            }];
+                        }];
+ 
+                        
                     
                     }else if([tag isEqualToString:@"connecttimeout"]){
                         
@@ -255,7 +290,7 @@
                         NSLog(@"-----------进入等候页------");
                         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-                        [WebAgent updateCustomTranState:cell.customID success:^(id responseObject) {
+                        [WebAgent updateCustomTranState:cell.customID andUser_id:user_id[@"user_id"] success:^(id responseObject) {
                             NSData *data = [[NSData alloc]initWithData:responseObject];
                             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                             NSDictionary *toneeddic = dic[@"data"];
@@ -271,8 +306,9 @@
                             needDic[@"custom_time"]=infoModel.translateTime;
                             needDic[@"duration"]=infoModel.duration;
                             NSString *typeStr=infoModel.scene;
-                            
-                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:needDic];
+                            needDic[@"success"]=dic[@"success"];
+                            needDic[@"mission_id"]=infoModel.customID;
+                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
                             [self.navigationController pushViewController:prepareController animated:YES];
                             
                         } failure:^(NSError *error) {
@@ -315,31 +351,27 @@
             
 //            NSString *typeStr=infoModel.scene;
             
-            [WebAgent updateCustomTranState:infoModel.customID success:^(id responseObject) {
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+            [WebAgent updateCustomTranState:cell.customID andUser_id:user_id[@"user_id"] success:^(id responseObject) {
                 NSData *data = [[NSData alloc]initWithData:responseObject];
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSDictionary *toneeddic = dic[@"data"];
                 
-                
                 NSString *firstTime=toneeddic[@"first_time"];
-                
                 
                 CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
                 
                 NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
-                if(dic[@"data"]==nil){
-                    needDic[@"first_time"]=infoModel.firstTime;
-                }else{
-                    needDic[@"first_time"]=firstTime;
-                }
-
-                needDic[@"user_name"]=infoModel.customID;
                 
+                needDic[@"user_name"]=infoModel.customID;
+                needDic[@"first_time"]=firstTime;
                 needDic[@"custom_time"]=infoModel.translateTime;
                 needDic[@"duration"]=infoModel.duration;
                 NSString *typeStr=infoModel.scene;
-                
-                YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:infoModel.proceedState AndInfo:needDic];
+                needDic[@"success"]=dic[@"success"];
+                needDic[@"mission_id"]=infoModel.customID;
+                YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
                 [self.navigationController pushViewController:prepareController animated:YES];
                 
             } failure:^(NSError *error) {
