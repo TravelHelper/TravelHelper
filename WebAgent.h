@@ -349,9 +349,9 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                              success:(void(^)(id responseObject))success
                              failure:(void (^)(NSError *error))failure;
 +(void)updateCustomTranState:(NSString *)custom_id
+                  andUser_id:(NSString *)user_id
                      success:(void (^)(id responseObject))success
                      failure:(void (^)(NSError *error))failure;
-
 +(void)getNameWithID:(NSString *)user_id
              success:(void (^)(id responseObject))success
              failure:(void (^)(NSError *error))failure;

@@ -17,6 +17,7 @@
 #import "YBZCountDownViewController.h"
 #import "YBZVideocontentViewController.h"
 #import "YBZOrderDetailsViewController.h"
+#import "YBZPrepareViewController.h"
 @interface YBZMyCustomViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(nonatomic , strong)UITableView *mainTableView;
@@ -96,10 +97,13 @@
             
             CustomTranslateInfoModel *infoModel = [[CustomTranslateInfoModel alloc]initWithcustomID:oneInfo[@"custom_id"] langueKind:oneInfo[@"language"] scene:oneInfo[@"scene"] content:oneInfo[@"content"] interper:user_id[@"user_id"] translateTime:oneInfo[@"custom_time"] duration:oneInfo[@"duration"] offerMoney:oneInfo[@"offer_money"] publishTime:oneInfo[@"publish_time"]  cellKind:oneInfo[@"state"]];
             
-            infoModel.star=oneInfo[@"star"];
+//            infoModel.star=oneInfo[@"star"];
             infoModel.user_id = oneInfo[@"user_id"];
             
-            
+            infoModel.star= oneInfo[@"star"];
+            infoModel.proceedState=oneInfo[@"proceed_state"];
+            infoModel.firstTime=oneInfo[@"first_time"];
+
             
 //            if(![infoModel.user_id isEqualToString:user_id[@"user_id"]]){
             
@@ -155,21 +159,21 @@
     
     if ([cell.infoModel.cellKind isEqualToString:@"0"]) {
         
-        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"是否需要删除？" cancelTitle:@"取消" confirmTitle:@"删除" cancelHandler:^(UIAlertAction *action) {
-            
-        } confirmHandler:^(UIAlertAction *action) {
-            [cell removeFromSuperview];
-            [self.mArr removeObjectAtIndex:indexPath.row];
-            [self.mainTableView reloadData];
-            
-            [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
-                NSLog(@"have delected  !!!");
-                [MBProgressHUD showSuccess:@"删除成功！"];
-            } failure:^(NSError *error) {
-                NSLog(@"%@",error);
-                [MBProgressHUD showError:@"删除失败,请检查网络"];
-            }];
-        }];
+//        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"是否需要删除？" cancelTitle:@"取消" confirmTitle:@"删除" cancelHandler:^(UIAlertAction *action) {
+//            
+//        } confirmHandler:^(UIAlertAction *action) {
+//            [cell removeFromSuperview];
+//            [self.mArr removeObjectAtIndex:indexPath.row];
+//            [self.mainTableView reloadData];
+//            
+//            [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
+//                NSLog(@"have delected  !!!");
+//                [MBProgressHUD showSuccess:@"删除成功！"];
+//            } failure:^(NSError *error) {
+//                NSLog(@"%@",error);
+//                [MBProgressHUD showError:@"删除失败,请检查网络"];
+//            }];
+//        }];
         
     }else{
         if ([cell.infoModel.cellKind isEqualToString:@"1"]) {
@@ -228,22 +232,67 @@
                         [UIAlertController showAlertAtViewController:self title:@"温馨提示" message:@"请在开始15分钟内进入等候页" confirmTitle:@"ok" confirmHandler:^(UIAlertAction *action) {
                             //
                         }];
+                        
+                        
+                        
+                        [UIAlertController showAlertAtViewController:self title:@"" message:@"" cancelTitle:@"" confirmTitle:@"" cancelHandler:^(UIAlertAction *action) {
+                            
+                        } confirmHandler:^(UIAlertAction *action) {
+                            
+                        }];
+                        
                         NSLog(@"-------请在开始15分钟内进入等候页------");
+                        
+                        
+                        
+                        
+                        
                         
                     }else if([tag isEqualToString:@"comein"]){
                         
                         NSLog(@"-----------进入等候页------");
                         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+                        [WebAgent updateCustomTranState:cell.customID andUser_id:user_id[@"user_id"] success:^(id responseObject) {
+                            NSData *data = [[NSData alloc]initWithData:responseObject];
+                            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                            NSDictionary *toneeddic = dic[@"data"];
+                            
+                            NSString *firstTime=toneeddic[@"first_time"];
+                            
+                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                            
+                            NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                            
+                            needDic[@"user_name"]=infoModel.customID;
+                            needDic[@"first_time"]=firstTime;
+                            needDic[@"custom_time"]=infoModel.translateTime;
+                            needDic[@"duration"]=infoModel.duration;
+                            NSString *typeStr=infoModel.scene;
+                            needDic[@"success"]=dic[@"success"];
+                            needDic[@"mission_id"]=infoModel.customID;
+                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
+                            [self.navigationController pushViewController:prepareController animated:YES];
+                            
+                        } failure:^(NSError *error) {
+                            [MBProgressHUD showError:@"等候页面进入失败，请重试"];
+                        }];
+                        
+                        
                         [WebAgent custom_id:cell.customID state:@"2" accept_id:user_id[@"user_id"] success:^(id responseObject) {
                             NSLog(@"cell reset  success ");
                             
-                            [self waitBtnClick];
+                            //                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                            
+                            
+                            //                            [self waitBtnClick];
                             
                         } failure:^(NSError *error) {
                             NSLog(@"%@",error);
-                            [MBProgressHUD showError:@"等候页面进入失败，请重试"];
+                            
                         }];
+                        
+                        
                         
                     }else{
                         
@@ -255,12 +304,45 @@
                 NSLog(@"%@",error);
                 [MBProgressHUD showError:@"网络不稳定，请重试"];
             }];
+
             
             
         }else if ([cell.infoModel.cellKind isEqualToString:@"2"]) {
             NSLog(@"---2---点击进入“定制进行页面”----------");
             
-            [self textClick];
+            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+            
+            //            NSString *typeStr=infoModel.scene;
+            
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+            [WebAgent updateCustomTranState:cell.customID andUser_id:user_id[@"user_id"] success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSDictionary *toneeddic = dic[@"data"];
+                
+                NSString *firstTime=toneeddic[@"first_time"];
+                
+                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                
+                NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                
+                needDic[@"user_name"]=infoModel.customID;
+                needDic[@"first_time"]=firstTime;
+                needDic[@"custom_time"]=infoModel.translateTime;
+                needDic[@"duration"]=infoModel.duration;
+                NSString *typeStr=infoModel.scene;
+                needDic[@"success"]=dic[@"success"];
+                needDic[@"mission_id"]=infoModel.customID;
+                YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
+                [self.navigationController pushViewController:prepareController animated:YES];
+                
+            } failure:^(NSError *error) {
+                [MBProgressHUD showError:@"等候页面进入失败，请重试"];
+            }];
+            
+            
+
             
             
         }else{
