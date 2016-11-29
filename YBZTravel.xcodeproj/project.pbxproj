@@ -1618,7 +1618,6 @@
 			isa = PBXGroup;
 			children = (
 				93ABF8581D8EE3050027506F /* Model */,
-				93ABF8571D8EE2FC0027506F /* View */,
 				93ABF8561D8EE2ED0027506F /* Controller */,
 			);
 			name = CustomTranslate;
@@ -1627,6 +1626,7 @@
 		93ABF8561D8EE2ED0027506F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				93ABF8571D8EE2FC0027506F /* View */,
 				93ABF8621D8EE4E80027506F /* InterpretCustomTranslateViewController.h */,
 				93ABF8631D8EE4E80027506F /* InterpretCustomTranslateViewController.m */,
 				93ABF8651D8EE50E0027506F /* UesrCustomTranslateViewController.h */,
