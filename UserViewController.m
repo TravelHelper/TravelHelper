@@ -1122,9 +1122,10 @@
         }
         if ( section == 2 && row==1) {
            
-            YBZPrepareViewController *prepareVC = [[YBZPrepareViewController alloc]initWithType:@"语音" AndState:@"0001" AndInfo:nil];
-            [self.navigationController pushViewController:prepareVC animated:YES];
-            
+//            YBZPrepareViewController *prepareVC = [[YBZPrepareViewController alloc]initWithType:@"语音" AndState:@"0001" AndInfo:nil];
+//            [self.navigationController pushViewController:prepareVC animated:YES];
+            [MBProgressHUD showError:@"敬请期待下次更新"];
+
         }
         if ( section == 2 && row==2) {
             YBZMyRewardViewController *myRewardVC = [[YBZMyRewardViewController alloc]init];

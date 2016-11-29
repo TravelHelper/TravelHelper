@@ -45,6 +45,8 @@
     int countDownTime;
     NSTimer *countDownTimer;
     NSString *userName;
+    BOOL needPush;
+    NSString *secondTimeInfo;
     
 }
 
@@ -53,6 +55,11 @@
     self = [super init];
     if (self) {
         dataInfo = info;
+        if ([info[@"success"] isEqualToString:@"success"]) {
+            needPush = YES;
+        }else{
+            needPush = NO;
+        }
         [WebAgent getNameWithID:dataInfo[@"user_name"] success:^(id responseObject) {
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -82,24 +89,43 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    countDownTimer = [NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
-//        countDownTime = countDownTime-1;
-//        if (countDownTime == 0) {
-//            [countDownTimer invalidate];
-//            [firstBtn setTitle:@"手动提醒对方" forState:UIControlStateNormal];
-//        }else{
-//            NSString *string = [NSString stringWithFormat:@"请%d秒后重试",countDownTime];
-//            [firstBtn setTitle:string forState:UIControlStateNormal];
-//        }
-//        
-//    }];
-
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"准备";
     [self addAllControls];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    NSString *hasKye = [userinfo stringForKey:dataInfo[@"mission_id"]];
+    id hasKye=[userinfo objectForKey:dataInfo[@"mission_id"]];
+    if (!hasKye)
+    {
+        NSDictionary *infodic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
+        secondTimeInfo = infodic[@"second_time"];
+    }
+//    if (hasKye.length != 0) {
+//        NSDictionary *infodic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
+//        secondTimeInfo = infodic[@"second_time"];
+//    }else{
+//        secondTimeInfo = @"对方未进入";
+//    }
+}
 
+-(void)viewWillAppear:(BOOL)animated{
 
-
+    if (needPush == YES) {
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        
+        [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"对方已经进入准备页面，即将开始您的定制翻译" WithType:@"9001" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"" success:^(id responseObject) {
+            
+            NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
+            NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+            NSString *time = [self getNowTime];
+            [dictionary setObject:time forKey:@"second_time"];
+            [userDfault setObject:dictionary forKey:dataInfo[@"mission_id"]];
+            secondTime.text = time;
+        } failure:^(NSError *error) {
+            
+        }];
+    }
 }
 
 -(void)addAllControls{
@@ -216,7 +242,9 @@
     thirdState.textColor = [UIColor blackColor];
     thirdState.backgroundColor = [UIColor clearColor];
     thirdState.textAlignment = NSTextAlignmentLeft;
-    thirdState.text = [NSString stringWithFormat:@"开始定制                %@",dataInfo[@"custom_time"]];
+    NSString *time =dataInfo[@"custom_time"];
+    NSArray *arr = [time componentsSeparatedByString:@" "];
+    thirdState.text = [NSString stringWithFormat:@"开始定制                %@",arr[1]];
     thirdState.frame = CGRectMake(thirdLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, thirdLabelFrame.origin.y-(0.0712*SCREEN_HEIGHT-0.0794*SCREEN_WIDTH)/2, 0.603*SCREEN_WIDTH, 0.0712*SCREEN_HEIGHT);
     thirdState.font = [UIFont systemFontOfSize:0.0407*SCREEN_WIDTH];
     [self.view addSubview:thirdState];
@@ -266,10 +294,10 @@
     secondTime.backgroundColor = [UIColor clearColor];
     secondTime.textAlignment = NSTextAlignmentLeft;
     secondTime.numberOfLines = 0;
-    secondTime.text = @"2016-11-26 16:30:59";
+    secondTime.text = secondTimeInfo;
     secondTime.frame = CGRectMake(firstLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, CGRectGetMaxY(secondLabelFrame)+0.0089*SCREEN_HEIGHT, SCREEN_WIDTH/3*2, 0.03175*SCREEN_WIDTH);
     secondTime.font = [UIFont systemFontOfSize:0.03175*SCREEN_WIDTH];
-    [self.view addSubview:secondTime];
+
 
 }
 
@@ -348,12 +376,15 @@
             break;
         case 2:
             [self.view addSubview:secondBtn];
+
+            [self.view addSubview:secondTime];
             secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",userName];
             thirdLabel.backgroundColor = UIColorFromRGB(0xC7C7C7);
             forthLabel.backgroundColor = UIColorFromRGB(0xC7C7C7);
             thirdState.textColor = UIColorFromRGB(0xCBCBCB);
             forthState.textColor = UIColorFromRGB(0xCBCBCB);
             thirdLine.backgroundColor = UIColorFromRGB(0xC7C7C7);
+            
             break;
         case 3:
             [self.view addSubview:secondBtn];
@@ -402,15 +433,15 @@
 }
 
 -(void)firstBtnClick{
-//    countDownTime = 5;
-//    firstBtn.userInteractionEnabled=NO;
-//    countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerClick:) userInfo:nil repeats:YES];
+    countDownTime = 6;
+    firstBtn.userInteractionEnabled=NO;
+    countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerClick:) userInfo:nil repeats:YES];
     
 
-//    [countDownTimer fire];
-    proceedState = proceedState +1;
-    [self clearAllControls];
-    [self addAllControls];
+    [countDownTimer fire];
+//    proceedState = proceedState +1;
+//    [self clearAllControls];
+//    [self addAllControls];
 }
 
 -(void)secondBtnClick{
