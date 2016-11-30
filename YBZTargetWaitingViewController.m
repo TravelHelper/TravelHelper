@@ -83,7 +83,7 @@
     self.view.backgroundColor=[UIColor whiteColor];
     waterTimer=[NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(clickAnimation:) userInfo:nil repeats:YES];
     
-    if([mytype isEqualToString:@"语音"]){
+    if([mytype isEqualToString:@"语音呼叫"]){
     
         [self.view addSubview:self.backgrountImageView];
         [self.view addSubview:self.headImageView];
@@ -263,7 +263,7 @@
         NSLog(@"登录成功");
         if(myIscall==true){
             
-            if([mytype isEqualToString:@"语音"]){
+            if([mytype isEqualToString:@"语音呼叫"]){
                 
                 [self sendVoiceBtnclick];
                 

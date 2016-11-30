@@ -279,10 +279,62 @@
                         //                        [alertLabel removeFromSuperview];
                         //                    }];
                         
+//                        
+//                        [UIAlertController showAlertAtViewController:self title:@"温馨提示" message:@"请在开始15分钟内进入等候页" confirmTitle:@"ok" confirmHandler:^(UIAlertAction *action) {
+//                            //
+//                        }];
                         
-                        [UIAlertController showAlertAtViewController:self title:@"温馨提示" message:@"请在开始15分钟内进入等候页" confirmTitle:@"ok" confirmHandler:^(UIAlertAction *action) {
-                            //
+                        
+                        
+                        
+                        
+                        [UIAlertController showAlertAtViewController:self title:@"温馨提示" message:@"请在开始15分钟内进入等候页" cancelTitle:@"知道了" confirmTitle:@"退单" cancelHandler:^(UIAlertAction *action) {
+                            
+                        } confirmHandler:^(UIAlertAction *action) {
+                            
+                            [UIAlertController showAlertAtViewController:self title:@"是否确认退单" message:@"退单将影响用户信用额度" cancelTitle:@"算了" confirmTitle:@"坚持退单" cancelHandler:^(UIAlertAction *action) {
+                                
+                            } confirmHandler:^(UIAlertAction *action) {
+                                
+                                
+                                
+                                [cell removeFromSuperview];
+                                [self.mArr removeObjectAtIndex:indexPath.row];
+                                [self.mainTableView reloadData];
+                                
+                                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                                //                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                                //                                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+                                [WebAgent getBiWithID:cell.infoModel.user_id andPurchaseCount:infoModel.offerMoney andSource_id:@"0007" success:^(id responseObject) {
+                                    [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
+                                        NSLog(@"have delected  !!!");
+                                        [MBProgressHUD showSuccess:@"删除成功,悬赏已返还"];
+                                        [self.mArr removeObjectAtIndex:indexPath.row];
+                                        [self.mainTableView reloadData];
+                                    } failure:^(NSError *error) {
+                                        NSLog(@"%@",error);
+                                        
+                                    }];
+                                    
+                                } failure:^(NSError *error) {
+                                    [MBProgressHUD showError:@"删除失败,请检查网络"];
+                                }];
+                                
+                                
+                                
+                                
+                                
+                                NSLog(@"aaa");
+                                
+                                
+                            }];
+                            
+                            
                         }];
+                        
+                        
+                        
+                        
                         NSLog(@"-------请在开始15分钟内进入等候页------");
                         
                     }else if([tag isEqualToString:@"comein"]){
