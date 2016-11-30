@@ -27,6 +27,7 @@
 #import "MBProgressHUD+XMG.h"
 #import <StoreKit/StoreKit.h>
 #import "SVProgressHUD.h"
+#import "YBZPrepareViewController.h"
 
 
 #define Trans_YingYu    @"en"
@@ -567,6 +568,28 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 
             }];
         }
+    }else if([type isEqualToString:@"9001"]){
+        UIViewController *nowVC=[self currentViewController];
+        NSString *nowTime = [self getNowTime];
+        NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict = [userDfault objectForKey:messionID];
+        NSMutableDictionary *dict2 = [NSMutableDictionary dictionaryWithDictionary:dict];
+        [dict2 setValue:nowTime forKey:@"second_time"];
+//        dict[@"second_time"] = nowTime;
+        [userDfault setObject:dict2 forKey:messionID];
+        if ([nowVC isKindOfClass:[YBZPrepareViewController class]]) {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"changViewWithState" object:nil];
+        }else{
+            [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"对方已进入准备页面，请立刻开始您的定制" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+                
+            }];
+        }
+        
+    }else if([type isEqualToString:@"9000"]){
+        UIViewController *nowVC=[self currentViewController];
+        [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"对方已进入准备页面，请立刻开始您的定制" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+            
+        }];
     }else if( [type isEqualToString:@"0001"]){
         UIViewController *nowVC=[self currentViewController];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -981,6 +1004,15 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 }
 
+-(NSString *)getNowTime{
+    NSDate *currentDate = [NSDate date];//获取当前时间，日期
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:currentDate];
+    NSLog(@"dateString:%@",dateString);
+    
+    return dateString;
+}
 
 
 @end

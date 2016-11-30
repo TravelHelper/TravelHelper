@@ -1,4 +1,4 @@
-//
+ //
 //  YBZTargetWaitingViewController.m
 //  YBZTravel
 //
@@ -52,6 +52,8 @@
     NSTimer *waterTimer;
     NSString *mytype;
     BOOL myIscall;
+    
+    NSString *userName;
 }
 
 
@@ -60,6 +62,7 @@
                       targetId:(NSString *)targetId
                        andType:(NSString *)type
                      andIsCall:(BOOL)isCall
+                       andName:(NSString *)name
 {
     self = [super init];
     if (self) {
@@ -67,6 +70,7 @@
         targetChar=targetId;
         mytype=type;
         myIscall=isCall;
+        userName = name;
     }
     return self;
 }
@@ -89,7 +93,7 @@
         [self.view addSubview:self.headImageView];
         if(myIscall == false){
             
-            self.nameLabel.text=@"Simon";
+            self.nameLabel.text=userName;
             self.stateLabel.text=@"邀请你进行语音聊天...";
             self.confirmBtn.frame=CGRectMake(0.13*SCREEN_WIDTH, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
             self.refuseBtn.frame=CGRectMake(0.87*SCREEN_WIDTH-0.12*SCREEN_HEIGHT, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
@@ -100,7 +104,7 @@
             
             
         }else{
-            self.nameLabel.text=@"Simon";
+            self.nameLabel.text=userName;
             self.stateLabel.text=@"等待对方接听中...";
             [self.view addSubview:self.cancelBtn];
         }
@@ -114,7 +118,7 @@
         [self.view addSubview:self.headImageView];
         if(myIscall == false){
             
-            self.nameLabel.text=@"Simon";
+            self.nameLabel.text=userName;
             self.stateLabel.text=@"邀请你进行视频聊天...";
             self.confirmBtn.frame=CGRectMake(0.13*SCREEN_WIDTH, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
             self.refuseBtn.frame=CGRectMake(0.87*SCREEN_WIDTH-0.12*SCREEN_HEIGHT, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
@@ -125,7 +129,7 @@
             
             
         }else{
-            self.nameLabel.text=@"Simon";
+            self.nameLabel.text=userName;
             self.stateLabel.text=@"等待对方接听中...";
             [self.view addSubview:self.cancelBtn];
         }
@@ -166,7 +170,7 @@
     self.headImageView.layer.cornerRadius=SCREEN_WIDTH/8+0.019*SCREEN_WIDTH;
     
     
-    NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,targetChar];
+    NSString *url2=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@.jpg",serviseId,targetChar];
     
     NSURL *url = [NSURL URLWithString:url2];
     
@@ -393,7 +397,7 @@
     
     NSLog(@"发送音频通知!");
     
-    [MBProgressHUD showMessage:@"请求发送，等待接听"];
+//    [MBProgressHUD showMessage:@"请求发送，等待接听"];
     
     EMError *error = nil;
     //    startVoiceCall
@@ -674,10 +678,10 @@
     }else{
         [MBProgressHUD hideHUD];
     }
-    [MBProgressHUD showNormalMessage:@"对方结束了通话"];
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+//    [MBProgressHUD showNormalMessage:@"对方结束了通话"];
+//    [self dismissViewControllerAnimated:YES completion:^{
+    
+//    }];
 }
 
 
