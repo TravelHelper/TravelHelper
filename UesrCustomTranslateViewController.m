@@ -301,7 +301,7 @@
                             
                             NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
                             
-                            needDic[@"user_name"]=user_id[@"user_id"];
+                            needDic[@"user_name"]=infoModel.interper;
                             needDic[@"first_time"]=firstTime;
                             needDic[@"custom_time"]=infoModel.translateTime;
                             needDic[@"duration"]=infoModel.duration;
@@ -364,7 +364,7 @@
                 
                 NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
                 
-                needDic[@"user_name"]=user_id[@"user_id"];
+                needDic[@"user_name"]=infoModel.interper;
                 needDic[@"first_time"]=firstTime;
                 needDic[@"custom_time"]=infoModel.translateTime;
                 needDic[@"duration"]=infoModel.duration;

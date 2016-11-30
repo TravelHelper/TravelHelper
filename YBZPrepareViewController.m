@@ -8,6 +8,7 @@
 
 #import "YBZPrepareViewController.h"
 #import "UIAlertController+SZYKit.h"
+#import "YBZTargetWaitingViewController.h"
 
 @interface YBZPrepareViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -60,11 +61,15 @@
         }else{
             needPush = NO;
         }
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changViewWithState) name:@"changViewWithState" object:nil];
         [WebAgent getNameWithID:dataInfo[@"user_name"] success:^(id responseObject) {
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSString *name = dict[@"name"];
             userName = name;
+            if (proceedState != 1) {
+                secondState.text = [NSString stringWithFormat:@"%@ 已进入准备页面",name];
+            }
         } failure:^(NSError *error) {
             
         }];
@@ -103,18 +108,18 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 
-    if (needPush == YES) {
+    if (needPush == YES && proceedState ==2) {
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-        
+        NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        NSString *time = [self getNowTime];
+        [dictionary setObject:time forKey:@"second_time"];
+        [userDfault setObject:dictionary forKey:dataInfo[@"mission_id"]];
+        secondTime.text = time;
         [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"对方已经进入准备页面，即将开始您的定制翻译" WithType:@"9001" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"" success:^(id responseObject) {
-            
-            NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
-            NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-            NSString *time = [self getNowTime];
-            [dictionary setObject:time forKey:@"second_time"];
-            [userDfault setObject:dictionary forKey:dataInfo[@"mission_id"]];
-            secondTime.text = time;
+            NSLog(@"success");
+
         } failure:^(NSError *error) {
             
         }];
@@ -290,7 +295,16 @@
         NSDictionary *infodic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
         secondTimeInfo = infodic[@"second_time"];
     }else{
-        secondTimeInfo = @"对方未进入";
+        if (proceedState == 2) {
+            NSString *nowTime = [self getNowTime];
+            NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setValue:nowTime forKey:@"second_time"];
+            [userDfault setObject:dict forKey:dataInfo[@"mission_id"]];
+            secondTimeInfo = nowTime;
+        }else{
+            secondTimeInfo = @"对方未进入";
+        }
     }
     secondTime = [[UILabel alloc]init];
     secondTime.textColor = UIColorFromRGB(0xC7C7C7);
@@ -422,16 +436,16 @@
 
 
 -(void)timerClick:(NSTimer*)timer{
+    countDownTime = countDownTime-1;
+    if (countDownTime == 0) {
+        [firstBtn setTitle:@"手动提醒对方" forState:UIControlStateNormal];
+        firstBtn.userInteractionEnabled=YES;
+        [countDownTimer invalidate];
+    }else{
 
-            countDownTime = countDownTime-1;
-            if (countDownTime == 0) {
-                [firstBtn setTitle:@"手动提醒对方" forState:UIControlStateNormal];
-                firstBtn.userInteractionEnabled=YES;
-                [countDownTimer invalidate];
-            }else{
-                NSString *string = [NSString stringWithFormat:@"请%d秒后重试",countDownTime];
-                [firstBtn setTitle:string forState:UIControlStateNormal];
-            }
+        NSString *string = [NSString stringWithFormat:@"请%d秒后重试",countDownTime];
+        [firstBtn setTitle:string forState:UIControlStateNormal];
+    }
 
 }
 
@@ -440,8 +454,13 @@
     firstBtn.userInteractionEnabled=NO;
     countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerClick:) userInfo:nil repeats:YES];
     
-
-    [countDownTimer fire];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个定制订单即将开始，对方已进入等候页面，请尽快开始您的定制" WithType:@"9000" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"" success:^(id responseObject) {
+        [countDownTimer fire];
+    } failure:^(NSError *error) {
+        
+    }];
 //    proceedState = proceedState +1;
 //    [self clearAllControls];
 //    [self addAllControls];
@@ -452,16 +471,21 @@
         proceedState = proceedState +1;
         [self clearAllControls];
         [self addAllControls];
-        [UIAlertController showAlertAtViewController:self title:@"测试" message:@"假装这是一个呼叫事件" confirmTitle:@"好的" confirmHandler:^(UIAlertAction *action) {
-            
-        }];
+        [self callTarget];
     }else{
-        [UIAlertController showAlertAtViewController:self title:@"测试" message:@"假装这是一个呼叫事件" confirmTitle:@"好的" confirmHandler:^(UIAlertAction *action) {
-           
-        }];
+        [self callTarget];
     }
+}
 
+-(void)callTarget{
 
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+    YBZTargetWaitingViewController *vc = [[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:dataInfo[@"user_name"] andType:chatType andIsCall:YES andName:userName];
+    [self.navigationController presentViewController:vc animated:YES completion:^{
+        
+    }];
 }
 
 -(void)thirdBtnClick{
@@ -479,6 +503,15 @@
     }];
 
 }
+
+
+-(void)changViewWithState{
+
+    proceedState = proceedState +1;
+    [self clearAllControls];
+    [self addAllControls];
+}
+
 
 #pragma mark -----delegate-----
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

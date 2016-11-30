@@ -13,6 +13,7 @@
 - (instancetype)initWithUserId:(NSString *)userId
                       targetId:(NSString *)targetId
                        andType:(NSString *)type
-                     andIsCall:(BOOL)isCall;
+                     andIsCall:(BOOL)isCall
+                       andName:(NSString *)name;
 
 @end
