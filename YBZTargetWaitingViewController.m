@@ -196,62 +196,68 @@
     self.cancelBtn.frame=CGRectMake(0.1*SCREEN_WIDTH, 0.857*SCREEN_HEIGHT, 0.8*SCREEN_WIDTH, 0.07*SCREEN_HEIGHT);
     
     
-    if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
-        
-        _captureSession=[[AVCaptureSession alloc]init];
-        if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {//设置分辨率
-            _captureSession.sessionPreset=AVCaptureSessionPreset1280x720;
-        }
-        //获得输入设备
-        AVCaptureDevice *captureDevice=[self getCameraDeviceWithPosition:AVCaptureDevicePositionBack];//取得后置摄像头
-        if (!captureDevice) {
-            NSLog(@"取得后置摄像头时出现问题.");
-            return;
-        }
-        
-        
-        NSError *error=nil;
-        //根据输入设备初始化设备输入对象，用于获得输入数据
-        _captureDeviceInput=[[AVCaptureDeviceInput alloc]initWithDevice:captureDevice error:&error];
-        if (error) {
-            NSLog(@"取得设备输入对象时出错，错误原因：%@",error.localizedDescription);
-            return;
-        }
-        //初始化设备输出对象，用于获得输出数据
-        _captureStillImageOutput=[[AVCaptureStillImageOutput alloc]init];
-        NSDictionary *outputSettings = @{AVVideoCodecKey:AVVideoCodecJPEG};
-        [_captureStillImageOutput setOutputSettings:outputSettings];//输出设置
-        
-        //将设备输入添加到会话中
-        if ([_captureSession canAddInput:_captureDeviceInput]) {
-            [_captureSession addInput:_captureDeviceInput];
-        }
-        
-        //将设备输出添加到会话中
-        if ([_captureSession canAddOutput:_captureStillImageOutput]) {
-            [_captureSession addOutput:_captureStillImageOutput];
-        }
-        
-        
-        //创建视频预览层，用于实时展示摄像头状态
-        _captureVideoPreviewLayer=[[AVCaptureVideoPreviewLayer alloc]initWithSession:self.captureSession];
-        
-        CALayer *layer=self.viewContainer.layer;
-        layer.masksToBounds=YES;
-        
-        _captureVideoPreviewLayer.frame=layer.bounds;
-        _captureVideoPreviewLayer.videoGravity=AVLayerVideoGravityResizeAspectFill;//填充模式
-        //将视频预览层添加到界面中
-        [layer addSublayer:_captureVideoPreviewLayer];
-        //    [layer insertSublayer:_captureVideoPreviewLayer below:self.focusCursor.layer];
-        
-
-        
+    if([mytype isEqualToString:@"语音呼叫"]){
+    
     }else{
-    
-        [MBProgressHUD showError:@"获取摄像头信息失败"];
-    
+        if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
+            
+            _captureSession=[[AVCaptureSession alloc]init];
+            if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {//设置分辨率
+                _captureSession.sessionPreset=AVCaptureSessionPreset1280x720;
+            }
+            //获得输入设备
+            AVCaptureDevice *captureDevice=[self getCameraDeviceWithPosition:AVCaptureDevicePositionBack];//取得后置摄像头
+            if (!captureDevice) {
+                NSLog(@"取得后置摄像头时出现问题.");
+                return;
+            }
+            
+            
+            NSError *error=nil;
+            //根据输入设备初始化设备输入对象，用于获得输入数据
+            _captureDeviceInput=[[AVCaptureDeviceInput alloc]initWithDevice:captureDevice error:&error];
+            if (error) {
+                NSLog(@"取得设备输入对象时出错，错误原因：%@",error.localizedDescription);
+                return;
+            }
+            //初始化设备输出对象，用于获得输出数据
+            _captureStillImageOutput=[[AVCaptureStillImageOutput alloc]init];
+            NSDictionary *outputSettings = @{AVVideoCodecKey:AVVideoCodecJPEG};
+            [_captureStillImageOutput setOutputSettings:outputSettings];//输出设置
+            
+            //将设备输入添加到会话中
+            if ([_captureSession canAddInput:_captureDeviceInput]) {
+                [_captureSession addInput:_captureDeviceInput];
+            }
+            
+            //将设备输出添加到会话中
+            if ([_captureSession canAddOutput:_captureStillImageOutput]) {
+                [_captureSession addOutput:_captureStillImageOutput];
+            }
+            
+            
+            //创建视频预览层，用于实时展示摄像头状态
+            _captureVideoPreviewLayer=[[AVCaptureVideoPreviewLayer alloc]initWithSession:self.captureSession];
+            
+            CALayer *layer=self.viewContainer.layer;
+            layer.masksToBounds=YES;
+            
+            _captureVideoPreviewLayer.frame=layer.bounds;
+            _captureVideoPreviewLayer.videoGravity=AVLayerVideoGravityResizeAspectFill;//填充模式
+            //将视频预览层添加到界面中
+            [layer addSublayer:_captureVideoPreviewLayer];
+            //    [layer insertSublayer:_captureVideoPreviewLayer below:self.focusCursor.layer];
+            
+            
+            
+        }else{
+            
+            [MBProgressHUD showError:@"获取摄像头信息失败"];
+            
+        }
+
     }
+    
     
     
     
@@ -572,12 +578,12 @@
     //    [self.view addSubview:aSession.localVideoView];
     //    aSession.remoteVideoView=[[EMCallRemoteView alloc]initWithFrame:CGRectMake(40, 64, 200, 200)];
     //    [self.view addSubview:aSession.remoteVideoView];
-    self.confirmBtn.frame=CGRectMake(1, 1, 1, 1);
-    self.refuseBtn.frame=CGRectMake(1, 1, 1, 1);
+//    self.confirmBtn.frame=CGRectMake(1, 1, 1, 1);
+//    self.refuseBtn.frame=CGRectMake(1, 1, 1, 1);
     
     
-    [self.view addSubview:self.confirmBtn];
-    [self.view addSubview:self.refuseBtn];
+//    [self.view addSubview:self.confirmBtn];
+//    [self.view addSubview:self.refuseBtn];
     
     
     NSLog(@"%@",aSession.callId);
@@ -617,8 +623,8 @@
 //        self.nameLabel.text=@"Simon 视频通话中...";
 //        self.stateLabel.text=@"01:20";
         
-        [self.nameLabel removeFromSuperview];
-        [self.stateLabel removeFromSuperview];
+//        [self.nameLabel removeFromSuperview];
+//        [self.stateLabel removeFromSuperview];
         
         aSession.localVideoView=[[EMCallLocalView alloc]initWithFrame:CGRectMake(20, 0, 210*SCREEN_WIDTH/SCREEN_HEIGHT, 210)];
         [self.view addSubview:aSession.localVideoView];
@@ -636,6 +642,31 @@
 - (void)callDidAccept:(EMCallSession *)aSession{
     NSLog(@"用户同意了通话");
     [MBProgressHUD hideHUD];
+    
+    
+    if([mytype isEqualToString:@"语音呼叫"]){
+    
+//        [self.stateLabel removeFromSuperview];
+        self.stateLabel.text = @"通话中...";
+        if(myIscall == false){
+            [self.confirmBtn removeFromSuperview];
+            [self.refuseBtn removeFromSuperview];
+        }
+       
+        
+    }else{
+        [self.nameLabel removeFromSuperview];
+        [self.stateLabel removeFromSuperview];
+        if(myIscall == false){
+            [self.confirmBtn removeFromSuperview];
+            [self.refuseBtn removeFromSuperview];
+        }
+
+    
+    }
+    
+    
+    
     
     
 }

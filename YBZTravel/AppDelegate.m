@@ -28,6 +28,7 @@
 #import <StoreKit/StoreKit.h>
 #import "SVProgressHUD.h"
 #import "YBZPrepareViewController.h"
+#import "YBZTargetWaitingViewController.h"
 
 
 #define Trans_YingYu    @"en"
@@ -568,6 +569,100 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 
             }];
         }
+    }else if([type isEqualToString:@"9002"]){
+        UIViewController *nowVC=[self currentViewController];
+        if([nowVC isKindOfClass:[YBZPrepareViewController class]]){
+        
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+
+            [WebAgent getNameWithID:yonghuID success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *name = dict[@"name"];
+                YBZTargetWaitingViewController *targetViewController=[[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:yonghuID andType:language_catgory andIsCall:NO andName:name];
+                [nowVC.navigationController presentViewController:targetViewController animated:YES completion:^{
+                    
+                }];
+
+            } failure:^(NSError *error) {
+                [MBProgressHUD showError:@"获取信息失败"];
+                YBZTargetWaitingViewController *targetViewController=[[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:yonghuID andType:language_catgory andIsCall:NO andName:@"未知"];
+                [nowVC.navigationController presentViewController:targetViewController animated:YES completion:^{
+                    
+                }];
+            }];
+            
+        }else{
+        
+            
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+            
+            [WebAgent getNameWithID:yonghuID success:^(id responseObject) {
+                NSData *data = [[NSData alloc]initWithData:responseObject];
+                NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSString *name = dict[@"name"];
+                
+                NSString *needName=[NSString stringWithFormat:@"收到来自%@的定制开始请求",name];
+                [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:needName cancelTitle:@"稍等" confirmTitle:@"进入" cancelHandler:^(UIAlertAction *action) {
+                    
+                    
+                    //发个推送？
+                    [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"对方正忙" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:messionID WithLanguage:language_catgory success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                    
+                    
+                    
+                } confirmHandler:^(UIAlertAction *action) {
+                    
+                    YBZTargetWaitingViewController *targetViewController=[[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:yonghuID andType:language_catgory andIsCall:NO andName:name];
+                    [nowVC.navigationController presentViewController:targetViewController animated:YES completion:^{
+                        
+                    }];
+                    
+                }];
+
+                
+                
+               
+                
+            } failure:^(NSError *error) {
+                [MBProgressHUD showError:@"获取信息失败"];
+                YBZTargetWaitingViewController *targetViewController=[[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:yonghuID andType:language_catgory andIsCall:NO andName:@"未知"];
+                [nowVC.navigationController presentViewController:targetViewController animated:YES completion:^{
+                    
+                }];
+            }];
+            
+            
+            
+        }
+        
+        
+        
+    
+    }else if([type isEqualToString:@"9003"]){
+        
+        UIViewController *nowVC=[self currentViewController];
+        if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
+        
+            [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+            [nowVC dismissViewControllerAnimated:YES completion:^{
+                
+            }];
+        
+        }else{
+        
+            [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+            
+        }
+        
+        
+        
     }else if([type isEqualToString:@"9001"]){
         UIViewController *nowVC=[self currentViewController];
         NSString *nowTime = [self getNowTime];
