@@ -460,4 +460,8 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                       MissionID:(NSString *)missionID
                         success:(void (^)(id responseObject))success
                         failure:(void (^)(NSError *error))failure;
++(void)changeProceedState:(NSString *)custom_id
+         andProceed_state:(NSString *)proceed_state
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
 @end
