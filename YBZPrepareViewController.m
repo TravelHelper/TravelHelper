@@ -289,8 +289,9 @@
     [self.view addSubview:firstTime];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     //    NSString *hasKye = [userinfo stringForKey:dataInfo[@"mission_id"]];
-    NSString *hasKye=[userinfo stringForKey:dataInfo[@"mission_id"]];
-    if (hasKye != nil)
+    NSDictionary *hasKye=[userinfo objectForKey:dataInfo[@"mission_id"]];
+    NSDictionary *dictinfo = [NSDictionary dictionaryWithDictionary:hasKye];
+    if ([dictinfo objectForKey:@"second_time"])
     {
         NSDictionary *infodic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
         secondTimeInfo = infodic[@"second_time"];
@@ -302,8 +303,6 @@
             [dict setValue:nowTime forKey:@"second_time"];
             [userDfault setObject:dict forKey:dataInfo[@"mission_id"]];
             secondTimeInfo = nowTime;
-        }else{
-            secondTimeInfo = @"对方未进入";
         }
     }
     secondTime = [[UILabel alloc]init];
@@ -406,6 +405,8 @@
         case 3:
             [self.view addSubview:secondBtn];
             [self.view addSubview:thirdBtn];
+            [self.view addSubview:secondTime];
+
             [self.view addSubview:thirdStateTableView];
             secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",userName];
             thirdState.text = @"开始定制";
@@ -415,6 +416,7 @@
         case 4:
             secondState.text = [NSString stringWithFormat: @"%@ 已进入准备页面",userName];
             thirdState.text = @"开始定制";
+            
             [self.view addSubview:thirdStateTableView];
             [self.view addSubview:forthBtn];
             forthState.text = @"结束并评价";
@@ -484,7 +486,20 @@
     
     YBZTargetWaitingViewController *vc = [[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:dataInfo[@"user_name"] andType:chatType andIsCall:YES andName:userName];
     [self.navigationController presentViewController:vc animated:YES completion:^{
-        
+        if ([chatType isEqualToString:@"语音呼叫"]) {
+                    [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个语音呼叫" WithType:@"9002" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"语音呼叫" success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+        }else{
+            [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个视频呼叫" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"视频呼叫" success:^(id responseObject) {
+                
+            } failure:^(NSError *error) {
+                
+            }];
+        }
+
     }];
 }
 
