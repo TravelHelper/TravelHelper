@@ -360,6 +360,9 @@
                             NSString *typeStr=infoModel.scene;
                             needDic[@"success"]=dic[@"success"];
                             needDic[@"mission_id"]=infoModel.customID;
+                            needDic[@"iden"] = @"USER";
+                            needDic[@"money"] = infoModel.offerMoney;
+
                             YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
                             [self.navigationController pushViewController:prepareController animated:YES];
                             
@@ -423,6 +426,8 @@
                 NSString *typeStr=infoModel.scene;
                 needDic[@"success"]=dic[@"success"];
                 needDic[@"mission_id"]=infoModel.customID;
+                needDic[@"iden"] = @"USER";
+                needDic[@"money"] = infoModel.offerMoney;
                 YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
                 [self.navigationController pushViewController:prepareController animated:YES];
                 

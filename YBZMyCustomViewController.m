@@ -83,6 +83,7 @@
 -(void)loadDate{
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    [self.mArr removeAllObjects];
     [WebAgent selectAcceptaccept_id:user_id[@"user_id"] success:^(id responseObject) {
         
         
@@ -332,6 +333,9 @@
                             NSString *typeStr=infoModel.scene;
                             needDic[@"success"]=dic[@"success"];
                             needDic[@"mission_id"]=infoModel.customID;
+                            needDic[@"iden"] = @"TRANS";
+                            needDic[@"money"] = infoModel.offerMoney;
+
                             YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
                             [self.navigationController pushViewController:prepareController animated:YES];
                             
@@ -395,6 +399,9 @@
                 NSString *typeStr=infoModel.scene;
                 needDic[@"success"]=dic[@"success"];
                 needDic[@"mission_id"]=infoModel.customID;
+                needDic[@"iden"] = @"TRANS";
+                needDic[@"money"] = infoModel.offerMoney;
+
                 YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
                 [self.navigationController pushViewController:prepareController animated:YES];
                 

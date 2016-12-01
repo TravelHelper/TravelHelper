@@ -135,7 +135,7 @@
     [self.offerMoneyLable sizeToFit];
     self.offerMoneyLable.font = FONT_10;
     self.offerMoneyLable.textColor = [UIColor colorWithRed:250.0/255.0f green:217.0/255.0f blue:0.0/255.0f alpha:1];
-    self.jeLable.frame = CGRectMake(CGRectGetMaxX(self.offerMoneyLable.frame), CGRectGetMinY(self.offerMoneyLable.frame), self.offerMoneyLable.frame.size.width, self.offerMoneyLable.frame.size.height);
+    self.jeLable.frame = CGRectMake(CGRectGetMaxX(self.offerMoneyLable.frame), CGRectGetMinY(self.offerMoneyLable.frame), self.offerMoneyLable.frame.size.width+100, self.offerMoneyLable.frame.size.height);
     self.jeLable.font = FONT_10;
     self.jeLable.text = @"嗨币";
     self.jeLable.textColor = [UIColor whiteColor];

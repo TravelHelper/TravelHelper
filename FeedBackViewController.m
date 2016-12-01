@@ -278,7 +278,7 @@
         [WebAgent UpdateStarWithcustom_id:myMsgId andStar:stringFloat success:^(id responseObject) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showSuccess:@"评价成功！返回上一页"];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popToRootViewControllerAnimated:YES];
             
         } failure:^(NSError *error) {
             [MBProgressHUD hideHUD];

@@ -546,7 +546,7 @@
 //    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
     
     NSString *time = [self getNowTime];
-    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"结束",@"time":time};
 //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *dic = [userinfo objectForKey:self.messionId];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
@@ -599,7 +599,7 @@
     //    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
     
     NSString *time = [self getNowTime];
-    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"结束",@"time":time};
     //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *dic = [userinfo objectForKey:self.messionId];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
