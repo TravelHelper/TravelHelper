@@ -16,4 +16,7 @@
                      andIsCall:(BOOL)isCall
                        andName:(NSString *)name;
 
+@property (nonatomic,strong)NSString *messionId;
+
+
 @end

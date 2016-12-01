@@ -539,7 +539,17 @@
 
 -(void)refuseBtnClick{
 
-    [[EMClient sharedClient].callManager endCall:self.callSession.callId reason:EMCallEndReasonHangup];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+
+    [WebAgent sendRemoteNotificationsWithuseId:targetChar WithsendMessage:@"对方正忙" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:self.messionId WithLanguage:mytype success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+    
+//    [[EMClient sharedClient].callManager endCall:self.callSession.callId reason:EMCallEndReasonHangup];
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
@@ -554,6 +564,17 @@
 
 
 -(void)cancelBtnClick{
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+    [WebAgent sendRemoteNotificationsWithuseId:targetChar WithsendMessage:@"对方正忙" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:self.messionId WithLanguage:mytype success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
+//    [[EMClient sharedClient].callManager endCall:self.callSession.callId reason:EMCallEndReasonHangup];
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
@@ -651,6 +672,7 @@
         if(myIscall == false){
             [self.confirmBtn removeFromSuperview];
             [self.refuseBtn removeFromSuperview];
+            [self.view addSubview:self.cancelBtn];
         }
        
         
@@ -660,6 +682,7 @@
         if(myIscall == false){
             [self.confirmBtn removeFromSuperview];
             [self.refuseBtn removeFromSuperview];
+            [self.view addSubview:self.cancelBtn];
         }
 
     
