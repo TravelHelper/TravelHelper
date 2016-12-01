@@ -608,6 +608,27 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:needName cancelTitle:@"稍等" confirmTitle:@"进入" cancelHandler:^(UIAlertAction *action) {
                     
                     
+                    
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+                    
+                    //    NSString *time=[self getNowTime];
+                    //    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+                    
+                    NSString *time = [self getNowTime];
+                    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+                    //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    NSDictionary *dic = [userinfo objectForKey:messionID];
+                    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+                    NSArray *array = [dictionary objectForKey:@"call_info"];
+                    NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+                    [arr addObject:dict];
+                    [dictionary setObject:arr forKey:@"call_info"];
+                    [userinfo setObject:dictionary forKey:messionID];
+                    
+                    
+
+                    
                     //发个推送？
                     [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"对方正忙" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:messionID WithLanguage:language_catgory success:^(id responseObject) {
                         
@@ -648,6 +669,46 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     }else if([type isEqualToString:@"9003"]){
         
         UIViewController *nowVC=[self currentViewController];
+        
+        
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        
+        //    NSString *time=[self getNowTime];
+        //    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+        
+        NSString *time = [self getNowTime];
+        
+        [WebAgent getNameWithID:yonghuID success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dict2= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSString *name = dict2[@"name"];
+            
+            NSDictionary *dict =@{@"sender":name,@"eventType":@"发起",@"time":time};
+            //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *dic = [userinfo objectForKey:messionID];
+            NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+            NSArray *array = [dictionary objectForKey:@"call_info"];
+            NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+            [arr addObject:dict];
+            [dictionary setObject:arr forKey:@"call_info"];
+            [userinfo setObject:dictionary forKey:messionID];
+
+        } failure:^(NSError *error) {
+            [MBProgressHUD showError:@"获取信息失败"];
+            NSDictionary *dict =@{@"sender":@"未知",@"eventType":@"发起",@"time":time};
+            //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *dic = [userinfo objectForKey:messionID];
+            NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+            NSArray *array = [dictionary objectForKey:@"call_info"];
+            NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+            [arr addObject:dict];
+            [dictionary setObject:arr forKey:@"call_info"];
+            [userinfo setObject:dictionary forKey:messionID];        }];
+
+        
+
+        
         if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
         
             [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];

@@ -541,6 +541,28 @@
 
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+//    NSString *time=[self getNowTime];
+//    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+    
+    NSString *time = [self getNowTime];
+    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [userinfo objectForKey:self.messionId];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+    NSArray *array = [dictionary objectForKey:@"call_info"];
+    NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+    [arr addObject:dict];
+    [dictionary setObject:arr forKey:@"call_info"];
+    [userinfo setObject:dictionary forKey:self.messionId];
+    
+    
+    
+    
+    
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
+    
 
     [WebAgent sendRemoteNotificationsWithuseId:targetChar WithsendMessage:@"对方正忙" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:self.messionId WithLanguage:mytype success:^(id responseObject) {
         
@@ -565,8 +587,33 @@
 
 -(void)cancelBtnClick{
     
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+    
+    
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+    
+    //    NSString *time=[self getNowTime];
+    //    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+    
+    NSString *time = [self getNowTime];
+    NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+    //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [userinfo objectForKey:self.messionId];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+    NSArray *array = [dictionary objectForKey:@"call_info"];
+    NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+    [arr addObject:dict];
+    [dictionary setObject:arr forKey:@"call_info"];
+    [userinfo setObject:dictionary forKey:self.messionId];
+    
+    
+
+    
+    
+    
     
     [WebAgent sendRemoteNotificationsWithuseId:targetChar WithsendMessage:@"对方正忙" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:self.messionId WithLanguage:mytype success:^(id responseObject) {
         
@@ -789,5 +836,22 @@
     NSLog(@"您当前网络状态不稳定,重连上了应该支持续传。。需要一部4G来证实");
     
 }
+
+
+
+-(NSString *)getNowTime{
+    NSDate *currentDate = [NSDate date];//获取当前时间，日期
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:currentDate];
+    NSLog(@"dateString:%@",dateString);
+    
+    return dateString;
+}
+
+
+
+
+
 
 @end
