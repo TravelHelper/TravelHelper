@@ -61,7 +61,22 @@
         }else{
             needPush = NO;
         }
+        
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changViewWithState) name:@"changViewWithState" object:nil];
+        
+        
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
+        if (dic == nil) {
+            NSMutableArray *array = [NSMutableArray array];
+            NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+            [dictionary setObject:array forKey:@"call_info"];
+            [userinfo setObject:dictionary forKey:dataInfo[@"mission_id"]];
+        }
+
+        
+
+        
         [WebAgent getNameWithID:dataInfo[@"user_name"] success:^(id responseObject) {
             NSData *data = [[NSData alloc]initWithData:responseObject];
             NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -111,11 +126,11 @@
     if (needPush == YES && proceedState ==2) {
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-        NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
-        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        NSDictionary *dict = [userinfo objectForKey:dataInfo[@"mission_id"]];
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dict];
         NSString *time = [self getNowTime];
         [dictionary setObject:time forKey:@"second_time"];
-        [userDfault setObject:dictionary forKey:dataInfo[@"mission_id"]];
+        [userinfo setObject:dictionary forKey:dataInfo[@"mission_id"]];
         secondTime.text = time;
         [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"对方已经进入准备页面，即将开始您的定制翻译" WithType:@"9001" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"" success:^(id responseObject) {
             NSLog(@"success");
@@ -299,7 +314,8 @@
         if (proceedState == 2) {
             NSString *nowTime = [self getNowTime];
             NSUserDefaults *userDfault = [NSUserDefaults standardUserDefaults];
-            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            NSDictionary *dic = [userDfault objectForKey:dataInfo[@"mission_id"]];
+            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:dic];
             [dict setValue:nowTime forKey:@"second_time"];
             [userDfault setObject:dict forKey:dataInfo[@"mission_id"]];
             secondTimeInfo = nowTime;
@@ -488,12 +504,27 @@
     [self.navigationController presentViewController:vc animated:YES completion:^{
         if ([chatType isEqualToString:@"语音呼叫"]) {
                     [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个语音呼叫" WithType:@"9002" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"语音呼叫" success:^(id responseObject) {
-                        
+                        NSString *time = [self getNowTime];
+                        NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                        NSDictionary *dic = [userinfo objectForKey:dataInfo[@"mission_id"]];
+                        NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+                        NSArray *array = [dictionary objectForKey:@"call_info"];
+                        NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+                        [arr addObject:dict];
+                        [dictionary setObject:arr forKey:@"call_info"];
+                        [userinfo setObject:dictionary forKey:dataInfo[@"mission_id"]];
+                        [thirdStateTableView reloadData];
+                        if (proceedState == 2) {
+//                            []
+                        }
                     } failure:^(NSError *error) {
                         
                     }];
         }else{
-            [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个视频呼叫" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"视频呼叫" success:^(id responseObject) {
+            [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个视频呼叫" WithType:@"9004" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"视频呼叫" success:^(id responseObject) {
+                
+                
                 
             } failure:^(NSError *error) {
                 
@@ -530,15 +561,21 @@
 
 #pragma mark -----delegate-----
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
-    return 6;
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [userinfo objectForKey:dataInfo[@"mission_id"]];
+    NSArray *arr = [dic objectForKey:@"call_info"];
+    return arr.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
     UITableViewCell *cell = [[UITableViewCell alloc]init];
-    [self addViewInCell:cell WithInfo:nil];
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [userinfo objectForKey:dataInfo[@"mission_id"]];
+    NSArray *arr = [dic objectForKey:@"call_info"];
+    [self addViewInCell:cell WithInfo:arr[indexPath.row]];
     return cell;
 }
 
@@ -550,19 +587,19 @@
 
 -(void)addViewInCell:(UITableViewCell *)cell WithInfo:(NSDictionary *)info{
     
-    NSString *sender = @"USER";
-    NSString *eventType = @"发起";
-    NSString *time = @"2016-11-28 01:27:44";
+    NSString *sender = info[@"sender"];
+    NSString *eventType = info[@"eventType"];
+    NSString *time = info[@"time"];
     NSString *string;
     if ([sender isEqualToString:@"USER"]) {
         if ([eventType isEqualToString:@"发起"]) {
-            if ([chatType isEqualToString:@"语音"]) {
+            if ([chatType isEqualToString:@"语音呼叫"]) {
                 string = @"您 发起了语音呼叫";
             }else{
                 string = @"您 发起了视频呼叫";
             }
         }else{
-            if ([chatType isEqualToString:@"语音"]) {
+            if ([chatType isEqualToString:@"语音呼叫"]) {
                 string = @"您 结束了语音呼叫";
             }else{
                 string = @"您 结束了视频呼叫";
@@ -571,13 +608,13 @@
         }
     }else{
         if ([eventType isEqualToString:@"发起"]) {
-            if ([chatType isEqualToString:@"语音"]) {
+            if ([chatType isEqualToString:@"语音呼叫"]) {
                 string = [NSString stringWithFormat: @"%@ 发起了语音呼叫",userName];
             }else{
                 string = [NSString stringWithFormat: @"%@ 发起了视频呼叫",userName];
             }
         }else{
-            if ([chatType isEqualToString:@"语音"]) {
+            if ([chatType isEqualToString:@"语音呼叫"]) {
                 string = [NSString stringWithFormat: @"%@ 结束了语音呼叫",userName];
             }else{
                 string = [NSString stringWithFormat: @"%@ 结束了视频呼叫",userName];

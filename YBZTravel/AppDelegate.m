@@ -647,7 +647,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     }else if([type isEqualToString:@"9003"]){
         
-        UIViewController *nowVC=[self currentViewController];
+        UIViewController *nowVC=[self getPresentedViewController];
         if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
         
             [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
@@ -821,6 +821,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     
     return currVC;
+}
+
+
+- (UIViewController *)getPresentedViewController
+{
+    UIViewController *appRootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *topVC = appRootVC;
+    if (topVC.presentedViewController) {
+        topVC = topVC.presentedViewController;
+    }
+    
+    return topVC;
 }
 
 
