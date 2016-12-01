@@ -581,13 +581,32 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSString *name = dict[@"name"];
                 YBZTargetWaitingViewController *targetViewController=[[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:yonghuID andType:language_catgory andIsCall:NO andName:name];
+                targetViewController.messionId = messionID;
                 [nowVC.navigationController presentViewController:targetViewController animated:YES completion:^{
-                    
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    NSDictionary *dic = [userinfo dictionaryForKey:messionID];
+                    if (dic == nil) {
+                        NSMutableArray *array = [NSMutableArray array];
+                        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+                        [dictionary setObject:array forKey:@"call_info"];
+                        [userinfo setObject:dictionary forKey:messionID];
+                        NSString *time = [self getNowTime];
+                        NSDictionary *dict =@{@"sender":name,@"eventType":@"发起",@"time":time};
+                        NSMutableDictionary *dictionaryDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+                        NSArray *arrayArr = [dictionary objectForKey:@"call_info"];
+                        NSMutableArray *arr = [NSMutableArray arrayWithArray:arrayArr];
+                        [arr addObject:dict];
+                        [dictionary setObject:arr forKey:@"call_info"];
+                        [userinfo setObject:dictionaryDic forKey:messionID];
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
+                    }
                 }];
-
+                
             } failure:^(NSError *error) {
                 [MBProgressHUD showError:@"获取信息失败"];
                 YBZTargetWaitingViewController *targetViewController=[[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:yonghuID andType:language_catgory andIsCall:NO andName:@"未知"];
+                targetViewController.messionId = messionID;
+
                 [nowVC.navigationController presentViewController:targetViewController animated:YES completion:^{
                     
                 }];
@@ -620,6 +639,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 } confirmHandler:^(UIAlertAction *action) {
                     
                     YBZTargetWaitingViewController *targetViewController=[[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:yonghuID andType:language_catgory andIsCall:NO andName:name];
+                    targetViewController.messionId = messionID;
+
                     [nowVC.navigationController presentViewController:targetViewController animated:YES completion:^{
                         
                     }];
@@ -633,6 +654,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             } failure:^(NSError *error) {
                 [MBProgressHUD showError:@"获取信息失败"];
                 YBZTargetWaitingViewController *targetViewController=[[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:yonghuID andType:language_catgory andIsCall:NO andName:@"未知"];
+                targetViewController.messionId = messionID;
+
                 [nowVC.navigationController presentViewController:targetViewController animated:YES completion:^{
                     
                 }];

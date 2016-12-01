@@ -1434,6 +1434,20 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 }
 
-
++(void)changeProceedState:(NSString *)custom_id
+                  andProceed_state:(NSString *)proceed_state
+                     success:(void (^)(id responseObject))success
+                     failure:(void (^)(NSError *error))failure{
+    
+    NSDictionary *dict = @{@"custom_id":custom_id,@"proceed_state":proceed_state};
+    
+    [[APIClient sharedClient] POST:@"customTranslate/changeProceedState/" parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
 
 @end
