@@ -79,7 +79,7 @@
 #pragma mark - laoddate
 
 -(void)loadDate{
-    
+    self.mArr=[NSMutableArray array];
     [WebAgent selectLoadDatesuccess:^(id responseObject) {
         
         
