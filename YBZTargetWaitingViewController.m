@@ -612,7 +612,8 @@
     
 
     
-    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
+
     
     
     [WebAgent sendRemoteNotificationsWithuseId:targetChar WithsendMessage:@"对方正忙" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:self.messionId WithLanguage:mytype success:^(id responseObject) {
