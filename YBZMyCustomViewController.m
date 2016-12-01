@@ -418,18 +418,25 @@
             
             CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
             
-            NSString *star= infoModel.star;
+//            NSString *star= infoModel.star;
             
-            if(star ==NULL){
             
-                [MBProgressHUD showNormalMessage:@"对方尚未对此订单进行评价哦"];
+            id star = infoModel.star;
             
-            }else{
-            
-                NSString *needStr=[NSString stringWithFormat:@"订单已被评价 星级:%@星",star];
+            if(![star isKindOfClass:[NSNull class]]){
+                NSString *str = (NSString *)star;
+                NSString *needStr=[NSString stringWithFormat:@"订单已评价为%@星",str];
                 [MBProgressHUD showNormalMessage:needStr];
-            
+                
+            }else{
+                
+               [MBProgressHUD showNormalMessage:@"对方尚未对此订单进行评价哦"];                
             }
+
+            
+            
+            
+            
             
 //            YBZOrderDetailsViewController *details = [[YBZOrderDetailsViewController alloc]init];
 //            [self.navigationController pushViewController:details animated:YES];

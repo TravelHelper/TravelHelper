@@ -453,15 +453,15 @@
             
             NSString *msgId = infoModel.customID;
             
-            NSString *star = infoModel.star;
+            id star = infoModel.star;
             
-            if(star != NULL){
-            
-                NSString *needStr=[NSString stringWithFormat:@"订单已评价为%@星",star];
+            if(![star isKindOfClass:[NSNull class]]){
+                NSString *str = (NSString *)star;
+                NSString *needStr=[NSString stringWithFormat:@"订单已评价为%@星",str];
                 [MBProgressHUD showNormalMessage:needStr];
             
             }else{
-            
+                
                 FeedBackViewController *details = [[FeedBackViewController alloc]initWithtargetID:acceptId AndmassageId:msgId];
                 [self.navigationController pushViewController:details animated:YES];
                 
