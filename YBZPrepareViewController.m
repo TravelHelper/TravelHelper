@@ -7,8 +7,10 @@
 //
 
 #import "YBZPrepareViewController.h"
+#import "FeedBackViewController.h"
 #import "UIAlertController+SZYKit.h"
 #import "YBZTargetWaitingViewController.h"
+#import "MBProgressHUD+XMG.h"
 
 @interface YBZPrepareViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -65,14 +67,7 @@
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changViewWithState) name:@"changViewWithState" object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeTableViewData:) name:@"changeTableViewData" object:nil];
         
-        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        NSDictionary *dic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
-        if (dic == nil) {
-            NSMutableArray *array = [NSMutableArray array];
-            NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-            [dictionary setObject:array forKey:@"call_info"];
-            [userinfo setObject:dictionary forKey:dataInfo[@"mission_id"]];
-        }
+
 
         
 
@@ -139,6 +134,18 @@
             
         }];
     }
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
+    if (dic == nil) {
+        NSMutableArray *array = [NSMutableArray array];
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        [dictionary setObject:array forKey:@"call_info"];
+        [userinfo setObject:dictionary forKey:dataInfo[@"mission_id"]];
+    }else if (dic != nil && (proceedState == 3||proceedState == 4)){
+        [thirdStateTableView reloadData];
+    }
+    
+    
 }
 
 -(void)addAllControls{
@@ -366,15 +373,28 @@
     thirdBtn.layer.borderWidth = 0.004*SCREEN_WIDTH;
     [thirdBtn addTarget:self action:@selector(thirdBtnClick) forControlEvents:UIControlEventTouchUpInside];
     
-    forthBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    forthBtn.frame = CGRectMake(firstLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, CGRectGetMaxY(forthLabelFrame)+0.0181*SCREEN_HEIGHT, firstState.bounds.size.width, 0.0457*SCREEN_HEIGHT);
-    [forthBtn setTitle:@"立刻评价" forState:UIControlStateNormal];
-    [forthBtn setTitleColor:UIColorFromRGB(0xF3D129) forState:UIControlStateNormal];
-    forthBtn.layer.masksToBounds = YES;
-    forthBtn.layer.cornerRadius = 0.04*SCREEN_WIDTH;
-    forthBtn.layer.borderColor = UIColorFromRGB(0xF3D129).CGColor;
-    forthBtn.layer.borderWidth = 0.004*SCREEN_WIDTH;
-    [forthBtn addTarget:self action:@selector(forthBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    if ([dataInfo[@"iden"] isEqualToString:@"USER"]) {
+        forthBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        forthBtn.frame = CGRectMake(firstLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, CGRectGetMaxY(forthLabelFrame)+0.0181*SCREEN_HEIGHT, firstState.bounds.size.width, 0.0457*SCREEN_HEIGHT);
+        [forthBtn setTitle:@"立刻评价" forState:UIControlStateNormal];
+        [forthBtn setTitleColor:UIColorFromRGB(0xF3D129) forState:UIControlStateNormal];
+        forthBtn.layer.masksToBounds = YES;
+        forthBtn.layer.cornerRadius = 0.04*SCREEN_WIDTH;
+        forthBtn.layer.borderColor = UIColorFromRGB(0xF3D129).CGColor;
+        forthBtn.layer.borderWidth = 0.004*SCREEN_WIDTH;
+        [forthBtn addTarget:self action:@selector(forthBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        forthBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        forthBtn.frame = CGRectMake(firstLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, CGRectGetMaxY(forthLabelFrame)+0.0181*SCREEN_HEIGHT, firstState.bounds.size.width, 0.0457*SCREEN_HEIGHT);
+        [forthBtn setTitle:@"返回首页" forState:UIControlStateNormal];
+        [forthBtn setTitleColor:UIColorFromRGB(0xF3D129) forState:UIControlStateNormal];
+        forthBtn.layer.masksToBounds = YES;
+        forthBtn.layer.cornerRadius = 0.04*SCREEN_WIDTH;
+        forthBtn.layer.borderColor = UIColorFromRGB(0xF3D129).CGColor;
+        forthBtn.layer.borderWidth = 0.004*SCREEN_WIDTH;
+        [forthBtn addTarget:self action:@selector(forthBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+
     
 }
 
@@ -553,18 +573,53 @@
 }
 
 -(void)thirdBtnClick{
-    
-    proceedState = proceedState +1;
-    [self clearAllControls];
-    [self addAllControls];
+    NSString *str = dataInfo[@"iden"];
+    if ([str isEqualToString:@"USER"]) {
+
+    }
+    [WebAgent changeProceedState:dataInfo[@"mission_id"] andProceed_state:@"0004" success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSString *str = dict[@"give_money"];
+        if ([str isEqualToString:@"1"]) {
+            [WebAgent getBiWithID:dataInfo[@"user_name"] andPurchaseCount:dataInfo[@"money"] andSource_id:@"0002" success:^(id responseObject) {
+                
+                
+                proceedState = proceedState +1;
+                [self clearAllControls];
+                [self addAllControls];
+            } failure:^(NSError *error) {
+                
+            }];
+        }
+
+
+    } failure:^(NSError *error) {
+        if ([dataInfo[@"iden"] isEqualToString:@"USER"]) {
+            [MBProgressHUD showMessage:@"对方已退出，定制完成！"];
+            proceedState = proceedState +1;
+            [self clearAllControls];
+            [self addAllControls];
+        }else{
+            [MBProgressHUD showMessage:@"对方已退出，定制完成！"];
+             [self.navigationController popToRootViewControllerAnimated:YES];
+
+        }
+    }];
+
 
 }
 
 -(void)forthBtnClick{
-
-    [UIAlertController showAlertAtViewController:self title:@"提示" message:@"评价成功~即将返回首页" confirmTitle:@"好的" confirmHandler:^(UIAlertAction *action) {
+    if ([dataInfo[@"iden"] isEqualToString:@"USER"]) {
+        FeedBackViewController *vc = [[FeedBackViewController alloc]initWithtargetID:dataInfo[@"user_name"] AndmassageId:dataInfo[@"mission_id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
         [self.navigationController popToRootViewControllerAnimated:YES];
-    }];
+    }
+
+
+
 
 }
 

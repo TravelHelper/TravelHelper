@@ -599,6 +599,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                         [dictionary setObject:arr forKey:@"call_info"];
                         [userinfo setObject:dictionaryDic forKey:messionID];
                         [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
+                    }else{
+                    
+                        NSString *time = [self getNowTime];
+                        NSDictionary *dict =@{@"sender":name,@"eventType":@"发起",@"time":time};
+                        //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                        NSDictionary *dic = [userinfo objectForKey:messionID];
+                        NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+                        NSArray *array = [dictionary objectForKey:@"call_info"];
+                        NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+                        [arr addObject:dict];
+                        [dictionary setObject:arr forKey:@"call_info"];
+                        [userinfo setObject:dictionary forKey:messionID];
                     }
                 }];
                 
@@ -650,12 +662,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                     
                     //发个推送？
                     [WebAgent sendRemoteNotificationsWithuseId:yonghuID WithsendMessage:@"对方正忙" WithType:@"9003" WithSenderID:user_id[@"user_id"] WithMessionID:messionID WithLanguage:language_catgory success:^(id responseObject) {
-                        
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
                     } failure:^(NSError *error) {
                         
                     }];
                     
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
 
                     
                 } confirmHandler:^(UIAlertAction *action) {
@@ -716,6 +727,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             [arr addObject:dict];
             [dictionary setObject:arr forKey:@"call_info"];
             [userinfo setObject:dictionary forKey:messionID];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
 
             
             
@@ -737,7 +749,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         }];
 
         
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
 
         
 
@@ -778,10 +789,15 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         }
         
     }else if([type isEqualToString:@"9000"]){
-        UIViewController *nowVC=[self currentViewController];
-        [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"对方已进入准备页面，请立刻开始您的定制" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+        UIViewController *presentVC = [self getPresentedViewController];
+        if (![presentVC isKindOfClass:[UIAlertController class]]) {
+            UIViewController *nowVC=[self currentViewController];
             
-        }];
+            [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"对方已进入准备页面，请立刻开始您的定制" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+                
+            }];
+        }
+
     }else if( [type isEqualToString:@"0001"]){
         UIViewController *nowVC=[self currentViewController];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
