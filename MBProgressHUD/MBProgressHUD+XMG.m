@@ -66,6 +66,8 @@
     // YES代表需要蒙版效果
     hud.dimBackground = YES;
     
+    [hud hide:YES afterDelay:10.0];
+    
     return hud;
 }
 
