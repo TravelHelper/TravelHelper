@@ -11,6 +11,20 @@
 @interface WebAgent : NSObject
 
 
++(void)checkTimeWithUser_id:(NSString *)user_id
+                 begin_time:(NSString *)begin_time
+                   end_time:(NSString *)end_time
+                    success:(void (^)(id responseObject))success
+                    failure:(void (^)(NSError *error))failure;
+
++(void)checkUserTimeWithUser_id:(NSString *)user_id
+                     begin_time:(NSString *)begin_time
+                       end_time:(NSString *)end_time
+                        success:(void (^)(id responseObject))success
+                        failure:(void (^)(NSError *error))failure;
+
+
+
 
 +(void)UpdateStarWithcustom_id:(NSString *)custom_id
                        andStar:(NSString *)star

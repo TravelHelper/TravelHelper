@@ -172,20 +172,44 @@
                 
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-                    [WebAgent custom_id:cell.customID state:@"1" accept_id:user_id[@"user_id"] success:^(id responseObject) {
-                        NSLog(@"success ! !!");
-                        if([tag isEqualToString:@"connecttimeout"]){
-                            
-                            [MBProgressHUD showSuccess:@"接单成功，临近预约时间，请立即前往"];
-                            
-                        }
-                        [MBProgressHUD showSuccess:@"接单成功"];
-                    } failure:^(NSError *error) {
-                        NSLog(@"%@",error);
+                    
+                    [WebAgent checkTimeWithUser_id:@"" begin_time:@"" end_time:@"??" success:^(id responseObject) {
                         
-                        [MBProgressHUD showError:@"接单失败，请重试"];
+                        NSData *data = [[NSData alloc]initWithData:responseObject];
+                        NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                        
+                        NSString *stateStr=dict[@"allow"];
+                        if([stateStr isEqualToString:@"1"]){
+                        
+                            [WebAgent custom_id:cell.customID state:@"1" accept_id:user_id[@"user_id"] success:^(id responseObject) {
+                                NSLog(@"success ! !!");
+                                if([tag isEqualToString:@"connecttimeout"]){
+                                    
+                                    [MBProgressHUD showSuccess:@"接单成功，临近预约时间，请立即前往"];
+                                    
+                                }
+                                [MBProgressHUD showSuccess:@"接单成功"];
+                            } failure:^(NSError *error) {
+                                NSLog(@"%@",error);
+                                
+                                [MBProgressHUD showError:@"接单失败，请重试"];
+                                
+                            }];
+
+                            
+                            
+                        }else{
+                        
+                            [MBProgressHUD showError:@"与其他订单冲突，请检查"];
+                        
+                        }
+                       
+                        
+                    } failure:^(NSError *error) {
                         
                     }];
+                    
+                    
                     
                     
                     [self.mArr removeObjectAtIndex:indexPath.row];

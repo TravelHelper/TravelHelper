@@ -704,33 +704,59 @@
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
         
-        
-        [WebAgent moneyBiCostWithID:user_id[@"user_id"] andCostCount:self.priceLabel.titleLabel.text andSource_id:@"0002" success:^(id responseObject) {
-
-            [WebAgent uploaduser_id:user_id[@"user_id"] language:self.languageBtn.titleLabel.text scene:self.scenceBtn.titleLabel.text content:self.contentTextView.text custom_time:orderTime duration:self.longBtn.titleLabel.text offer_money:self.priceLabel.titleLabel.text state:@"0" success:^(id responseObject) {
-                //            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                NSData *data = [[NSData alloc]initWithData:responseObject];
-                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                NSString *message=dic[@"state"];
-                [MBProgressHUD hideHUD];
-                if([message isEqualToString:@"SUCCESS"]){
-                    [MBProgressHUD showSuccess:@"提交成功"];
-                    [self.navigationController popViewControllerAnimated:YES];
-                }else{
-                    [MBProgressHUD showError:@"上传失败 请重试"];
-                }
-                
-            } failure:^(NSError *error) {
-                [MBProgressHUD hideHUD];
-                [MBProgressHUD showError:@"提交失败，请检查网络"];
-            }];
+//        orderTime
+//        self.longBtn.titleLabel.text
+        [WebAgent checkTimeWithUser_id:user_id[@"user_id"] begin_time:orderTime end_time:@"??" success:^(id responseObject) {
             
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            NSString *stateStr=dict[@"allow"];
+            if([stateStr isEqualToString:@"1"]){
+                
+                [WebAgent moneyBiCostWithID:user_id[@"user_id"] andCostCount:self.priceLabel.titleLabel.text andSource_id:@"0002" success:^(id responseObject) {
+                    
+                    [WebAgent uploaduser_id:user_id[@"user_id"] language:self.languageBtn.titleLabel.text scene:self.scenceBtn.titleLabel.text content:self.contentTextView.text custom_time:orderTime duration:self.longBtn.titleLabel.text offer_money:self.priceLabel.titleLabel.text state:@"0" success:^(id responseObject) {
+                        //            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                        NSData *data = [[NSData alloc]initWithData:responseObject];
+                        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                        NSString *message=dic[@"state"];
+                        [MBProgressHUD hideHUD];
+                        if([message isEqualToString:@"SUCCESS"]){
+                            [MBProgressHUD showSuccess:@"提交成功"];
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }else{
+                            [MBProgressHUD showError:@"上传失败 请重试"];
+                        }
+                        
+                    } failure:^(NSError *error) {
+                        [MBProgressHUD hideHUD];
+                        [MBProgressHUD showError:@"提交失败，请检查网络"];
+                    }];
+                    
+                    
+                    
+                } failure:^(NSError *error) {
+                    [MBProgressHUD showError:@"扣币失败，请重试"];
+                    NSLog(@"fail");
+                }];
+
+                
+                
+            }else{
+                
+                [MBProgressHUD showError:@"与其他订单冲突，请检查"];
+                
+            }
             
             
         } failure:^(NSError *error) {
-            [MBProgressHUD showError:@"扣币失败，请重试"];
-            NSLog(@"fail");
+            
         }];
+
+        
+        
+        
         
         
         
