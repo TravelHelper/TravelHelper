@@ -701,6 +701,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         
     
+    }else if([type isEqualToString:@"9010"]){
+    
+        UIViewController *nowVC=[self currentViewController];
+        
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"您发布的定制已被接单！" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+           
+        }];
+        [alertVC addAction:okAction];
+        [nowVC presentViewController:alertVC animated:YES completion:nil];
+        
+    
     }else if([type isEqualToString:@"9003"]){
         
         
