@@ -754,7 +754,21 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             [[NSNotificationCenter defaultCenter]postNotificationName:@"changeTableViewData" object:nil];
 
             
+            UIViewController *nowVC=[self getPresentedViewController];
+            if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
+                
+                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+                [nowVC dismissViewControllerAnimated:YES completion:^{
+                    
+                }];
+                
+            }else{
+                
+                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+                
+            }
             
+
         } failure:^(NSError *error) {
             [MBProgressHUD showError:@"获取信息失败"];
             
@@ -769,7 +783,21 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             [userinfo setObject:dictionary forKey:messionID];
 
             
+            UIViewController *nowVC=[self getPresentedViewController];
+            if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
+                
+                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+                [nowVC dismissViewControllerAnimated:YES completion:^{
+                    
+                }];
+                
+            }else{
+                
+                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+                
+            }
             
+
         }];
 
         
@@ -778,20 +806,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
         
         
-        
-        UIViewController *nowVC=[self getPresentedViewController];
-        if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
-        
-            [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
-            [nowVC dismissViewControllerAnimated:YES completion:^{
-                
-            }];
-        
-        }else{
-        
-            [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
-            
-        }
         
         
         
