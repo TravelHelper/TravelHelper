@@ -190,14 +190,19 @@
                         NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                         
                         NSString *nowState = dict[@"state"];
+                        NSString *stateStr=dict[@"allow"];
                         if([nowState isEqualToString:@"FAIL"]){
                         
+                            stateStr=@"1";
+                            
                         }else{
+                            
+                            
                         
                         }
                         
                         
-                        NSString *stateStr=dict[@"allow"];
+                        
                         if([stateStr isEqualToString:@"1"]){
                         
                             [WebAgent custom_id:cell.customID state:@"1" accept_id:user_id[@"user_id"] success:^(id responseObject) {

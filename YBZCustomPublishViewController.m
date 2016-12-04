@@ -721,6 +721,17 @@
             NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             
             NSString *stateStr=dict[@"allow"];
+            NSString *nowState = dict[@"state"];
+
+            if([nowState isEqualToString:@"FAIL"]){
+                
+                stateStr=@"1";
+                
+            }else{
+                
+                
+                
+            }
             if([stateStr isEqualToString:@"1"]){
                 
                 [WebAgent moneyBiCostWithID:user_id[@"user_id"] andCostCount:self.priceLabel.titleLabel.text andSource_id:@"0002" success:^(id responseObject) {
