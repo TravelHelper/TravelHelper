@@ -658,7 +658,8 @@
     
     
     NSLog(@"%@",aSession.callId);
-   
+    callMark=@"1";
+
     
 }
 //
@@ -703,7 +704,6 @@
     }
     [MBProgressHUD hideHUD];
     NSLog(@"用户通道建立完成");
-    callMark=@"1";
     
 }
 //- (void)didReceiveCallConnected:(EMCallSession *)aSession{
@@ -757,7 +757,7 @@
     if([callMark isEqualToString:@"1"]){
     
         [MBProgressHUD showNormalMessage:@"对方挂断了通话"];
-        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [self dismissViewControllerAnimated:YES completion:^{
             
         }];
     }
