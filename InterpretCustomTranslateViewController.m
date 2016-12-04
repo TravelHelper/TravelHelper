@@ -189,30 +189,39 @@
                         NSData *data = [[NSData alloc]initWithData:responseObject];
                         NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                         
+                        long stateStr = [dict[@"allow"]longValue];
                         NSString *nowState = dict[@"state"];
-                        NSString *stateStr=dict[@"allow"];
-                        if([nowState isEqualToString:@"FAIL"]){
                         
-                            stateStr=@"1";
+                        if([nowState isEqualToString:@"FAIL"]){
+                            
+                            stateStr= 1;
                             
                         }else{
                             
                             
-                        
+                            
                         }
-                        
-                        
-                        
-                        if([stateStr isEqualToString:@"1"]){
-                        
+                        if(stateStr == 1){
                             [WebAgent custom_id:cell.customID state:@"1" accept_id:user_id[@"user_id"] success:^(id responseObject) {
                                 NSLog(@"success ! !!");
                                 if([tag isEqualToString:@"connecttimeout"]){
                                     
                                     [MBProgressHUD showSuccess:@"接单成功，临近预约时间，请立即前往"];
                                     
+                                }else{
+                                    [MBProgressHUD showSuccess:@"接单成功"];
                                 }
-                                [MBProgressHUD showSuccess:@"接单成功"];
+                                
+                                
+                                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                                NSString *targetId=infoModel.user_id;
+                                [WebAgent sendRemoteNotificationsWithuseId:targetId WithsendMessage:@"您的定制已被接单，请查看" WithType:@"9010" WithSenderID:user_id[@"user_id"] WithMessionID:@"" WithLanguage:@"" success:^(id responseObject) {
+                                   
+                                } failure:^(NSError *error) {
+                                    
+                                }];
+
+                                
                                 [self.mArr removeObjectAtIndex:indexPath.row];
                                 [self.mainTableView reloadData];
                             } failure:^(NSError *error) {
