@@ -1483,6 +1483,28 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
     }];
 }
 
++(void)chackStateWithCustomID:(NSString *)custom_id
+                        success:(void (^)(id responseObject))success
+                        failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"custom_id":custom_id};
+    [[APIClient sharedClient] POST:@"CustomTranslate/chackState/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
 
++(void)updateStateWithCustomID:(NSString *)custom_id
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"custom_id":custom_id};
+    [[APIClient sharedClient] POST:@"CustomTranslate/updateState/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+}
 
 @end

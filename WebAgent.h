@@ -404,6 +404,10 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
               success:(void (^)(id responseObject))success
               failure:(void (^)(NSError *error))failure;
 
++(void)chackStateWithCustomID:(NSString *)custom_id
+                      success:(void (^)(id responseObject))success
+                      failure:(void (^)(NSError *error))failure;
+
 +(void)updateUserLoginState:(NSString *)userID
                     success:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure;
@@ -414,6 +418,10 @@ feedbackinfo_time:(NSString *)feedbackinfo_time
                       andAnswerID:(NSString *)answer_id
                           success:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure;
+
++(void)updateStateWithCustomID:(NSString *)custom_id
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure;
 
 +(void)stopFindingTranslator:(NSString *)user_id
                    missionID:(NSString *)mission_id
