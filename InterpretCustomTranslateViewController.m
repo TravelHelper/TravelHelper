@@ -178,6 +178,14 @@
                         NSData *data = [[NSData alloc]initWithData:responseObject];
                         NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                         
+                        NSString *nowState = dict[@"state"];
+                        if([nowState isEqualToString:@"FAIL"]){
+                        
+                        }else{
+                        
+                        }
+                        
+                        
                         NSString *stateStr=dict[@"allow"];
                         if([stateStr isEqualToString:@"1"]){
                         
