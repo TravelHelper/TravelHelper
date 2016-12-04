@@ -54,6 +54,8 @@
     BOOL myIscall;
     
     NSString *userName;
+    
+    NSString *callMark;
 }
 
 
@@ -78,7 +80,7 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    
+    callMark = @"0";
     callCount=0;
 //    localChar=@"2";
 //    targetChar=@"1";
@@ -651,8 +653,8 @@
 //    self.refuseBtn.frame=CGRectMake(1, 1, 1, 1);
     
     
-//    [self.view addSubview:self.confirmBtn];
-//    [self.view addSubview:self.refuseBtn];
+    
+    callMark=@"1";
     
     
     NSLog(@"%@",aSession.callId);
@@ -751,6 +753,14 @@
                            error:(EMError *)aError{
     //    [MBProgressHUD hideHUD];
     NSLog(@"通话结束");
+    if([callMark isEqualToString:@"1"]){
+    
+        [MBProgressHUD showError:@"呼叫冲突，请重试"];
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }
+    
     
 }
 

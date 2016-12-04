@@ -266,8 +266,7 @@
                             [UIAlertController showAlertAtViewController:self title:@"是否确认退单" message:@"退单将影响译员信用额度" cancelTitle:@"算了" confirmTitle:@"坚持退单" cancelHandler:^(UIAlertAction *action) {
                                 
                             } confirmHandler:^(UIAlertAction *action) {
-                                
-                            
+
                                     
                                 CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
 
