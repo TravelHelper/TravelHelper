@@ -91,7 +91,7 @@
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changViewWithState) name:@"changViewWithState" object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeTableViewData:) name:@"changeTableViewData" object:nil];
-        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(finishCustomTranslate) name:@"finishCustomTranslate" object:nil];
 
         nowTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(nowTimerClick:) userInfo:nil repeats:YES];
         [nowTimer fire];
@@ -528,7 +528,7 @@
 }
 
 -(void)firstBtnClick{
-    countDownTime = 6;
+    countDownTime = 121;
     firstBtn.userInteractionEnabled=NO;
     countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerClick:) userInfo:nil repeats:YES];
     
@@ -614,7 +614,7 @@
 
 -(void)thirdBtnClick{
     if (canClick == NO) {
-        [MBProgressHUD showError:@"对不起，预计结束时间之前您不能手动完成"];
+        [MBProgressHUD showError:@"抱歉，预计结束时间前您不能手动完成"];
     }else{
         NSString *str = dataInfo[@"iden"];
         if ([str isEqualToString:@"USER"]) {
@@ -628,9 +628,16 @@
                 [WebAgent getBiWithID:dataInfo[@"user_name"] andPurchaseCount:dataInfo[@"money"] andSource_id:@"0002" success:^(id responseObject) {
                     
                     
-                    proceedState = proceedState +1;
-                    [self clearAllControls];
-                    [self addAllControls];
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    NSDictionary *dic = [userinfo objectForKey:@"user_id"];
+                    [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"定制已完成" WithType:@"9009" WithSenderID:dic[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"" success:^(id responseObject) {
+                        proceedState = proceedState +1;
+                        [self clearAllControls];
+                        [self addAllControls];
+
+                    } failure:^(NSError *error) {
+                        
+                    }];
                 } failure:^(NSError *error) {
                     
                 }];
@@ -665,6 +672,22 @@
 
 
 
+
+}
+
+-(void)finishCustomTranslate{
+
+    if ([dataInfo[@"iden"] isEqualToString:@"TRANS"]) {
+        [MBProgressHUD showSuccess:@"定制完成！请核对嗨币是否到账"];
+        proceedState = proceedState +1;
+        [self clearAllControls];
+        [self addAllControls];
+    }else{
+        [MBProgressHUD showSuccess:@"定制完成！请尽快评价"];
+        proceedState = proceedState +1;
+        [self clearAllControls];
+        [self addAllControls];
+    }
 
 }
 

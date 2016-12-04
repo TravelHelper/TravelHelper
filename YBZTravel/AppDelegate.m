@@ -569,6 +569,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 
             }];
         }
+    }else if ([type isEqualToString:@"9009"]){
+        UIViewController *nowVC=[self currentViewController];
+        
+        
+        if ([nowVC isKindOfClass:[YBZPrepareViewController class]]) {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"finishCustomTranslate" object:nil];
+            
+        }else{
+            [UIAlertController showAlertAtViewController:nowVC title:@"提示" message:@"对方已完成定制，请查看嗨币是否到账" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+                
+            }];
+        }
     }else if([type isEqualToString:@"9002"]){
         UIViewController *nowVC=[self currentViewController];
         if([nowVC isKindOfClass:[YBZPrepareViewController class]]){
