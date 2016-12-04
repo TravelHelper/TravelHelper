@@ -267,13 +267,10 @@
                                 
                             } confirmHandler:^(UIAlertAction *action) {
                                 
-                                
-                                
-                                    [cell removeFromSuperview];
-                                    [self.mArr removeObjectAtIndex:indexPath.row];
-                                    [self.mainTableView reloadData];
+                            
                                     
-                                    CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+
 //                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
 //                                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
                                     [WebAgent getBiWithID:cell.infoModel.user_id andPurchaseCount:infoModel.offerMoney andSource_id:@"0007" success:^(id responseObject) {
