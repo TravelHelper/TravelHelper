@@ -269,9 +269,7 @@
                                 
                                 
                                 
-                                    [cell removeFromSuperview];
-                                    [self.mArr removeObjectAtIndex:indexPath.row];
-                                    [self.mainTableView reloadData];
+                                    
                                     
                                     CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
 //                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
