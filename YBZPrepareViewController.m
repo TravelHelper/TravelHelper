@@ -143,6 +143,8 @@
 //    }
 }
 
+
+
 -(void)viewWillAppear:(BOOL)animated{
 
     if (needPush == YES && proceedState ==2) {
@@ -171,6 +173,13 @@
     }else if (dic != nil && (proceedState == 3||proceedState == 4)){
         [thirdStateTableView reloadData];
     }
+    
+    
+    [WebAgent updateStateWithCustomID:dataInfo[@"mission_id"] success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
     
     
 }
@@ -557,11 +566,17 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     
-    YBZTargetWaitingViewController *vc = [[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:dataInfo[@"user_name"] andType:chatType andIsCall:YES andName:userName];
-    vc.messionId = dataInfo[@"mission_id"];
-
-    [self.navigationController presentViewController:vc animated:YES completion:^{
-        if ([chatType isEqualToString:@"语音呼叫"]) {
+    [WebAgent chackStateWithCustomID:dataInfo[@"mission_id"] success:^(id responseObject) {
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSString *state = dict[@"state"];
+        if([state isEqualToString:@"SUCCESS"]){
+            
+            YBZTargetWaitingViewController *vc = [[YBZTargetWaitingViewController alloc]initWithUserId:user_id[@"user_id"] targetId:dataInfo[@"user_name"] andType:chatType andIsCall:YES andName:userName];
+            vc.messionId = dataInfo[@"mission_id"];
+            
+            [self.navigationController presentViewController:vc animated:YES completion:^{
+                if ([chatType isEqualToString:@"语音呼叫"]) {
                     [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个语音呼叫" WithType:@"9002" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"语音呼叫" success:^(id responseObject) {
                         NSString *time = [self getNowTime];
                         NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
@@ -584,32 +599,43 @@
                     } failure:^(NSError *error) {
                         
                     }];
-        }else{
-            [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个视频呼叫" WithType:@"9002" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"视频呼叫" success:^(id responseObject) {
-                NSString *time = [self getNowTime];
-                NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
-                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                NSDictionary *dic = [userinfo objectForKey:dataInfo[@"mission_id"]];
-                NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
-                NSArray *array = [dictionary objectForKey:@"call_info"];
-                NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
-                [arr addObject:dict];
-                [dictionary setObject:arr forKey:@"call_info"];
-                [userinfo setObject:dictionary forKey:dataInfo[@"mission_id"]];
-                [thirdStateTableView reloadData];
-                if (proceedState == 2) {
-                    [WebAgent changeProceedState:dataInfo[@"mission_id"] andProceed_state:@"0003" success:^(id responseObject) {
-                        
+                }else{
+                    [WebAgent sendRemoteNotificationsWithuseId:dataInfo[@"user_name"] WithsendMessage:@"您有一个视频呼叫" WithType:@"9002" WithSenderID:user_id[@"user_id"] WithMessionID:dataInfo[@"mission_id"] WithLanguage:@"视频呼叫" success:^(id responseObject) {
+                        NSString *time = [self getNowTime];
+                        NSDictionary *dict =@{@"sender":@"USER",@"eventType":@"发起",@"time":time};
+                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                        NSDictionary *dic = [userinfo objectForKey:dataInfo[@"mission_id"]];
+                        NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+                        NSArray *array = [dictionary objectForKey:@"call_info"];
+                        NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+                        [arr addObject:dict];
+                        [dictionary setObject:arr forKey:@"call_info"];
+                        [userinfo setObject:dictionary forKey:dataInfo[@"mission_id"]];
+                        [thirdStateTableView reloadData];
+                        if (proceedState == 2) {
+                            [WebAgent changeProceedState:dataInfo[@"mission_id"] andProceed_state:@"0003" success:^(id responseObject) {
+                                
+                            } failure:^(NSError *error) {
+                                
+                            }];
+                        }
                     } failure:^(NSError *error) {
                         
                     }];
                 }
-            } failure:^(NSError *error) {
                 
             }];
-        }
 
+        }else{
+            
+            [MBProgressHUD showNormalMessage:@"对方已呼叫，请接收"];
+        
+        }
+        
+    } failure:^(NSError *error) {
+        
     }];
+    
 }
 
 -(void)thirdBtnClick{
