@@ -173,7 +173,18 @@
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
                     
-                    [WebAgent checkTimeWithUser_id:@"" begin_time:@"" end_time:@"??" success:^(id responseObject) {
+                    CustomTranslateInfoModel *model=self.mArr[indexPath.row];
+                    
+                    NSString *custom_time = model.translateTime;
+                    NSString *duration =  model.duration;
+
+                    long customTime = [self changeTimeToSecond:custom_time];
+                    int  a= [[duration substringWithRange:NSMakeRange(0,2)] intValue];
+                    int b = [[duration substringWithRange:NSMakeRange(3, 2)]intValue];
+                    float addTime = a*3600+b*60;
+                    long fullTimeTime = customTime + addTime;
+                    NSString *endTime =  [self changeSecondToTime:fullTimeTime];
+                    [WebAgent checkTimeWithUser_id:user_id[@"user_id"] begin_time:custom_time end_time:endTime success:^(id responseObject) {
                         
                         NSData *data = [[NSData alloc]initWithData:responseObject];
                         NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -197,6 +208,8 @@
                                     
                                 }
                                 [MBProgressHUD showSuccess:@"接单成功"];
+                                [self.mArr removeObjectAtIndex:indexPath.row];
+                                [self.mainTableView reloadData];
                             } failure:^(NSError *error) {
                                 NSLog(@"%@",error);
                                 
@@ -220,8 +233,7 @@
                     
                     
                     
-                    [self.mArr removeObjectAtIndex:indexPath.row];
-                    [self.mainTableView reloadData];
+
 
                 
                 }
@@ -247,7 +259,47 @@
     YBZMyCustomViewController *myCustom=[[YBZMyCustomViewController alloc]init];
     [self.navigationController pushViewController:myCustom animated:YES];
 }
+-(NSString *)getNowTime{
+    NSDate *currentDate = [NSDate date];//获取当前时间，日期
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:currentDate];
+    NSLog(@"dateString:%@",dateString);
+    
+    return dateString;
+}
 
+
+-(NSString *)changeDateToString:(NSDate *)date{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    NSLog(@"dateString:%@",dateString);
+    return dateString;
+}
+
+
+-(long)changeTimeToSecond:(NSString *)time{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *date = [dateFormatter dateFromString:time];
+    NSLog(@"%@", date);
+    long timeSp = [[NSNumber numberWithDouble:[date timeIntervalSince1970]] integerValue];
+    return timeSp;
+    
+}
+-(NSString *)changeSecondToTime:(long)second{
+    
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:second];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:confromTimesp];
+    NSLog(@"dateString:%@",dateString);
+    
+    return dateString;
+}
 
 
 
