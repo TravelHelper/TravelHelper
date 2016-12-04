@@ -200,10 +200,7 @@
                         [UIAlertController showAlertAtViewController:self title:@"提示" message:@"订单已过期是否删除？" cancelTitle:@"取消" confirmTitle:@"删除" cancelHandler:^(UIAlertAction *action) {
                             
                         } confirmHandler:^(UIAlertAction *action) {
-                            [cell removeFromSuperview];
-                            [self.mArr removeObjectAtIndex:indexPath.row];
-                            [self.mainTableView reloadData];
-                            
+                        
                             CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
                             //                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                             //                                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
@@ -371,7 +368,6 @@
         }else if ([cell.infoModel.cellKind isEqualToString:@"2"]) {
             NSLog(@"---2---点击进入“定制进行页面”----------");
             
-            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
             
             //            NSString *typeStr=infoModel.scene;
             
@@ -411,8 +407,10 @@
             
         }else{
             NSLog(@"------点击可以评价进入“订单详情页”-------");
-            
-            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+            CustomTranslateInfoModel *infoModel;
+            if (self.mArr.count != 0) {
+                infoModel  = self.mArr[indexPath.row];
+            }
             
 //            NSString *star= infoModel.star;
             
