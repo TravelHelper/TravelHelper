@@ -306,6 +306,7 @@
     
   }
 
+
 -(void)tipoffClick{
 
     complaintViewController *comVC = [[complaintViewController alloc]initWithTargetId:self.target_id];
@@ -313,17 +314,20 @@
     
 }
 
+
 -(void)alphaBtnClick{
 
     NSLog(@"1");
 
 }
 
+
 -(void)orderClick{
 
     NSLog(@"预约");
 
 }
+
 
 ////第三步：处理通知
 //-(void)complaintText:(NSNotification *)noti{

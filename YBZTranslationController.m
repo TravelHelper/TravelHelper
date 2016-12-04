@@ -1027,11 +1027,19 @@
             }];
             [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
                 [WebAgent addIntoWaitingQueue:userID success:^(id responseObject) {
-                    YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
-                    waitingVC.hidesBottomBarWhenPushed = YES;
-                    waitingVC.navigationItem.hidesBackButton = YES;
-                    [self.navigationController pushViewController:waitingVC animated:YES];
-                    
+                    NSData *data = [[NSData alloc]initWithData:responseObject];
+                    NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                    if ([dict[@"state"] isEqualToString:@"0002"]) {
+                        [MBProgressHUD showError:dict[@"msg"]];
+                    }else if ([dict[@"state"] isEqualToString:@"0001"]){
+                        [MBProgressHUD showError:@"数据保存失败,请稍后重试"];
+                    }else{
+                        YBZWaitingViewController *waitingVC = [[YBZWaitingViewController alloc]init];
+                        waitingVC.hidesBottomBarWhenPushed = YES;
+                        waitingVC.navigationItem.hidesBackButton = YES;
+                        [self.navigationController pushViewController:waitingVC animated:YES];
+                        
+                    }
                 } failure:^(NSError *error) {
                     NSLog(@"faile");
                 }];

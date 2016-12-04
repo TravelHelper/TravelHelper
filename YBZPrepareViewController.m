@@ -50,6 +50,14 @@
     NSString *userName;
     BOOL needPush;
     NSString *secondTimeInfo;
+    NSTimer *nowTimer;
+    int nowTimerNum;
+    int fullTime;
+    long fullTimeTime;
+    long nowTimeNum;
+    BOOL canClick;
+    
+    
     
 }
 
@@ -63,11 +71,30 @@
         }else{
             needPush = NO;
         }
+        if (![dataInfo[@"iden"] isEqualToString:@"USER"]) {
+            canClick = NO;
+        }else{
+            canClick = YES;
+            }
+        NSString *custom_time = dataInfo[@"custom_time"];
+        NSString *duration = dataInfo[@"duration"];
+        long customTime = [self changeTimeToSecond:custom_time];
+        int  a= [[duration substringWithRange:NSMakeRange(0,2)] intValue];
+        int b = [[duration substringWithRange:NSMakeRange(3, 2)]intValue];
+        float addTime = a*3600+b*60;
+        fullTimeTime = customTime + addTime;
+        NSString *timeNow = [self getNowTime];
+        nowTimeNum = [self changeTimeToSecond:timeNow];
+
+        
+        
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changViewWithState) name:@"changViewWithState" object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeTableViewData:) name:@"changeTableViewData" object:nil];
         
 
+        nowTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(nowTimerClick:) userInfo:nil repeats:YES];
+        [nowTimer fire];
 
         
 
@@ -107,7 +134,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"准备";
     [self addAllControls];
-
+    
 //    if (hasKye.length != 0) {
 //        NSDictionary *infodic = [userinfo dictionaryForKey:dataInfo[@"mission_id"]];
 //        secondTimeInfo = infodic[@"second_time"];
@@ -372,7 +399,7 @@
     thirdBtn.layer.borderColor = UIColorFromRGB(0xF3D129).CGColor;
     thirdBtn.layer.borderWidth = 0.004*SCREEN_WIDTH;
     [thirdBtn addTarget:self action:@selector(thirdBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    
+
     if ([dataInfo[@"iden"] isEqualToString:@"USER"]) {
         forthBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         forthBtn.frame = CGRectMake(firstLabelFrame.origin.x+0.0635*SCREEN_WIDTH+0.0794*SCREEN_WIDTH, CGRectGetMaxY(forthLabelFrame)+0.0181*SCREEN_HEIGHT, firstState.bounds.size.width, 0.0457*SCREEN_HEIGHT);
@@ -471,6 +498,19 @@
 
 
 #pragma mark =====ONCLICK=====
+
+
+-(void)nowTimerClick:(NSTimer *)timer{
+
+    if (nowTimeNum >= fullTimeTime) {
+        if (![dataInfo[@"iden"] isEqualToString:@"USER"]) {
+            canClick = YES;
+            [nowTimer invalidate];
+        }
+    }
+    
+}
+
 
 
 -(void)timerClick:(NSTimer*)timer{
@@ -573,39 +613,44 @@
 }
 
 -(void)thirdBtnClick{
-    NSString *str = dataInfo[@"iden"];
-    if ([str isEqualToString:@"USER"]) {
-
-    }
-    [WebAgent changeProceedState:dataInfo[@"mission_id"] andProceed_state:@"0004" success:^(id responseObject) {
-        NSData *data = [[NSData alloc]initWithData:responseObject];
-        NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSString *str = dict[@"give_money"];
-        if ([str isEqualToString:@"1"]) {
-            [WebAgent getBiWithID:dataInfo[@"user_name"] andPurchaseCount:dataInfo[@"money"] andSource_id:@"0002" success:^(id responseObject) {
-                
-                
+    if (canClick == NO) {
+        [MBProgressHUD showError:@"对不起，预计结束时间之前您不能手动完成"];
+    }else{
+        NSString *str = dataInfo[@"iden"];
+        if ([str isEqualToString:@"USER"]) {
+            
+        }
+        [WebAgent changeProceedState:dataInfo[@"mission_id"] andProceed_state:@"0004" success:^(id responseObject) {
+            NSData *data = [[NSData alloc]initWithData:responseObject];
+            NSDictionary *dict= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSString *str = dict[@"give_money"];
+            if ([str isEqualToString:@"1"]) {
+                [WebAgent getBiWithID:dataInfo[@"user_name"] andPurchaseCount:dataInfo[@"money"] andSource_id:@"0002" success:^(id responseObject) {
+                    
+                    
+                    proceedState = proceedState +1;
+                    [self clearAllControls];
+                    [self addAllControls];
+                } failure:^(NSError *error) {
+                    
+                }];
+            }
+            
+            
+        } failure:^(NSError *error) {
+            if ([dataInfo[@"iden"] isEqualToString:@"USER"]) {
+                [MBProgressHUD showMessage:@"对方已退出，定制完成！"];
                 proceedState = proceedState +1;
                 [self clearAllControls];
                 [self addAllControls];
-            } failure:^(NSError *error) {
+            }else{
+                [MBProgressHUD showMessage:@"对方已退出，定制完成！"];
+                [self.navigationController popToRootViewControllerAnimated:YES];
                 
-            }];
-        }
+            }
+        }];
 
-
-    } failure:^(NSError *error) {
-        if ([dataInfo[@"iden"] isEqualToString:@"USER"]) {
-            [MBProgressHUD showMessage:@"对方已退出，定制完成！"];
-            proceedState = proceedState +1;
-            [self clearAllControls];
-            [self addAllControls];
-        }else{
-            [MBProgressHUD showMessage:@"对方已退出，定制完成！"];
-             [self.navigationController popToRootViewControllerAnimated:YES];
-
-        }
-    }];
+    }
 
 
 }
