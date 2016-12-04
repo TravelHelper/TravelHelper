@@ -755,18 +755,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
             
             UIViewController *nowVC=[self getPresentedViewController];
-            if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
-                
-                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
-                [nowVC dismissViewControllerAnimated:YES completion:^{
-                    
-                }];
-                
-            }else{
-                
-                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
-                
-            }
+//            if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
+//                
+//                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+//                [nowVC dismissViewControllerAnimated:YES completion:^{
+//                    
+//                }];
+//                
+//            }else{
+//                
+//                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+//                
+//            }
             
 
         } failure:^(NSError *error) {
@@ -784,18 +784,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
             
             UIViewController *nowVC=[self getPresentedViewController];
-            if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
-                
-                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
-                [nowVC dismissViewControllerAnimated:YES completion:^{
-                    
-                }];
-                
-            }else{
-                
-                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
-                
-            }
+//            if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
+//                
+//                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+//                [nowVC dismissViewControllerAnimated:YES completion:^{
+//                    
+//                }];
+//                
+//            }else{
+//                
+//                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+//                
+//            }
             
 
         }];

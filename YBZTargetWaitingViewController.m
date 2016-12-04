@@ -756,8 +756,10 @@
     NSLog(@"通话结束");
     if([callMark isEqualToString:@"1"]){
     
-        [MBProgressHUD showError:@"对方挂断了通话"];
-      
+        [MBProgressHUD showNormalMessage:@"对方挂断了通话"];
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            
+        }];
     }
     
     
