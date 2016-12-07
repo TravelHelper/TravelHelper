@@ -209,7 +209,7 @@
                                     [MBProgressHUD showSuccess:@"接单成功，临近预约时间，请立即前往"];
                                     
                                 }else{
-                                    [MBProgressHUD showSuccess:@"接单成功"];
+                                    [MBProgressHUD showSuccess:@"接单成功,可点击右上角查看"];
                                 }
                                 
                                 
@@ -222,8 +222,11 @@
                                 }];
 
                                 
-                                [self.mArr removeObjectAtIndex:indexPath.row];
-                                [self.mainTableView reloadData];
+//                                [self.mArr removeObjectAtIndex:indexPath.row];
+//                                [self.mainTableView reloadData];
+                                
+                                [self myClick];
+                                
                             } failure:^(NSError *error) {
                                 NSLog(@"%@",error);
                                 

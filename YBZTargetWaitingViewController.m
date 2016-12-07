@@ -101,8 +101,7 @@
             self.refuseBtn.frame=CGRectMake(0.87*SCREEN_WIDTH-0.12*SCREEN_HEIGHT, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
             
             
-            [self.view addSubview:self.confirmBtn];
-            [self.view addSubview:self.refuseBtn];
+            
             
             
         }else{
@@ -126,8 +125,8 @@
             self.refuseBtn.frame=CGRectMake(0.87*SCREEN_WIDTH-0.12*SCREEN_HEIGHT, 0.83*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT, 0.12*SCREEN_HEIGHT);
             
             
-            [self.view addSubview:self.confirmBtn];
-            [self.view addSubview:self.refuseBtn];
+//            [self.view addSubview:self.confirmBtn];
+//            [self.view addSubview:self.refuseBtn];
             
             
         }else{
@@ -584,6 +583,32 @@
     [[EMClient sharedClient].callManager answerIncomingCall:self.callSession.callId];
     
     [MBProgressHUD showMessage:@"接收到通话请求，载入中。。"];
+    if(self.callSession.type==EMCallTypeVoice){
+//        self.callSession=aSession;
+    }else{
+        
+        self.callSession.remoteVideoView=[[EMCallRemoteView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        self.callSession.remoteVideoView.scaleMode=EMCallViewScaleModeAspectFill;
+        [self.view addSubview:self.callSession.remoteVideoView];
+        
+        [self.view sendSubviewToBack:self.callSession.remoteVideoView];
+        [self.captureSession stopRunning];
+        [self.viewContainer removeFromSuperview];
+        [self.headImageView removeFromSuperview];
+        [waterTimer invalidate];
+        
+        
+        //        self.nameLabel.text=@"Simon 视频通话中...";
+        //        self.stateLabel.text=@"01:20";
+        
+        //        [self.nameLabel removeFromSuperview];
+        //        [self.stateLabel removeFromSuperview];
+        
+        self.callSession.localVideoView=[[EMCallLocalView alloc]initWithFrame:CGRectMake(20, 0, 210*SCREEN_WIDTH/SCREEN_HEIGHT, 210)];
+        [self.view addSubview:self.callSession.localVideoView];
+//        self.callSession=self.callSession;
+    }
+
 }
 
 
@@ -677,6 +702,29 @@
 //}
 - (void)callDidConnect:(EMCallSession *)aSession{
     
+   
+    [MBProgressHUD hideHUD];
+    NSLog(@"用户通道建立完成");
+    
+    if(myIscall == false){
+    
+        [self.view addSubview:self.confirmBtn];
+        [self.view addSubview:self.refuseBtn];
+        
+    }
+    
+    
+}
+//- (void)didReceiveCallConnected:(EMCallSession *)aSession{
+//
+//    NSLog(@"用户通道建立完成");
+//
+//}
+- (void)callDidAccept:(EMCallSession *)aSession{
+    NSLog(@"用户同意了通话");
+    [MBProgressHUD hideHUD];
+    
+    
     if(aSession.type==EMCallTypeVoice){
         self.callSession=aSession;
     }else{
@@ -692,29 +740,16 @@
         [waterTimer invalidate];
         
         
-//        self.nameLabel.text=@"Simon 视频通话中...";
-//        self.stateLabel.text=@"01:20";
+        //        self.nameLabel.text=@"Simon 视频通话中...";
+        //        self.stateLabel.text=@"01:20";
         
-//        [self.nameLabel removeFromSuperview];
-//        [self.stateLabel removeFromSuperview];
+        //        [self.nameLabel removeFromSuperview];
+        //        [self.stateLabel removeFromSuperview];
         
         aSession.localVideoView=[[EMCallLocalView alloc]initWithFrame:CGRectMake(20, 0, 210*SCREEN_WIDTH/SCREEN_HEIGHT, 210)];
         [self.view addSubview:aSession.localVideoView];
         self.callSession=aSession;
     }
-    [MBProgressHUD hideHUD];
-    NSLog(@"用户通道建立完成");
-    
-}
-//- (void)didReceiveCallConnected:(EMCallSession *)aSession{
-//
-//    NSLog(@"用户通道建立完成");
-//
-//}
-- (void)callDidAccept:(EMCallSession *)aSession{
-    NSLog(@"用户同意了通话");
-    [MBProgressHUD hideHUD];
-    
     
     if([mytype isEqualToString:@"语音呼叫"]){
     
@@ -760,6 +795,13 @@
         [self dismissViewControllerAnimated:YES completion:^{
             
         }];
+    }else if(myIscall == false){
+        [MBProgressHUD showNormalMessage:@"对方挂断了通话"];
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+
+        
     }
     
     

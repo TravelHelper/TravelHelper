@@ -200,24 +200,26 @@
                         [UIAlertController showAlertAtViewController:self title:@"提示" message:@"订单已过期是否删除？" cancelTitle:@"取消" confirmTitle:@"删除" cancelHandler:^(UIAlertAction *action) {
                             
                         } confirmHandler:^(UIAlertAction *action) {
-                        
-                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
-                            //                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                            //                                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-                            [WebAgent getBiWithID:cell.infoModel.user_id andPurchaseCount:infoModel.offerMoney andSource_id:@"0007" success:^(id responseObject) {
-                                [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
-                                    NSLog(@"have delected  !!!");
-                                    [MBProgressHUD showSuccess:@"删除成功,悬赏已返还"];
-                                    [self.mArr removeObjectAtIndex:indexPath.row];
-                                    [self.mainTableView reloadData];
-                                } failure:^(NSError *error) {
-                                    NSLog(@"%@",error);
+                            if(self.mArr){
+                                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                                //                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                                //                                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+                                [WebAgent getBiWithID:cell.infoModel.user_id andPurchaseCount:infoModel.offerMoney andSource_id:@"0007" success:^(id responseObject) {
+                                    [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
+                                        NSLog(@"have delected  !!!");
+                                        [MBProgressHUD showSuccess:@"删除成功,悬赏已返还"];
+                                        [self.mArr removeObjectAtIndex:indexPath.row];
+                                        [self.mainTableView reloadData];
+                                    } failure:^(NSError *error) {
+                                        NSLog(@"%@",error);
+                                        
+                                    }];
                                     
+                                } failure:^(NSError *error) {
+                                    [MBProgressHUD showError:@"删除失败,请检查网络"];
                                 }];
-                                
-                            } failure:^(NSError *error) {
-                                [MBProgressHUD showError:@"删除失败,请检查网络"];
-                            }];
+
+                            }
                         }];
 
                         
@@ -264,11 +266,11 @@
                                 
                             } confirmHandler:^(UIAlertAction *action) {
 
+                                if(self.mArr){
+                                    CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
                                     
-                                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
-
-//                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-//                                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+                                    //                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                                    //                                    NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
                                     [WebAgent getBiWithID:cell.infoModel.user_id andPurchaseCount:infoModel.offerMoney andSource_id:@"0007" success:^(id responseObject) {
                                         [WebAgent delectByCustom_id:cell.infoModel.customID success:^(id responseObject) {
                                             NSLog(@"have delected  !!!");
@@ -283,7 +285,9 @@
                                     } failure:^(NSError *error) {
                                         [MBProgressHUD showError:@"删除失败,请检查网络"];
                                     }];
-                               
+
+                                }
+                                
                                 
 
                                 
@@ -314,23 +318,25 @@
                             NSDictionary *toneeddic = dic[@"data"];
                             
                             NSString *firstTime=toneeddic[@"first_time"];
-                            
-                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
-                            
-                            NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
-                            
-                            needDic[@"user_name"]=infoModel.user_id;
-                            needDic[@"first_time"]=firstTime;
-                            needDic[@"custom_time"]=infoModel.translateTime;
-                            needDic[@"duration"]=infoModel.duration;
-                            NSString *typeStr=infoModel.scene;
-                            needDic[@"success"]=dic[@"success"];
-                            needDic[@"mission_id"]=infoModel.customID;
-                            needDic[@"iden"] = @"TRANS";
-                            needDic[@"money"] = infoModel.offerMoney;
+                            if(self.mArr){
+                                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                                
+                                NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                                
+                                needDic[@"user_name"]=infoModel.user_id;
+                                needDic[@"first_time"]=firstTime;
+                                needDic[@"custom_time"]=infoModel.translateTime;
+                                needDic[@"duration"]=infoModel.duration;
+                                NSString *typeStr=infoModel.scene;
+                                needDic[@"success"]=dic[@"success"];
+                                needDic[@"mission_id"]=infoModel.customID;
+                                needDic[@"iden"] = @"TRANS";
+                                needDic[@"money"] = infoModel.offerMoney;
+                                
+                                YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
+                                [self.navigationController pushViewController:prepareController animated:YES];
+                            }
 
-                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
-                            [self.navigationController pushViewController:prepareController animated:YES];
                             
                         } failure:^(NSError *error) {
                             [MBProgressHUD showError:@"等候页面进入失败，请重试"];
@@ -379,23 +385,27 @@
                 NSDictionary *toneeddic = dic[@"data"];
                 
                 NSString *firstTime=toneeddic[@"first_time"];
+//                if(indexPath.row){
                 
-                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
-                
-                NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
-                
-                needDic[@"user_name"]=infoModel.user_id;
-                needDic[@"first_time"]=firstTime;
-                needDic[@"custom_time"]=infoModel.translateTime;
-                needDic[@"duration"]=infoModel.duration;
-                NSString *typeStr=infoModel.scene;
-                needDic[@"success"]=dic[@"success"];
-                needDic[@"mission_id"]=infoModel.customID;
-                needDic[@"iden"] = @"TRANS";
-                needDic[@"money"] = infoModel.offerMoney;
+                    CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                    
+                    NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                    
+                    needDic[@"user_name"]=infoModel.user_id;
+                    needDic[@"first_time"]=firstTime;
+                    needDic[@"custom_time"]=infoModel.translateTime;
+                    needDic[@"duration"]=infoModel.duration;
+                    NSString *typeStr=infoModel.scene;
+                    needDic[@"success"]=dic[@"success"];
+                    needDic[@"mission_id"]=infoModel.customID;
+                    needDic[@"iden"] = @"TRANS";
+                    needDic[@"money"] = infoModel.offerMoney;
+                    
+                    YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
+                    [self.navigationController pushViewController:prepareController animated:YES];
 
-                YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
-                [self.navigationController pushViewController:prepareController animated:YES];
+                
+//                }
                 
             } failure:^(NSError *error) {
                 [MBProgressHUD showError:@"等候页面进入失败，请重试"];

@@ -27,6 +27,8 @@
 #import "YBZChooseTranslatorViewController.h"
 #import "UIImageView+WebCache.h"
 #import "YBZMyRewardViewController.h"
+#import "UesrCustomTranslateViewController.h"
+
 
 @interface UserViewController ()<UITableViewDelegate,UITableViewDataSource,GTStarsScoreDelegate>
 {
@@ -1124,7 +1126,10 @@
            
 //            YBZPrepareViewController *prepareVC = [[YBZPrepareViewController alloc]initWithType:@"语音" AndState:@"0001" AndInfo:nil];
 //            [self.navigationController pushViewController:prepareVC animated:YES];
-            [MBProgressHUD showError:@"敬请期待下次更新"];
+//            [MBProgressHUD showError:@"敬请期待下次更新"];
+            UesrCustomTranslateViewController *translateVC = [[UesrCustomTranslateViewController alloc]init];
+            translateVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:translateVC animated:YES];
 
         }
         if ( section == 2 && row==2) {

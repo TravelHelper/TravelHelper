@@ -335,18 +335,21 @@
 -(void)shareBtnClick:(UIButton *)sender{
     
     NSLog(@"share");
-    if (sender.selected == NO) {
-        UIView *view = [self chooseToShare];
-        [self.view addSubview:view];
-        [UIView animateWithDuration:0.3 animations:^{
-            view.transform = CGAffineTransformMakeTranslation(0, -0.653*SCREEN_WIDTH);
-        }];
-        sender.selected = YES;
-    }else if(sender.selected == YES){
-
-        [self removeShareView];
-        sender.selected = NO;
-    }
+    
+    [MBProgressHUD showNormalMessage:@"尚未开放，敬请期待"];
+    
+//    if (sender.selected == NO) {
+//        UIView *view = [self chooseToShare];
+//        [self.view addSubview:view];
+//        [UIView animateWithDuration:0.3 animations:^{
+//            view.transform = CGAffineTransformMakeTranslation(0, -0.653*SCREEN_WIDTH);
+//        }];
+//        sender.selected = YES;
+//    }else if(sender.selected == YES){
+//
+//        [self removeShareView];
+//        sender.selected = NO;
+//    }
 
     
 }

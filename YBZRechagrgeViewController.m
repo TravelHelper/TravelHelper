@@ -10,6 +10,7 @@
 #import "UIAlertController+SZYKit.h"
 #import <StoreKit/StoreKit.h>
 #import "SVProgressHUD.h"
+#import "MBProgressHUD+XMG.h"
 
 
 @interface YBZRechagrgeViewController ()<SKProductsRequestDelegate>
@@ -227,14 +228,21 @@
 - (void)gotoRecharge:(UIButton *)button
 {
     NSLog(@"gotoRecharge:%@",uploadInfo[@"money"]);
-    int a = [uploadInfo[@"money"]intValue];
-    NSString *product = self.profuctIdArr[a];
-    _currentProId = product;
-    if([SKPaymentQueue canMakePayments]){
-        [self requestProductData:product];
+    
+    if(uploadInfo){
+        int a = [uploadInfo[@"money"]intValue];
+        NSString *product = self.profuctIdArr[a];
+        _currentProId = product;
+        if([SKPaymentQueue canMakePayments]){
+            [self requestProductData:product];
+        }else{
+            NSLog(@"不允许程序内付费");
+        }
+
     }else{
-        NSLog(@"不允许程序内付费");
+        [MBProgressHUD showError:@"请选择充值金额"];
     }
+    
 }
 
 //请求商品

@@ -47,6 +47,7 @@
     UIBarButtonItem *callBtnItem=[[UIBarButtonItem alloc]initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(publishClick)];
     
     self.navigationItem.rightBarButtonItem = callBtnItem;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toRefresh) name:@"refreshSelf" object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -69,6 +70,12 @@
 
     [super viewDidAppear:animated];
     
+
+}
+
+-(void)toRefresh{
+
+    [self loadDate];
 
 }
 
@@ -250,6 +257,58 @@
                     }else if([tag isEqualToString:@"connecttimeout"]){
                         
                         [MBProgressHUD showMessage:@"您迟到了"];
+                        
+                        
+                        
+                        NSLog(@"-----------进入等候页------");
+                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+                        [WebAgent updateCustomTranState:cell.customID andUser_id:user_id[@"user_id"] success:^(id responseObject) {
+                            NSData *data = [[NSData alloc]initWithData:responseObject];
+                            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                            NSDictionary *toneeddic = dic[@"data"];
+                            
+                            NSString *firstTime=toneeddic[@"first_time"];
+                            
+                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                            
+                            NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                            
+                            needDic[@"user_name"]=infoModel.interper;
+                            needDic[@"first_time"]=firstTime;
+                            needDic[@"custom_time"]=infoModel.translateTime;
+                            needDic[@"duration"]=infoModel.duration;
+                            NSString *typeStr=infoModel.scene;
+                            needDic[@"success"]=dic[@"success"];
+                            needDic[@"mission_id"]=infoModel.customID;
+                            needDic[@"iden"] = @"USER";
+                            needDic[@"money"] = infoModel.offerMoney;
+                            
+                            YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
+                            [self.navigationController pushViewController:prepareController animated:YES];
+                            
+                        } failure:^(NSError *error) {
+                            [MBProgressHUD showError:@"等候页面进入失败，请重试"];
+                        }];
+                        
+                        
+                        [WebAgent custom_id:cell.customID state:@"2" accept_id:user_id[@"user_id"] success:^(id responseObject) {
+                            NSLog(@"cell reset  success ");
+                            
+                            //                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                            
+                            
+                            //                            [self waitBtnClick];
+                            
+                        } failure:^(NSError *error) {
+                            NSLog(@"%@",error);
+                            
+                        }];
+
+                        
+                        
+                        
+                        
                     
                     }else if ([tag isEqualToString:@"comeout"]) {
                         
@@ -404,7 +463,7 @@
             NSLog(@"---2---点击进入“定制进行页面”----------");
             
 //            [self textClick];
-            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+//            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
             
 //            NSString *typeStr=infoModel.scene;
             
@@ -417,21 +476,29 @@
                 
                 NSString *firstTime=toneeddic[@"first_time"];
                 
-                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                if(self.mArr){
+                    CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                    
+                    NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                    
+                    needDic[@"user_name"]=infoModel.interper;
+                    needDic[@"first_time"]=firstTime;
+                    needDic[@"custom_time"]=infoModel.translateTime;
+                    needDic[@"duration"]=infoModel.duration;
+                    NSString *typeStr=infoModel.scene;
+                    needDic[@"success"]=dic[@"success"];
+                    needDic[@"mission_id"]=infoModel.customID;
+                    needDic[@"iden"] = @"USER";
+                    needDic[@"money"] = infoModel.offerMoney;
+                    YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
+                    [self.navigationController pushViewController:prepareController animated:YES];
+                }else{
                 
-                NSMutableDictionary *needDic = [NSMutableDictionary dictionary];
+                    [MBProgressHUD showError:@"等候页面进入失败，请重试"];
                 
-                needDic[@"user_name"]=infoModel.interper;
-                needDic[@"first_time"]=firstTime;
-                needDic[@"custom_time"]=infoModel.translateTime;
-                needDic[@"duration"]=infoModel.duration;
-                NSString *typeStr=infoModel.scene;
-                needDic[@"success"]=dic[@"success"];
-                needDic[@"mission_id"]=infoModel.customID;
-                needDic[@"iden"] = @"USER";
-                needDic[@"money"] = infoModel.offerMoney;
-                YBZPrepareViewController *prepareController =[[YBZPrepareViewController alloc]initWithType:typeStr AndState:toneeddic[@"proceed_state"] AndInfo:needDic];
-                [self.navigationController pushViewController:prepareController animated:YES];
+                }
+                
+               
                 
             } failure:^(NSError *error) {
                 [MBProgressHUD showError:@"等候页面进入失败，请重试"];
@@ -449,26 +516,28 @@
             
         }else{
             NSLog(@"------点击可以评价进入“订单详情页”-------");
-            
-            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
-            NSString *acceptId = infoModel.interper;
-            
-            NSString *msgId = infoModel.customID;
-            
-            id star = infoModel.star;
-            
-            if(![star isKindOfClass:[NSNull class]]){
-                NSString *str = (NSString *)star;
-                NSString *needStr=[NSString stringWithFormat:@"订单已评价为%@星",str];
-                [MBProgressHUD showNormalMessage:needStr];
-            
-            }else{
+            if(self.mArr){
+                CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                NSString *acceptId = infoModel.interper;
                 
-                FeedBackViewController *details = [[FeedBackViewController alloc]initWithtargetID:acceptId AndmassageId:msgId];
-                [self.navigationController pushViewController:details animated:YES];
+                NSString *msgId = infoModel.customID;
                 
+                id star = infoModel.star;
+                
+                if(![star isKindOfClass:[NSNull class]]){
+                    NSString *str = (NSString *)star;
+                    NSString *needStr=[NSString stringWithFormat:@"订单已评价为%@星",str];
+                    [MBProgressHUD showNormalMessage:needStr];
+                    
+                }else{
+                    
+                    FeedBackViewController *details = [[FeedBackViewController alloc]initWithtargetID:acceptId AndmassageId:msgId];
+                    [self.navigationController pushViewController:details animated:YES];
+                    
+                }
+                
+
             }
-            
             
             
            

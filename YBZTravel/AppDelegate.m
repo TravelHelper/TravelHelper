@@ -29,7 +29,7 @@
 #import "SVProgressHUD.h"
 #import "YBZPrepareViewController.h"
 #import "YBZTargetWaitingViewController.h"
-
+#import "UesrCustomTranslateViewController.h"
 
 #define Trans_YingYu    @"en"
 #define Voice_YingYu    @"en-GB"
@@ -717,9 +717,16 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
         UIViewController *nowVC=[self currentViewController];
         
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"您发布的定制已被接单！" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"您发布的定制已被接单！" message:@"请到我的定制中查看" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
            
+            if([nowVC isKindOfClass:[UesrCustomTranslateViewController class]]){
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"refreshSelf" object:nil];
+
+                
+            }
+            
         }];
         [alertVC addAction:okAction];
         [nowVC presentViewController:alertVC animated:YES completion:nil];
@@ -755,18 +762,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
             
             UIViewController *nowVC=[self getPresentedViewController];
-//            if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
-//                
-//                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
-//                [nowVC dismissViewControllerAnimated:YES completion:^{
-//                    
-//                }];
-//                
-//            }else{
-//                
-//                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
-//                
-//            }
+            if([nowVC isKindOfClass:[YBZTargetWaitingViewController class]]){
+                
+                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+                [nowVC dismissViewControllerAnimated:YES completion:^{
+                    
+                }];
+                
+            }else{
+                
+                [MBProgressHUD showNormalMessage:@"对方正忙，请稍后"];
+                
+            }
             
 
         } failure:^(NSError *error) {
