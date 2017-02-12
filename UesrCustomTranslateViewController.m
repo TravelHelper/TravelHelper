@@ -292,7 +292,8 @@
                         }];
                         
                         
-                        [WebAgent custom_id:cell.customID state:@"2" accept_id:user_id[@"user_id"] success:^(id responseObject) {
+                        CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];
+                        [WebAgent custom_id:cell.customID state:@"2" accept_id:infoModel.interper success:^(id responseObject) {
                             NSLog(@"cell reset  success ");
                             
                             //                            CustomTranslateInfoModel *infoModel = self.mArr[indexPath.row];

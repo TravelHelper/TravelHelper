@@ -131,12 +131,17 @@
         
         NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
         NSURL *URL = [NSURL URLWithString:urlc];
-        AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
-        [securityPolicy setAllowInvalidCertificates:YES];
+//        AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+//        [securityPolicy setAllowInvalidCertificates:YES];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         //manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        AFSecurityPolicy * policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+        policy.allowInvalidCertificates = YES;
+        policy.validatesDomainName = NO;
+        manager.securityPolicy = policy;
+
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-        [manager setSecurityPolicy:securityPolicy];
+//        [manager setSecurityPolicy:securityPolicy];
         [manager POST:URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
             //获取当前时间所闻文件名，防止图片重复
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

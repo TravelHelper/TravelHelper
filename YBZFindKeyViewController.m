@@ -12,6 +12,8 @@
 #import "AFNetworking.h"
 #import "WebAgent.h"
 #import "UIBarButtonItem+YBZBarButtonItem.h"
+#import <SMS_SDK/SMSSDK.h>
+#import "MBProgressHUD+XMG.h"
 //#import "YBZChooseTranslatorViewController.h"
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -99,27 +101,33 @@
         if ([self.pswTextField isNotEmpty]) {
             if ([self.userTextField validatePhoneNumber]) {
                 if ([self.pswTextField validatePassWord]) {
+                    
+                    
                     if (_pswTextField.text == _confirmPswTextField.text) {
                         NSString *str1 = self.enderCodeTextField.text;
-                        if ([str1 isEqualToString:userStr]) {
-                            //注册
-                            [WebAgent userPhone:self.userTextField.text userPsw:self.pswTextField.text userID:self.userTextField.text
-                                        success:^(id responseObject) {
-                                            //成功
-                                        } failure:^(NSError *error) {
-                                            //失败
-                                        }];
-                            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"修改成功" preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                                [self dismissViewControllerAnimated:YES completion:nil];
-                            }];
-                            [alertVC addAction:okAction];
-                            [self presentViewController:alertVC animated:YES completion:nil];
-                          
-                        }else{
-                            [self showMssage:@"验证码错误" becomeFirstResponder:nil];
-                        }
-                    }else{
+                        
+                        
+                        
+                        [SMSSDK commitVerificationCode:str1 phoneNumber:self.userTextField.text zone:@"86" result:^(NSError *error) {
+                            [MBProgressHUD showSuccess:@"修改密码成功"];
+                            if(!error){
+                                [WebAgent userPhone:self.userTextField.text userPsw:self.pswTextField.text userID:self.userTextField.text
+                                            success:^(id responseObject) {
+                                                //成功
+                                            } failure:^(NSError *error) {
+                                                //失败
+                                            }];
+                                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"修改成功" preferredStyle:UIAlertControllerStyleAlert];
+                                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                                    [self dismissViewControllerAnimated:YES completion:nil];
+                                }];
+                                [alertVC addAction:okAction];
+                                [self presentViewController:alertVC animated:YES completion:nil];
+                            }else{
+                                [MBProgressHUD showError:@"验证码错误，请重试"];
+                            }
+                        }];
+                                           }else{
                         [self showMssage:@"密码和确认密码不一致" becomeFirstResponder:nil];
                     }
                     
@@ -151,8 +159,32 @@
                     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
                     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+                    
+                    [manager.requestSerializer setValue:@"2" forHTTPHeaderField:@"Accept"];
+                    AFSecurityPolicy * policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+                    policy.allowInvalidCertificates = YES;
+                    policy.validatesDomainName = NO;
+                    manager.securityPolicy = policy;
+
                     NSDictionary *paramdict = @{@"code":self.enderCodeTextField.text,
                                                 @"user_phone":self.userTextField.text};
+                    
+                    
+                    [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodSMS phoneNumber:str2 zone:@"86" customIdentifier:nil result:^(NSError *error) {
+                        if (!error) {
+                            NSLog(@"获取验证码成功");
+                            
+                            [MBProgressHUD showSuccess:@"获取成功"];
+                        }else{
+                            NSLog(@"获取验证码失败");
+                            //手机震动
+                            //                            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+                            [MBProgressHUD showError:@"请确认您输入的手机号"];
+                        }
+                        
+                    }];
+                    
+                    
                     [manager POST:[NSString stringWithFormat:@"%@User/getValidateAndFamilyPhoneInfo",API_HOST] parameters:paramdict progress:^(NSProgress * _Nonnull uploadProgress) {
                         //do nothing
                     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -294,7 +326,7 @@
     if (!_pswTextField) {
         _pswTextField = [[UITextField alloc]init];
         _pswTextField.backgroundColor = [UIColor whiteColor];
-        _pswTextField.placeholder = @"请输入密码";
+        _pswTextField.placeholder = @"请输入新密码";
         [_pswTextField setSecureTextEntry:YES];
         _pswTextField.keyboardType = UIKeyboardTypeNamePhonePad;
         _pswTextField.delegate = self;
@@ -311,7 +343,7 @@
     if (!_confirmPswTextField) {
         _confirmPswTextField = [[UITextField alloc]init];
         _confirmPswTextField.backgroundColor = [UIColor whiteColor];
-        _confirmPswTextField.placeholder = @"确认密码";
+        _confirmPswTextField.placeholder = @"确认新密码";
         [_confirmPswTextField setSecureTextEntry:YES];
         _confirmPswTextField.keyboardType = UIKeyboardTypeNamePhonePad;
         _confirmPswTextField.delegate = self;

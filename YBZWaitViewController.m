@@ -84,13 +84,17 @@
     //在这里加上修改状态的接口。
     [WebAgent creatUserList:morelocationString andUser_id:userID WithLanguage:language success:^(id responseObject) {
         
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"1" forKey:@"user_call_state"];
+        
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSLog(@"%@",dic);
         message_id = dic[@"data"];
         intervalTime = [dic[@"time"] floatValue];;
         
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         
         [userDefaults setObject:message_id forKey:@"messageId"];
         NSDictionary *dict = @{@"senderID":senderID,@"sendMessage":sendMessage,@"languageCatgory":language,@"payNumber":payNumber};
@@ -203,6 +207,9 @@
     //修改状态变为0
     [timer invalidate];
     [WebAgent getMissionInfo:message_id success:^(id responseObject) {
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"0" forKey:@"user_call_state"];
         NSData *data = [[NSData alloc]initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSDictionary *missionInfo = dic[@"data"][0];
@@ -247,6 +254,9 @@
             [self presentViewController:alertVC animated:YES completion:nil];
         }
     } failure:^(NSError *error) {
+        
+        [MBProgressHUD showError:@"当前网络状态不佳"];
+        [self.navigationController popViewControllerAnimated:YES];
         
     }];
     

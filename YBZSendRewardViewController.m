@@ -396,11 +396,17 @@
         UIImage *image=self.userIconImageV.image;
            NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
         NSURL *URL = [NSURL URLWithString:urlc];
-        AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc]init];
-        [securityPolicy setAllowInvalidCertificates:YES];
+//        AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc]init];
+//        [securityPolicy setAllowInvalidCertificates:YES];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-        [manager setSecurityPolicy:securityPolicy];
+//        [manager setSecurityPolicy:securityPolicy];
+        
+        AFSecurityPolicy * policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+        policy.allowInvalidCertificates = YES;
+        policy.validatesDomainName = NO;
+        manager.securityPolicy = policy;
+
         [manager POST:URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
             
             NSData *data = UIImageJPEGRepresentation(image, 0.1);

@@ -13,7 +13,9 @@
          success:(void (^)(id responseObject))success
          failure:(void (^)(NSError *error))failure
 {
+    
     NSDictionary *dict = @{@"accept_id":accept_id};
+    
     [[APIClient sharedClient] POST:@"CustomTranslate/selectAccept/" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

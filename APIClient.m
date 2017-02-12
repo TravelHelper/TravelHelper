@@ -19,9 +19,17 @@
         _sharedClient.responseSerializer = [AFHTTPResponseSerializer serializer];
         _sharedClient.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
         [_sharedClient.requestSerializer setValue:@"2" forHTTPHeaderField:@"Accept"];
+        AFSecurityPolicy * policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+        policy.allowInvalidCertificates = YES;
+        policy.validatesDomainName = NO;
+        _sharedClient.securityPolicy = policy;
     });
     return _sharedClient;
     
 }
 //101.200.73.189
+
+
+
+
 @end

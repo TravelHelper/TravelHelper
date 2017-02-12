@@ -88,7 +88,7 @@
 
     self.view.backgroundColor=[UIColor whiteColor];
     waterTimer=[NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(clickAnimation:) userInfo:nil repeats:YES];
-    
+   
     if([mytype isEqualToString:@"语音呼叫"]){
     
         [self.view addSubview:self.backgrountImageView];
@@ -137,6 +137,7 @@
 
         [self.view addSubview:self.nameLabel];
         [self.view addSubview:self.stateLabel];
+        [self.view addSubview:self.refuseBtn];
         
     }
     
@@ -709,7 +710,7 @@
     if(myIscall == false){
     
         [self.view addSubview:self.confirmBtn];
-        [self.view addSubview:self.refuseBtn];
+//        [self.view addSubview:self.refuseBtn];
         
     }
     

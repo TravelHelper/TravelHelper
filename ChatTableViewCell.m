@@ -200,28 +200,40 @@
 -(void)getHeadViewImageWithID:(NSString *)userID{
 
     
-    
+    dispatch_queue_t queue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //2.添加任务到队列中，就可以执行任务
+    //异步函数：具备开启新线程的能力
+    dispatch_async(queue, ^{
+        // 在另一个线程中启动下载功能，加GCD控制
+       
+        NSString *name = userID;
+        
+        NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
+        
+        NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
+        
+        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+        
+        __block UIImage * img = [UIImage imageWithData:data];
+        
+        //    if ([userID isEqualToString:@"001"]) {
+        //    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.headImageView.layer.masksToBounds=YES;
+            self.headImageView.layer.cornerRadius=44/2.0f;
+            if(img){
+                [self.headImageView setImage:img];
+            }else{
+                img=[UIImage imageNamed:@"translator"];
+                [self.headImageView setImage:img];
+            }
 
-    NSString *name = userID;
-    
-    NSString *str=[NSString stringWithFormat:@"%@.jpg",name];
-    
-    NSString *url=[NSString stringWithFormat:@"http://%@/TravelHelper/uploadimg/%@",serviseId,str];
-    
-    NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-    
-    UIImage * img = [UIImage imageWithData:data];
-    
-//    if ([userID isEqualToString:@"001"]) {
-        self.headImageView.layer.masksToBounds=YES;
-        self.headImageView.layer.cornerRadius=44/2.0f;
-    if(img){
-        [self.headImageView setImage:img];
-    }else{
-        img=[UIImage imageNamed:@"translator"];
-        [self.headImageView setImage:img];
-    }
-//    }
+        });
+
+        
+    });
+
+
     
     
     

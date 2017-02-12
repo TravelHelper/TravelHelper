@@ -127,12 +127,17 @@
     NSString *user_identity;
     NSString *user_language;
     NSTimer  *loginStateTimer;
+    NSString *stateStr;
+    NSString *messageId;
 }
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
     self.isUser = YES;
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults setObject:@"0" forKey:@"user_call_state"];
+
     [[NSNotificationCenter defaultCenter]postNotificationName:@"rootVCLoadDone" object:nil];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     [userinfo setObject:@"0" forKey:@"userBackgroundChange"];
@@ -255,9 +260,87 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:@"beginToAlert" object:dic];
         
     }
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults setObject:@"0" forKey:@"user_call_state"];
     
-
+    stateStr=[[NSUserDefaults standardUserDefaults] objectForKey:@"user_call_state"];
+    messageId=[[NSUserDefaults standardUserDefaults]objectForKey:@"messageId"];
+    if([stateStr isEqualToString:@"1"]){
+    
+        [self changeStateBack];
+        
+    }else{
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"messageId"];
+    }
+    
+    
 //    [JPUSHService resetBadge];
+
+}
+
+-(void)changeStateBack{
+
+    [WebAgent getMissionInfo:messageId success:^(id responseObject) {
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"messageId"];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"0" forKey:@"user_call_state"];
+        NSData *data = [[NSData alloc]initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSDictionary *missionInfo = dic[@"data"][0];
+        if ([missionInfo[@"answer_id"] isEqualToString:@"0"]) {
+            [WebAgent stopFindingTranslator:userID missionID:messageId success:^(id responseObject) {
+                [[BaiduMobStat defaultStat] eventEnd:@"0002" eventLabel:@"End"];
+                
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            } failure:^(NSError *error) {
+                
+            }];
+        }else{
+//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"您的即时翻译已被接单，请耐心等待！" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"再等一会" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//                
+//            }];
+//            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"我要取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                [WebAgent stopFindingTranslator:userID missionID:messageId success:^(id responseObject) {
+//                    [WebAgent sendRemoteNotificationsWithuseId:missionInfo[@"answer_id"]  WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:messageId  WithLanguage :  @"language" success:^(id responseObject) {
+//                        
+//                        [[BaiduMobStat defaultStat] eventEnd:@"0002" eventLabel:@"End"];
+//                        
+//                        [self.navigationController popViewControllerAnimated:YES];
+//                        
+//                    } failure:^(NSError *error) {
+//                        [[BaiduMobStat defaultStat] eventEnd:@"0002" eventLabel:@"End"];
+//                        
+//                        [self.navigationController popViewControllerAnimated:YES];
+//                        
+//                        
+//                    }];
+//                    
+//                } failure:^(NSError *error) {
+//                    
+//                }];
+//            }];
+//            
+//            [alertVC addAction:okAction];
+//            [alertVC addAction:cancelAction];
+//            
+//            [self presentViewController:alertVC animated:YES completion:nil];
+        }
+    } failure:^(NSError *error) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2), dispatch_get_main_queue(), ^{
+            [self changeStateBack];
+            
+        });
+        
+        
+//        [MBProgressHUD showError:@"当前网络状态不佳"];
+//        [self.navigationController popViewControllerAnimated:YES];
+        
+    }];
+
+    
 
 }
 
@@ -300,7 +383,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"messageId"];
+    
     
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.hidesBackButton = NO;

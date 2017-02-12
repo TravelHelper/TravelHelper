@@ -1,0 +1,9 @@
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/RongCloudIM/RongCloudIM" "${PODS_ROOT}/RongCloudIM/RongCloudIM/JrmfIMLib" "${PODS_ROOT}/RongCloudIM/RongCloudIM/AlipaySDK"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/RongCloudIM"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/RongCloudIM/RongCloudIM"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/RongCloudIM"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"c++" -l"c++abi" -l"opencore-amrnb" -l"sqlite3" -l"stdc++" -l"xml2" -l"z" -framework "AVFoundation" -framework "AgoraRtcEngineKit" -framework "AlipaySDK" -framework "AssetsLibrary" -framework "AudioToolbox" -framework "CFNetwork" -framework "CoreAudio" -framework "CoreGraphics" -framework "CoreLocation" -framework "CoreMedia" -framework "CoreMotion" -framework "CoreTelephony" -framework "CoreText" -framework "CoreVideo" -framework "ImageIO" -framework "JYangToolKit" -framework "JrmfPacketKit" -framework "MapKit" -framework "OpenGLES" -framework "QuartzCore" -framework "RongCallKit" -framework "RongCallLib" -framework "RongIMKit" -framework "RongIMLib" -framework "SafariServices" -framework "SystemConfiguration" -framework "UIKit" -framework "VideoToolbox"
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_ROOT = ${SRCROOT}/Pods

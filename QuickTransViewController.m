@@ -266,6 +266,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    msgEnable=true;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
     NSString *userBackgroundChange=(NSString *)[userinfo objectForKey:@"userBackgroundChange"];
@@ -560,59 +561,66 @@
                 NSData *data = [[NSData alloc]initWithData:responseObject];
                 NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSString *str=dic[@"msg"];
-                if([str isEqualToString:@"SUCCESS"]){
                 
-                    int count=[dic[@"data"]intValue];
-                    if(count<=10){
-                        if(count>=0){
-                            [MBProgressHUD showNormalMessage:[NSString stringWithFormat:@"当前嗨豆余额:%d",count]];
-                        }else{
-                            
-                            msgEnable=false;
-                            
-                            bidata=[dic[@"bidata"]intValue];
-                            if(bidata==0){
-                                
-                                
-                                UIAlertController *alertController;
-                                alertController = [UIAlertController alertControllerWithTitle:@"余额不足" message:@"是否进行充值" preferredStyle:    UIAlertControllerStyleAlert];
-                                [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                    YBZRechagrgeViewController *viewController=[[YBZRechagrgeViewController alloc]init];
-                                    [self.navigationController pushViewController:viewController animated:YES];
-                                    
-                                    }]];
-                                
-                                [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                                    
-                                    NSLog(@"点击取消");
-                                    // 取消
-                                    return;
-                                }]];
-                                
-                                [self presentViewController:alertController animated:YES completion:nil];
-                                
-                               
-                                
-                                
-                                
-                                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    if([str isEqualToString:@"SUCCESS"]){
+                        
+                        int count=[dic[@"data"]intValue];
+                        if(count<=10){
+                            if(count>=0){
+                                [MBProgressHUD showNormalMessage:[NSString stringWithFormat:@"当前嗨豆余额:%d",count]];
                             }else{
-                                [self costForDouWith:bidata];
+                                
+                                msgEnable=false;
+                                
+                                bidata=[dic[@"bidata"]intValue];
+                                if(bidata==0){
+                                    
+                                    
+                                    
+                                    UIAlertController *alertController;
+                                    alertController = [UIAlertController alertControllerWithTitle:@"余额不足" message:@"是否进行充值" preferredStyle:    UIAlertControllerStyleAlert];
+                                    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                        YBZRechagrgeViewController *viewController=[[YBZRechagrgeViewController alloc]init];
+                                        [self.navigationController pushViewController:viewController animated:YES];
+                                        
+                                    }]];
+                                    
+                                    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                                        
+                                        NSLog(@"点击取消");
+                                        // 取消
+                                        
+                                    }]];
+                                    
+                                    [self presentViewController:alertController animated:YES completion:nil];
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                }else{
+                                    [self costForDouWith:bidata];
+                                }
+                                
                             }
                             
                         }
                         
+                    }else{
+                        
+                        [MBProgressHUD showError:@"扣费失败"];
+                        bidata=[dic[@"bidata"]intValue];
+                        [self costForDouWith:bidata];
+                        
+                        
                     }
-                    
-                }else{
-                
-                    [MBProgressHUD showError:@"扣费失败"];
-                    bidata=[dic[@"bidata"]intValue];
-                    [self costForDouWith:bidata];
 
-                
-                }
-            } failure:^(NSError *error) {
+                    
+                });
+                         } failure:^(NSError *error) {
                 
             }];
 //            [WebAgent ]
@@ -2573,12 +2581,17 @@
     NSString *urlc=[NSString stringWithFormat:@"http://%@/TravelHelper/upload.php",serviseId];
     NSURL *URL = [NSURL URLWithString:urlc];
     changeImgMark=true;
-    AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
-    [securityPolicy setAllowInvalidCertificates:YES];
+//    AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+//    [securityPolicy setAllowInvalidCertificates:YES];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    [manager setSecurityPolicy:securityPolicy];
+//    [manager setSecurityPolicy:securityPolicy];
+    AFSecurityPolicy * policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    policy.allowInvalidCertificates = YES;
+    policy.validatesDomainName = NO;
+    manager.securityPolicy = policy;
+
     [manager POST:URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         //获取当前时间所闻文件名，防止图片重复
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -2666,64 +2679,98 @@
 
 - (void)costForDouWith:(int) biCount
 {
-    UIAlertController *alertController;
     
-    //    __block NSUInteger blockSourceType = 0;
-    
-    NSString *str=[NSString stringWithFormat:@"嗨豆不足(剩余%d)",biCount];
-    alertController = [UIAlertController alertControllerWithTitle:str message:@"嗨币兑换 1:1" preferredStyle:    UIAlertControllerStyleAlert];
-    
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        // 可以在这里对textfield进行定制，例如改变背景色
+    dispatch_async(dispatch_get_main_queue(), ^{
         
-        textField.keyboardType = UIKeyboardTypeNumberPad;
-        textField.returnKeyType = UIReturnKeyDone;
-        
-        
-    }];
-    
-    // Create the actions.
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
-        
-    }];
-    
-    UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
-        UITextField *textField=alertController.textFields.firstObject;
-        NSLog(@"%@",textField.text);
-        NSString *tobicost=textField.text;
-        
-        int realInt=[textField.text intValue];
-        if(realInt>biCount){
-        
-            [MBProgressHUD showError:@"余额不足"];
+        [MBProgressHUD showError:@"消息发送失败" toView:self.view];
+        //     [MBProgressHUD showError:@"消息发送失败"];
+        if(biCount == 0){
+            
+            
+            UIAlertController *alertController;
+            alertController = [UIAlertController alertControllerWithTitle:@"余额不足" message:@"是否进行充值" preferredStyle:    UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                YBZRechagrgeViewController *viewController=[[YBZRechagrgeViewController alloc]init];
+                [self.navigationController pushViewController:viewController animated:YES];
+                
+            }]];
+            
+            [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+                NSLog(@"点击取消");
+                // 取消
+                //            return;
+            }]];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+            
+            
         }else{
-        
-            [WebAgent costBiForDouWithID:self.user_id andBi_cost:tobicost andDou_get:tobicost success:^(id responseObject) {
-                NSData *data = [[NSData alloc]initWithData:responseObject];
-                NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                NSString *needResult=dic[@"msg"];
-                if([needResult isEqualToString:@"SUCCESS"]){
-                    
-                    [MBProgressHUD showSuccess:@"兑换成功"];
-                    msgEnable=true;
-                }else{
-                    
-                    [MBProgressHUD showError:@"兑换失败,请重试"];
-                }
-            } failure:^(NSError *error) {
+            
+            UIAlertController *alertController;
+            
+            //    __block NSUInteger blockSourceType = 0;
+            
+            NSString *str=[NSString stringWithFormat:@"嗨豆不足(剩余%d)",biCount];
+            alertController = [UIAlertController alertControllerWithTitle:str message:@"嗨币兑换 1:1" preferredStyle:    UIAlertControllerStyleAlert];
+            
+            [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                // 可以在这里对textfield进行定制，例如改变背景色
+                
+                textField.keyboardType = UIKeyboardTypeNumberPad;
+                textField.returnKeyType = UIReturnKeyDone;
+                
                 
             }];
+            
+            // Create the actions.
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+                
+                
+            }];
+            
+            UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+                UITextField *textField=alertController.textFields.firstObject;
+                NSLog(@"%@",textField.text);
+                NSString *tobicost=textField.text;
+                
+                int realInt=[textField.text intValue];
+                if(realInt>biCount){
+                    
+                    [MBProgressHUD showError:@"余额不足"];
+                }else{
+                    
+                    [WebAgent costBiForDouWithID:self.user_id andBi_cost:tobicost andDou_get:tobicost success:^(id responseObject) {
+                        NSData *data = [[NSData alloc]initWithData:responseObject];
+                        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                        NSString *needResult=dic[@"msg"];
+                        if([needResult isEqualToString:@"SUCCESS"]){
+                            
+                            [MBProgressHUD showSuccess:@"兑换成功"];
+                            msgEnable=true;
+                        }else{
+                            
+                            [MBProgressHUD showError:@"兑换失败,请重试"];
+                        }
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                }
+                
+            }];
+            
+            // Add the actions.
+            [alertController addAction:cancelAction];
+            [alertController addAction:otherAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
         }
-        
-    }];
+
+    });
+   
     
-    // Add the actions.
-    [alertController addAction:cancelAction];
-    [alertController addAction:otherAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
     
     
 }

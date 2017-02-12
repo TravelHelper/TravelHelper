@@ -78,6 +78,7 @@
 		1ED863EB1D38868500529094 /* YBZSingleCodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863E71D38868500529094 /* YBZSingleCodeInfo.m */; };
 		1ED863EE1D3887E200529094 /* UITextField+Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863ED1D3887E200529094 /* UITextField+Validator.m */; };
 		1ED863F11D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED863F01D38884E00529094 /* UIBarButtonItem+YBZBarButtonItem.m */; };
+		375B28B818E1671D9806CDE9 /* libPods-YBZTravel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3120E63236D0B2CDEE61283 /* libPods-YBZTravel.a */; };
 		531144771D794F95000B98E8 /* YBZMyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144761D794F95000B98E8 /* YBZMyOrderViewController.m */; };
 		531144921D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 531144911D79AB5B000B98E8 /* YBZMyOrderTableViewCell.m */; };
 		5311449B1D79DD5B000B98E8 /* YBZMyOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5311449A1D79DD5B000B98E8 /* YBZMyOrderModel.m */; };
@@ -166,10 +167,6 @@
 		93ABF8611D8EE4870027506F /* CustomTranslateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 93ABF8601D8EE4870027506F /* CustomTranslateTableViewCell.m */; };
 		93ABF8641D8EE4E80027506F /* InterpretCustomTranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93ABF8631D8EE4E80027506F /* InterpretCustomTranslateViewController.m */; };
 		93ABF8671D8EE50E0027506F /* UesrCustomTranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93ABF8661D8EE50E0027506F /* UesrCustomTranslateViewController.m */; };
-		A012EDAD1D5099E000144BAD /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDA91D5099E000144BAD /* libopencore-amrnb.a */; };
-		A012EDAE1D5099E000144BAD /* RCConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A012EDAA1D5099E000144BAD /* RCConfig.plist */; };
-		A012EDAF1D5099E000144BAD /* release_notes_ios.txt in Resources */ = {isa = PBXBuildFile; fileRef = A012EDAB1D5099E000144BAD /* release_notes_ios.txt */; };
-		A012EDB01D5099E000144BAD /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDAC1D5099E000144BAD /* RongIMLib.framework */; };
 		A012EDB21D509A0900144BAD /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDB11D509A0900144BAD /* iflyMSC.framework */; };
 		A012EDB51D509A4700144BAD /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDB41D509A4700144BAD /* OpenGLES.framework */; };
 		A012EDB71D509A5500144BAD /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A012EDB61D509A5500144BAD /* MapKit.framework */; };
@@ -297,6 +294,7 @@
 		FE6C6A151D82AB890021B187 /* SMS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6C6A111D82AB890021B187 /* SMS_SDK.framework */; };
 		FE7804B01DDEE368000D6026 /* libHyphenateFullSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE7804AF1DDEE368000D6026 /* libHyphenateFullSDK.a */; };
 		FE7804B41DE2966A000D6026 /* YBZRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7804B31DE2966A000D6026 /* YBZRulesViewController.m */; };
+		FE8CE9571E12031700C8BE5F /* liu.cer in Resources */ = {isa = PBXBuildFile; fileRef = FE8CE9561E1202FF00C8BE5F /* liu.cer */; };
 		FEE492141D73D9DA00CCED58 /* UIAlertController+SZYKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */; };
 		FEE4921B1D73DE0A00CCED58 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE492171D73DE0A00CCED58 /* MBProgressHUD+XMG.m */; };
 		FEE4921C1D73DE0A00CCED58 /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FEE492181D73DE0A00CCED58 /* MBProgressHUD.bundle */; };
@@ -380,6 +378,7 @@
 		1CF4DAE11D6F043700F6BA94 /* YBZGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZGifView.m; sourceTree = "<group>"; };
 		1CF544391D609CB2001B4381 /* YBZTongyongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZTongyongViewController.h; sourceTree = "<group>"; };
 		1CF5443A1D609CB2001B4381 /* YBZTongyongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTongyongViewController.m; sourceTree = "<group>"; };
+		1E14BD237F1379A65AAEBFFB /* Pods-YBZTravel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YBZTravel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YBZTravel/Pods-YBZTravel.debug.xcconfig"; sourceTree = "<group>"; };
 		1E7055061D517F3D00A000F5 /* YBZFreeTranslationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZFreeTranslationInfo.h; sourceTree = "<group>"; };
 		1E7055071D517F3D00A000F5 /* YBZFreeTranslationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZFreeTranslationInfo.m; sourceTree = "<group>"; };
 		1E7055081D517F3D00A000F5 /* YBZFreeTranslationViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZFreeTranslationViewCell.h; sourceTree = "<group>"; };
@@ -659,6 +658,7 @@
 		7DFD9BF31D714179007BDE4D /* YBZTranslatorDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZTranslatorDetailViewController.m; sourceTree = "<group>"; };
 		7DFD9BF51D714401007BDE4D /* YBZRewardHallDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRewardHallDetailModel.h; sourceTree = "<group>"; };
 		7DFD9BF61D714401007BDE4D /* YBZRewardHallDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRewardHallDetailModel.m; sourceTree = "<group>"; };
+		8FA6BD66FA2341387705CBE9 /* Pods-YBZTravel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YBZTravel.release.xcconfig"; path = "Pods/Target Support Files/Pods-YBZTravel/Pods-YBZTravel.release.xcconfig"; sourceTree = "<group>"; };
 		936BFC0D1D92ACF80017897F /* WaitInterpreterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitInterpreterViewController.h; sourceTree = "<group>"; };
 		936BFC0E1D92ACF80017897F /* WaitInterpreterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaitInterpreterViewController.m; sourceTree = "<group>"; };
 		93ABF8591D8EE33B0027506F /* CustomTranslateCellFramInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTranslateCellFramInfo.h; sourceTree = "<group>"; };
@@ -671,10 +671,6 @@
 		93ABF8631D8EE4E80027506F /* InterpretCustomTranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterpretCustomTranslateViewController.m; sourceTree = "<group>"; };
 		93ABF8651D8EE50E0027506F /* UesrCustomTranslateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UesrCustomTranslateViewController.h; sourceTree = "<group>"; };
 		93ABF8661D8EE50E0027506F /* UesrCustomTranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UesrCustomTranslateViewController.m; sourceTree = "<group>"; };
-		A012EDA91D5099E000144BAD /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
-		A012EDAA1D5099E000144BAD /* RCConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RCConfig.plist; sourceTree = "<group>"; };
-		A012EDAB1D5099E000144BAD /* release_notes_ios.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes_ios.txt; sourceTree = "<group>"; };
-		A012EDAC1D5099E000144BAD /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongIMLib.framework; sourceTree = "<group>"; };
 		A012EDB11D509A0900144BAD /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = SOURCE_ROOT; };
 		A012EDB41D509A4700144BAD /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		A012EDB61D509A5500144BAD /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -842,6 +838,7 @@
 		A0552ECA1D3A2C8C00E04D7A /* SelectedMessageInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedMessageInfoCell.h; sourceTree = "<group>"; };
 		A0552ECB1D3A2C8C00E04D7A /* SelectedMessageInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedMessageInfoCell.m; sourceTree = "<group>"; };
 		A0552ECC1D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectedMessageInfoCell.xib; sourceTree = "<group>"; };
+		D3120E63236D0B2CDEE61283 /* libPods-YBZTravel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YBZTravel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE08A6121DD4147D00E37B88 /* YBZMyCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZMyCustomViewController.h; sourceTree = "<group>"; };
 		FE08A6131DD4147D00E37B88 /* YBZMyCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZMyCustomViewController.m; sourceTree = "<group>"; };
 		FE08A6151DD462F600E37B88 /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
@@ -930,6 +927,7 @@
 		FE7804AF1DDEE368000D6026 /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenateFullSDK.a; sourceTree = "<group>"; };
 		FE7804B21DE2966A000D6026 /* YBZRulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBZRulesViewController.h; sourceTree = "<group>"; };
 		FE7804B31DE2966A000D6026 /* YBZRulesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBZRulesViewController.m; sourceTree = "<group>"; };
+		FE8CE9561E1202FF00C8BE5F /* liu.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = liu.cer; sourceTree = "<group>"; };
 		FEE492121D73D9DA00CCED58 /* UIAlertController+SZYKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+SZYKit.h"; sourceTree = "<group>"; };
 		FEE492131D73D9DA00CCED58 /* UIAlertController+SZYKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+SZYKit.m"; sourceTree = "<group>"; };
 		FEE492161D73DE0A00CCED58 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
@@ -994,8 +992,7 @@
 				7D9951B11DDAE4DA00D859D0 /* libBaiduMobStat.a in Frameworks */,
 				A012EDB51D509A4700144BAD /* OpenGLES.framework in Frameworks */,
 				A012EDB21D509A0900144BAD /* iflyMSC.framework in Frameworks */,
-				A012EDB01D5099E000144BAD /* RongIMLib.framework in Frameworks */,
-				A012EDAD1D5099E000144BAD /* libopencore-amrnb.a in Frameworks */,
+				375B28B818E1671D9806CDE9 /* libPods-YBZTravel.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,17 +1658,6 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		A012EDA81D5099E000144BAD /* Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable */ = {
-			isa = PBXGroup;
-			children = (
-				A012EDA91D5099E000144BAD /* libopencore-amrnb.a */,
-				A012EDAA1D5099E000144BAD /* RCConfig.plist */,
-				A012EDAB1D5099E000144BAD /* release_notes_ios.txt */,
-				A012EDAC1D5099E000144BAD /* RongIMLib.framework */,
-			);
-			path = Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable;
-			sourceTree = "<group>";
-		};
 		A012EDB31D509A1C00144BAD /* Framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -1746,6 +1732,7 @@
 		A03ED0491D2DE20700BD9C0A = {
 			isa = PBXGroup;
 			children = (
+				FE8CE9561E1202FF00C8BE5F /* liu.cer */,
 				7D9951B61DDAECC100D859D0 /* Baidu */,
 				FE55FFAC1DC73EAE00A93A8F /* CustomPublish */,
 				FE2E404C1DC33DCB0062E515 /* WeitView */,
@@ -1760,7 +1747,6 @@
 				1E7055B41D53247700A000F5 /* JPush-iOS-SDK-2.1.8 */,
 				A012EDE61D509C7600144BAD /* TransFree&Quick */,
 				A012EDB31D509A1C00144BAD /* Framework */,
-				A012EDA81D5099E000144BAD /* Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable */,
 				1B7B67311D41BF7700346609 /* WebServer */,
 				1B0513621D3F5DAC00F05C9D /* AFNetworking */,
 				A03ED09B1D2DE42000BD9C0A /* Login&Register */,
@@ -1778,6 +1764,7 @@
 				A03ED0791D2DE20800BD9C0A /* YBZTravelUITests */,
 				A03ED0531D2DE20700BD9C0A /* Products */,
 				FE19429D1DA8E043004DC96B /* Frameworks */,
+				E7178D58D0264ED5995721DB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2238,6 +2225,15 @@
 			name = Location;
 			sourceTree = "<group>";
 		};
+		E7178D58D0264ED5995721DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1E14BD237F1379A65AAEBFFB /* Pods-YBZTravel.debug.xcconfig */,
+				8FA6BD66FA2341387705CBE9 /* Pods-YBZTravel.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		FE19429D1DA8E043004DC96B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2247,6 +2243,7 @@
 				FEED8EA81DBDA36E00EF7BDB /* libiconv.tbd */,
 				FEED8EA61DBDA33600EF7BDB /* MobileCoreServices.framework */,
 				FE19429E1DA8E043004DC96B /* WebKit.framework */,
+				D3120E63236D0B2CDEE61283 /* libPods-YBZTravel.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2393,9 +2390,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A03ED07F1D2DE20800BD9C0A /* Build configuration list for PBXNativeTarget "YBZTravel" */;
 			buildPhases = (
+				ACBCC16AE26749A7C09F7BAB /* [CP] Check Pods Manifest.lock */,
 				A03ED04E1D2DE20700BD9C0A /* Sources */,
 				A03ED04F1D2DE20700BD9C0A /* Frameworks */,
 				A03ED0501D2DE20700BD9C0A /* Resources */,
+				351A90FB18B0206EDD177BC8 /* [CP] Embed Pods Frameworks */,
+				04E70647D63E660BD6D03AFA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2471,6 +2471,7 @@
 					};
 					A03ED0751D2DE20800BD9C0A = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = H4U7SMXJX3;
 						TestTargetID = A03ED0511D2DE20700BD9C0A;
 					};
 				};
@@ -2501,6 +2502,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE8CE9571E12031700C8BE5F /* liu.cer in Resources */,
 				1ED863091D2F39DD00529094 /* Info.plist in Resources */,
 				1E70560B1D5326A400A000F5 /* PushConfig.plist in Resources */,
 				7D84273C1D634638000BFEAD /* CollectionMessageInfoCell.xib in Resources */,
@@ -2520,7 +2522,6 @@
 				A0552ED81D3A2C8C00E04D7A /* SelectedMessageInfoCell.xib in Resources */,
 				A0532CC51D38D03E00FC1AB1 /* star_yellow.png in Resources */,
 				535DCB941D81BA5F00C329CB /* foregroundStar.png in Resources */,
-				A012EDAE1D5099E000144BAD /* RCConfig.plist in Resources */,
 				A03ED0621D2DE20800BD9C0A /* Assets.xcassets in Resources */,
 				1ED8636B1D3347F500529094 /* SYTableFooterView.xib in Resources */,
 				A0532CC41D38D03E00FC1AB1 /* star_gray.png in Resources */,
@@ -2531,7 +2532,6 @@
 				1ED863D11D3390F000529094 /* MJRefresh.bundle in Resources */,
 				535DCB931D81BA5F00C329CB /* backgroundStar@2x.png in Resources */,
 				535DCB951D81BA5F00C329CB /* foregroundStar@2x.png in Resources */,
-				A012EDAF1D5099E000144BAD /* release_notes_ios.txt in Resources */,
 				A03ED0601D2DE20800BD9C0A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2551,6 +2551,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		04E70647D63E660BD6D03AFA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YBZTravel/Pods-YBZTravel-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		351A90FB18B0206EDD177BC8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YBZTravel/Pods-YBZTravel-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ACBCC16AE26749A7C09F7BAB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A03ED04E1D2DE20700BD9C0A /* Sources */ = {
@@ -2930,6 +2978,7 @@
 		};
 		A03ED0801D2DE20800BD9C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1E14BD237F1379A65AAEBFFB /* Pods-YBZTravel.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = YBZTravel/YBZTravel.entitlements;
@@ -2942,13 +2991,15 @@
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ThirdTools/SMSSDK.2.0.0/SMS_SDK",
+					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_8_4_Stable_3c207/CallLib",
+					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_8_4_Stable_3c207/IMLib",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2963,10 +3014,12 @@
 					"$(PROJECT_DIR)",
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_8_4_Stable_3c207/IMLib",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-licucore",
+					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2978,6 +3031,7 @@
 		};
 		A03ED0811D2DE20800BD9C0A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8FA6BD66FA2341387705CBE9 /* Pods-YBZTravel.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = YBZTravel/YBZTravel.entitlements;
@@ -2990,13 +3044,15 @@
 					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_6_7_stable",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ThirdTools/SMSSDK.2.0.0/SMS_SDK",
+					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_8_4_Stable_3c207/CallLib",
+					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_8_4_Stable_3c207/IMLib",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch/";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/JPush-iOS-SDK-2.1.8/lib";
 				INFOPLIST_FILE = YBZTravel/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3011,10 +3067,12 @@
 					"$(PROJECT_DIR)",
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Rong_Cloud_iOS_IMLib_SDK_v2_8_4_Stable_3c207/IMLib",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-licucore",
+					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.TravelHelper.sunrui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3051,6 +3109,7 @@
 		A03ED0861D2DE20800BD9C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = H4U7SMXJX3;
 				INFOPLIST_FILE = YBZTravelUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tjufe.YBZTravelUITests;
@@ -3063,6 +3122,7 @@
 		A03ED0871D2DE20800BD9C0A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = H4U7SMXJX3;
 				INFOPLIST_FILE = YBZTravelUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tjufe.YBZTravelUITests;

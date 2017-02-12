@@ -63,7 +63,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    
+//    [self isSystemVersioniOS8];
     
     //Baidutongji
     BaiduMobStat* statTracker = [BaiduMobStat defaultStat];
@@ -76,48 +76,52 @@
     isChat = NO;
     missionID = @"";
     targetID = @"";
-    quitTimer = [NSTimer timerWithTimeInterval:10 repeats:YES block:^(NSTimer * _Nonnull timer) {
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"stopFindingTranslator" object:nil];
-        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
-        
-        userID = user_id[@"user_id"];
-
-        if (isChat == NO) {
-            [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
-                
-            } failure:^(NSError *error) {
-                
-            }];
-        }else if(isChat == YES){
-            [WebAgent sendRemoteNotificationsWithuseId:targetID WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:missionID WithLanguage:@"language" success:^(id responseObject) {
-                
-           } failure:^(NSError *error) {
-                
-            }];
-            
-            
-            
-            [WebAgent changeTranslatorBusy:userID state:@"0" success:^(id responseObject) {
-                
-            } failure:^(NSError *error) {
-                
-            }];
-            
-            [WebAgent getMoneyDouDealWithMissionID:missionID  success:^(id responseObject) {
-                        
-            } failure:^(NSError *error) {
-                        
-            }];
-
-   
-            
-        }
-
     
-    }];
+    if([self isSystemVersioniOS10]){
+            quitTimer = [NSTimer timerWithTimeInterval:10 repeats:YES block:^(NSTimer * _Nonnull timer) {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"stopFindingTranslator" object:nil];
+                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                NSDictionary *user_id = [userinfo dictionaryForKey:@"user_id"];
+        
+                userID = user_id[@"user_id"];
+        
+                if (isChat == NO) {
+                    [WebAgent removeFromWaitingQueue:userID success:^(id responseObject) {
+        
+                    } failure:^(NSError *error) {
+        
+                    }];
+                }else if(isChat == YES){
+                    [WebAgent sendRemoteNotificationsWithuseId:targetID WithsendMessage:@"退出聊天" WithType:@"0003" WithSenderID:userID WithMessionID:missionID WithLanguage:@"language" success:^(id responseObject) {
+        
+                   } failure:^(NSError *error) {
+        
+                    }];
+        
+        
+        
+                    [WebAgent changeTranslatorBusy:userID state:@"0" success:^(id responseObject) {
+        
+                    } failure:^(NSError *error) {
+        
+                    }];
+        
+                    [WebAgent getMoneyDouDealWithMissionID:missionID  success:^(id responseObject) {
+                                
+                    } failure:^(NSError *error) {
+                                
+                    }];
+        
+           
+                    
+                }
+        
+            
+            }];
+
+    }
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-    [SMSSDK registerApp:@"14797912782c8" withSecret:@"398b1d6e9521d5d868bae9812d60fff3"];
+    [SMSSDK registerApp:@"1ab743499cb10" withSecret:@"8c1b32951aac105445d8d0380fcf3eef"];
     ///远程推送！！！千万不能动⬇️
     //    [JPUSHService resetBadge];
     //    [JPUSHService setBadge:0];quitChat
@@ -144,7 +148,7 @@
     // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
     [JPUSHService setupWithOption:launchOptions appKey:@"4309446657f3a7b64ef168ee"
                           channel:@"Publish channel"
-                 apsForProduction:NO
+                 apsForProduction:YES
             advertisingIdentifier:advertisingId];
     [JPUSHService setBadge:0];
     [JPUSHService resetBadge];
@@ -915,9 +919,14 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
     //退出应用
-//    quitTimer=[NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(postQuitMessage:) userInfo:nil repeats:YES];
     [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
-    [quitTimer fire];
+    if([self isSystemVersioniOS10]){
+        quitTimer=[NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(postQuitMessage:) userInfo:nil repeats:YES];
+        [quitTimer fire];
+    }
+
+    
+
     
     
 }
@@ -1277,6 +1286,22 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"dateString:%@",dateString);
     
     return dateString;
+}
+
+/**
+ 2  *  check if the system version is iOS8
+ 3  *
+ 4  *  @return YES-is iOS8,otherwise,below iOS8
+ 5  */
+-(BOOL)isSystemVersioniOS10 {
+         //check systemVerson of device
+         UIDevice *device = [UIDevice currentDevice];
+         float sysVersion = [device.systemVersion floatValue];
+    
+         if (sysVersion >= 10.0f) {
+                return YES;
+             }
+        return NO;
 }
 
 

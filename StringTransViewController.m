@@ -214,7 +214,7 @@
     NSString *salt = [NSString stringWithFormat:@"%d",self.currentSaltNumber];
     NSString *sign = [self getTranslationToBaiduSign];
     
-    NSString *URLString = [NSString stringWithFormat:@"http://api.fanyi.baidu.com/api/trans/vip/translate?q=%@&from=%@&to=%@&appid=%@&salt=%@&sign=%@",Qname,From,To,app_ID,salt,sign];
+    NSString *URLString = [NSString stringWithFormat:@"https://fanyi-api.baidu.com/api/trans/vip/translate?q=%@&from=%@&to=%@&appid=%@&salt=%@&sign=%@",Qname,From,To,app_ID,salt,sign];
     
     NSLog(@"%@",URLString);
     return URLString;
